@@ -1,5 +1,5 @@
-#ifndef _GMATH_MAT4_H_
-#define _GMATH_MAT4_H_
+#ifndef _GMTK_MAT4_H_
+#define _GMTK_MAT4_H_
 
 //
 
@@ -7,23 +7,23 @@
 
 //
 
-#define GMATH_IDENT4_LOOP(oper) GMATH_UNROLL_LOOP(i, 4, oper)
+#define GMTK_IDENT4_LOOP(oper) GMTK_UNROLL_LOOP(i, 4, oper)
 
-#define GMATH_MAT4_LOOP(oper) GMATH_UNROLL_2D_LOOP(i, j, 4, 4, oper)
+#define GMTK_MAT4_LOOP(oper) GMTK_UNROLL_2D_LOOP(i, j, 4, 4, oper)
 
-#define GMATH_MAT4_LOOP2(oper) GMATH_UNROLL_LONG_LOOP(i, 16, oper)
+#define GMTK_MAT4_LOOP2(oper) GMTK_UNROLL_LONG_LOOP(i, 16, oper)
 
-#define GMATH_MAT4_OPERATOR(oper) { mat<T, 4, 4> res; GMATH_MAT4_LOOP(res[i][j] = oper); return res; }
+#define GMTK_MAT4_OPERATOR(oper) { mat<T, 4, 4> res; GMTK_MAT4_LOOP(res[i][j] = oper); return res; }
 
-#define GMATH_MAT4_OPERATOR2(oper) { mat<T, 4, 4> res; GMATH_MAT4_LOOP2(res(i) = oper); return res; }
+#define GMTK_MAT4_OPERATOR2(oper) { mat<T, 4, 4> res; GMTK_MAT4_LOOP2(res(i) = oper); return res; }
 
-#define GMATH_MAT4_REF_OPERATOR(oper) { GMATH_MAT4_LOOP(oper); return *this; }
+#define GMTK_MAT4_REF_OPERATOR(oper) { GMTK_MAT4_LOOP(oper); return *this; }
 
-#define GMATH_MAT4_REF_OPERATOR2(oper) { GMATH_MAT4_LOOP2(oper); return *this; }
+#define GMTK_MAT4_REF_OPERATOR2(oper) { GMTK_MAT4_LOOP2(oper); return *this; }
 
 //
 
-namespace gmath
+namespace GMTK_NAMESPACE
 {////
 
 	template <typename T>
@@ -63,7 +63,7 @@ namespace gmath
 		// Default constructor
 		inline mat()
 		{
-			GMATH_MAT4_LOOP2(arr[i] = static_cast<T>(0));
+			GMTK_MAT4_LOOP2(arr[i] = static_cast<T>(0));
 		}
 
 		// Initializer list constructor
@@ -71,36 +71,36 @@ namespace gmath
 		// This is because matrices are stored column-major
 		inline mat(std::initializer_list<T> list)
 		{
-			GMATH_MAT4_LOOP2(arr[i] = *(list.begin() + i));
+			GMTK_MAT4_LOOP2(arr[i] = *(list.begin() + i));
 		}
 
 		// Copy constructor
 		inline mat(const mat<T, 4, 4>& v) {
-			GMATH_MAT4_LOOP2(arr[i] = v.arr[i]);
+			GMTK_MAT4_LOOP2(arr[i] = v.arr[i]);
 		}
 
 		template<int rm, int cm>
 		// Minor matrix constructor
 		inline mat(const mat<T, rm, cm>& m)
 		{
-			GMATH_STATIC_ASSERT((rm < r) && (cm < c));
-			GMATH_UNROLL_2D_LOOP(i, j, cm, rm, data[i][j] = m.data[i][j]);
+			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
+			GMTK_UNROLL_2D_LOOP(i, j, cm, rm, data[i][j] = m.data[i][j]);
 		}
 
 		template<typename U>
 		// Explicit type-conversion copy constructor
 		explicit inline mat(const mat<U, 4, 4>& v) {
-			GMATH_MAT4_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
+			GMTK_MAT4_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
 		}
 
 		// Fill constructor
 		explicit inline mat(const T& s) {
-			GMATH_MAT4_LOOP2(arr[i] = s);
+			GMTK_MAT4_LOOP2(arr[i] = s);
 		}
 
 		// Array initializer
 		explicit inline mat(const T* a) {
-			GMATH_MAT4_LOOP2(arr[i] = a[i]);
+			GMTK_MAT4_LOOP2(arr[i] = a[i]);
 		}
 
 		inline mat(const T& s0, const T& s1, const T& s2, const T& s3,
@@ -222,83 +222,83 @@ namespace gmath
 
 		// Returns a negative matrix
 		inline mat<T, 4, 4> operator-() const {
-			GMATH_MAT4_OPERATOR2(-arr[i]);
+			GMTK_MAT4_OPERATOR2(-arr[i]);
 		}
 
 		// Component-wise matrix addition
 		inline mat<T, 4, 4> operator+(const mat<T, 4, 4>& m) const {
-			GMATH_MAT4_OPERATOR2(arr[i] + m.arr[i]);
+			GMTK_MAT4_OPERATOR2(arr[i] + m.arr[i]);
 		}
 
 		// Component-wise matrix subtraction
 		inline mat<T, 4, 4> operator-(const mat<T, 4, 4>& m) const {
-			GMATH_MAT4_OPERATOR2(arr[i] - m.arr[i]);
+			GMTK_MAT4_OPERATOR2(arr[i] - m.arr[i]);
 		}
 
 		// Component-wise matrix division
 		inline mat<T, 4, 4> operator/(const mat<T, 4, 4>& m) const {
-			GMATH_MAT4_OPERATOR2(arr[i] / m.arr[i]);
+			GMTK_MAT4_OPERATOR2(arr[i] / m.arr[i]);
 		}
 
 		//
 
 		// Component-wise scalar addition
 		inline mat<T, 4, 4> operator+(const T& s) const {
-			GMATH_MAT4_OPERATOR2(arr[i] + s);
+			GMTK_MAT4_OPERATOR2(arr[i] + s);
 		}
 
 		// Component-wise scalar subtraction
 		inline mat<T, 4, 4> operator-(const T& s) const {
-			GMATH_MAT4_OPERATOR2(arr[i] - s);
+			GMTK_MAT4_OPERATOR2(arr[i] - s);
 		}
 
 		// Component-wise scalar division
 		inline mat<T, 4, 4> operator/(const T& s) const {
-			GMATH_MAT4_OPERATOR2(arr[i] / s);
+			GMTK_MAT4_OPERATOR2(arr[i] / s);
 		}
 
 		// Component-wise scalar multiplication
 		inline mat<T, 4, 4> operator*(const T& s) const {
-			GMATH_MAT4_OPERATOR2(arr[i] * s);
+			GMTK_MAT4_OPERATOR2(arr[i] * s);
 		}
 
 		//
 
 		// Component-wise matrix reference addition
 		inline mat<T, 4, 4>& operator+=(const mat<T, 4, 4>& m) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] += m.arr[i]);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] += m.arr[i]);
 		}
 
 		// Component-wise matrix reference subtraction
 		inline mat<T, 4, 4>& operator-=(const mat<T, 4, 4>& m) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] -= m.arr[i]);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] -= m.arr[i]);
 		}
 
 		// Component-wise matrix reference division
 		inline mat<T, 4, 4>& operator/=(const mat<T, 4, 4>& m) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] /= m.arr[i]);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] /= m.arr[i]);
 		}
 
 		//
 
 		// Component-wise scalar reference addition
 		inline mat<T, 4, 4>& operator+=(const T& s) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] += s);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] += s);
 		}
 
 		// Component-wise scalar reference subtraction
 		inline mat<T, 4, 4>& operator-=(const T& s) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] -= s);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] -= s);
 		}
 
 		// Component-wise scalar reference division
 		inline mat<T, 4, 4>& operator/=(const T& s) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] /= s);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] /= s);
 		}
 
 		// Component-wise scalar reference multiplication
 		inline mat<T, 4, 4>& operator*=(const T& s) {
-			GMATH_MAT4_REF_OPERATOR2(arr[i] *= s);
+			GMTK_MAT4_REF_OPERATOR2(arr[i] *= s);
 		}
 
 		////////////////////////////////
@@ -417,6 +417,7 @@ namespace gmath
 			return translate(v.x, v.y, v.z);
 		}
 
+		// generates a generic frustum transformation
 		inline static mat<T, 4, 4> frustum(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
 		{
 			float n2 = 2 * near;
@@ -431,6 +432,7 @@ namespace gmath
 				 0.f, 0.f, (n2*far) / nmf, 0.f);
 		}
 
+		// generates a 3d-perspective frustum transformation
 		inline static mat<T, 4, 4> perspective(const Angle<T> &fovy, const T &aspect, const T &near, const T &far)
 		{
 			T ys = 1.0 / tan(fovy.radians()*0.5);
@@ -439,19 +441,39 @@ namespace gmath
 			T B = (near + far) / nmf;
 			T C = (2.0 * near * far) / nmf;
 
-			return mat<T, 4, 4>
-				(xs, 0, 0, 0,
+			return mat<T, 4, 4>(
+				 xs, 0, 0, 0,
 				 0, ys, 0, 0,
 				 0, 0, B, -1,
 				 0, 0, C, 0);
+		}
+
+		// generates a catmull-rom identity transformation
+		inline mat4 catmull()
+		{
+			return mat4(
+				-1.0f, 3.0f, -3.0f, 1.0f,
+				2.0f, -5.0f, 4.0f, -1.0f,
+				-1.0f, 0.0f, 1.0f, 0.0f,
+				0.0f, 2.0f, 0.0f, 0.0f );
+		}
+
+		// generates a bezier identity transformation
+		inline mat4 bezier()
+		{
+			return mat4(
+				-1.0f, 3.0f, -3.0f, 1.0f,
+				3.0f, -6.0f, 3.0f, 0.0f,
+				-3.0f, 3.0f, 0.0f, 0.0f,
+				1.0f, 0.0f, 0.0f, 0.0f );
 		}
 
 		inline static mat<T, 4, 4> ortho(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
 		{
 			return mat<T, 4, 4>
 				(2.0 / (right - left), 0, 0, 0,
-				0, 2.0 / (top - bottom), 0, 0,
-				0, 0, 2.0 / (near - far), 0,
+				 0,	2.0 / (top - bottom), 0, 0,
+				 0,	0, 2.0 / (near - far), 0,
 				(left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), 1);
 		}
 
@@ -501,4 +523,4 @@ namespace gmath
 
 }////
 
-#endif//_GMATH_MAT4_H_
+#endif//_GMTK_MAT4_H_

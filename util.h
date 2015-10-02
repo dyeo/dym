@@ -1,10 +1,10 @@
-#ifndef _GMATH_UTIL_H_
-#define _GMATH_UTIL_H_
+#ifndef _GMTK_UTIL_H_
+#define _GMTK_UTIL_H_
 
 //
 
 // gmtk namespace
-#define GMATH_NAMESPACE gmath
+#define GMTK_NAMESPACE gmtk
 
 #include <math.h>
 #include <stdlib.h>
@@ -19,11 +19,11 @@
 template<bool> struct static_assert_util;
 template<> struct static_assert_util < true > {};
 
-#define GMATH_STATIC_ASSERT(cond) static_assert_util<(cond)>()
+#define GMTK_STATIC_ASSERT(cond) static_assert_util<(cond)>()
 
 //
 
-#define GMATH_UNROLL_LOOP(iter, count, oper) \
+#define GMTK_UNROLL_LOOP(iter, count, oper) \
 { \
 	const int iter = 0;  { oper ; } \
 	if ((count) > 1) { \
@@ -42,7 +42,7 @@ template<> struct static_assert_util < true > {};
 	} \
 }
 
-#define GMATH_UNROLL_LONG_LOOP(iter, count, oper) \
+#define GMTK_UNROLL_LONG_LOOP(iter, count, oper) \
 	{ \
 		const int iter = 0; { oper ; } \
 		if((count) > 1) { \
@@ -97,23 +97,23 @@ template<> struct static_assert_util < true > {};
 		} \
 	} \
 
-#define GMATH_MIN_OF(a, b) ( a < b ? a : b )
+#define GMTK_MIN_OF(a, b) ( a < b ? a : b )
 
-#define GMATH_UNROLL_2D_LOOP(iterVar1, iterVar2, iterNum1, iterNum2, iterOp) \
-		GMATH_UNROLL_LOOP(iterVar1, iterNum1, GMATH_UNROLL_LOOP(iterVar2, iterNum2, iterOp))
+#define GMTK_UNROLL_2D_LOOP(iterVar1, iterVar2, iterNum1, iterNum2, iterOp) \
+		GMTK_UNROLL_LOOP(iterVar1, iterNum1, GMTK_UNROLL_LOOP(iterVar2, iterNum2, iterOp))
 
-#define GMATH_UNROLL_3D_LOOP(iterVar1, iterVar2, iterVar3, iterNum1, iterNum2, iterNum3, iterOp) \
-		GMATH_UNROLL_LOOP(iterVar1, iterNum1, GMATH_UNROLL_LOOP(iterVar2, iterNum2, GMATH_UNROLL_LOOP(iterVar3, iterNum3, iterOp)))
+#define GMTK_UNROLL_3D_LOOP(iterVar1, iterVar2, iterVar3, iterNum1, iterNum2, iterNum3, iterOp) \
+		GMTK_UNROLL_LOOP(iterVar1, iterNum1, GMTK_UNROLL_LOOP(iterVar2, iterNum2, GMTK_UNROLL_LOOP(iterVar3, iterNum3, iterOp)))
 
-#define GMATH_UNROLL_SQUARE_LOOP(iterVar1, iterVar2, iterNum, iterOp) \
-		GMATH_UNROLL_LOOP(iterVar1, iterNum, GMATH_UNROLL_LOOP(iterVar2, iterNum, iterOp))
+#define GMTK_UNROLL_SQUARE_LOOP(iterVar1, iterVar2, iterNum, iterOp) \
+		GMTK_UNROLL_LOOP(iterVar1, iterNum, GMTK_UNROLL_LOOP(iterVar2, iterNum, iterOp))
 
-#define GMATH_UNROLL_CUBE_LOOP(iterVar1, iterVar2, iterVar3, iterNum, iterOp) \
-		GMATH_UNROLL_LOOP(iterVar1, iterNum, GMATH_UNROLL_LOOP(iterVar2, iterNum, GMATH_UNROLL_LOOP(iterVar3, iterNum, iterOp)))
+#define GMTK_UNROLL_CUBE_LOOP(iterVar1, iterVar2, iterVar3, iterNum, iterOp) \
+		GMTK_UNROLL_LOOP(iterVar1, iterNum, GMTK_UNROLL_LOOP(iterVar2, iterNum, GMTK_UNROLL_LOOP(iterVar3, iterNum, iterOp)))
 
 //
 
-namespace gmath
+namespace GMTK_NAMESPACE
 {
 
 	template <typename T>
@@ -132,7 +132,7 @@ namespace gmath
 	inline T pow(const T& v, const int& p)
 	{
 		T val = v;
-		GMATH_UNROLL_LOOP(i, p-1, val *= v);
+		GMTK_UNROLL_LOOP(i, p-1, val *= v);
 		return val;
 	}
 
@@ -188,4 +188,4 @@ namespace gmath
 
 }
 
-#endif //_GMATH_UTIL_H_
+#endif //_GMTK_UTIL_H_

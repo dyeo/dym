@@ -1,12 +1,16 @@
-#ifndef _GMATH_ANGLE_H_
-#define _GMATH_ANGLE_H_
+#ifndef _GMTK_ANGLE_H_
+#define _GMTK_ANGLE_H_
+
+//
+
+#include "util.h"
 
 //
 
 #define DEG2RAD 0.0174532925199432957692369076848861271344
 #define RAD2DEG 57.2957795130823208767981548141051703324
 
-namespace gmath
+namespace GMTK_NAMESPACE
 {////
 
 	template<typename T = float>

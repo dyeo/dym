@@ -1,5 +1,5 @@
-#ifndef _GMATH_MAT3_H_
-#define _GMATH_MAT3_H_
+#ifndef _GMTK_MAT3_H_
+#define _GMTK_MAT3_H_
 
 //
 
@@ -7,23 +7,23 @@
 
 //
 
-#define GMATH_IDENT3_LOOP(oper) GMATH_UNROLL_LOOP(i, 3, oper)
+#define GMTK_IDENT3_LOOP(oper) GMTK_UNROLL_LOOP(i, 3, oper)
 
-#define GMATH_MAT3_LOOP(oper) GMATH_UNROLL_2D_LOOP(i, j, 3, 3, oper)
+#define GMTK_MAT3_LOOP(oper) GMTK_UNROLL_2D_LOOP(i, j, 3, 3, oper)
 
-#define GMATH_MAT3_LOOP2(oper) GMATH_UNROLL_LONG_LOOP(i, 9, oper)
+#define GMTK_MAT3_LOOP2(oper) GMTK_UNROLL_LONG_LOOP(i, 9, oper)
 
-#define GMATH_MAT3_OPERATOR(oper) { mat<T, 3, 3> res; GMATH_MAT3_LOOP(res[i][j] = oper); return res; }
+#define GMTK_MAT3_OPERATOR(oper) { mat<T, 3, 3> res; GMTK_MAT3_LOOP(res[i][j] = oper); return res; }
 
-#define GMATH_MAT3_OPERATOR2(oper) { mat<T, 3, 3> res; GMATH_MAT3_LOOP2(res(i) = oper); return res; }
+#define GMTK_MAT3_OPERATOR2(oper) { mat<T, 3, 3> res; GMTK_MAT3_LOOP2(res(i) = oper); return res; }
 
-#define GMATH_MAT3_REF_OPERATOR(oper) { GMATH_MAT3_LOOP(oper); return *this; }
+#define GMTK_MAT3_REF_OPERATOR(oper) { GMTK_MAT3_LOOP(oper); return *this; }
 
-#define GMATH_MAT3_REF_OPERATOR2(oper) { GMATH_MAT3_LOOP2(oper); return *this; }
+#define GMTK_MAT3_REF_OPERATOR2(oper) { GMTK_MAT3_LOOP2(oper); return *this; }
 
 //
 
-namespace gmath
+namespace GMTK_NAMESPACE
 {////
 
 	template <typename T>
@@ -63,7 +63,7 @@ namespace gmath
 		// Default constructor
 		inline mat()
 		{
-			GMATH_MAT3_LOOP2(arr[i] = static_cast<T>(0));
+			GMTK_MAT3_LOOP2(arr[i] = static_cast<T>(0));
 		}
 
 		// Initializer list constructor
@@ -71,36 +71,36 @@ namespace gmath
 		// This is because matrices are stored column-major
 		inline mat(std::initializer_list<T> list)
 		{
-			GMATH_MAT3_LOOP2(arr[i] = *(list.begin() + i));
+			GMTK_MAT3_LOOP2(arr[i] = *(list.begin() + i));
 		}
 
 		// Copy constructor
 		inline mat(const mat<T, 3, 3>& v) {
-			GMATH_MAT3_LOOP2(arr[i] = v.arr[i]);
+			GMTK_MAT3_LOOP2(arr[i] = v.arr[i]);
 		}
 
 		template<int rm, int cm>
 		// Minor matrix constructor
 		inline mat(const mat<T, rm, cm>& m)
 		{
-			GMATH_STATIC_ASSERT((rm < r) && (cm < c));
-			GMATH_UNROLL_2D_LOOP(i, j, cm, rm, data[i][j] = m.data[i][j]);
+			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
+			GMTK_UNROLL_2D_LOOP(i, j, cm, rm, data[i][j] = m.data[i][j]);
 		}
 
 		template<typename U>
 		// Explicit type-conversion copy constructor
 		explicit inline mat(const mat<U, 3, 3>& v) {
-			GMATH_MAT3_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
+			GMTK_MAT3_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
 		}
 
 		// Fill constructor
 		explicit inline mat(const T& s) {
-			GMATH_MAT3_LOOP2(arr[i] = s);
+			GMTK_MAT3_LOOP2(arr[i] = s);
 		}
 
 		// Array initializer
 		explicit inline mat(const T* a) {
-			GMATH_MAT3_LOOP2(arr[i] = a[i]);
+			GMTK_MAT3_LOOP2(arr[i] = a[i]);
 		}
 
 		inline mat(const T& s0, const T& s1, const T& s2, const T& s3, const T& s4, const T& s5, const T& s6, const T& s7, const T& s8) {
@@ -191,83 +191,83 @@ namespace gmath
 
 		// Returns a negative matrix
 		inline mat<T, 3, 3> operator-() const {
-			GMATH_MAT3_OPERATOR2(-arr[i]);
+			GMTK_MAT3_OPERATOR2(-arr[i]);
 		}
 
 		// Component-wise matrix addition
 		inline mat<T, 3, 3> operator+(const mat<T, 3, 3>& m) const {
-			GMATH_MAT3_OPERATOR2(arr[i] + m.arr[i]);
+			GMTK_MAT3_OPERATOR2(arr[i] + m.arr[i]);
 		}
 
 		// Component-wise matrix subtraction
 		inline mat<T, 3, 3> operator-(const mat<T, 3, 3>& m) const {
-			GMATH_MAT3_OPERATOR2(arr[i] - m.arr[i]);
+			GMTK_MAT3_OPERATOR2(arr[i] - m.arr[i]);
 		}
 
 		// Component-wise matrix division
 		inline mat<T, 3, 3> operator/(const mat<T, 3, 3>& m) const {
-			GMATH_MAT3_OPERATOR2(arr[i] / m.arr[i]);
+			GMTK_MAT3_OPERATOR2(arr[i] / m.arr[i]);
 		}
 
 		//
 
 		// Component-wise scalar addition
 		inline mat<T, 3, 3> operator+(const T& s) const {
-			GMATH_MAT3_OPERATOR2(arr[i] + s);
+			GMTK_MAT3_OPERATOR2(arr[i] + s);
 		}
 
 		// Component-wise scalar subtraction
 		inline mat<T, 3, 3> operator-(const T& s) const {
-			GMATH_MAT3_OPERATOR2(arr[i] - s);
+			GMTK_MAT3_OPERATOR2(arr[i] - s);
 		}
 
 		// Component-wise scalar division
 		inline mat<T, 3, 3> operator/(const T& s) const {
-			GMATH_MAT3_OPERATOR2(arr[i] / s);
+			GMTK_MAT3_OPERATOR2(arr[i] / s);
 		}
 
 		// Component-wise scalar multiplication
 		inline mat<T, 3, 3> operator*(const T& s) const {
-			GMATH_MAT3_OPERATOR2(arr[i] * s);
+			GMTK_MAT3_OPERATOR2(arr[i] * s);
 		}
 
 		//
 
 		// Component-wise matrix reference addition
 		inline mat<T, 3, 3>& operator+=(const mat<T, 3, 3>& m) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] += m.arr[i]);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] += m.arr[i]);
 		}
 
 		// Component-wise matrix reference subtraction
 		inline mat<T, 3, 3>& operator-=(const mat<T, 3, 3>& m) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] -= m.arr[i]);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] -= m.arr[i]);
 		}
 
 		// Component-wise matrix reference division
 		inline mat<T, 3, 3>& operator/=(const mat<T, 3, 3>& m) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] /= m.arr[i]);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] /= m.arr[i]);
 		}
 
 		//
 
 		// Component-wise scalar reference addition
 		inline mat<T, 3, 3>& operator+=(const T& s) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] += s);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] += s);
 		}
 
 		// Component-wise scalar reference subtraction
 		inline mat<T, 3, 3>& operator-=(const T& s) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] -= s);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] -= s);
 		}
 
 		// Component-wise scalar reference division
 		inline mat<T, 3, 3>& operator/=(const T& s) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] /= s);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] /= s);
 		}
 
 		// Component-wise scalar reference multiplication
 		inline mat<T, 3, 3>& operator*=(const T& s) {
-			GMATH_MAT3_REF_OPERATOR2(arr[i] *= s);
+			GMTK_MAT3_REF_OPERATOR2(arr[i] *= s);
 		}
 
 		////////////////////////////////
@@ -396,4 +396,4 @@ namespace gmath
 
 }////
 
-#endif//_GMATH_MAT3_H_
+#endif//_GMTK_MAT3_H_

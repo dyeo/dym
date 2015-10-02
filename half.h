@@ -1,5 +1,5 @@
-#ifndef _GMATH_HALF_H_
-#define _GMATH_HALF_H_
+#ifndef _GMTK_HALF_H_
+#define _GMTK_HALF_H_
 
 //
 
@@ -18,7 +18,7 @@
 
 //
 
-namespace gmath
+namespace GMTK_NAMESPACE
 {
 	// A minimal storage class for a 16-bit floating point number, as detailed in IEEE-754: binary16
 	class half
@@ -91,4 +91,4 @@ namespace gmath
 }
 //
 
-#endif //_GMATH_HALF_H_
+#endif //_GMTK_HALF_H_

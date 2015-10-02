@@ -1,14 +1,14 @@
-#ifndef _GMATH_H_
-#define _GMATH_H_
+#ifndef _GMTK_H_
+#define _GMTK_H_
 
 #include "vector.h"
 #include "matrix.h"
 //#include "quaternion.h"
 
-#endif//_GMATH_H_
+#endif//_GMTK_H_
 
-#ifndef _GMATH_H_CONSTANTS_
-#define _GMATH_H_CONSTANTS_
+#ifndef _GMTK_H_CONSTANTS_
+#define _GMTK_H_CONSTANTS_
 
 #define M_PI		3.14159265358979323846264338327950288419
 #define M_TAU		6.28318530717958647692528676655900576839
@@ -29,4 +29,4 @@
 
 #define M_SQRT2		1.41421356237309504880168872420969807857
 
-#endif//_GMATH_H_CONSTANTS_
+#endif//_GMTK_H_CONSTANTS_

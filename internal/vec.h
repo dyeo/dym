@@ -1,5 +1,5 @@
-#ifndef _GMATH_VEC_H_
-#define _GMATH_VEC_H_
+#ifndef _GMTK_VEC_H_
+#define _GMTK_VEC_H_
 
 //
 
@@ -10,19 +10,19 @@
 //
 
 // Unrolls a component-wise vector manipulation for generic implementation
-#define GMATH_VEC_LOOP(oper) GMATH_UNROLL_LOOP(i,d,oper)
+#define GMTK_VEC_LOOP(oper) GMTK_UNROLL_LOOP(i,d,oper)
 
 //
 
-#define GMATH_VEC_OPERATOR(oper) { vec<T,d> res; GMATH_VEC_LOOP(res[i] = oper); return res; }
+#define GMTK_VEC_OPERATOR(oper) { vec<T,d> res; GMTK_VEC_LOOP(res[i] = oper); return res; }
 
 //
 
-#define GMATH_VEC_REF_OPERATOR(oper) { GMATH_VEC_LOOP(oper); return *this; }
+#define GMTK_VEC_REF_OPERATOR(oper) { GMTK_VEC_LOOP(oper); return *this; }
 
 //
 
-namespace gmath
+namespace GMTK_NAMESPACE
 {////
 
 	
@@ -46,33 +46,33 @@ namespace gmath
 		
 		// Default constructor
 		inline vec() {
-			GMATH_VEC_LOOP(data[i] = static_cast<T>(0));
+			GMTK_VEC_LOOP(data[i] = static_cast<T>(0));
 		}
 
 		// Initializer list constructor
 		inline vec(std::initializer_list<T> list)
 		{
-			GMATH_VEC_LOOP(data[i] = *(list.begin() + i));
+			GMTK_VEC_LOOP(data[i] = *(list.begin() + i));
 		}
 
 		// Copy constructor
 		inline vec(const vec<T, d>& v) {
-			GMATH_VEC_LOOP(data[i] = v.data[i]);
+			GMTK_VEC_LOOP(data[i] = v.data[i]);
 		}
 
 		// Explicit type-conversion copy constructor
 		template<typename U> explicit inline vec(const vec<U, d>& v) {
-			GMATH_VEC_LOOP(data[i] = static_cast<T>(v[i]));
+			GMTK_VEC_LOOP(data[i] = static_cast<T>(v[i]));
 		}
 
 		// Fill constructor
 		explicit inline vec(const T& s) {
-			GMATH_VEC_LOOP(data[i] = s);
+			GMTK_VEC_LOOP(data[i] = s);
 		}
 
 		// Array initializer
 		explicit inline vec(const T* a) {
-			GMATH_VEC_LOOP(data[i] = a[i]);
+			GMTK_VEC_LOOP(data[i] = a[i]);
 		}
 
 		//////////////////////
@@ -95,87 +95,87 @@ namespace gmath
 
 		// Returns a negative vector
 		inline vec<T, d> operator-() const {
-			GMATH_VEC_OPERATOR(-data[i]);
+			GMTK_VEC_OPERATOR(-data[i]);
 		}
 
 		// Component-wise vector multiplication
 		inline vec<T, d> operator*(const vec<T, d>& v) const {
-			GMATH_VEC_OPERATOR(data[i] * v.data[i]);
+			GMTK_VEC_OPERATOR(data[i] * v.data[i]);
 		}
 
 		// Component-wise vector division
 		inline vec<T, d> operator/(const vec<T, d>& v) const {
-			GMATH_VEC_OPERATOR(data[i] / v.data[i]);
+			GMTK_VEC_OPERATOR(data[i] / v.data[i]);
 		}
 
 		// Component-wise vector addition
 		inline vec<T, d> operator+(const vec<T, d>& v) const {
-			GMATH_VEC_OPERATOR(data[i] + v.data[i]);
+			GMTK_VEC_OPERATOR(data[i] + v.data[i]);
 		}
 
 		// Component-wise vector subtraction
 		inline vec<T, d> operator-(const vec<T, d>& v) const {
-			GMATH_VEC_OPERATOR(data[i] - v.data[i]);
+			GMTK_VEC_OPERATOR(data[i] - v.data[i]);
 		}
 
 		// Component-wise vector reference multiplication
 		inline vec<T, d>& operator*=(const vec<T, d>& v) {
-			GMATH_VEC_REF_OPERATOR(data[i] *= v.data[i]);
+			GMTK_VEC_REF_OPERATOR(data[i] *= v.data[i]);
 		}
 
 		// Component-wise vector reference division
 		inline vec<T, d>& operator/=(const vec<T, d>& v) {
-			GMATH_VEC_REF_OPERATOR(data[i] /= v.data[i]);
+			GMTK_VEC_REF_OPERATOR(data[i] /= v.data[i]);
 		}
 
 		// Component-wise vector reference addition
 		inline vec<T, d>& operator+=(const vec<T, d>& v) {
-			GMATH_VEC_REF_OPERATOR(data[i] += v.data[i]);
+			GMTK_VEC_REF_OPERATOR(data[i] += v.data[i]);
 		}
 
 		// Component-wise vector reference subtraction
 		inline vec<T, d>& operator-=(const vec<T, d>& v) {
-			GMATH_VEC_REF_OPERATOR(data[i] -= v.data[i]);
+			GMTK_VEC_REF_OPERATOR(data[i] -= v.data[i]);
 		}
 
 		// Component-wise scalar multiplication
 		inline vec<T, d> operator*(const T& s) const {
-			GMATH_VEC_OPERATOR(data[i] * s);
+			GMTK_VEC_OPERATOR(data[i] * s);
 		}
 
 		// Component-wise scalar division
 		inline vec<T, d> operator/(const T& s) const {
-			GMATH_VEC_OPERATOR(data[i] / s);
+			GMTK_VEC_OPERATOR(data[i] / s);
 		}
 
 		// Component-wise scalar addition
 		inline vec<T, d> operator+(const T& s) const {
-			GMATH_VEC_OPERATOR(data[i] + s);
+			GMTK_VEC_OPERATOR(data[i] + s);
 		}
 
 		// Component-wise scalar subtraction
 		inline vec<T, d> operator-(const T& s) const {
-			GMATH_VEC_OPERATOR(data[i] - s);
+			GMTK_VEC_OPERATOR(data[i] - s);
 		}
 
 		// Component-wise scalar reference multiplication
 		inline vec<T, d>& operator*=(const T& s) {
-			GMATH_VEC_REF_OPERATOR(data[i] *= s);
+			GMTK_VEC_REF_OPERATOR(data[i] *= s);
 		}
 
 		// Component-wise scalar reference division
 		inline vec<T, d>& operator/=(const T& s) {
-			GMATH_VEC_REF_OPERATOR(data[i] /= s);
+			GMTK_VEC_REF_OPERATOR(data[i] /= s);
 		}
 
 		// Component-wise scalar reference addition
 		inline vec<T, d>& operator+=(const T& s) {
-			GMATH_VEC_REF_OPERATOR(data[i] += s);
+			GMTK_VEC_REF_OPERATOR(data[i] += s);
 		}
 
 		// Component-wise scalar reference subtraction
 		inline vec<T, d>& operator-=(const T& s) {
-			GMATH_VEC_REF_OPERATOR(data[i] -= s);
+			GMTK_VEC_REF_OPERATOR(data[i] -= s);
 		}
 
 	}; // struct vec
@@ -188,7 +188,7 @@ namespace gmath
 	inline std::ostream& operator<<(std::ostream& os, const vec<T, d>& v)
 	{
 		os << "| ";
-		GMATH_VEC_LOOP(os << v.data[i] << ' ');
+		GMTK_VEC_LOOP(os << v.data[i] << ' ');
 		os << "|";
 		return os;
 	}
@@ -202,7 +202,7 @@ namespace gmath
 	inline T dot(const vec<T, d>& l, const vec<T, d>& r)
 	{
 		T res = 0;
-		GMATH_VEC_LOOP(res += l[i] * r[i]);
+		GMTK_VEC_LOOP(res += l[i] * r[i]);
 		return res;
 	}
 
@@ -241,7 +241,7 @@ namespace gmath
 	inline T lengthsq(const vec<T, d>& v)
 	{
 		T res = 0;
-		GMATH_UNROLL_LOOP(i, d, res += sq(v.data[i]));
+		GMTK_UNROLL_LOOP(i, d, res += sq(v.data[i]));
 		return res;
 	}
 
@@ -250,7 +250,7 @@ namespace gmath
 	inline T length(const vec<T, d>& v)
 	{
 		T res = 0;
-		GMATH_UNROLL_LOOP(i, d, res += sq(v.data[i]));
+		GMTK_UNROLL_LOOP(i, d, res += sq(v.data[i]));
 		return sqrt(res);
 	}
 
@@ -265,28 +265,28 @@ namespace gmath
 	// Returns a component-wise minimum of two vectors
 	inline vec<T, d> min(const vec<T, d>& l, const vec<T, d>& r)
 	{
-		GMATH_VEC_OPERATOR((l[i] < r[i]) ? l[i] : r[i]);
+		GMTK_VEC_OPERATOR((l[i] < r[i]) ? l[i] : r[i]);
 	}
 
 	template <typename T, int d>
 	// Returns a component-wise maximum of a vector and a scalar
 	inline vec<T, d> min(const vec<T, d>& l, const T& r)
 	{
-		GMATH_VEC_OPERATOR((l[i] < r) ? l[i] : r);
+		GMTK_VEC_OPERATOR((l[i] < r) ? l[i] : r);
 	}
 
 	template <typename T, int d>
 	// Returns a component-wise minimum of two vectors
 	inline vec<T, d> max(const vec<T, d>& l, const vec<T, d>& r)
 	{
-		GMATH_VEC_OPERATOR((l[i] > r[i]) ? l[i] : r[i]);
+		GMTK_VEC_OPERATOR((l[i] > r[i]) ? l[i] : r[i]);
 	}
 
 	template <typename T, int d>
 	// Returns a component-wise maximum of a vector and a scalar
 	inline vec<T, d> max(const vec<T, d>& l, const T& r)
 	{
-		GMATH_VEC_OPERATOR((l[i] > r) ? l[i] : r);
+		GMTK_VEC_OPERATOR((l[i] > r) ? l[i] : r);
 	}
 
 	template <typename T, int d>
@@ -345,7 +345,7 @@ namespace gmath
 	inline vec<T, d + 1> affine(const vec<T, d>&v)
 	{
 		vec<T, d + 1> res;
-		GMATH_VEC_LOOP(res[i] = v[i]);
+		GMTK_VEC_LOOP(res[i] = v[i]);
 		res[d] = static_cast<T>(1);
 		return res;
 	}
@@ -356,4 +356,4 @@ namespace gmath
 
 //
 
-#endif //_GMATH_VEC
+#endif //_GMTK_VEC

@@ -1,5 +1,5 @@
-#ifndef _GMATH_MATRIX_H_
-#define _GMATH_MATRIX_H_
+#ifndef _GMTK_MATRIX_H_
+#define _GMTK_MATRIX_H_
 
 //
 
@@ -10,4 +10,4 @@
 
 //
 
-#endif//_GMATH_MATRIX_H_
+#endif//_GMTK_MATRIX_H_

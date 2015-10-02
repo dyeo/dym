@@ -1,5 +1,5 @@
-#ifndef _GMATH_VECTOR_H_
-#define _GMATH_VECTOR_H_
+#ifndef _GMTK_VECTOR_H_
+#define _GMTK_VECTOR_H_
 
 //
 
@@ -11,4 +11,4 @@
 //
 
 
-#endif//_GMATH_VECTOR_H_
+#endif//_GMTK_VECTOR_H_
