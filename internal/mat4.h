@@ -27,11 +27,11 @@ namespace GMTK_NAMESPACE
 {////
 
 	template <typename T>
-	// A column-major matrix spanning r rows and c columns
+	//! A column-major matrix spanning r rows and c columns
 	struct mat < T, 4, 4 >
 	{
 		//////////////////
-		// DATA MEMBERS //
+		//! DATA MEMBERS //
 		//////////////////
 
 		int rows() const
@@ -49,7 +49,7 @@ namespace GMTK_NAMESPACE
 			return 4;
 		}
 
-		// Unioned data members
+		//! Unioned data members
 		union
 		{
 			struct { vec<T, 4> data[4]; };
@@ -57,30 +57,30 @@ namespace GMTK_NAMESPACE
 		};
 
 		//////////////////
-		// CONSTRUCTORS //
+		//! CONSTRUCTORS //
 		//////////////////
 
-		// Default constructor
+		//! Default constructor
 		inline mat()
 		{
 			GMTK_MAT4_LOOP2(arr[i] = static_cast<T>(0));
 		}
 
-		// Initializer list constructor
-		// Columns span left-to-right in initialization, and rows span top-to-bottom
-		// This is because matrices are stored column-major
+		//! Initializer list constructor
+		//! Columns span left-to-right in initialization, and rows span top-to-bottom
+		//! This is because matrices are stored column-major
 		inline mat(std::initializer_list<T> list)
 		{
 			GMTK_MAT4_LOOP2(arr[i] = *(list.begin() + i));
 		}
 
-		// Copy constructor
+		//! Copy constructor
 		inline mat(const mat<T, 4, 4>& v) {
 			GMTK_MAT4_LOOP2(arr[i] = v.arr[i]);
 		}
 
 		template<int rm, int cm>
-		// Minor matrix constructor
+		//! Minor matrix constructor
 		inline mat(const mat<T, rm, cm>& m)
 		{
 			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
@@ -88,17 +88,17 @@ namespace GMTK_NAMESPACE
 		}
 
 		template<typename U>
-		// Explicit type-conversion copy constructor
+		//! Explicit type-conversion copy constructor
 		explicit inline mat(const mat<U, 4, 4>& v) {
 			GMTK_MAT4_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
 		}
 
-		// Fill constructor
+		//! Fill constructor
 		explicit inline mat(const T& s) {
 			GMTK_MAT4_LOOP2(arr[i] = s);
 		}
 
-		// Array initializer
+		//! Array initializer
 		explicit inline mat(const T* a) {
 			GMTK_MAT4_LOOP2(arr[i] = a[i]);
 		}
@@ -148,8 +148,8 @@ namespace GMTK_NAMESPACE
 			arr[15] = static_cast<T>(s15);
 		}
 
-		// Inserts a 2x2 matrix into the top-left portion of a 4x4 identity matrix
-		// ident adjusts the identity value
+		//! Inserts a 2x2 matrix into the top-left portion of a 4x4 identity matrix
+		//! ident adjusts the identity value
 		inline mat(const mat<T, 2, 2>& m, const T& ident = static_cast<T>(1))
 		{
 			arr[0] = m.arr[0];
@@ -170,8 +170,8 @@ namespace GMTK_NAMESPACE
 			arr[15] = ident;
 		}
 
-		// Inserts a 3x3 matrix into the top-left portion of a 4x4 identity matrix
-		// ident adjusts the identity value
+		//! Inserts a 3x3 matrix into the top-left portion of a 4x4 identity matrix
+		//! ident adjusts the identity value
 		inline mat(const mat<T, 3, 3>& m, const T& ident = static_cast<T>(1))
 		{
 			arr[0] = m.arr[0];
@@ -193,119 +193,140 @@ namespace GMTK_NAMESPACE
 		}
 
 		//////////////////////
-		// ACCESS OPERATORS //
+		//! ACCESS OPERATORS //
 		//////////////////////
 
-		// Matrix index operator - returns column
+		//! Column function - returns column as vector of T
+		inline vec<T, 4> col(const int i) const {
+			return data[i];
+		}
+
+		//! Row function - returns row as vector of T
+		inline vec<T, 4> row(const int i) const {
+			vec<T, 4> v = vec4(arr[i],arr[i+4],arr[i+8],arr[i+12]);
+			return v;
+		}
+
+		//! Matrix index operator - returns column as vector of T
 		inline vec<T, 4>& operator[](const int i) {
 			return data[i];
 		}
 
-		// Matrix const index operator - returns column
+		//! Matrix const index operator - returns column as vector of T
 		inline const vec<T, 4>& operator[](const int i) const {
 			return data[i];
 		}
 
-		// Matrix linear array index operator - returns element 
+		//! Matrix linear array index operator - returns element as T
 		inline T& operator()(const int i) {
 			return arr[i];
 		}
 
-		// Matrix linear array const index operator - returns element
+		//! Matrix linear array const index operator - returns element as T
 		inline const T& operator()(const int i) const {
 			return arr[i];
 		}
 
 		///////////////
-		// OPERATORS //
+		//! OPERATORS //
 		///////////////
 
-		// Returns a negative matrix
+		//! Returns a negative matrix
 		inline mat<T, 4, 4> operator-() const {
 			GMTK_MAT4_OPERATOR2(-arr[i]);
 		}
 
-		// Component-wise matrix addition
+		//! Component-wise matrix addition
 		inline mat<T, 4, 4> operator+(const mat<T, 4, 4>& m) const {
 			GMTK_MAT4_OPERATOR2(arr[i] + m.arr[i]);
 		}
 
-		// Component-wise matrix subtraction
+		//! Component-wise matrix subtraction
 		inline mat<T, 4, 4> operator-(const mat<T, 4, 4>& m) const {
 			GMTK_MAT4_OPERATOR2(arr[i] - m.arr[i]);
 		}
 
-		// Component-wise matrix division
+		//! Component-wise matrix division
 		inline mat<T, 4, 4> operator/(const mat<T, 4, 4>& m) const {
 			GMTK_MAT4_OPERATOR2(arr[i] / m.arr[i]);
 		}
 
 		//
 
-		// Component-wise scalar addition
+		//! Component-wise scalar addition
 		inline mat<T, 4, 4> operator+(const T& s) const {
 			GMTK_MAT4_OPERATOR2(arr[i] + s);
 		}
 
-		// Component-wise scalar subtraction
+		//! Component-wise scalar subtraction
 		inline mat<T, 4, 4> operator-(const T& s) const {
 			GMTK_MAT4_OPERATOR2(arr[i] - s);
 		}
 
-		// Component-wise scalar division
+		//! Component-wise scalar division
 		inline mat<T, 4, 4> operator/(const T& s) const {
 			GMTK_MAT4_OPERATOR2(arr[i] / s);
 		}
 
-		// Component-wise scalar multiplication
+		//! Component-wise scalar multiplication
 		inline mat<T, 4, 4> operator*(const T& s) const {
 			GMTK_MAT4_OPERATOR2(arr[i] * s);
 		}
 
 		//
 
-		// Component-wise matrix reference addition
+		//! Component-wise matrix reference addition
 		inline mat<T, 4, 4>& operator+=(const mat<T, 4, 4>& m) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] += m.arr[i]);
 		}
 
-		// Component-wise matrix reference subtraction
+		//! Component-wise matrix reference subtraction
 		inline mat<T, 4, 4>& operator-=(const mat<T, 4, 4>& m) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] -= m.arr[i]);
 		}
 
-		// Component-wise matrix reference division
+		//! Component-wise matrix reference division
 		inline mat<T, 4, 4>& operator/=(const mat<T, 4, 4>& m) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] /= m.arr[i]);
 		}
 
 		//
 
-		// Component-wise scalar reference addition
+		//! Component-wise scalar reference addition
 		inline mat<T, 4, 4>& operator+=(const T& s) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] += s);
 		}
 
-		// Component-wise scalar reference subtraction
+		//! Component-wise scalar reference subtraction
 		inline mat<T, 4, 4>& operator-=(const T& s) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] -= s);
 		}
 
-		// Component-wise scalar reference division
+		//! Component-wise scalar reference division
 		inline mat<T, 4, 4>& operator/=(const T& s) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] /= s);
 		}
 
-		// Component-wise scalar reference multiplication
+		//! Component-wise scalar reference multiplication
 		inline mat<T, 4, 4>& operator*=(const T& s) {
 			GMTK_MAT4_REF_OPERATOR2(arr[i] *= s);
 		}
 
-		////////////////////////////////
-		// MATRIX GENERATOR FUNCTIONS //
-		////////////////////////////////
+		/////////////////////////////////
+		//! MATRIX GENERATOR FUNCTIONS //
+		/////////////////////////////////
 
-		// Creates a 4x4 matrix using 4 row vectors
+		//! Creates a row-order matrix using individual elements
+		inline static mat<T, 4, 4> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8, const T &s9, const T &s10, const T &s11, const T &s12, const T &s13, const T &s14, const T &s15)
+		{
+			return mat<T, 4, 4>
+				(s0, s4, s8, s12,
+				s1, s5, s9, s13,
+				s2, s6, s10, s14,
+				s3, s7, s11, s15);
+		}
+
+		//! Creates a 4x4 matrix using 4 row vectors
 		inline static mat<T, 4, 4> fromrows(vec<T, 4> r0, vec<T, 4> r1, vec<T, 4> r2, vec<T, 4> r3)
 		{
 			return mat<T, 4, 4>(r0.x, r1.x, r2.x, r3.x,
@@ -314,21 +335,24 @@ namespace GMTK_NAMESPACE
 				r0.w, r1.w, r2.w, r3.w);
 		}
 
-		// Creates a 4x4 matrix using 4 column vectors
+		//! Creates a 4x4 matrix using 4 column vectors
 		inline static mat<T, 4, 4> fromcols(vec<T, 4> c0, vec<T, 4> c1, vec<T, 4> c2, vec<T, 4> c3)
 		{
-			return mat<T, 4, 4>({ c0.x, c0.y, c0.z, c0.w,
+			return mat<T, 4, 4>
+				(c0.x, c0.y, c0.z, c0.w,
 				c1.x, c1.y, c1.z, c1.w,
 				c2.x, c2.y, c2.z, c2.w,
-				c3.x, c3.y, c3.z, c3.w });
+				c3.x, c3.y, c3.z, c3.w );
 		}
 
+		//! returns an identity matrix
 		static mat<T, 4, 4> identity()
 		{
-			return mat<T, 4, 4>(1, 0, 0, 0,
-				0, 1, 0, 0,
-				0, 0, 1, 0,
-				0, 0, 0, 1);
+			return mat<T, 4, 4>
+				(1, 0, 0, 0,
+				 0, 1, 0, 0,
+				 0, 0, 1, 0,
+				 0, 0, 0, 1);
 		}
 
 		inline static mat<T, 4, 4> rotate(const Angle<T>& an, const vec<T, 3>& ax)
@@ -339,7 +363,7 @@ namespace GMTK_NAMESPACE
 			return mat<T, 4, 4>
 				((t*ax.x*ax.x) + c, (t*ax.x*ax.y) + ax.z*s, (t*ax.x*ax.z) - ax.y*s, 0,
 				(t*ax.x*ax.y) - ax.z*s, (t*ax.y*ax.y) + c, (t*ax.y*ax.z) + ax.x*s, 0,
-				(t*ax.x*ax.z) + ax.y*s, (t*ax.y*ax.z) - ax.x*s, (t*ax.z*ax.z) + c,
+				(t*ax.x*ax.z) + ax.y*s, (t*ax.y*ax.z) - ax.x*s, (t*ax.z*ax.z) + c, 0,
 				 0, 0, 0, 1);
 		}
 
@@ -417,7 +441,7 @@ namespace GMTK_NAMESPACE
 			return translate(v.x, v.y, v.z);
 		}
 
-		// generates a generic frustum transformation
+		//! generates a generic frustum transformation
 		inline static mat<T, 4, 4> frustum(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
 		{
 			float n2 = 2 * near;
@@ -432,7 +456,7 @@ namespace GMTK_NAMESPACE
 				 0.f, 0.f, (n2*far) / nmf, 0.f);
 		}
 
-		// generates a 3d-perspective frustum transformation
+		//! generates a 3d-perspective frustum transformation
 		inline static mat<T, 4, 4> perspective(const Angle<T> &fovy, const T &aspect, const T &near, const T &far)
 		{
 			T ys = 1.0 / tan(fovy.radians()*0.5);
@@ -448,26 +472,7 @@ namespace GMTK_NAMESPACE
 				 0, 0, C, 0);
 		}
 
-		// generates a catmull-rom identity transformation
-		inline mat4 catmull()
-		{
-			return mat4(
-				-1.0f, 3.0f, -3.0f, 1.0f,
-				2.0f, -5.0f, 4.0f, -1.0f,
-				-1.0f, 0.0f, 1.0f, 0.0f,
-				0.0f, 2.0f, 0.0f, 0.0f );
-		}
-
-		// generates a bezier identity transformation
-		inline mat4 bezier()
-		{
-			return mat4(
-				-1.0f, 3.0f, -3.0f, 1.0f,
-				3.0f, -6.0f, 3.0f, 0.0f,
-				-3.0f, 3.0f, 0.0f, 0.0f,
-				1.0f, 0.0f, 0.0f, 0.0f );
-		}
-
+		//! generates a 3d-orthographic (flat) frustum transformation
 		inline static mat<T, 4, 4> ortho(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
 		{
 			return mat<T, 4, 4>
@@ -477,7 +482,27 @@ namespace GMTK_NAMESPACE
 				(left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), 1);
 		}
 
-	}; // struct mat
+		//! generates a catmull-rom identity transformation
+		inline static mat<T, 4, 4> catmull()
+		{
+			return mat<T, 4, 4>::roworder(
+				-0.5f, 1.5f, -1.5f, 0.5f,
+				1.0f, -2.5f, 2.0f, -0.5f,
+				-0.5f, 0.0f, 0.5f, 0.0f,
+				0.0f, 1.0f, 0.0f, 0.0f);
+		}
+
+		//! generates a bezier identity transformation
+		inline static mat<T, 4, 4> bezier()
+		{
+			return mat<T, 4, 4>::roworder(
+				-1.0f, 3.0f,-3.0f, 1.0f,
+				 3.0f,-6.0f, 3.0f, 0.0f,
+				-3.0f, 3.0f, 0.0f, 0.0f,
+				 1.0f, 0.0f, 0.0f, 0.0f);
+		}
+
+	}; //! struct mat
 
 	template<typename T>
 	inline T det(const mat<T, 4, 4>& m)

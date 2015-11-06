@@ -38,7 +38,7 @@ namespace GMTK_NAMESPACE
 		};
 
 		template<typename U>
-		// Type conversion copy constructor
+		//! Type conversion copy constructor
 		inline Angle(const Angle<U>& a)
 		{
 			ang = static_cast<T>(a.ang);
@@ -60,13 +60,13 @@ namespace GMTK_NAMESPACE
 
 	};
 
-	// Creates an angle with degrees
+	//! Creates an angle with degrees
 	inline Angle<float> Degrees(float deg)
 	{
 		return Angle<float>(deg, Angle<float>::Degrees);
 	}
 
-	// Creates an angle with radians
+	//! Creates an angle with radians
 	inline Angle<float> Radians(float rad)
 	{
 		return Angle<float>(rad, Angle<float>::Radians);

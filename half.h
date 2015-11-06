@@ -20,7 +20,7 @@
 
 namespace GMTK_NAMESPACE
 {
-	// A minimal storage class for a 16-bit floating point number, as detailed in IEEE-754: binary16
+	//! A minimal storage class for a 16-bit floating point number, as detailed in IEEE-754: binary16
 	class half
 	{
 	public:

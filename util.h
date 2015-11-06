@@ -3,7 +3,7 @@
 
 //
 
-// gmtk namespace
+//! gmtk namespace
 #define GMTK_NAMESPACE gmtk
 
 #include <math.h>
@@ -139,23 +139,21 @@ namespace GMTK_NAMESPACE
 	float fastinvsqrt(float v)
 	{
 		float vhalf = 0.5f*v;
-		int i = *(int*)&v; // reinterpret floating point as binary, stored in int
-		// original: 0x5f375a86 
-		i = 0x5f375a7f - (i >> 1); // get first best guess for invsqrt
-		v = *(float*)&i; // convert float binary back to float
-		v = v*(1.5f - vhalf*v*v); // use newton's approximation to determine better sqrt
+		int i = *(int*)&v; //! reinterpret floating point as binary, stored in int
+		i = 0x5f375a7f - (i >> 1); //! get first best guess for invsqrt
+		v = *(float*)&i; //! convert float binary back to float
+		v = v*(1.5f - vhalf*v*v); //! use newton's approximation to determine better sqrt
 		return v;
 	}
 
 	float invsqrt(float v)
 	{
 		float vhalf = 0.5f*v;
-		int i = *(int*)&v; // reinterpret floating point as binary, stored in int
-		// original: 0x5f375a86 
-		i = 0x5f375a7f - (i >> 1); // get first best guess for invsqrt
-		v = *(float*)&i; // convert float binary back to float
-		v = v*(1.5f - vhalf*v*v); // use newton's approximation to determine better sqrt
-		v = v*(1.5f - vhalf*v*v); // do one more approximation to determine better result
+		int i = *(int*)&v; //! reinterpret floating point as binary, stored in int
+		i = 0x5f375a7f - (i >> 1); //! get first best guess for invsqrt
+		v = *(float*)&i; //! convert float binary back to float
+		v = v*(1.5f - vhalf*v*v); //! use newton's approximation to determine better sqrt
+		v = v*(1.5f - vhalf*v*v); //! do one more approximation to determine better result
 		return v;
 	}
 
@@ -179,11 +177,6 @@ namespace GMTK_NAMESPACE
 	template <typename T> 
 	inline int sgn(T val) {
 		return (T(0) < val) - (val < T(0));
-	}
-	
-	template <typename T>
-	inline T pown1(T val) {
-		return (((val+1) & 1) - 0.5) * 2;
 	}
 
 }

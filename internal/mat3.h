@@ -27,11 +27,11 @@ namespace GMTK_NAMESPACE
 {////
 
 	template <typename T>
-	// A column-major matrix spanning r rows and c columns
+	//! A column-major matrix spanning r rows and c columns
 	struct mat<T, 3, 3>
 	{
 		//////////////////
-		// DATA MEMBERS //
+		//! DATA MEMBERS //
 		//////////////////
 
 		int rows() const
@@ -49,7 +49,7 @@ namespace GMTK_NAMESPACE
 			return 3;
 		}
 
-		// Unioned data members
+		//! Unioned data members
 		union
 		{
 			struct { vec<T, 3> data[3]; };
@@ -57,30 +57,30 @@ namespace GMTK_NAMESPACE
 		};
 
 		//////////////////
-		// CONSTRUCTORS //
+		//! CONSTRUCTORS //
 		//////////////////
 
-		// Default constructor
+		//! Default constructor
 		inline mat()
 		{
 			GMTK_MAT3_LOOP2(arr[i] = static_cast<T>(0));
 		}
 
-		// Initializer list constructor
-		// Columns span left-to-right in initialization, and rows span top-to-bottom
-		// This is because matrices are stored column-major
+		//! Initializer list constructor
+		//! Columns span left-to-right in initialization, and rows span top-to-bottom
+		//! This is because matrices are stored column-major
 		inline mat(std::initializer_list<T> list)
 		{
 			GMTK_MAT3_LOOP2(arr[i] = *(list.begin() + i));
 		}
 
-		// Copy constructor
+		//! Copy constructor
 		inline mat(const mat<T, 3, 3>& v) {
 			GMTK_MAT3_LOOP2(arr[i] = v.arr[i]);
 		}
 
 		template<int rm, int cm>
-		// Minor matrix constructor
+		//! Minor matrix constructor
 		inline mat(const mat<T, rm, cm>& m)
 		{
 			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
@@ -88,17 +88,17 @@ namespace GMTK_NAMESPACE
 		}
 
 		template<typename U>
-		// Explicit type-conversion copy constructor
+		//! Explicit type-conversion copy constructor
 		explicit inline mat(const mat<U, 3, 3>& v) {
 			GMTK_MAT3_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
 		}
 
-		// Fill constructor
+		//! Fill constructor
 		explicit inline mat(const T& s) {
 			GMTK_MAT3_LOOP2(arr[i] = s);
 		}
 
-		// Array initializer
+		//! Array initializer
 		explicit inline mat(const T* a) {
 			GMTK_MAT3_LOOP2(arr[i] = a[i]);
 		}
@@ -130,8 +130,8 @@ namespace GMTK_NAMESPACE
 
 		//
 
-		// Inserts a 2x2 matrix into the top-left portion of a 3x3 identity matrix
-		// ident adjusts the identity value
+		//! Inserts a 2x2 matrix into the top-left portion of a 3x3 identity matrix
+		//! ident adjusts the identity value
 		inline mat(const mat<T, 2, 2>& m, const T& ident = static_cast<T>(1))
 		{
 		arr[0] = m.arr[0];
@@ -145,7 +145,7 @@ namespace GMTK_NAMESPACE
 		arr[8] = ident;
 		}
 
-		// Constructs a 3x3 matrix using the top-left portion of a 4x4 matrix
+		//! Constructs a 3x3 matrix using the top-left portion of a 4x4 matrix
 		inline mat(const mat<T, 4, 4>& m)
 		{
 			arr[0] = m.arr[0];
@@ -162,139 +162,163 @@ namespace GMTK_NAMESPACE
 		}
 
 		//////////////////////
-		// ACCESS OPERATORS //
+		//! ACCESS OPERATORS //
 		//////////////////////
+		
+		//! Column function - returns column as vector of T
+		inline vec<T, 3> col(const int i) const {
+			return data[i];
+		}
 
-		// Matrix index operator - returns column
+		//! Row function - returns row as vector of T
+		inline vec<T, 3> row(const int i) const {
+			vec<T, 3> v = vec4(arr[i], arr[i + 3], arr[i + 6]);
+			return v;
+		}
+
+		//! Matrix index operator - returns column
 		inline vec<T, 3>& operator[](const int i) {
 			return data[i];
 		}
 
-		// Matrix const index operator - returns column
+		//! Matrix const index operator - returns column
 		inline const vec<T, 3>& operator[](const int i) const {
 			return data[i];
 		}
 
-		// Matrix linear array index operator - returns element 
+		//! Matrix linear array index operator - returns element 
 		inline T& operator()(const int i) {
 			return arr[i];
 		}
 
-		// Matrix linear array const index operator - returns element
+		//! Matrix linear array const index operator - returns element
 		inline const T& operator()(const int i) const {
 			return arr[i];
 		}
 
 		///////////////
-		// OPERATORS //
+		//! OPERATORS //
 		///////////////
 
-		// Returns a negative matrix
+		//! Returns a negative matrix
 		inline mat<T, 3, 3> operator-() const {
 			GMTK_MAT3_OPERATOR2(-arr[i]);
 		}
 
-		// Component-wise matrix addition
+		//! Component-wise matrix addition
 		inline mat<T, 3, 3> operator+(const mat<T, 3, 3>& m) const {
 			GMTK_MAT3_OPERATOR2(arr[i] + m.arr[i]);
 		}
 
-		// Component-wise matrix subtraction
+		//! Component-wise matrix subtraction
 		inline mat<T, 3, 3> operator-(const mat<T, 3, 3>& m) const {
 			GMTK_MAT3_OPERATOR2(arr[i] - m.arr[i]);
 		}
 
-		// Component-wise matrix division
+		//! Component-wise matrix division
 		inline mat<T, 3, 3> operator/(const mat<T, 3, 3>& m) const {
 			GMTK_MAT3_OPERATOR2(arr[i] / m.arr[i]);
 		}
 
 		//
 
-		// Component-wise scalar addition
+		//! Component-wise scalar addition
 		inline mat<T, 3, 3> operator+(const T& s) const {
 			GMTK_MAT3_OPERATOR2(arr[i] + s);
 		}
 
-		// Component-wise scalar subtraction
+		//! Component-wise scalar subtraction
 		inline mat<T, 3, 3> operator-(const T& s) const {
 			GMTK_MAT3_OPERATOR2(arr[i] - s);
 		}
 
-		// Component-wise scalar division
+		//! Component-wise scalar division
 		inline mat<T, 3, 3> operator/(const T& s) const {
 			GMTK_MAT3_OPERATOR2(arr[i] / s);
 		}
 
-		// Component-wise scalar multiplication
+		//! Component-wise scalar multiplication
 		inline mat<T, 3, 3> operator*(const T& s) const {
 			GMTK_MAT3_OPERATOR2(arr[i] * s);
 		}
 
 		//
 
-		// Component-wise matrix reference addition
+		//! Component-wise matrix reference addition
 		inline mat<T, 3, 3>& operator+=(const mat<T, 3, 3>& m) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] += m.arr[i]);
 		}
 
-		// Component-wise matrix reference subtraction
+		//! Component-wise matrix reference subtraction
 		inline mat<T, 3, 3>& operator-=(const mat<T, 3, 3>& m) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] -= m.arr[i]);
 		}
 
-		// Component-wise matrix reference division
+		//! Component-wise matrix reference division
 		inline mat<T, 3, 3>& operator/=(const mat<T, 3, 3>& m) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] /= m.arr[i]);
 		}
 
 		//
 
-		// Component-wise scalar reference addition
+		//! Component-wise scalar reference addition
 		inline mat<T, 3, 3>& operator+=(const T& s) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] += s);
 		}
 
-		// Component-wise scalar reference subtraction
+		//! Component-wise scalar reference subtraction
 		inline mat<T, 3, 3>& operator-=(const T& s) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] -= s);
 		}
 
-		// Component-wise scalar reference division
+		//! Component-wise scalar reference division
 		inline mat<T, 3, 3>& operator/=(const T& s) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] /= s);
 		}
 
-		// Component-wise scalar reference multiplication
+		//! Component-wise scalar reference multiplication
 		inline mat<T, 3, 3>& operator*=(const T& s) {
 			GMTK_MAT3_REF_OPERATOR2(arr[i] *= s);
 		}
 
-		////////////////////////////////
-		// MATRIX GENERATOR FUNCTIONS //
-		////////////////////////////////
+		/////////////////////////////////
+		//! MATRIX GENERATOR FUNCTIONS //
+		/////////////////////////////////
 
-		// Creates a 3x3 matrix using 3 row vectors
+		//! Creates a row-order matrix using individual elements
+		inline static mat<T, 3, 3> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8)
+		{
+			return mat<T, 3, 3>
+				(s0, s3, s6,
+				s1, s4, s7,
+				s2, s5, s8);
+		}
+
+		//! Creates a 3x3 matrix using 3 row vectors
 		inline static mat<T, 3, 3> fromrows(vec<T, 3> r0, vec<T, 3> r1, vec<T, 3> r2)
 		{
-			return mat<T, 3, 3>(r0.x, r1.x, r2.x,
+			return mat<T, 3, 3>
+				(r0.x, r1.x, r2.x,
 				r0.y, r1.y, r2.y,
 				r0.z, r1.z, r2.z);
 		}
 
-		// Creates a 3x3 matrix using 3 column vectors
+		//! Creates a 3x3 matrix using 3 column vectors
 		inline static mat<T, 3, 3> fromcols(vec<T, 3> c0, vec<T, 3> c1, vec<T, 3> c2)
 		{
-			return mat<T, 3, 3>(c0.x, c0.y, c0.z,
+			return mat<T, 3, 3>
+				(c0.x, c0.y, c0.z,
 				c1.x, c1.y, c1.z,
 				c2.x, c2.y, c2.z);
 		}
 
+		//! Returns an identity matrix
 		inline static mat<T, 3, 3> identity()
 		{
 			return mat<T, 3, 3>(1, 0, 0, 0, 1, 0, 0, 0, 1);
 		}
 
+		//! Rotate an axis about a given angle
 		inline static mat<T, 3, 3> rotate(const Angle<T>& an, const vec<T, 3>& ax)
 		{
 			T c = cos(an.radians());
@@ -306,6 +330,7 @@ namespace GMTK_NAMESPACE
 				 (t*ax.x*ax.z) + ax.y*s,	(t*ax.y*ax.z) - ax.x*s,		(t*ax.z*ax.z) + c);
 		}
 
+		//! Rotate axis x about a given angle
 		inline static mat<T, 3, 3> rotatex(const Angle<T>& x)
 		{
 			T c = cos(x.radians());
@@ -316,6 +341,7 @@ namespace GMTK_NAMESPACE
 				 0, -s, c);
 		}
 
+		//! Rotate axis y about a given angle
 		inline static mat<T, 3, 3> rotatey(const Angle<T>& x)
 		{
 			T c = cos(x.radians());
@@ -326,6 +352,7 @@ namespace GMTK_NAMESPACE
 				 s, 0, c);
 		}
 
+		//! Rotate axis z about a given angle
 		inline static mat<T, 3, 3> rotatez(const Angle<T>& x)
 		{
 			T c = cos(x.radians());
@@ -373,7 +400,7 @@ namespace GMTK_NAMESPACE
 			return translate(v.x, v.y, v.z);
 		}
 
-	}; // struct mat
+	}; //! struct mat
 
 	template<typename T>
 	inline T det(const mat<T, 3, 3>& m)
