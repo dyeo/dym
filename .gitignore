@@ -192,3 +192,4 @@ ModelManifest.xml
 /*.vcxproj
 /*.filters
 /main.cpp
+*.opendb
