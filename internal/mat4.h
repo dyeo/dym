@@ -533,6 +533,13 @@ namespace GMTK_NAMESPACE
 			 + (m.arr[3] * m.arr[6] * m.arr[9] * m.arr[12]);
 	}
 
+	template<typename T>
+	//! Inverts the matrix, such that m * inverse(m) = the identity
+	inline mat<T, 4, 4> inverse(const mat<T, 4, 4>& m)
+	{
+		return adjoint(m) / det(m);
+	}
+
 	//
 
 	typedef mat<float, 4, 4>			mat4, mat4f;

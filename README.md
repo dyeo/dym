@@ -15,6 +15,7 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] Matrix Product
   - [x] Matrix-Vector Product
   - [x] All GLSL Matrix Operations
+  - [x] Catmull-Rom and Bezier Matrices
   - [ ] Eigenvector and Eigenvalue
 - [x] Vectors
   - [x] Dimension-Templated

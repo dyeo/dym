@@ -416,7 +416,7 @@ namespace GMTK_NAMESPACE
 	}
 	
 	template <typename T>
-	inline void _lu_decomp(T *A, T *L, T *U, const int d)
+	inline void _lu_decomp(const T *A, T *L, T *U, const int d)
 	{
 		int i, j, k;
 		T sum = 0;
@@ -446,11 +446,18 @@ namespace GMTK_NAMESPACE
 				}
 				if (L[j*d + j] == 0)
 				{
-					return 0;
+					return;
 				}
 				U[j*d + i] = (A[j*d + i] - sum) / L[j*d + j];
 			}
 		}
+	}
+
+	template <typename T, int d>
+	// decomposes a matrix into lower and upper traingular cofactor matrices
+	inline void ludecompose(const mat<T, d, d> &m, mat<T,d,d> &l, mat<T,d,d> &u)
+	{
+		_lu_decomp(m.arr, l.arr, u.arr, d);
 	}
 
 	template <typename T, int r, int c>
@@ -478,7 +485,7 @@ namespace GMTK_NAMESPACE
 		GMTK_UNROLL_LOOP(j, d,
 			GMTK_UNROLL_LOOP(i, d,
 
-				res[i][j] = pown1(j*d+i) * det(minor(m, j, i));
+				res[i][j] = pow(-1,(i+1)+(j+1)) * det(minor(m, j, i));
 				
 			);
 		);
@@ -486,12 +493,14 @@ namespace GMTK_NAMESPACE
 	}
 
 	template <typename T, int d>
+	//! Returns an adjoint of matrix m
 	inline mat<T, d, d> adjoint(const mat<T, d, d>& m)
 	{
 		return transpose(cofactor(m));
 	}
 
 	template<typename T, int d>
+	//! Inverts the matrix, such that m * inverse(m) = the identity
 	inline mat<T, d, d> inverse(const mat<T, d, d>& m)
 	{
 		return adjoint(m) / det(m);
