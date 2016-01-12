@@ -136,6 +136,9 @@ namespace GMTK_NAMESPACE
 		return val;
 	}
 
+	// the following functions are probably slower than the SSE rsqrtss instruction
+
+	//! variation of the famous fast inverse square root
 	float fastinvsqrt(float v)
 	{
 		float vhalf = 0.5f*v;
@@ -146,6 +149,7 @@ namespace GMTK_NAMESPACE
 		return v;
 	}
 
+	//! inverse square root
 	float invsqrt(float v)
 	{
 		float vhalf = 0.5f*v;

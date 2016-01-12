@@ -187,6 +187,46 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC4_REF_OPERATOR(data[i] -= s);
 		}
 
+		//! Zero vector (0,0,0,0)
+		static inline vec<T, 4>& zero() const {
+			return vec<T, 4>(0, 0, 0, 0);
+		}
+
+		//! One vector (1,1,1,1)
+		static inline vec<T, 4>& one() const {
+			return vec<T, 4>(1, 1, 1, 1);
+		}
+
+		//! Up vector (0,1,0,0)
+		static inline vec<T, 4>& up() const {
+			return vec<T, 4>(0, 1, 0, 0);
+		}
+
+		//! Down vector (0,-1,0,0)
+		static inline vec<T, 4>& down() const {
+			return vec<T, 4>(0, -1, 0, 0);
+		}
+
+		//! Right vector (1,0,0,0)
+		static inline vec<T, 4>& right() const {
+			return vec<T, 4>(1, 0, 0, 0);
+		}
+
+		//! Left vector (-1,0,0,0)
+		static inline vec<T, 3>& left() const {
+			return vec<T, 4>(-1, 0, 0, 0);
+		}
+
+		//! Forward vector (0,0,1,0)
+		static inline vec<T, 4>& forward() const {
+			return vec<T, 4>(0, 0, 1, 0);
+		}
+
+		//! Back vector (0,0,-1,0)
+		static inline vec<T, 4>& back() const {
+			return vec<T, 4>(0, 0, -1, 0);
+		}
+
 	};
 
 	typedef vec<float, 4> vec4, vec4f;

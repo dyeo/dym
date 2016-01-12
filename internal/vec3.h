@@ -173,6 +173,46 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC3_REF_OPERATOR(data[i] -= s);
 		}
 
+		//! Zero vector (0,0,0)
+		static inline vec<T, 3>& zero() const {
+			return vec<T, 3>(0, 0, 0);
+		}
+
+		//! One vector (1,1,1)
+		static inline vec<T, 3>& one() const {
+			return vec<T, 3>(1, 1, 1);
+		}
+
+		//! Up vector (0,1,0)
+		static inline vec<T, 3>& up() const {
+			return vec<T, 3>(0, 1, 0);
+		}
+
+		//! Down vector (0,-1,0)
+		static inline vec<T, 3>& down() const {
+			return vec<T, 3>(0, -1, 0);
+		}
+
+		//! Right vector (1,0,0)
+		static inline vec<T, 3>& right() const {
+			return vec<T, 3>(1, 0, 0);
+		}
+
+		//! Left vector (-1,0,0)
+		static inline vec<T, 3>& left() const {
+			return vec<T, 3>(-1, 0, 0);
+		}
+
+		//! Forward vector (0,0,1)
+		static inline vec<T, 3>& forward() const {
+			return vec<T, 3>(0, 0, 1);
+		}
+
+		//! Back vector (0,0,-1)
+		static inline vec<T, 3>& back() const {
+			return vec<T, 3>(0, 0, -1);
+		}
+
 	};
 
 	typedef vec<float, 3> vec3, vec3f;
