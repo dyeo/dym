@@ -164,32 +164,32 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Zero vector (0,0)
-		static inline vec<T, 2>& zero() const {
+		static inline vec<T, 2> zero() {
 			return vec<T, 2>(0, 0);
 		}
 		
 		//! One vector (1,1)
-		static inline vec<T, 2>& one() const {
+		static inline vec<T, 2> one() {
 			return vec<T, 2>(1, 1);
 		}
 
 		//! Up vector (0,1)
-		static inline vec<T, 2>& up() const {
+		static inline vec<T, 2> up() {
 			return vec<T, 2>(0, 1);
 		}
 
 		//! Down vector (0,-1)
-		static inline vec<T, 2>& down() const {
+		static inline vec<T, 2> down() {
 			return vec<T, 2>(0, -1);
 		}
 
 		//! Right vector (1,0)
-		static inline vec<T, 2>& right() const {
+		static inline vec<T, 2> right() {
 			return vec<T, 2>(1, 0);
 		}
 
 		//! Left vector (-1,0)
-		static inline vec<T, 2>& left() const {
+		static inline vec<T, 2> left() {
 			return vec<T, 2>(-1, 0);
 		}
 

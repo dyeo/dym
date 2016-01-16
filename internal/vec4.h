@@ -188,42 +188,42 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Zero vector (0,0,0,0)
-		static inline vec<T, 4>& zero() const {
+		static inline vec<T, 4> zero() {
 			return vec<T, 4>(0, 0, 0, 0);
 		}
 
 		//! One vector (1,1,1,1)
-		static inline vec<T, 4>& one() const {
+		static inline vec<T, 4> one() {
 			return vec<T, 4>(1, 1, 1, 1);
 		}
 
 		//! Up vector (0,1,0,0)
-		static inline vec<T, 4>& up() const {
+		static inline vec<T, 4> up() {
 			return vec<T, 4>(0, 1, 0, 0);
 		}
 
 		//! Down vector (0,-1,0,0)
-		static inline vec<T, 4>& down() const {
+		static inline vec<T, 4> down() {
 			return vec<T, 4>(0, -1, 0, 0);
 		}
 
 		//! Right vector (1,0,0,0)
-		static inline vec<T, 4>& right() const {
+		static inline vec<T, 4> right() {
 			return vec<T, 4>(1, 0, 0, 0);
 		}
 
 		//! Left vector (-1,0,0,0)
-		static inline vec<T, 3>& left() const {
+		static inline vec<T, 3> left() {
 			return vec<T, 4>(-1, 0, 0, 0);
 		}
 
 		//! Forward vector (0,0,1,0)
-		static inline vec<T, 4>& forward() const {
+		static inline vec<T, 4> forward() {
 			return vec<T, 4>(0, 0, 1, 0);
 		}
 
 		//! Back vector (0,0,-1,0)
-		static inline vec<T, 4>& back() const {
+		static inline vec<T, 4> back() {
 			return vec<T, 4>(0, 0, -1, 0);
 		}
 

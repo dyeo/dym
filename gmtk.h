@@ -3,7 +3,7 @@
 
 #include "vector.h"
 #include "matrix.h"
-//#include "quaternion.h"
+#include "quaternion.h"
 
 #endif//_GMTK_H_
 

@@ -14,9 +14,8 @@ namespace GMTK_NAMESPACE
 {////
 
 	template<typename T = float>
-	class Angle
-	{
-	public:
+	struct Angle
+	{////
 
 		enum AngleUnits
 		{
@@ -58,19 +57,22 @@ namespace GMTK_NAMESPACE
 
 		T ang = 0;
 
-	};
+	};////
 
-	//! Creates an angle with degrees
-	inline Angle<float> Degrees(float deg)
+	//! Creates an angle in degrees
+	inline Angle<> degrees(float deg)
 	{
 		return Angle<float>(deg, Angle<float>::Degrees);
 	}
 
-	//! Creates an angle with radians
-	inline Angle<float> Radians(float rad)
+	//! Creates an angle in radians
+	inline Angle<> radians(float rad)
 	{
 		return Angle<float>(rad, Angle<float>::Radians);
 	}
+
+	//! Default angle specifier
+	typedef Angle<> angle;
 
 }////
 
