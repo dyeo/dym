@@ -197,8 +197,8 @@ namespace GMTK_NAMESPACE
 	//! FREE FUNCTIONS //
 	////////////////////
 
-	template <typename T, int d>
 	//! Calculates the dot or scalar product of two vectors
+	template <typename T, int d>
 	inline T dot(const vec<T, d>& l, const vec<T, d>& r)
 	{
 		T res = 0;
@@ -206,15 +206,15 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T>
 	//! Calculates the cross product of two vectors
+	template <typename T>
 	inline T cross(const vec<T, 2>& l, const vec<T, 2>& r)
 	{
 		return (l.data[0] * r.data[1]) - (l.data[0] * r.data[1]);
 	}
 
-	template <typename T>
 	//! Calculates the cross product of two vectors
+	template <typename T>
 	inline vec<T, 3> cross(const vec<T, 3>& l, const vec<T, 3>& r)
 	{
 		vec<T, 3> res;
@@ -224,8 +224,8 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T>
 	//! Calculates the cross product of two vectors
+	template <typename T>
 	inline vec<T, 4> cross(const vec<T, 4>& l, const vec<T, 4>& r)
 	{
 		vec<T, 4> res;
@@ -236,8 +236,8 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T, int d>
 	//! Returns length squared of vector
+	template <typename T, int d>
 	inline T lengthsq(const vec<T, d>& v)
 	{
 		T res = 0;
@@ -245,8 +245,8 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T, int d>
 	//! Returns length of vector, or sqrt(lengthsq)
+	template <typename T, int d>
 	inline T length(const vec<T, d>& v)
 	{
 		T res = 0;
@@ -254,85 +254,85 @@ namespace GMTK_NAMESPACE
 		return sqrt(res);
 	}
 
-	template <typename T, int d>
 	//! Normalizes vector so it is a unit vector
+	template <typename T, int d>
 	inline vec<T, d> normalize(const vec<T, d>& v)
 	{
-		return v * gmath::invsqrt(lengthsq(v));
+		return v * length(v);
 	}
 
-	template <typename T, int d>
 	//! Returns a component-wise minimum of two vectors
+	template <typename T, int d>
 	inline vec<T, d> min(const vec<T, d>& l, const vec<T, d>& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] < r[i]) ? l[i] : r[i]);
 	}
 
-	template <typename T, int d>
 	//! Returns a component-wise maximum of a vector and a scalar
+	template <typename T, int d>
 	inline vec<T, d> min(const vec<T, d>& l, const T& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] < r) ? l[i] : r);
 	}
 
-	template <typename T, int d>
 	//! Returns a component-wise minimum of two vectors
+	template <typename T, int d>
 	inline vec<T, d> max(const vec<T, d>& l, const vec<T, d>& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] > r[i]) ? l[i] : r[i]);
 	}
 
-	template <typename T, int d>
 	//! Returns a component-wise maximum of a vector and a scalar
+	template <typename T, int d>
 	inline vec<T, d> max(const vec<T, d>& l, const T& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] > r) ? l[i] : r);
 	}
 
-	template <typename T, int d>
 	//! Clamps the value of a vector between a min and max vector
+	template <typename T, int d>
 	inline vec<T, d> clamp(const vec<T, d>& v, const vec<T, d>& minV, const vec<T, d>& maxV)
 	{
 		return min(max(v, minV), maxV);
 	}
 
-	template <typename T, int d>
 	//! Clamps the value of a vector between a min and max scalar
+	template <typename T, int d>
 	inline vec<T, d> clamp(const vec<T, d>& v, const T& minV, const T& maxV)
 	{
 		return min(max(v, minV), maxV);
 	}
 
-	template <typename T, int d>
 	//! Computes the distance between two vectors
+	template <typename T, int d>
 	inline T distance(const vec<T, d>& l, const vec<T, d>& r)
 	{
 		return length(l - r);
 	}
 
-	template <typename T, int d>
 	//! Computes the distance squared between two vectors
+	template <typename T, int d>
 	inline T distancesq(const vec<T, d>& l, vec<T, d>& r)
 	{
 		return lengthsq(l - r);
 	}
 
-	template<typename T, int d>
 	//! Faces a normal forward according to the dot product of nRef and i
+	template<typename T, int d>
 	inline vec<T, d> faceforward(const vec<T, d>& n, const vec<T, d>& i, const vec<T, d>& nRef)
 	{
 		return (dot(nRef, i) < 0) ? n : -n;
 	}
-	
-	template<typename T, int d>
+
 	//! Computes the reflection of vector v acording to the plane of normal vector 'n'
+	template<typename T, int d>
 	inline vec<T, d> reflect(const vec<T, d>& v, const vec<T, d>& n)
 	{
 		return v - 2.0f * dot(n, v) * n;
 	}
 
-	template<typename T, int d>
 	//! GLSL refraction function
+	template<typename T, int d>
 	inline vec<T, d> refract(const vec<T, d>& v, const vec<T, d>& n, float r)
 	{
 		float dir = 1.0 - r * r * (1.0 - dot(n, v) * dot(n, v));
@@ -340,8 +340,8 @@ namespace GMTK_NAMESPACE
 		return r * v - (r * dot(n, v) + sqrt(dir)) * n;
 	}
 
-	template<typename T, int d>
 	//! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
+	template<typename T, int d>
 	inline vec<T, d + 1> affine(const vec<T, d>&v)
 	{
 		vec<T, d + 1> res;
@@ -349,8 +349,6 @@ namespace GMTK_NAMESPACE
 		res[d] = static_cast<T>(1);
 		return res;
 	}
-
-	//heh
 
 }////
 

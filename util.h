@@ -132,8 +132,26 @@ namespace GMTK_NAMESPACE
 	inline T pow(const T& v, const int& p)
 	{
 		T val = v;
-		GMTK_UNROLL_LOOP(i, p-1, val *= v);
+		GMTK_UNROLL_LOOP(i, p - 1, val *= v);
 		return val;
+	}
+
+	template <typename T>
+	inline T min(const T& l, const T& r)
+	{
+		return (l < r) ? l : r;
+	}
+
+	template <typename T>
+	inline T max(const T& l, const T& r)
+	{
+		return (l > r) ? l : r;
+	}
+
+	template <typename T>
+	inline T clamp(const T& v, const T& mVal, const T& MVal)
+	{
+		return min(max(v, mVal), MVal);
 	}
 
 	// the following functions are probably slower than the SSE rsqrtss instruction

@@ -35,8 +35,8 @@
 namespace GMTK_NAMESPACE
 {////
 
-	template <typename T, int r, int c>
 	//! A column-major matrix spanning r rows and c columns
+	template <typename T, int r, int c>
 	struct mat
 	{
 		//////////////////
@@ -303,11 +303,11 @@ namespace GMTK_NAMESPACE
 	//! MATRIX&MATRIX MULTIPLICATION //
 	///////////////////////////////////
 
-	template <typename T, int r1, int r2, int c1, int c2> 
 	//! Matrix product
 	//! Accepts a r1 x c1 matrix and a r2 x c2 matrix where c1 and r2 are equal
 	//! Returns a r1 x c2 matrix that is the product of the two original matrices
 	//! Is not commutative
+	template <typename T, int r1, int r2, int c1, int c2> 
 	inline mat<T, r1, c2> operator*(const mat<T, r1, c1>& m, const mat<T, r2, c2>& n) {
 		GMTK_STATIC_ASSERT(c1 == r2); //! no.columns of m and no.rows of n must be equal!!!
 		mat<T, r1, c2> res;
@@ -319,16 +319,16 @@ namespace GMTK_NAMESPACE
 	//! MATRIX&VECTOR MULTIPLICATION //
 	///////////////////////////////////
 
-	template <typename T, int r, int c>
 	//! Matrix-vector multiplication: column vector (matrix row)
+	template <typename T, int r, int c>
 	inline const vec<T, c> operator*(const mat<T, r, c>& m, const vec<T, c>& v) {
 		vec<T, c> res(static_cast<T>(0));
 		GMTK_UNROLL_2D_LOOP(i, j, r, c, res.data[i] += m.data[j][i] * v.data[j]);
 		return res;
 	}
 
-	template <typename T, int r, int c>
 	//! Matrix-vector multiplication: row vector (matrix column)
+	template <typename T, int r, int c>
 	inline const vec<T, c> operator*(const vec<T, c>& v, const mat<T, r, c>& m) {
 		vec<T, c> res(static_cast<T>(0));
 		GMTK_UNROLL_2D_LOOP(i, j, c, r, res.data[i] += m.data[i][j] * v.data[j]);
@@ -339,14 +339,14 @@ namespace GMTK_NAMESPACE
 	//! MATRIX FREE-FUNCTIONS //
 	///////////////////////////
 
-	template <typename T, int r, int c>
 	//! Component-wise matrix multiplication
+	template <typename T, int r, int c>
 	inline mat<T, r, c> mult(const mat<T, r, c>& m, const mat<T, r, c>& n) {
 		GMTK_MAT_OPERATOR2(m.arr[i] * n.arr[i]);
 	}
 
-	template <typename T, int r, int c>
 	//! Returns sum of the matrix diagonal
+	template <typename T, int r, int c>
 	inline T trace(const mat<T, r, c>& m)
 	{
 		T res = 0;
@@ -354,8 +354,8 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T, int r, int c>
 	//! Returns minor matrix of the current matrix, "crossing out" the specified row and column
+	template <typename T, int r, int c>
 	inline mat<T, r - 1, c - 1> minor(const mat<T, r, c>& m, int rx, int cx)
 	{
 		mat<T, r - 1, c - 1> res;
@@ -379,9 +379,9 @@ namespace GMTK_NAMESPACE
 		);
 		return res;
 	}
-	
-	template <typename T, int d>
+
 	//! Calculates the determinant of a matrix
+	template <typename T, int d>
 	inline T det(const mat<T, d, d>& m)
 	{
 		return _dethelper<T>((T *)m.arr, d);
@@ -453,15 +453,15 @@ namespace GMTK_NAMESPACE
 		}
 	}
 
+	//! Decomposes a matrix into lower and upper traingular cofactor matrices
 	template <typename T, int d>
-	// decomposes a matrix into lower and upper traingular cofactor matrices
 	inline void ludecompose(const mat<T, d, d> &m, mat<T,d,d> &l, mat<T,d,d> &u)
 	{
 		_lu_decomp(m.arr, l.arr, u.arr, d);
 	}
 
-	template <typename T, int r, int c>
 	//! Flips the matrix along its diagonal (rows become columns, columns become rows)
+	template <typename T, int r, int c>
 	inline mat<T, c, r> transpose(const mat<T, r, c>& m)
 	{
 		mat<T, c, r> res;
@@ -469,8 +469,8 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T, int r, int c>
 	//! Generates a matrix one dimension larger that is a composition of the target matrix and an identity matrix
+	template <typename T, int r, int c>
 	inline mat<T, r + 1, c + 1> affine(const mat<T, r, c>& m)
 	{
 		mat<T, r + 1, c + 1> res = m;
@@ -492,15 +492,15 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	template <typename T, int d>
 	//! Returns an adjoint of matrix m
+	template <typename T, int d>
 	inline mat<T, d, d> adjoint(const mat<T, d, d>& m)
 	{
 		return transpose(cofactor(m));
 	}
 
-	template<typename T, int d>
 	//! Inverts the matrix, such that m * inverse(m) = the identity
+	template<typename T, int d>
 	inline mat<T, d, d> inverse(const mat<T, d, d>& m)
 	{
 		return adjoint(m) / det(m);
