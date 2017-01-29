@@ -258,7 +258,7 @@ namespace GMTK_NAMESPACE
 	template <typename T, int d>
 	inline vec<T, d> normalize(const vec<T, d>& v)
 	{
-		return v * length(v);
+		return v / length(v);
 	}
 
 	//! Returns a component-wise minimum of two vectors
