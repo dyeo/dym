@@ -4,7 +4,9 @@
 //
 
 //! gmtk namespace
+#ifndef GMTK_NAMESPACE
 #define GMTK_NAMESPACE gmtk
+#endif
 
 #include <math.h>
 #include <stdlib.h>
