@@ -28,6 +28,7 @@ namespace GMTK_NAMESPACE
 		//
 
 		half();
+
 		half(const float& f)
 		{
 			hdat = float_to_short(f);
