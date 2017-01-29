@@ -39,6 +39,7 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[4]; };
 			struct { T w, x, y, z; };
+			struct { T w, i, j, k; };
 		};
 
 		// CONSTRUCTORS
@@ -190,6 +191,25 @@ namespace GMTK_NAMESPACE
 			GMTK_QUAT_REF_OPERATOR(data[i] /= s);
 		}
 
+		//!
+		inline mat<T, 3, 3> tomat()
+		{
+			return mat<T, 3, 3>
+			{
+				1 - 2 * (sq(k) + sq(j)), 
+					2 * (i * j + k * w),
+					2 * (i * k - j * w),
+					//
+					2 * (i * j - k * w), 
+				1 - 2 * (sq(i) + sq(k)), 
+					2 * (j * k + i * w),
+					//
+					2 * (j * w + i * k), 
+					2 * (j * k - i * w), 
+				1 - 2 * (sq(j) + sq(i))
+			};
+		}
+
 		// GENERATORS
 
 		//! creates a rotation quaternion rotated about an axis according to a specified angle
@@ -206,7 +226,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		// MISC. STATIC FUNCTIONS
-
+				
 	};////
 
 	//! Quaternion output operator

@@ -197,3 +197,4 @@ ModelManifest.xml
 /*.filters
 /main.cpp
 *.opendb
+*.db
