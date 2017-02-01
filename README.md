@@ -28,7 +28,7 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] Quaternion SLERP
   - [x] Axis-Angle Representation
   - [x] 3D Vector Transformation
-  - [ ] Matrix Conversion
+  - [x] Matrix Conversion
 - [ ] Generic Scene Graph
 - [ ] Simple General OpenGL Classes
 - [ ] Tensors (pending)
