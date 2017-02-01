@@ -226,6 +226,11 @@ namespace GMTK_NAMESPACE
 		}
 
 		// MISC. STATIC FUNCTIONS
+
+		inline static Quat<T> identity()
+		{
+			return Quat<T>(1, 0, 0, 0);
+		}
 				
 	};////
 
