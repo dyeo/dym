@@ -397,7 +397,7 @@ namespace GMTK_NAMESPACE
 		T *L = new T[sq(d)];
 		T *U = new T[sq(d)];
 
-		lu_decomp(A, L, U, d);
+		_ludecomphelper(A, L, U, d);
 
 		T ls = 1, us = 1;
 
@@ -416,7 +416,7 @@ namespace GMTK_NAMESPACE
 	}
 	
 	template <typename T>
-	inline void _lu_decomp(const T *A, T *L, T *U, const int d)
+	inline void _ludecomphelper(const T *A, T *L, T *U, const int d)
 	{
 		int i, j, k;
 		T sum = 0;
@@ -457,7 +457,7 @@ namespace GMTK_NAMESPACE
 	template <typename T, int d>
 	inline void ludecompose(const mat<T, d, d> &m, mat<T,d,d> &l, mat<T,d,d> &u)
 	{
-		_lu_decomp(m.arr, l.arr, u.arr, d);
+		_ludecomphelper(m.arr, l.arr, u.arr, d);
 	}
 
 	//! Flips the matrix along its diagonal (rows become columns, columns become rows)
