@@ -36,7 +36,7 @@ namespace GMTK_NAMESPACE
 {////
 
 	//! A column-major matrix spanning r rows and c columns
-	template <typename T, int r, int c>
+	template <typename T, int r, int c = r>
 	struct mat
 	{
 		//////////////////
