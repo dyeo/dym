@@ -350,6 +350,20 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
+	//! Point vector constructor (xyz,1)
+	template<typename T = float>
+	inline vec<T, 4> point(const vec<T, 3> &xyz)
+	{
+		return vec<T, 4>(xyz.data[0], xyz.data[1], xyz.data[2], 1);
+	}
+
+	//! Point vector constructor (x,y,z,1)
+	template<typename T = float>
+	inline vec<T, 4> point(const T &x, const T &y, const T &z)
+	{
+		return vec<T, 4>(x, y, z, 1);
+	}
+
 }////
 
 //
