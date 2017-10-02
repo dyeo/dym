@@ -213,6 +213,14 @@ namespace GMTK_NAMESPACE
 		T dp = dot(l, r) / (magnitude(l) * magnitude(r));
 		return radians(acos(dp));
 	}
+	
+	//! Projects a vector onto another vector
+	template <typename T, int d>
+	inline vec<T, d> project(const vec<T, d> &l, const vec<T, d> &r)
+	{
+		vec<T, d> normal = normalize(r);
+		return normal * dot(l, normal);
+	}
 
 	//! Calculates the cross product of two vectors
 	template <typename T>
