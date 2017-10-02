@@ -193,9 +193,9 @@ namespace GMTK_NAMESPACE
 		return os;
 	}
 
-	////////////////////
+	/////////////////////
 	//! FREE FUNCTIONS //
-	////////////////////
+	/////////////////////
 
 	//! Calculates the dot or scalar product of two vectors
 	template <typename T, int d>
@@ -204,6 +204,22 @@ namespace GMTK_NAMESPACE
 		T res = 0;
 		GMTK_VEC_LOOP(res += l[i] * r[i]);
 		return res;
+	}
+
+	//! Calculates the angle between two vectors
+	template <typename T, int d>
+	inline Angle<T> angle(const vec<T, d> &l, const vec<T, d> &r)
+	{
+		T dp = dot(l, r) / (magnitude(l) * magnitude(r));
+		return radians(acos(dp));
+	}
+	
+	//! Projects a vector onto another vector
+	template <typename T, int d>
+	inline vec<T, d> project(const vec<T, d> &l, const vec<T, d> &r)
+	{
+		vec<T, d> normal = normalize(r);
+		return normal * dot(l, normal);
 	}
 
 	//! Calculates the cross product of two vectors
@@ -252,6 +268,13 @@ namespace GMTK_NAMESPACE
 		T res = 0;
 		GMTK_UNROLL_LOOP(i, d, res += sq(v.data[i]));
 		return sqrt(res);
+	}
+
+	//! Returns magnitude of vector, or length
+	template <typename T, int d>
+	inline T magnitude(const vec<T, d>& v)
+	{
+		return length(v);
 	}
 
 	//! Normalizes vector so it is a unit vector
@@ -348,6 +371,20 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC_LOOP(res[i] = v[i]);
 		res[d] = static_cast<T>(1);
 		return res;
+	}
+
+	//! Point vector constructor (xyz,1)
+	template<typename T = float>
+	inline vec<T, 4> point(const vec<T, 3> &xyz)
+	{
+		return vec<T, 4>(xyz.data[0], xyz.data[1], xyz.data[2], 1);
+	}
+
+	//! Point vector constructor (x,y,z,1)
+	template<typename T = float>
+	inline vec<T, 4> point(const T &x, const T &y, const T &z)
+	{
+		return vec<T, 4>(x, y, z, 1);
 	}
 
 }////
