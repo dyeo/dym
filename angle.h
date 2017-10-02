@@ -36,6 +36,11 @@ namespace GMTK_NAMESPACE
 			}
 		};
 
+		inline Angle()
+		{
+			ang = static_cast<T>(0);
+		}
+
 		template<typename U>
 		//! Type conversion copy constructor
 		inline Angle(const Angle<U>& a)
@@ -72,7 +77,10 @@ namespace GMTK_NAMESPACE
 	}
 
 	//! Default angle specifier
-	typedef Angle<> angle;
+	typedef Angle<float> angf;
+
+	typedef Angle<double> angd;
+	typedef Angle<int> angi;
 
 }////
 

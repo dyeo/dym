@@ -193,9 +193,9 @@ namespace GMTK_NAMESPACE
 		return os;
 	}
 
-	////////////////////
+	/////////////////////
 	//! FREE FUNCTIONS //
-	////////////////////
+	/////////////////////
 
 	//! Calculates the dot or scalar product of two vectors
 	template <typename T, int d>
@@ -204,6 +204,14 @@ namespace GMTK_NAMESPACE
 		T res = 0;
 		GMTK_VEC_LOOP(res += l[i] * r[i]);
 		return res;
+	}
+
+	//! Calculates the angle between two vectors
+	template <typename T, int d>
+	inline Angle<T> angle(const vec<T, d> &l, const vec<T, d> &r)
+	{
+		T dp = dot(l, r) / (magnitude(l) * magnitude(r));
+		return radians(acos(dp));
 	}
 
 	//! Calculates the cross product of two vectors
@@ -252,6 +260,13 @@ namespace GMTK_NAMESPACE
 		T res = 0;
 		GMTK_UNROLL_LOOP(i, d, res += sq(v.data[i]));
 		return sqrt(res);
+	}
+
+	//! Returns magnitude of vector, or length
+	template <typename T, int d>
+	inline T magnitude(const vec<T, d>& v)
+	{
+		return length(v);
 	}
 
 	//! Normalizes vector so it is a unit vector
