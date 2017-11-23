@@ -213,7 +213,16 @@ namespace GMTK_NAMESPACE
 		T dp = dot(l, r) / (magnitude(l) * magnitude(r));
 		return radians(acos(dp));
 	}
-	
+
+	//! Rotates the source vector around the ais vector by the specified angle
+	template <typename T, int d>
+	inline vec<T, d> rotatearound(const vec<T, d> &src, const vec<T, d> &axs, const Angle<T> &dlt)
+	{
+		T ct = cos(dlt.radians());
+		T st = sin(dlt.radians());
+		return (src * ct) + (cross(axs, src) * st) + (axs * dot(axs, src)) * (1 - ct);
+	}
+		
 	//! Projects a vector onto another vector
 	template <typename T, int d>
 	inline vec<T, d> project(const vec<T, d> &l, const vec<T, d> &r)
