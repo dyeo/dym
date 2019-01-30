@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4244)
+
+//
+
 #include "util.h"
 
 //
@@ -93,6 +98,11 @@ namespace GMTK_NAMESPACE
 
 	};
 }
+
+//
+
+#pragma warning(pop)
+
 //
 
 #endif //_GMTK_HALF_H_

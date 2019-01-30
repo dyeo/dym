@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4456; disable:4127)
+
+//
+
 #include "mat.h"
 
 //
@@ -554,5 +559,11 @@ namespace GMTK_NAMESPACE
 	typedef mat<long, 4, 4>				mat4l;
 
 }////
+
+//
+
+#pragma warning(pop)
+
+//
 
 #endif//_GMTK_MAT4_H_

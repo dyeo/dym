@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning((disable:4456; disable:4127; disable:4244)
+
+//
+
 //! gmtk namespace
 #ifndef GMTK_NAMESPACE
 #define GMTK_NAMESPACE gmtk
@@ -269,5 +274,10 @@ namespace GMTK_NAMESPACE
 
 #pragma endregion
 
+//
+
+#pragma warning(pop)
+
+//
 
 #endif //_GMTK_UTIL_H_

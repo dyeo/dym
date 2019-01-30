@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4456; disable:4127)
+
+//
+
 #include "..\util.h"
 #include "vec.h"
 #include "vec2.h"
@@ -507,6 +512,10 @@ namespace GMTK_NAMESPACE
 	}
 
 }////
+
+//
+
+#pragma warning(pop)
 
 //
 

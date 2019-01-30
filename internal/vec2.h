@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4456; disable:4127)
+
+//
+
 #include "vec.h"
 
 //
@@ -211,5 +216,11 @@ namespace GMTK_NAMESPACE
 	typedef vec<long, 2> vec2l;
 
 }////
+
+//
+
+#pragma warning(pop)
+
+//
 
 #endif

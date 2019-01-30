@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4456; disable:4127)
+
+//
+
 #include "..\util.h"
 #include <math.h>
 #include <ostream>
@@ -331,5 +336,11 @@ namespace GMTK_NAMESPACE
 	typedef Quat<unsigned> quatui;
 
 }
+
+//
+
+#pragma warning(pop)
+
+//
 
 #endif//_GMTK_QUAT_H_

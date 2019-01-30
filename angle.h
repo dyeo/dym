@@ -31,7 +31,7 @@ namespace GMTK_NAMESPACE
 				ang = amount;
 				break;
 			case Degrees:
-				ang = amount * DEG2RAD;
+				ang = amount * static_cast<T>(DEG2RAD);
 				break;
 			}
 		};
@@ -50,7 +50,7 @@ namespace GMTK_NAMESPACE
 
 		inline float degrees() const
 		{
-			return ang * RAD2DEG;
+			return ang * static_cast<T>(RAD2DEG);
 		}
 
 		inline float radians() const
