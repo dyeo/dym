@@ -260,7 +260,7 @@ namespace GMTK_NAMESPACE
 	template <typename T, int r1, int r2, int c1, int c2> 
 	inline mat<T, r1, c2> operator*(const mat<T, r1, c1>& m, const mat<T, r2, c2>& n) {
 		GMTK_STATIC_ASSERT(c1 == r2); //! no.columns of m and no.rows of n must be equal!!!
-		mat<T, r1, c2> res;
+		mat<T, r1, c2> res(static_cast<T>(0));
 		GMTK_UNROLL_3D_LOOP(i, j, k, r1, c2, r2, res[j][i] += m.data[k][i] * n.data[j][k]);
 		return res;
 	}
@@ -308,7 +308,7 @@ namespace GMTK_NAMESPACE
 	template <typename T, int r, int c>
 	inline mat<T, r - 1, c - 1> minor(const mat<T, r, c>& m, int rx, int cx)
 	{
-		mat<T, r - 1, c - 1> res;
+		mat<T, r - 1, c - 1> res(static_cast<T>(0));
 
 		int mini = 0;
 		int minj = 0;
@@ -414,7 +414,7 @@ namespace GMTK_NAMESPACE
 	template <typename T, int r, int c>
 	inline mat<T, c, r> transpose(const mat<T, r, c>& m)
 	{
-		mat<T, c, r> res;
+		mat<T, c, r> res(static_cast<T>(0));
 		GMTK_MAT_LOOP(res[j][i] = m[i][j]);
 		return res;
 	}
@@ -431,7 +431,7 @@ namespace GMTK_NAMESPACE
 	template <typename T, int d>
 	inline mat<T, d, d> cofactor(const mat<T, d, d>& m)
 	{
-		mat<T, d, d> res;
+		mat<T, d, d> res(static_cast<T>(0));
 		GMTK_UNROLL_LOOP(j, d,
 			GMTK_UNROLL_LOOP(i, d,
 

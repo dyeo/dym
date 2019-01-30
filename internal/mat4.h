@@ -583,11 +583,24 @@ namespace GMTK_NAMESPACE
 			 + (m.arr[3] * m.arr[6] * m.arr[9] * m.arr[12]);
 	}
 
-	template<typename T>
 	//! Inverts the matrix, such that m * inverse(m) = the identity
+	template<typename T>
 	inline mat<T, 4, 4> inverse(const mat<T, 4, 4>& m)
 	{
 		return adjoint(m) / det(m);
+	}
+
+	template<typename T>
+	inline mat<T, 4, 4> fastinverse(const mat<T, 4, 4>& m)
+	{
+		mat3 rotation = m;
+		vec3 translation(m.translation());
+
+		rotation = transpose(rotation);
+
+		translation = -rotation * translation;
+
+		return mat4(rotation, translation);
 	}
 
 	//
