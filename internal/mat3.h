@@ -68,7 +68,7 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline mat()
 		{
-			GMTK_MAT3_LOOP2(arr[i] = static_cast<T>(0));
+			GMTK_MAT3_LOOP(data[i][j] = static_cast<T>(i == j));
 		}
 
 		//! Initializer list constructor

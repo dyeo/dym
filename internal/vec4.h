@@ -69,12 +69,13 @@ namespace GMTK_NAMESPACE
 
 		//! Default constructor
 		inline vec() {
+			GMTK_VEC4_LOOP(data[i] = static_cast<T>(0));
 		}
 
 		//! Initializer list constructor
 		inline vec(std::initializer_list<T> list)
 		{
-			GMTK_VEC_LOOP(data[i] = *(list.begin() + i));
+			GMTK_VEC4_LOOP(data[i] = *(list.begin() + i));
 		}
 
 		//! Copy constructor
