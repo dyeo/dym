@@ -91,6 +91,13 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC4_LOOP(data[i] = v.data[i]);
 		}
 
+		//! Copy constructor for arbitrarily larger vector
+		template<int d2>
+		inline vec(const vec<T, d2> &v) {
+			GMTK_STATIC_ASSERT(d2 >= 4);
+			GMTK_VEC4_LOOP(data[i] = v.data[i]);
+		}
+
 		//! Explicit type-conversion copy constructor
 		template<typename U> explicit inline vec(const vec<U, 2>& v) {
 			GMTK_VEC4_LOOP(data[i] = static_cast<T>(v[i]));

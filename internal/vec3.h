@@ -71,9 +71,16 @@ namespace GMTK_NAMESPACE
 		{
 			GMTK_VEC3_LOOP(data[i] = *(list.begin() + i));
 		}
-
+		
 		//! Copy constructor
 		inline vec(const vec<T, 3>& v) {
+			GMTK_VEC3_LOOP(data[i] = v.data[i]);
+		}
+
+		//! Copy constructor for arbitrarily larger vector
+		template<int d2>
+		inline vec(const vec<T, d2> &v) {
+			GMTK_STATIC_ASSERT(d2 >= 3);
 			GMTK_VEC3_LOOP(data[i] = v.data[i]);
 		}
 
