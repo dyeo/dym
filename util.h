@@ -144,6 +144,12 @@ namespace GMTK_NAMESPACE
 	}
 
 	template <typename T>
+	inline T abs(const T& v)
+	{
+		return (v > 0) ? v : -v;
+	}
+
+	template<typename T>
 	inline T min(const T& l, const T& r)
 	{
 		return (l < r) ? l : r;
