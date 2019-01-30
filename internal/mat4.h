@@ -253,6 +253,30 @@ namespace GMTK_NAMESPACE
 			return arr[i];
 		}
 
+		///////////////////////
+		//! ACCESS FUNCTIONS //
+		///////////////////////
+
+		//! right
+		inline vec<T, 3> right() const {
+			return data[0];
+		}
+
+		//! up
+		inline vec<T, 3> up() const {
+			return data[1];
+		}
+
+		//! forward
+		inline vec<T, 3> forward() const {
+			return data[2];
+		}
+
+		//! translation
+		inline vec<T, 3> translation() const {
+			return data[3];
+		}
+
 		////////////////
 		//! OPERATORS //
 		////////////////
