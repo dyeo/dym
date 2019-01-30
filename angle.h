@@ -81,8 +81,40 @@ namespace GMTK_NAMESPACE
 
 	typedef Angle<double> angd;
 	typedef Angle<int> angi;
+	
+	//////////////////////
+	//! MISC. OPERATORS //
+	//////////////////////
+
+	inline std::ostream& operator<<(std::ostream& os, const Angle<> &a)
+	{
+		os << a.degrees() << "deg";
+		return os;
+	}
 
 }////
+
+//
+
+inline GMTK_NAMESPACE::Angle<> operator "" _deg(unsigned long long value)
+{
+	return GMTK_NAMESPACE::degrees(static_cast<float>(value));
+}
+
+inline GMTK_NAMESPACE::Angle<> operator "" _deg(long double value)
+{
+	return GMTK_NAMESPACE::degrees(static_cast<float>(value));
+}
+
+inline GMTK_NAMESPACE::Angle<> operator "" _rad(unsigned long long value)
+{
+	return GMTK_NAMESPACE::radians(static_cast<float>(value));
+}
+
+inline GMTK_NAMESPACE::Angle<> operator "" _rad(long double value)
+{
+	return GMTK_NAMESPACE::radians(static_cast<float>(value));
+}
 
 //
 

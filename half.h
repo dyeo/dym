@@ -96,8 +96,35 @@ namespace GMTK_NAMESPACE
 
 		unsigned short hdat;
 
-	};
+	}; //! class half
+	
+	//////////////////////
+	//! MISC. OPERATORS //
+	//////////////////////
+
+	inline std::ostream& operator<<(std::ostream& os, const half &h)
+	{
+		os << float(h) << 'h';
+		return os;
+	}
+
+}////
+
+///////////////
+//! LITERALS //
+///////////////
+
+inline GMTK_NAMESPACE::half operator "" _h(unsigned long long i)
+{
+	return GMTK_NAMESPACE::half(static_cast<float>(i));
 }
+
+inline GMTK_NAMESPACE::half operator "" _h(long double d)
+{
+	return GMTK_NAMESPACE::half(static_cast<float>(d));
+}
+
+
 
 //
 

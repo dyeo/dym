@@ -185,9 +185,9 @@ namespace GMTK_NAMESPACE
 
 	}; //! struct vec
 
-	/////////////////////
+	//////////////////////
 	//! MISC. OPERATORS //
-	/////////////////////
+	//////////////////////
 
 	template <typename T, int d>
 	inline std::ostream& operator<<(std::ostream& os, const vec<T, d>& v)
