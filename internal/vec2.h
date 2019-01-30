@@ -30,11 +30,19 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec < T, 2 >
 	{
+		///////////////////
+		//! DATA MEMBERS //
+		///////////////////
+
 		union
 		{
 			struct { T data[2]; };
 			struct { T x, y; };
 		};
+
+		///////////////////
+		//! CONSTRUCTORS //
+		///////////////////
 
 		//! Initialize vec2 with two values
 		inline vec(const T& s0, const T& s1)
@@ -74,6 +82,10 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC2_LOOP(data[i] = a[i]);
 		}
 
+		///////////////////////
+		//! ACCESS OPERATORS //
+		///////////////////////
+
 		//! Vector index operator
 		inline T& operator[](const int i) {
 			return data[i];
@@ -83,6 +95,10 @@ namespace GMTK_NAMESPACE
 		inline const T& operator[](const int i) const {
 			return data[i];
 		}
+
+		///////////////////////////
+		//! RIGHT-HAND OPERATORS //
+		///////////////////////////
 
 		//! Returns a negative vector
 		inline vec<T, 2> operator-() const {
@@ -169,37 +185,33 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC2_REF_OPERATOR(data[i] -= s);
 		}
 
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
+		
 		//! Zero vector (0,0)
-		static inline vec<T, 2> zero() {
-			return vec<T, 2>(0, 0);
-		}
+		static inline constexpr vec<T, 2> zero() { return vec<T, 2>(0, 0); }
 		
 		//! One vector (1,1)
-		static inline vec<T, 2> one() {
-			return vec<T, 2>(1, 1);
-		}
+		static inline constexpr vec<T, 2> one() { return vec<T, 2>(1, 1); }
 
 		//! Up vector (0,1)
-		static inline vec<T, 2> up() {
-			return vec<T, 2>(0, 1);
-		}
+		static inline constexpr vec<T, 2> up() { return vec<T, 2>(0, 1); }
 
 		//! Down vector (0,-1)
-		static inline vec<T, 2> down() {
-			return vec<T, 2>(0, -1);
-		}
+		static inline constexpr vec<T, 2> down() { return vec<T, 2>(0, -1); }
 
 		//! Right vector (1,0)
-		static inline vec<T, 2> right() {
-			return vec<T, 2>(1, 0);
-		}
+		static inline constexpr vec<T, 2> right() { return vec<T, 2>(1, 0); }
 
 		//! Left vector (-1,0)
-		static inline vec<T, 2> left() {
-			return vec<T, 2>(-1, 0);
-		}
+		static inline constexpr vec<T, 2> left() { return vec<T, 2>(-1, 0); }
 
-	};
+	}; //! struct vec2
+
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
 
 	typedef vec<float, 2> vec2, vec2f;
 	typedef vec<double, 2> vec2d;

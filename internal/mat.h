@@ -44,9 +44,9 @@ namespace GMTK_NAMESPACE
 	template <typename T, int r, int c = r>
 	struct mat
 	{
-		//////////////////
+		///////////////////
 		//! DATA MEMBERS //
-		//////////////////
+		///////////////////
 
 		inline int rows() const
 		{
@@ -70,9 +70,9 @@ namespace GMTK_NAMESPACE
 			struct { T arr[(c*r)]; };
 		};
 
-		//////////////////
+		///////////////////
 		//! CONSTRUCTORS //
-		//////////////////
+		///////////////////
 
 		//! Default constructor
 		inline mat()
@@ -116,64 +116,9 @@ namespace GMTK_NAMESPACE
 			GMTK_MAT_LOOP2(arr[i] = a[i]);
 		}
 
-		//
-
-		/*inline mat<T, 3, 3>(const mat<T, 2, 2>& m)
-		{
-			arr[0] = m.arr[0];
-			arr[1] = m.arr[1];
-			arr[2] = 0;
-			arr[3] = m.arr[2];
-			arr[4] = m.arr[3];
-			arr[5] = 0;
-			arr[6] = 0;
-			arr[7] = 0;
-			arr[8] = 1;
-		}
-
-		inline mat<T, 4, 4>(const mat<T, 2, 2>& m)
-		{
-			arr[0] = m.arr[0];
-			arr[1] = m.arr[1];
-			arr[2] = 0;
-			arr[3] = 0;
-			arr[4] = m.arr[2];
-			arr[5] = m.arr[3];
-			arr[6] = 0;
-			arr[7] = 0;
-			arr[8] = 0;
-			arr[9] = 0;
-			arr[10] = 1;
-			arr[11] = 0;
-			arr[12] = 0;
-			arr[13] = 0;
-			arr[14] = 0;
-			arr[15] = 1;
-		}
-
-		inline mat<T, 4, 4>(const mat<T, 3, 3>& m)
-		{
-			arr[0] = m.arr[0];
-			arr[1] = m.arr[1];
-			arr[2] = m.arr[2];
-			arr[3] = 0;
-			arr[4] = m.arr[4];
-			arr[5] = m.arr[5];
-			arr[6] = m.arr[6];
-			arr[7] = 0;
-			arr[8] = m.arr[7];
-			arr[9] = m.arr[8];
-			arr[10] = m.arr[9];
-			arr[11] = 0;
-			arr[12] = 0;
-			arr[13] = 0;
-			arr[14] = 0;
-			arr[15] = 1;
-		}*/
-
-		//////////////////////
+		///////////////////////
 		//! ACCESS OPERATORS //
-		//////////////////////
+		///////////////////////
 		
 		//! Matrix index operator - returns column
 		inline vec<T, r>& operator[](const int i) {
@@ -195,9 +140,9 @@ namespace GMTK_NAMESPACE
 			return arr[i];
 		}
 
-		///////////////
+		////////////////
 		//! OPERATORS //
-		///////////////
+		////////////////
 
 		//! Returns a negative matrix
 		inline mat<T, r, c> operator-() const {
@@ -289,9 +234,9 @@ namespace GMTK_NAMESPACE
 		
 	}; //! struct mat
 
-	///////////////////
-	//! MATRIX OUTPUT //
-	///////////////////
+	//////////////////////
+	//! MISC. OPERATORS //
+	//////////////////////
 
 	template <typename T, int r, int c>
 	inline std::ostream& operator<<(std::ostream& os, const mat<T, r, c>& v) {
@@ -340,9 +285,9 @@ namespace GMTK_NAMESPACE
 		return res;
 	}
 
-	///////////////////////////
-	//! MATRIX FREE-FUNCTIONS //
-	///////////////////////////
+	/////////////////////
+	//! FREE-FUNCTIONS //
+	/////////////////////
 
 	//! Component-wise matrix multiplication
 	template <typename T, int r, int c>

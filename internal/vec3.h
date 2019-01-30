@@ -30,12 +30,20 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec < T, 3 >
 	{
+		///////////////////
+		//! DATA MEMBERS //
+		///////////////////
+
 		union
 		{
 			struct { T data[3]; };
 			struct { T x, y, z; };
 			struct { vec<T, 2> xy; };
 		};
+
+		///////////////////
+		//! CONSTRUCTORS //
+		///////////////////
 
 		//! Initialize vec3 with three values
 		inline vec(const T& s0, const T& s1, const T& s2)
@@ -84,6 +92,10 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC3_LOOP(data[i] = a[i]);
 		}
 
+		///////////////////////
+		//! ACCESS OPERATORS //
+		///////////////////////
+
 		//! Vector index operator
 		inline T& operator[](const int i) {
 			return data[i];
@@ -93,6 +105,10 @@ namespace GMTK_NAMESPACE
 		inline const T& operator[](const int i) const {
 			return data[i];
 		}
+
+		///////////////////////////
+		//! RIGHT-HAND OPERATORS //
+		///////////////////////////
 
 		//! Returns a negative vector
 		inline vec<T, 3> operator-() const {
@@ -179,47 +195,39 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC3_REF_OPERATOR(data[i] -= s);
 		}
 
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
+
 		//! Zero vector (0,0,0)
-		static inline vec<T, 3> zero() {
-			return vec<T, 3>(0, 0, 0);
-		}
+		static inline constexpr vec<T, 3> zero() { return vec<T, 3>(0, 0, 0); }
 
 		//! One vector (1,1,1)
-		static inline vec<T, 3> one() {
-			return vec<T, 3>(1, 1, 1);
-		}
+		static inline constexpr vec<T, 3> one() { return vec<T, 3>(1, 1, 1); }
 
 		//! Up vector (0,1,0)
-		static inline vec<T, 3> up() {
-			return vec<T, 3>(0, 1, 0);
-		}
+		static inline constexpr vec<T, 3> up() { return vec<T, 3>(0, 1, 0); }
 
 		//! Down vector (0,-1,0)
-		static inline vec<T, 3> down() {
-			return vec<T, 3>(0, -1, 0);
-		}
+		static inline constexpr vec<T, 3> down() { return vec<T, 3>(0, -1, 0); }
 
 		//! Right vector (1,0,0)
-		static inline vec<T, 3> right() {
-			return vec<T, 3>(1, 0, 0);
-		}
+		static inline constexpr vec<T, 3> right() { return vec<T, 3>(1, 0, 0); }
 
 		//! Left vector (-1,0,0)
-		static inline vec<T, 3> left() {
-			return vec<T, 3>(-1, 0, 0);
-		}
+		static inline constexpr vec<T, 3> left() { return vec<T, 3>(-1, 0, 0); }
 
 		//! Forward vector (0,0,1)
-		static inline vec<T, 3> forward() {
-			return vec<T, 3>(0, 0, 1);
-		}
+		static inline constexpr vec<T, 3> forward() { return vec<T, 3>(0, 0, 1); }
 
 		//! Back vector (0,0,-1)
-		static inline vec<T, 3> back() {
-			return vec<T, 3>(0, 0, -1);
-		}
+		static inline constexpr vec<T, 3> back() { return vec<T, 3>(0, 0, -1); }
 
-	};
+	}; //! struct vec3
+
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
 
 	typedef vec<float, 3> vec3, vec3f;
 	typedef vec<double, 3> vec3d;

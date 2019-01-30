@@ -30,6 +30,10 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec < T, 4 >
 	{
+		///////////////////
+		//! DATA MEMBERS //
+		///////////////////
+
 		union
 		{
 			struct { T data[4]; };
@@ -39,6 +43,10 @@ namespace GMTK_NAMESPACE
 			struct { vec<T, 3> xyz; };
 			struct { vec<T, 3> rgb; };
 		};
+
+		///////////////////
+		//! CONSTRUCTORS //
+		///////////////////
 
 		//! Initialize vec4 with four values
 		inline vec(const T& s0, const T& s1, const T& s2, const T& s3)
@@ -98,6 +106,10 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC4_LOOP(data[i] = a[i]);
 		}
 
+		///////////////////////
+		//! ACCESS OPERATORS //
+		///////////////////////
+
 		//! Vector index operator
 		inline T& operator[](const int i) {
 			return data[i];
@@ -107,6 +119,10 @@ namespace GMTK_NAMESPACE
 		inline const T& operator[](const int i) const {
 			return data[i];
 		}
+
+		///////////////////////////
+		//! RIGHT-HAND OPERATORS //
+		///////////////////////////
 
 		//! Returns a negative vector
 		inline vec<T, 4> operator-() const {
@@ -193,47 +209,39 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC4_REF_OPERATOR(data[i] -= s);
 		}
 
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
+
 		//! Zero vector (0,0,0,0)
-		static inline vec<T, 4> zero() {
-			return vec<T, 4>(0, 0, 0, 0);
-		}
+		static inline constexpr vec<T, 4> zero() { return vec<T, 4>(0, 0, 0, 0); }
 
 		//! One vector (1,1,1,1)
-		static inline vec<T, 4> one() {
-			return vec<T, 4>(1, 1, 1, 1);
-		}
+		static inline constexpr vec<T, 4> one() { return vec<T, 4>(1, 1, 1, 1); }
 
 		//! Up vector (0,1,0,0)
-		static inline vec<T, 4> up() {
-			return vec<T, 4>(0, 1, 0, 0);
-		}
+		static inline constexpr vec<T, 4> up() { return vec<T, 4>(0, 1, 0, 0); }
 
 		//! Down vector (0,-1,0,0)
-		static inline vec<T, 4> down() {
-			return vec<T, 4>(0, -1, 0, 0);
-		}
+		static inline constexpr vec<T, 4> down() { return vec<T, 4>(0, -1, 0, 0); }
 
 		//! Right vector (1,0,0,0)
-		static inline vec<T, 4> right() {
-			return vec<T, 4>(1, 0, 0, 0);
-		}
+		static inline constexpr vec<T, 4> right() { return vec<T, 4>(1, 0, 0, 0); }
 
 		//! Left vector (-1,0,0,0)
-		static inline vec<T, 3> left() {
-			return vec<T, 4>(-1, 0, 0, 0);
-		}
+		static inline constexpr vec<T, 3> left() { return vec<T, 4>(-1, 0, 0, 0); }
 
 		//! Forward vector (0,0,1,0)
-		static inline vec<T, 4> forward() {
-			return vec<T, 4>(0, 0, 1, 0);
-		}
+		static inline constexpr vec<T, 4> forward() { return vec<T, 4>(0, 0, 1, 0); }
 
 		//! Back vector (0,0,-1,0)
-		static inline vec<T, 4> back() {
-			return vec<T, 4>(0, 0, -1, 0);
-		}
+		static inline constexpr vec<T, 4> back() { return vec<T, 4>(0, 0, -1, 0); }
 
-	};
+	}; //! struct vec4
+
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
 
 	typedef vec<float, 4> vec4, vec4f;
 	typedef vec<double, 4> vec4d;

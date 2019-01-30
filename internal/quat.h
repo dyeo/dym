@@ -14,7 +14,7 @@
 
 //
 
-//! Unrolls a component-wise vector manipulation for generic implementation
+//! Unrolls a component-wise quaternion manipulation for generic implementation
 #define GMTK_QUAT_LOOP(oper) GMTK_UNROLL_LOOP(i,4,oper)
 
 //
@@ -32,13 +32,15 @@
 //
 
 namespace GMTK_NAMESPACE
-{
+{////
+
 	//! quaternion class
 	template< typename T = float >
 	struct Quat
-	{////
-
-		// DATA
+	{
+		///////////////////
+		//! DATA MEMBERS //
+		///////////////////
 
 		union
 		{
@@ -47,7 +49,9 @@ namespace GMTK_NAMESPACE
 			struct { T w, i, j, k; };
 		};
 
-		// CONSTRUCTORS
+		///////////////////
+		//! CONSTRUCTORS //
+		///////////////////
 
 		//! default constructor
 		inline Quat()
@@ -96,7 +100,9 @@ namespace GMTK_NAMESPACE
 			data[3] = static_cast<T>(copy.data[3]);
 		}
 
-		// OPERATORS
+		///////////////////////
+		//! ACCESS OPERATORS //
+		///////////////////////
 
 		//! returns reference to an element of the given quat, in the order w,x,y,z
 		inline T& operator[](const int i) {
@@ -106,6 +112,10 @@ namespace GMTK_NAMESPACE
 		inline const T& operator[](const int i) const {
 			return data[i];
 		}
+
+		///////////////////////////
+		//! RIGHT-HAND OPERATORS //
+		///////////////////////////
 
 		//!
 		inline Quat<T> operator+(const Quat &q) {
@@ -196,6 +206,10 @@ namespace GMTK_NAMESPACE
 			GMTK_QUAT_REF_OPERATOR(data[i] /= s);
 		}
 
+		///////////////////////
+		//! TYPE CONVERSIONS //
+		///////////////////////
+
 		//!
 		inline mat<T, 3, 3> tomat()
 		{
@@ -214,8 +228,10 @@ namespace GMTK_NAMESPACE
 				1 - 2 * (sq(j) + sq(i))
 			};
 		}
-
-		// GENERATORS
+		
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
 
 		//! creates a rotation quaternion rotated about an axis according to a specified angle
 		inline static Quat<T> axisangle(const vec<T, 3> &axis, const Angle<T> &angle)
@@ -237,7 +253,11 @@ namespace GMTK_NAMESPACE
 			return Quat<T>(1, 0, 0, 0);
 		}
 				
-	};////
+	}; //! struct quat
+
+	//////////////////////
+	//! MISC. OPERATORS //
+	//////////////////////
 
 	//! Quaternion output operator
 	template <typename T>
@@ -246,6 +266,10 @@ namespace GMTK_NAMESPACE
 		os << "< " << std::showpos << q.w << ' ' << q.x << "i " << q.y << "j " << q.z << std::noshowpos << "k >";
 		return os;
 	}
+
+	/////////////////////
+	//! FREE FUNCTIONS //
+	/////////////////////
 	
 	//! Returns length squared of quaternion
 	template <typename T>
@@ -330,12 +354,16 @@ namespace GMTK_NAMESPACE
 		return l*cos(tht) + v*sin(tht);
 	}
 
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
+
 	typedef Quat<float> quat;
 	typedef Quat<double> quatd;
 	typedef Quat<int> quati;
 	typedef Quat<unsigned> quatui;
 
-}
+}////
 
 //
 

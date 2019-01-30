@@ -35,9 +35,9 @@ namespace GMTK_NAMESPACE
 	//! A d-length vector of type T
 	struct vec
 	{
-		//////////////////
+		///////////////////
 		//! DATA MEMBERS //
-		//////////////////
+		///////////////////
 		
 		//! Expose vector type
 		typedef T type;
@@ -45,9 +45,9 @@ namespace GMTK_NAMESPACE
 		//! Array containing vector data
 		T data[d];
 
-		//////////////////
+		///////////////////
 		//! CONSTRUCTORS //
-		//////////////////
+		///////////////////
 		
 		//! Default constructor
 		inline vec() {
@@ -80,9 +80,9 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC_LOOP(data[i] = a[i]);
 		}
 
-		//////////////////////
+		///////////////////////
 		//! ACCESS OPERATORS //
-		//////////////////////
+		///////////////////////
 
 		//! Vector index operator
 		inline T& operator[](const int i) {
@@ -94,9 +94,9 @@ namespace GMTK_NAMESPACE
 			return data[i];
 		}
 
-		//////////////////////////
+		///////////////////////////
 		//! RIGHT-HAND OPERATORS //
-		//////////////////////////
+		///////////////////////////
 
 		//! Returns a negative vector
 		inline vec<T, d> operator-() const {

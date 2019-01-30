@@ -17,6 +17,10 @@ namespace GMTK_NAMESPACE
 	struct Angle
 	{////
 
+		///////////////////
+		//! DATA MEMBERS //
+		///////////////////
+
 		enum AngleUnits
 		{
 			Radians = 0,

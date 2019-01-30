@@ -35,9 +35,9 @@ namespace GMTK_NAMESPACE
 	//! A column-major matrix spanning r rows and c columns
 	struct mat<T, 3, 3>
 	{
-		//////////////////
+		///////////////////
 		//! DATA MEMBERS //
-		//////////////////
+		///////////////////
 
 		int rows() const
 		{
@@ -61,9 +61,9 @@ namespace GMTK_NAMESPACE
 			struct { T arr[(9)]; };
 		};
 
-		//////////////////
+		///////////////////
 		//! CONSTRUCTORS //
-		//////////////////
+		///////////////////
 
 		//! Default constructor
 		inline mat()
@@ -166,9 +166,9 @@ namespace GMTK_NAMESPACE
 			arr[8] = m.arr[10];
 		}
 
-		//////////////////////
+		///////////////////////
 		//! ACCESS OPERATORS //
-		//////////////////////
+		///////////////////////
 		
 		//! Column function - returns column as vector of T
 		inline vec<T, 3> col(const int i) const {
@@ -201,9 +201,9 @@ namespace GMTK_NAMESPACE
 			return arr[i];
 		}
 
-		///////////////
+		////////////////
 		//! OPERATORS //
-		///////////////
+		////////////////
 
 		//! Returns a negative matrix
 		inline mat<T, 3, 3> operator-() const {
@@ -286,9 +286,15 @@ namespace GMTK_NAMESPACE
 			GMTK_MAT3_REF_OPERATOR2(arr[i] *= s);
 		}
 
-		/////////////////////////////////
-		//! MATRIX GENERATOR FUNCTIONS //
-		/////////////////////////////////
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
+
+		//! Returns an identity matrix
+		static inline constexpr mat<T, 3, 3> identity()
+		{
+			return mat<T, 3, 3>(1, 0, 0, 0, 1, 0, 0, 0, 1);
+		}
 
 		//! Creates a row-order matrix using individual elements
 		inline static mat<T, 3, 3> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8)
@@ -315,12 +321,6 @@ namespace GMTK_NAMESPACE
 				(c0.x, c0.y, c0.z,
 				c1.x, c1.y, c1.z,
 				c2.x, c2.y, c2.z);
-		}
-
-		//! Returns an identity matrix
-		inline static mat<T, 3, 3> identity()
-		{
-			return mat<T, 3, 3>(1, 0, 0, 0, 1, 0, 0, 0, 1);
 		}
 
 		//! Rotate an axis about a given angle

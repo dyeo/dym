@@ -35,9 +35,9 @@ namespace GMTK_NAMESPACE
 	//! A column-major matrix spanning r rows and c columns
 	struct mat < T, 4, 4 >
 	{
-		//////////////////
+		///////////////////
 		//! DATA MEMBERS //
-		//////////////////
+		///////////////////
 
 		int rows() const
 		{
@@ -61,9 +61,9 @@ namespace GMTK_NAMESPACE
 			struct { T arr[(16)]; };
 		};
 
-		//////////////////
+		///////////////////
 		//! CONSTRUCTORS //
-		//////////////////
+		///////////////////
 
 		//! Default constructor
 		inline mat()
@@ -197,9 +197,9 @@ namespace GMTK_NAMESPACE
 			arr[15] = ident;
 		}
 
-		//////////////////////
+		///////////////////////
 		//! ACCESS OPERATORS //
-		//////////////////////
+		///////////////////////
 
 		//! Column function - returns column as vector of T
 		inline vec<T, 4> col(const int i) const {
@@ -232,9 +232,9 @@ namespace GMTK_NAMESPACE
 			return arr[i];
 		}
 
-		///////////////
+		////////////////
 		//! OPERATORS //
-		///////////////
+		////////////////
 
 		//! Returns a negative matrix
 		inline mat<T, 4, 4> operator-() const {
@@ -317,9 +317,19 @@ namespace GMTK_NAMESPACE
 			GMTK_MAT4_REF_OPERATOR2(arr[i] *= s);
 		}
 
-		/////////////////////////////////
-		//! MATRIX GENERATOR FUNCTIONS //
-		/////////////////////////////////
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
+
+		//! returns an identity matrix
+		static inline constexpr mat<T, 4, 4> identity()
+		{
+			return mat<T, 4, 4>
+				(1, 0, 0, 0,
+					0, 1, 0, 0,
+					0, 0, 1, 0,
+					0, 0, 0, 1);
+		}
 
 		//! Creates a row-order matrix using individual elements
 		inline static mat<T, 4, 4> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8, const T &s9, const T &s10, const T &s11, const T &s12, const T &s13, const T &s14, const T &s15)
@@ -348,16 +358,6 @@ namespace GMTK_NAMESPACE
 				c1.x, c1.y, c1.z, c1.w,
 				c2.x, c2.y, c2.z, c2.w,
 				c3.x, c3.y, c3.z, c3.w );
-		}
-
-		//! returns an identity matrix
-		static mat<T, 4, 4> identity()
-		{
-			return mat<T, 4, 4>
-				(1, 0, 0, 0,
-				 0, 1, 0, 0,
-				 0, 0, 1, 0,
-				 0, 0, 0, 1);
 		}
 
 		inline static mat<T, 4, 4> rotate(const Angle<T>& an, const vec<T, 3>& ax)
