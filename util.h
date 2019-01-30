@@ -4,7 +4,7 @@
 //
 
 #pragma warning(push)
-#pragma warning((disable:4456; disable:4127; disable:4244)
+#pragma warning(disable:4456; disable:4127; disable:4244)
 
 //
 
