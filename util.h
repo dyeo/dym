@@ -144,25 +144,25 @@ namespace GMTK_NAMESPACE
 	}
 
 	template <typename T>
-	inline T abs(const T& v)
+	inline constexpr T abs(const T& v)
 	{
 		return (v > 0) ? v : -v;
 	}
 
 	template<typename T>
-	inline T min(const T& l, const T& r)
+	inline constexpr T min(const T& l, const T& r)
 	{
 		return (l < r) ? l : r;
 	}
 
 	template <typename T>
-	inline T max(const T& l, const T& r)
+	inline constexpr T max(const T& l, const T& r)
 	{
 		return (l > r) ? l : r;
 	}
 
 	template <typename T>
-	inline T clamp(const T& v, const T& mVal, const T& MVal)
+	inline constexpr T clamp(const T& v, const T& mVal, const T& MVal)
 	{
 		return min(max(v, mVal), MVal);
 	}
