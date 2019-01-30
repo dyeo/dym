@@ -197,6 +197,27 @@ namespace GMTK_NAMESPACE
 			arr[15] = ident;
 		}
 
+		//! Creates a homogeneous transformation matrix out of a rotation matrix and a displacement vector
+		inline mat(const mat<T, 3, 3>& r, const vec<T, 3>& d)
+		{
+			arr[0] = r.arr[0];
+			arr[1] = r.arr[1];
+			arr[2] = r.arr[2];
+			arr[3] = 0;
+			arr[4] = r.arr[3];
+			arr[5] = r.arr[4];
+			arr[6] = r.arr[5];
+			arr[7] = 0;
+			arr[8] = r.arr[6];
+			arr[9] = r.arr[7];
+			arr[10] = r.arr[8];
+			arr[11] = 0;
+			arr[12] = d.data[0];
+			arr[13] = d.data[1];
+			arr[14] = d.data[2];
+			arr[15] = static_cast<T>(1);
+		}
+
 		///////////////////////
 		//! ACCESS OPERATORS //
 		///////////////////////
