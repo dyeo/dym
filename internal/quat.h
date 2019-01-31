@@ -3,13 +3,18 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4456; disable:4127)
+
+//
+
 #include "..\util.h"
 #include <math.h>
 #include <ostream>
 
 //
 
-//! Unrolls a component-wise vector manipulation for generic implementation
+//! Unrolls a component-wise quaternion manipulation for generic implementation
 #define GMTK_QUAT_LOOP(oper) GMTK_UNROLL_LOOP(i,4,oper)
 
 //
@@ -27,13 +32,15 @@
 //
 
 namespace GMTK_NAMESPACE
-{
+{////
+
 	//! quaternion class
 	template< typename T = float >
 	struct Quat
-	{////
-
-		// DATA
+	{
+		///////////////////
+		//! DATA MEMBERS //
+		///////////////////
 
 		union
 		{
@@ -42,7 +49,9 @@ namespace GMTK_NAMESPACE
 			struct { T w, i, j, k; };
 		};
 
-		// CONSTRUCTORS
+		///////////////////
+		//! CONSTRUCTORS //
+		///////////////////
 
 		//! default constructor
 		inline Quat()
@@ -63,7 +72,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! initialize quat with one scalar (s) and a vec3 of complex (ijk)
-		inline Quat(const T &s, const vec<T, 3> &ijk)
+		inline Quat(const T &s, const vec<3, T> &ijk)
 		{
 			w = s;
 			x = ijk.data[0];
@@ -73,7 +82,7 @@ namespace GMTK_NAMESPACE
 
 		//! initialize quat with vec4 of complex(3)scalar(1)
 		//! NOTE: w becomes first element!
-		inline Quat(const vec<T, 4> &xyzw)
+		inline Quat(const vec<4, T> &xyzw)
 		{
 			w = xyzw.data[3];
 			x = xyzw.data[0];
@@ -91,7 +100,9 @@ namespace GMTK_NAMESPACE
 			data[3] = static_cast<T>(copy.data[3]);
 		}
 
-		// OPERATORS
+		///////////////////////
+		//! ACCESS OPERATORS //
+		///////////////////////
 
 		//! returns reference to an element of the given quat, in the order w,x,y,z
 		inline T& operator[](const int i) {
@@ -101,6 +112,10 @@ namespace GMTK_NAMESPACE
 		inline const T& operator[](const int i) const {
 			return data[i];
 		}
+
+		///////////////////////////
+		//! RIGHT-HAND OPERATORS //
+		///////////////////////////
 
 		//!
 		inline Quat<T> operator+(const Quat &q) {
@@ -140,15 +155,15 @@ namespace GMTK_NAMESPACE
 		}
 
 		//!
-		inline vec<T, 3> operator*(const vec<T, 3> &v) {
+		inline vec<3, T> operator*(const vec<3, T> &v) {
 			Quat<T> vp = (*this) * Quat<T>(0, v.x, v.y, v.z) * conj(*this);
-			return vec<T, 3>(vp.x, vp.y, vp.z);
+			return vec<3, T>(vp.x, vp.y, vp.z);
 		}
 		
 		//!
-		inline vec<T, 3> operator/(const vec<T, 3> &v) {
+		inline vec<3, T> operator/(const vec<3, T> &v) {
 			Quat<T> vp = (*this) * Quat<T>(0, -v.x, -v.y, -v.z) * conj(*this);
-			return vec<T, 3>(vp.x, vp.y, vp.z);
+			return vec<3, T>(vp.x, vp.y, vp.z);
 		}
 
 		//!
@@ -191,10 +206,14 @@ namespace GMTK_NAMESPACE
 			GMTK_QUAT_REF_OPERATOR(data[i] /= s);
 		}
 
+		///////////////////////
+		//! TYPE CONVERSIONS //
+		///////////////////////
+
 		//!
-		inline mat<T, 3, 3> tomat()
+		inline mat<3, 3, T> tomat()
 		{
-			return mat<T, 3, 3>
+			return mat<3, 3, T>
 			{
 				1 - 2 * (sq(k) + sq(j)), 
 					2 * (i * j + k * w),
@@ -209,11 +228,13 @@ namespace GMTK_NAMESPACE
 				1 - 2 * (sq(j) + sq(i))
 			};
 		}
-
-		// GENERATORS
+		
+		//////////////////////////
+		//! GENERATOR FUNCTIONS //
+		//////////////////////////
 
 		//! creates a rotation quaternion rotated about an axis according to a specified angle
-		inline static Quat<T> axisangle(const vec<T, 3> &axis, const Angle<T> &angle)
+		inline static Quat<T> axisangle(const vec<3, T> &axis, const ang<T> &angle)
 		{
 			float a2 = angle.radians() / 2;
 			float sa2 = sin(a2);
@@ -232,7 +253,11 @@ namespace GMTK_NAMESPACE
 			return Quat<T>(1, 0, 0, 0);
 		}
 				
-	};////
+	}; //! struct quat
+
+	//////////////////////
+	//! MISC. OPERATORS //
+	//////////////////////
 
 	//! Quaternion output operator
 	template <typename T>
@@ -241,6 +266,10 @@ namespace GMTK_NAMESPACE
 		os << "< " << std::showpos << q.w << ' ' << q.x << "i " << q.y << "j " << q.z << std::noshowpos << "k >";
 		return os;
 	}
+
+	/////////////////////
+	//! FREE FUNCTIONS //
+	/////////////////////
 	
 	//! Returns length squared of quaternion
 	template <typename T>
@@ -325,11 +354,21 @@ namespace GMTK_NAMESPACE
 		return l*cos(tht) + v*sin(tht);
 	}
 
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
+
 	typedef Quat<float> quat;
 	typedef Quat<double> quatd;
 	typedef Quat<int> quati;
 	typedef Quat<unsigned> quatui;
 
-}
+}////
+
+//
+
+#pragma warning(pop)
+
+//
 
 #endif//_GMTK_QUAT_H_

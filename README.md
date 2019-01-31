@@ -23,6 +23,7 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] Type-Templated
   - [x] Dot and Cross Product
   - [x] All GLSL Vector Operations
+  - [ ] Vector Swizzling
 - [x] Generic Quaternions
   - [x] Type-Templated
   - [x] Quaternion SLERP
@@ -48,38 +49,64 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ### Code Sample
 
 ``` c++
-// define a 3d float vector
-// synonymous with gmtk::vec3 and gmtk::vec3f
-gmtk::vec<float, 3> vecA;
+#include <iostream>
 
-// initialize a 3d float matrix
-gmtk::mat3 matA(1, 0, 1,
-		2, 4, 0,
-		3, 5, 6);
+// change the namespace to suit your project (default is gmtk)
+#define GMTK_NAMESPACE gm
 
-// initialize a 3d float matrix as the inverse of matA
-gmtk::mat3 matB = gmtk::inverse(matA);
+// one header gets the entire library, no hassle!
+#include "gmtk.h"
 
-// retrieve the first column of matB as a 3d vector and store it in vecA
-vecA = matB[0];
+int main()
+{
+	// define a 3d float vector
+	// synonymous with gm::vec3, gm::vec3f, and gm::vec<3>
+	gm::vec<3, float> vecA;
 
-// initialize sclA the first column, last row of matA
-float sclA = matA[0][2];
+	// initialize a 3d float matrix
+	// synonymous with gm::mat3 and gm::mat3f, and gm::mat<3>
+	gm::mat<3, 3, float> matA(1, 0, 1,
+				2, 4, 0,
+				3, 5, 6);
 
-// define a perspective transformation matrix (openGL)
-gmtk::mat4::perspective(
-		gmtk::Degrees(90), // y-axis field of view, in degrees (gmtk::Angle)
+	// initialize a 3d float matrix as the inverse of matA
+	gm::mat3 matB = gm::inverse(matA);
+
+	// initialize a homogeneous transformation matrix (rotation and position)
+	gm::mat4 matH(gm::mat3::rotatex(1.5_rad), gm::vec3(1, 2, 3));
+
+	// fast invert the homogeneous transformation matrix
+	gm::mat4 imatH = gm::fastinverse(matH);
+
+	// retrieve the first column of matB as a 3d vector and store it in vecA
+	vecA = matB[0];
+
+	// initialize sclA the first column, last row of matA
+	float sclA = matA[0][2];
+
+	// define a perspective transformation matrix (openGL)
+	gm::mat4::perspective(
+		90_deg, // y-axis field of view, in degrees (gm::ang)
 		16 / (float)9, // aspect ratio
 		0.01, // near clipping range for z-axis
 		10000 // far clipping range for z-axis
-		);
+	);
 
-// constructs a column-major 3d float matrix from rows, using 3d float vectors
-gmtk::mat3::fromrows(
-		gmtk::vec3(0, 1, 2), 
-		gmtk::vec3(3, 4, 5), 
-		gmtk::vec3(4, 5, 6)
-		);
+	// output our results
+	std::cout << matA * matB << std::endl << std::endl
+		<< matH * imatH << std::endl << std::endl
+		<< 45_deg << std::endl;
 
-gmtk::M_PI; // pi constant
+	// constructs a column-major 3d float matrix from rows, using 3d float vectors
+	gm::mat3::fromrows(
+		gm::vec3(0, 1, 2),
+		gm::vec3(3, 4, 5),
+		gm::vec3(4, 5, 6)
+	);
+
+	// pi constant, change to d_pi for double precision
+	// all commonly used constants supported
+	gm::f_pi;
+}
+
 ```

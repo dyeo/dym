@@ -3,6 +3,11 @@
 
 //
 
+#pragma warning(push)
+#pragma warning(disable:4456; disable:4127; disable:4244)
+
+//
+
 //! gmtk namespace
 #ifndef GMTK_NAMESPACE
 #define GMTK_NAMESPACE gmtk
@@ -116,7 +121,7 @@ template<> struct static_assert_util < true > {};
 //
 
 namespace GMTK_NAMESPACE
-{
+{////
 
 	template <typename T>
 	inline T sq(const T& v)
@@ -139,19 +144,25 @@ namespace GMTK_NAMESPACE
 	}
 
 	template <typename T>
-	inline T min(const T& l, const T& r)
+	inline constexpr T abs(const T& v)
+	{
+		return (v > 0) ? v : -v;
+	}
+
+	template<typename T>
+	inline constexpr T min(const T& l, const T& r)
 	{
 		return (l < r) ? l : r;
 	}
 
 	template <typename T>
-	inline T max(const T& l, const T& r)
+	inline constexpr T max(const T& l, const T& r)
 	{
 		return (l > r) ? l : r;
 	}
 
 	template <typename T>
-	inline T clamp(const T& v, const T& mVal, const T& MVal)
+	inline constexpr T clamp(const T& v, const T& mVal, const T& MVal)
 	{
 		return min(max(v, mVal), MVal);
 	}
@@ -215,59 +226,70 @@ namespace GMTK_NAMESPACE
 		return (T(0) < val) - (val < T(0));
 	}
 
-}
+	#pragma region GMTK_CONSTANTS
 
-#pragma region GMTK_CONSTANTS
+	//! pi ratio
+	constexpr float f_pi = 3.14159265358979323846264338327950288419f;		constexpr double d_pi = 3.14159265358979323846264338327950288419;
 
-//! Pi ratio
-#define M_PI		3.14159265358979323846264338327950288419
+	//! 2pi ratio
+	constexpr float f_2pi = 6.28318530717958647692528676655900576839f;		constexpr double d_2pi = 6.28318530717958647692528676655900576839;
 
-//! Tau (2*Pi)
-#define M_TAU		6.28318530717958647692528676655900576839
+	//! tau (same as 2pi)
+	constexpr float f_tau = f_2pi;											constexpr double d_tau = d_2pi;
 
-//! 1 / Pi
-#define M_1_PI		0.318309886183790671537767526745028724069
+	//! 1 / pi
+	constexpr float f_1_pi = 0.318309886183790671537767526745028724069f;	constexpr double d_1_pi = 0.318309886183790671537767526745028724069;
 
-//! 2 / Pi
-#define M_2_PI		0.636619772367581343075535053490057448138
+	//! 2 / pi
+	constexpr float f_2_pi = 0.636619772367581343075535053490057448138f;	constexpr double d_2_pi = 0.636619772367581343075535053490057448138;
 
-//! Pi / 2
-#define M_PI_2		1.57079632679489661923132169163975144210
+	//! pi / 2
+	constexpr float f_pi_2 = 1.57079632679489661923132169163975144210f;		constexpr double d_pi_2 = 1.57079632679489661923132169163975144210;
 
-//! Pi / 4
-#define M_PI_4		0.785398163397448309615660845819875721049
+	//! pi / 4
+	constexpr float f_pi_4 = 0.785398163397448309615660845819875721049f;	constexpr double d_pi_4 = 0.785398163397448309615660845819875721049;
 
-//! log2(Pi)
-#define M_LOG2PI	1.65149612947231879804327929510800733502
+	//! log2(pi)
+	constexpr float f_log2pi = 1.65149612947231879804327929510800733502f;	constexpr double d_log2pi = 1.65149612947231879804327929510800733502;
 
-//! sqrt(Pi)
-#define M_SQRTPI	1.77245385090551602729816748334114518280
+	//! sqrt(pi)
+	constexpr float f_sqrtpi = 1.77245385090551602729816748334114518280f;	constexpr double d_sqrtpi = 1.77245385090551602729816748334114518280;
 
-//! 2*sqrt(Pi)
-#define M_2SQRTPI	3.54490770181103205459633496668229036560
+	//! 2*sqrt(pi)
+	constexpr float f_2sqrtpi = 3.54490770181103205459633496668229036560f;	constexpr double d_2sqrtpi = 3.54490770181103205459633496668229036560;
 
-//! Euler's number
-#define M_E			2.71828182845904523536028747135266249776
+	//! euler's number
+	constexpr float f_e = 2.71828182845904523536028747135266249776f;		constexpr double d_e = 2.71828182845904523536028747135266249776;
 
-//! log2(e)
-#define M_LOG2E		1.44269504088896340735992468100189213743
+	//! log2(e)
+	constexpr float f_log2e = 1.44269504088896340735992468100189213743f;	constexpr double d_log2e = 1.44269504088896340735992468100189213743;
 
-//! log10(e)
-#define M_LOG10E	0.434294481903251827651128918916605082294
+	//! log10(e)
+	constexpr float f_log10e = 0.434294481903251827651128918916605082294f;	constexpr double d_log10e = 0.434294481903251827651128918916605082294;
 
-//! ln(2)
-#define M_LN2		0.693147180559945309417232121458176568076
+	//! ln(2)
+	constexpr float f_ln2 = 0.693147180559945309417232121458176568076f;		constexpr double d_ln2 = 0.693147180559945309417232121458176568076;
 
-//! ln(10)
-#define M_LN10		2.30258509299404568401799145468436420760
+	//! ln(10)
+	constexpr float f_ln10 = 2.30258509299404568401799145468436420760f;		constexpr double d_ln10 = 2.30258509299404568401799145468436420760;
 
-//! sqrt(2)
-#define M_SQRT2		1.41421356237309504880168872420969807857
+	//! sqrt(2)
+	constexpr float f_sqrt2 = 1.41421356237309504880168872420969807857f;	constexpr double d_sqrt2 = 1.41421356237309504880168872420969807857;
 
-//! sqrt(3)
-#define M_SQRT3		1.73205080756887729352744634150587236694
+	//! sqrt(3)
+	constexpr float f_sqrt3 = 1.73205080756887729352744634150587236694f;	constexpr double d_sqrt3 = 1.73205080756887729352744634150587236694;
 
-#pragma endregion
+	//! epsilon; smallest value v such that 1 + v != 1
+	constexpr float f_epsilon = FLT_EPSILON;								constexpr double d_epsilon = DBL_EPSILON;
 
+	#pragma endregion
+
+}////
+
+//
+
+#pragma warning(pop)
+
+//
 
 #endif //_GMTK_UTIL_H_
