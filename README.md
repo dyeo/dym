@@ -65,8 +65,8 @@ int main()
 	// initialize a 3d float matrix
 	// synonymous with gm::mat3 and gm::mat3f, and gm::mat<3>
 	gm::mat<3, 3, float> matA(1, 0, 1,
-					2, 4, 0,
-					3, 5, 6);
+				2, 4, 0,
+				3, 5, 6);
 
 	// initialize a 3d float matrix as the inverse of matA
 	gm::mat3 matB = gm::inverse(matA);
