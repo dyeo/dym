@@ -297,7 +297,7 @@ namespace GMTK_NAMESPACE
 		}
 		
 		//! Generates a clockwise rotation matrix using an angle
-		inline static mat<T, 2, 2> rotate(const Angle<T>& a)
+		inline static mat<T, 2, 2> rotate(const ang<T>& a)
 		{
 			float ca = cos(a.radians());
 			float sa = sin(a.radians());
@@ -305,13 +305,13 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Generates a clockwise rotation matrix using an angle
-		inline static mat<T, 2, 2> rotatecw(const Angle<T>& a)
+		inline static mat<T, 2, 2> rotatecw(const ang<T>& a)
 		{
 			return rotate(a);
 		}
 
 		//! Generates a counter-clockwise rotation matrix using an angle
-		inline static mat<T, 2, 2> rotateccw(const Angle<T>& a)
+		inline static mat<T, 2, 2> rotateccw(const ang<T>& a)
 		{
 			float ca = cos(a.radians());
 			float sa = sin(a.radians());

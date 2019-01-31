@@ -220,7 +220,7 @@ namespace GMTK_NAMESPACE
 
 	//! Calculates the angle between two vectors
 	template <typename T, int d>
-	inline Angle<T> angle(const vec<T, d> &l, const vec<T, d> &r)
+	inline ang<T> angle(const vec<T, d> &l, const vec<T, d> &r)
 	{
 		T dp = dot(l, r) / (magnitude(l) * magnitude(r));
 		return radians(acos(dp));
@@ -228,7 +228,7 @@ namespace GMTK_NAMESPACE
 
 	//! Rotates the source vector around the ais vector by the specified angle
 	template <typename T, int d>
-	inline vec<T, d> rotatearound(const vec<T, d> &src, const vec<T, d> &axs, const Angle<T> &dlt)
+	inline vec<T, d> rotatearound(const vec<T, d> &src, const vec<T, d> &axs, const ang<T> &dlt)
 	{
 		T ct = cos(dlt.radians());
 		T st = sin(dlt.radians());

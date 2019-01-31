@@ -234,7 +234,7 @@ namespace GMTK_NAMESPACE
 		//////////////////////////
 
 		//! creates a rotation quaternion rotated about an axis according to a specified angle
-		inline static Quat<T> axisangle(const vec<T, 3> &axis, const Angle<T> &angle)
+		inline static Quat<T> axisangle(const vec<T, 3> &axis, const ang<T> &angle)
 		{
 			float a2 = angle.radians() / 2;
 			float sa2 = sin(a2);

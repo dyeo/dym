@@ -324,7 +324,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Rotate an axis about a given angle
-		inline static mat<T, 3, 3> rotate(const Angle<T>& an, const vec<T, 3>& ax)
+		inline static mat<T, 3, 3> rotate(const ang<T>& an, const vec<T, 3>& ax)
 		{
 			T c = cos(an.radians());
 			T s = sin(an.radians());
@@ -336,7 +336,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Rotate axis x about a given angle
-		inline static mat<T, 3, 3> rotatex(const Angle<T>& x)
+		inline static mat<T, 3, 3> rotatex(const ang<T>& x)
 		{
 			T c = cos(x.radians());
 			T s = sin(x.radians());
@@ -347,7 +347,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Rotate axis y about a given angle
-		inline static mat<T, 3, 3> rotatey(const Angle<T>& x)
+		inline static mat<T, 3, 3> rotatey(const ang<T>& x)
 		{
 			T c = cos(x.radians());
 			T s = sin(x.radians());
@@ -358,7 +358,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Rotate axis z about a given angle
-		inline static mat<T, 3, 3> rotatez(const Angle<T>& x)
+		inline static mat<T, 3, 3> rotatez(const ang<T>& x)
 		{
 			T c = cos(x.radians());
 			T s = sin(x.radians());

@@ -14,7 +14,7 @@ namespace GMTK_NAMESPACE
 {////
 
 	template<typename T = float>
-	struct Angle
+	struct ang
 	{////
 
 		///////////////////
@@ -27,7 +27,7 @@ namespace GMTK_NAMESPACE
 			Degrees = 1
 		};
 
-		inline Angle(T amount, AngleUnits units)
+		inline ang(T amount, AngleUnits units)
 		{
 			switch (units)
 			{
@@ -45,20 +45,20 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! Default constructor
-		inline Angle()
+		inline ang()
 		{
 			_rads = static_cast<T>(0);
 		}
 
 		//! Copy constructor
-		inline Angle(const Angle<T>& a)
+		inline ang(const ang<T>& a)
 		{
 			_rads = a._rads;
 		}
 
 		//! Type conversion copy constructor
 		template<typename U>
-		inline Angle(const Angle<U>& a)
+		inline ang(const ang<U>& a)
 		{
 			_rads = static_cast<T>(a._rads);
 		}
@@ -68,50 +68,50 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 
 		//! Unary negative angle
-		inline Angle<T> operator-() {
-			return Angle<T>(-_rads);
+		inline ang<T> operator-() {
+			return ang<T>(-_rads);
 		}
 		
 		//! Angle addition
-		inline Angle<T> operator+(const Angle<T>& a) {
-			return Angle<T>(_rads + a.ang);
+		inline ang<T> operator+(const ang<T>& a) {
+			return ang<T>(_rads + a.ang);
 		}
 
 		//! Angle subtraction
-		inline Angle<T> operator-(const Angle<T>& a) {
-			return Angle<T>(_rads - a.ang);
+		inline ang<T> operator-(const ang<T>& a) {
+			return ang<T>(_rads - a.ang);
 		}
 
 		//! Angle multiplication
-		inline Angle<T> operator*(const T& s) {
-			return Angle<T>(_rads * s);
+		inline ang<T> operator*(const T& s) {
+			return ang<T>(_rads * s);
 		}
 
 		//! Angle division
-		inline Angle<T> operator/(const T& s) {
-			return Angle<T>(_rads - s);
+		inline ang<T> operator/(const T& s) {
+			return ang<T>(_rads - s);
 		}
 
 		//! Angle reference addition
-		inline Angle<T>& operator+=(const Angle<T>& a) {
+		inline ang<T>& operator+=(const ang<T>& a) {
 			_rads += a.ang;
 			return *this;
 		}
 
 		//! Angle reference subtraction
-		inline Angle<T>& operator-=(const Angle<T>& a) {
+		inline ang<T>& operator-=(const ang<T>& a) {
 			_rads -= a.ang;
 			return *this;
 		}
 
 		//! Angle reference multiplication
-		inline Angle<T>& operator*=(const T& s) {
+		inline ang<T>& operator*=(const T& s) {
 			_rads *= s;
 			return *this;
 		}
 
 		//! Angle reference division
-		inline Angle<T>& operator/=(const T& s) {
+		inline ang<T>& operator/=(const T& s) {
 			_rads /= s;
 			return *this;
 		}
@@ -133,7 +133,7 @@ namespace GMTK_NAMESPACE
 	private:
 
 		//! Efficient private inline constructor.
-		inline Angle(const T& v)
+		inline ang(const T& v)
 		{
 			_rads = v;
 		}
@@ -147,32 +147,32 @@ namespace GMTK_NAMESPACE
 	//////////////////////////
 
 	//! Creates an angle in degrees
-	inline Angle<> degrees(float deg)
+	inline ang<> degrees(float deg)
 	{
-		return Angle<float>(deg, Angle<float>::Degrees);
+		return ang<float>(deg, ang<float>::Degrees);
 	}
 
 	//! Creates an angle in radians
-	inline Angle<> radians(float rad)
+	inline ang<> radians(float rad)
 	{
-		return Angle<float>(rad, Angle<float>::Radians);
+		return ang<float>(rad, ang<float>::Radians);
 	}
 
 	///////////////////////
 	//! TYPE DEFINITIONS //
 	///////////////////////
 
-	typedef Angle<float> ang, angf;
+	typedef ang<float> angf;
 
-	typedef Angle<double> angd;
+	typedef ang<double> angd;
 
-	typedef Angle<int> angi;
+	typedef ang<int> angi;
 	
 	//////////////////////
 	//! MISC. OPERATORS //
 	//////////////////////
 
-	inline std::ostream& operator<<(std::ostream& os, const Angle<> &a)
+	inline std::ostream& operator<<(std::ostream& os, const ang<> &a)
 	{
 		os << a.degrees() << "deg";
 		return os;
@@ -182,22 +182,22 @@ namespace GMTK_NAMESPACE
 
 //
 
-inline GMTK_NAMESPACE::Angle<> operator "" _deg(unsigned long long value)
+inline GMTK_NAMESPACE::ang<> operator "" _deg(unsigned long long value)
 {
 	return GMTK_NAMESPACE::degrees(static_cast<float>(value));
 }
 
-inline GMTK_NAMESPACE::Angle<> operator "" _deg(long double value)
+inline GMTK_NAMESPACE::ang<> operator "" _deg(long double value)
 {
 	return GMTK_NAMESPACE::degrees(static_cast<float>(value));
 }
 
-inline GMTK_NAMESPACE::Angle<> operator "" _rad(unsigned long long value)
+inline GMTK_NAMESPACE::ang<> operator "" _rad(unsigned long long value)
 {
 	return GMTK_NAMESPACE::radians(static_cast<float>(value));
 }
 
-inline GMTK_NAMESPACE::Angle<> operator "" _rad(long double value)
+inline GMTK_NAMESPACE::ang<> operator "" _rad(long double value)
 {
 	return GMTK_NAMESPACE::radians(static_cast<float>(value));
 }

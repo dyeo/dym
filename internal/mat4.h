@@ -405,7 +405,7 @@ namespace GMTK_NAMESPACE
 				c3.x, c3.y, c3.z, c3.w );
 		}
 
-		inline static mat<T, 4, 4> rotate(const Angle<T>& an, const vec<T, 3>& ax)
+		inline static mat<T, 4, 4> rotate(const ang<T>& an, const vec<T, 3>& ax)
 		{
 			T c = cos(an.radians());
 			T s = sin(an.radians());
@@ -417,7 +417,7 @@ namespace GMTK_NAMESPACE
 				 0, 0, 0, 1);
 		}
 
-		inline static mat<T, 4, 4> rotatex(const Angle<T>& x)
+		inline static mat<T, 4, 4> rotatex(const ang<T>& x)
 		{
 			T c = cos(x.radians());
 			T s = sin(x.radians());
@@ -428,7 +428,7 @@ namespace GMTK_NAMESPACE
 				0, 0, 0, 1);
 		}
 
-		inline static mat<T, 4, 4> rotatey(const Angle<T>& x)
+		inline static mat<T, 4, 4> rotatey(const ang<T>& x)
 		{
 			T c = cos(x.radians());
 			T s = sin(x.radians());
@@ -439,7 +439,7 @@ namespace GMTK_NAMESPACE
 				0, 0, 0, 1);
 		}
 
-		inline static mat<T, 4, 4> rotatez(const Angle<T>& x)
+		inline static mat<T, 4, 4> rotatez(const ang<T>& x)
 		{
 			T c = cos(x.radians());
 			T s = sin(x.radians());
@@ -507,7 +507,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! generates a 3d-perspective frustum transformation
-		inline static mat<T, 4, 4> perspective(const Angle<T> &fovy, const T &aspect, const T &near, const T &far)
+		inline static mat<T, 4, 4> perspective(const ang<T> &fovy, const T &aspect, const T &near, const T &far)
 		{
 			T ys = 1.0 / tan(fovy.radians()*0.5);
 			T xs = ys / aspect;
