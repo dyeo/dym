@@ -24,7 +24,7 @@ namespace GMTK_NAMESPACE
 		enum AngleUnits
 		{
 			Radians = 0,
-			Degrees
+			Degrees = 1
 		};
 
 		inline Angle(T amount, AngleUnits units)
@@ -32,41 +32,119 @@ namespace GMTK_NAMESPACE
 			switch (units)
 			{
 			case Radians:
-				ang = amount;
+				_rads = amount;
 				break;
 			case Degrees:
-				ang = amount * static_cast<T>(DEG2RAD);
+				_rads = amount * static_cast<T>(DEG2RAD);
 				break;
 			}
 		};
 
+		///////////////////
+		//! CONSTRUCTORS //
+		///////////////////
+
+		//! Default constructor
 		inline Angle()
 		{
-			ang = static_cast<T>(0);
+			_rads = static_cast<T>(0);
 		}
 
-		template<typename U>
+		//! Copy constructor
+		inline Angle(const Angle<T>& a)
+		{
+			_rads = a._rads;
+		}
+
 		//! Type conversion copy constructor
+		template<typename U>
 		inline Angle(const Angle<U>& a)
 		{
-			ang = static_cast<T>(a.ang);
+			_rads = static_cast<T>(a._rads);
 		}
 
-		inline float degrees() const
-		{
-			return ang * static_cast<T>(RAD2DEG);
+		///////////////////////////
+		//! RIGHT-HAND OPERATORS //
+		///////////////////////////
+
+		//! Unary negative angle
+		inline Angle<T> operator-() {
+			return Angle<T>(-_rads);
+		}
+		
+		//! Angle addition
+		inline Angle<T> operator+(const Angle<T>& a) {
+			return Angle<T>(_rads + a.ang);
 		}
 
-		inline float radians() const
+		//! Angle subtraction
+		inline Angle<T> operator-(const Angle<T>& a) {
+			return Angle<T>(_rads - a.ang);
+		}
+
+		//! Angle multiplication
+		inline Angle<T> operator*(const T& s) {
+			return Angle<T>(_rads * s);
+		}
+
+		//! Angle division
+		inline Angle<T> operator/(const T& s) {
+			return Angle<T>(_rads - s);
+		}
+
+		//! Angle reference addition
+		inline Angle<T>& operator+=(const Angle<T>& a) {
+			_rads += a.ang;
+			return *this;
+		}
+
+		//! Angle reference subtraction
+		inline Angle<T>& operator-=(const Angle<T>& a) {
+			_rads -= a.ang;
+			return *this;
+		}
+
+		//! Angle reference multiplication
+		inline Angle<T>& operator*=(const T& s) {
+			_rads *= s;
+			return *this;
+		}
+
+		//! Angle reference division
+		inline Angle<T>& operator/=(const T& s) {
+			_rads /= s;
+			return *this;
+		}
+
+		///////////////////////
+		//! ACCESS FUNCTIONS //
+		///////////////////////
+
+		inline T degrees() const
 		{
-			return ang;
+			return _rads * static_cast<T>(RAD2DEG);
+		}
+
+		inline T radians() const
+		{
+			return _rads;
 		}
 
 	private:
 
-		T ang = 0;
+		//! Efficient private inline constructor.
+		inline Angle(const T& v)
+		{
+			_rads = v;
+		}
+
+		T _rads = 0;
 
 	};////
+
+	//////////////////////////
+	//! GENERATOR FUNCTIONS //
+	//////////////////////////
 
 	//! Creates an angle in degrees
 	inline Angle<> degrees(float deg)
@@ -80,10 +158,14 @@ namespace GMTK_NAMESPACE
 		return Angle<float>(rad, Angle<float>::Radians);
 	}
 
-	//! Default angle specifier
-	typedef Angle<float> angf;
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
+
+	typedef Angle<float> ang, angf;
 
 	typedef Angle<double> angd;
+
 	typedef Angle<int> angi;
 	
 	//////////////////////
