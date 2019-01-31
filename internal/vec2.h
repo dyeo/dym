@@ -15,7 +15,7 @@
 #define GMTK_VEC2_LOOP(oper) GMTK_UNROLL_LOOP(i,2,oper)
 
 #define GMTK_VEC2_OPERATOR(oper) \
-		{ vec<T,2> res; \
+		{ vec<2, T> res; \
 		GMTK_VEC2_LOOP(res[i] = oper); \
 		return res; }
 
@@ -28,7 +28,7 @@
 namespace GMTK_NAMESPACE
 {////
 
-	template <typename T> struct vec < T, 2 >
+	template <typename T> struct vec <2, T>
 	{
 		///////////////////
 		//! DATA MEMBERS //
@@ -63,19 +63,20 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Copy constructor
-		inline vec(const vec<T, 2>& v) {
+		inline vec(const vec<2, T>& v) {
 			GMTK_VEC2_LOOP(data[i] = v.data[i]);
 		}
 
 		//! Copy constructor for arbitrarily larger vector
 		template<int d2>
-		inline vec(const vec<T, d2> &v) {
+		inline vec(const vec<d2, T> &v) {
 			GMTK_STATIC_ASSERT(d2 >= 2);
 			GMTK_VEC2_LOOP(data[i] = v.data[i]);
 		}
 
 		//! Explicit type-conversion copy constructor
-		template<typename U> explicit inline vec(const vec<U, 2>& v) {
+		template<typename U> 
+		explicit inline vec(const vec<2, U>& v) {
 			GMTK_VEC2_LOOP(data[i] = static_cast<T>(v[i]));
 		}
 
@@ -108,87 +109,87 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 
 		//! Returns a negative vector
-		inline vec<T, 2> operator-() const {
+		inline vec<2, T> operator-() const {
 			GMTK_VEC2_OPERATOR(-data[i]);
 		}
 
 		//! Component-wise vector multiplication
-		inline vec<T, 2> operator*(const vec<T, 2>& v) const {
+		inline vec<2, T> operator*(const vec<2, T>& v) const {
 			GMTK_VEC2_OPERATOR(data[i] * v.data[i]);
 		}
 
 		//! Component-wise vector division
-		inline vec<T, 2> operator/(const vec<T, 2>& v) const {
+		inline vec<2, T> operator/(const vec<2, T>& v) const {
 			GMTK_VEC2_OPERATOR(data[i] / v.data[i]);
 		}
 
 		//! Component-wise vector addition
-		inline vec<T, 2> operator+(const vec<T, 2>& v) const {
+		inline vec<2, T> operator+(const vec<2, T>& v) const {
 			GMTK_VEC2_OPERATOR(data[i] + v.data[i]);
 		}
 
 		//! Component-wise vector subtraction
-		inline vec<T, 2> operator-(const vec<T, 2>& v) const {
+		inline vec<2, T> operator-(const vec<2, T>& v) const {
 			GMTK_VEC2_OPERATOR(data[i] - v.data[i]);
 		}
 
 		//! Component-wise vector reference multiplication
-		inline vec<T, 2>& operator*=(const vec<T, 2>& v) {
+		inline vec<2, T>& operator*=(const vec<2, T>& v) {
 			GMTK_VEC2_REF_OPERATOR(data[i] *= v.data[i]);
 		}
 
 		//! Component-wise vector reference division
-		inline vec<T, 2>& operator/=(const vec<T, 2>& v) {
+		inline vec<2, T>& operator/=(const vec<2, T>& v) {
 			GMTK_VEC2_REF_OPERATOR(data[i] /= v.data[i]);
 		}
 
 		//! Component-wise vector reference addition
-		inline vec<T, 2>& operator+=(const vec<T, 2>& v) {
+		inline vec<2, T>& operator+=(const vec<2, T>& v) {
 			GMTK_VEC2_REF_OPERATOR(data[i] += v.data[i]);
 		}
 
 		//! Component-wise vector reference subtraction
-		inline vec<T, 2>& operator-=(const vec<T, 2>& v) {
+		inline vec<2, T>& operator-=(const vec<2, T>& v) {
 			GMTK_VEC2_REF_OPERATOR(data[i] -= v.data[i]);
 		}
 
 		//! Component-wise scalar multiplication
-		inline vec<T, 2> operator*(const T& s) const {
+		inline vec<2, T> operator*(const T& s) const {
 			GMTK_VEC2_OPERATOR(data[i] * s);
 		}
 
 		//! Component-wise scalar division
-		inline vec<T, 2> operator/(const T& s) const {
+		inline vec<2, T> operator/(const T& s) const {
 			GMTK_VEC2_OPERATOR(data[i] / s);
 		}
 
 		//! Component-wise scalar addition
-		inline vec<T, 2> operator+(const T& s) const {
+		inline vec<2, T> operator+(const T& s) const {
 			GMTK_VEC2_OPERATOR(data[i] + s);
 		}
 
 		//! Component-wise scalar subtraction
-		inline vec<T, 2> operator-(const T& s) const {
+		inline vec<2, T> operator-(const T& s) const {
 			GMTK_VEC2_OPERATOR(data[i] - s);
 		}
 
 		//! Component-wise scalar reference multiplication
-		inline vec<T, 2>& operator*=(const T& s) {
+		inline vec<2, T>& operator*=(const T& s) {
 			GMTK_VEC2_REF_OPERATOR(data[i] *= s);
 		}
 
 		//! Component-wise scalar reference division
-		inline vec<T, 2>& operator/=(const T& s) {
+		inline vec<2, T>& operator/=(const T& s) {
 			GMTK_VEC2_REF_OPERATOR(data[i] /= s);
 		}
 
 		//! Component-wise scalar reference addition
-		inline vec<T, 2>& operator+=(const T& s) {
+		inline vec<2, T>& operator+=(const T& s) {
 			GMTK_VEC2_REF_OPERATOR(data[i] += s);
 		}
 
 		//! Component-wise scalar reference subtraction
-		inline vec<T, 2>& operator-=(const T& s) {
+		inline vec<2, T>& operator-=(const T& s) {
 			GMTK_VEC2_REF_OPERATOR(data[i] -= s);
 		}
 
@@ -197,43 +198,39 @@ namespace GMTK_NAMESPACE
 		//////////////////////////
 		
 		//! Zero vector (0,0)
-		static inline constexpr vec<T, 2> zero() { return vec<T, 2>(0, 0); }
+		static inline constexpr vec<2, T> zero() { return vec<2, T>(0, 0); }
 		
 		//! One vector (1,1)
-		static inline constexpr vec<T, 2> one() { return vec<T, 2>(1, 1); }
+		static inline constexpr vec<2, T> one() { return vec<2, T>(1, 1); }
 
 		//! Up vector (0,1)
-		static inline constexpr vec<T, 2> up() { return vec<T, 2>(0, 1); }
+		static inline constexpr vec<2, T> up() { return vec<2, T>(0, 1); }
 
 		//! Down vector (0,-1)
-		static inline constexpr vec<T, 2> down() { return vec<T, 2>(0, -1); }
+		static inline constexpr vec<2, T> down() { return vec<2, T>(0, -1); }
 
 		//! Right vector (1,0)
-		static inline constexpr vec<T, 2> right() { return vec<T, 2>(1, 0); }
+		static inline constexpr vec<2, T> right() { return vec<2, T>(1, 0); }
 
 		//! Left vector (-1,0)
-		static inline constexpr vec<T, 2> left() { return vec<T, 2>(-1, 0); }
+		static inline constexpr vec<2, T> left() { return vec<2, T>(-1, 0); }
 
 	}; //! struct vec2
 
 	///////////////////////
 	//! TYPE DEFINITIONS //
 	///////////////////////
-
-	typedef vec<float, 2> vec2, vec2f;
-	typedef vec<double, 2> vec2d;
-
-	typedef vec<unsigned char, 2> vec2uc;
-	typedef vec<char, 2> vec2c;
-
-	typedef vec<unsigned short, 2> vec2us;
-	typedef vec<short, 2> vec2s;
-
-	typedef vec<unsigned int, 2> vec2ui;
-	typedef vec<int, 2> vec2i;
-
-	typedef vec<unsigned long, 2> vec2ul;
-	typedef vec<long, 2> vec2l;
+	
+	typedef vec<2, float>			vec2, vec2f;
+	typedef vec<2, double>			vec2d;
+	typedef vec<2, unsigned char>	vec2uc;
+	typedef vec<2, char>			vec2c;
+	typedef vec<2, unsigned short>	vec2us;
+	typedef vec<2, short>			vec2s;
+	typedef vec<2, unsigned int>	vec2ui;
+	typedef vec<2, int>				vec2i;
+	typedef vec<2, unsigned long>	vec2ul;
+	typedef vec<2, long>			vec2l;
 
 }////
 

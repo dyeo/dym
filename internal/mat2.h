@@ -19,9 +19,9 @@
 
 #define GMTK_MAT2_LOOP2(oper) GMTK_UNROLL_LONG_LOOP(i, 4, oper)
 
-#define GMTK_MAT2_OPERATOR(oper) { mat<T, 2, 2> res; GMTK_MAT2_LOOP(res[i][j] = oper); return res; }
+#define GMTK_MAT2_OPERATOR(oper) { mat<2, 2, T> res; GMTK_MAT2_LOOP(res[i][j] = oper); return res; }
 
-#define GMTK_MAT2_OPERATOR2(oper) { mat<T, 2, 2> res; GMTK_MAT2_LOOP2(res(i) = oper); return res; }
+#define GMTK_MAT2_OPERATOR2(oper) { mat<2, 2, T> res; GMTK_MAT2_LOOP2(res(i) = oper); return res; }
 
 #define GMTK_MAT2_REF_OPERATOR(oper) { GMTK_MAT2_LOOP(oper); return *this; }
 
@@ -32,9 +32,8 @@
 namespace GMTK_NAMESPACE
 {////
 
-	template <typename T>
 	//! A column-major matrix spanning r rows and c columns
-	struct mat<T, 2, 2>
+	template <typename T> struct mat <2, 2, T>
 	{
 		///////////////////
 		//! DATA MEMBERS //
@@ -58,7 +57,7 @@ namespace GMTK_NAMESPACE
 		//! Unioned data members
 		union
 		{
-			struct { vec<T, 2> data[2]; };
+			struct { vec<2, T> data[2]; };
 			struct { T arr[(4)]; };
 		};
 
@@ -81,13 +80,13 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Copy constructor
-		inline mat(const mat<T, 2, 2>& v) {
+		inline mat(const mat<2, 2, T>& v) {
 			GMTK_MAT2_LOOP2(arr[i] = v.arr[i]);
 		}
 
-		template<int rm, int cm>
+		template<int cm, int rm>
 		//! Minor matrix constructor
-		inline mat(const mat<T, rm, cm>& m)
+		inline mat(const mat<cm, rm, T>& m)
 		{
 			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
 			GMTK_UNROLL_2D_LOOP(i, j, cm, rm, data[i][j] = m.data[i][j]);
@@ -95,7 +94,7 @@ namespace GMTK_NAMESPACE
 
 		template<typename U>
 		//! Explicit type-conversion copy constructor
-		explicit inline mat(const mat<U, 2, 2>& v) {
+		explicit inline mat(const mat<2, 2, U>& v) {
 			GMTK_MAT2_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
 		}
 
@@ -125,7 +124,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Constructs a 2x2 matrix using the top-left portion of a 3x3 matrix;
-		inline mat(const mat<T, 3, 3>& m)
+		inline mat(const mat<3, 3, T>& m)
 		{
 			arr[0] = m.arr[0];
 			arr[1] = m.arr[1];
@@ -134,7 +133,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Constructs a 2x2 matrix using the top-left portion of a 4x4 matrix;
-		inline mat(const mat<T, 4, 4>& m)
+		inline mat(const mat<4, 4, T>& m)
 		{
 			arr[0] = m.arr[0];
 			arr[1] = m.arr[1];
@@ -147,23 +146,23 @@ namespace GMTK_NAMESPACE
 		///////////////////////
 
 		//! Column function - returns column as vector of T
-		inline vec<T, 2> col(const int i) {
+		inline vec<2, T> col(const int i) {
 			return data[i];
 		}
 
 		//! Row function - returns row as vector of T
-		inline vec<T, 2> row(const int i) {
-			vec<T, 2> v = vec4(arr[i], arr[i + 2]);
+		inline vec<2, T> row(const int i) {
+			vec<2, T> v = vec<2, T>(arr[i], arr[i + 2]);
 			return v;
 		}
 
 		//! Matrix index operator - returns column
-		inline vec<T, 2>& operator[](const int i) {
+		inline vec<2, T>& operator[](const int i) {
 			return data[i];
 		}
 
 		//! Matrix const index operator - returns column
-		inline const vec<T, 2>& operator[](const int i) const {
+		inline const vec<2, T>& operator[](const int i) const {
 			return data[i];
 		}
 
@@ -182,83 +181,83 @@ namespace GMTK_NAMESPACE
 		////////////////
 
 		//! Returns a negative matrix
-		inline mat<T, 2, 2> operator-() const {
+		inline mat<2, 2, T> operator-() const {
 			GMTK_MAT2_OPERATOR2(-arr[i]);
 		}
 
 		//! Component-wise matrix addition
-		inline mat<T, 2, 2> operator+(const mat<T, 2, 2>& m) const {
+		inline mat<2, 2, T> operator+(const mat<2, 2, T>& m) const {
 			GMTK_MAT2_OPERATOR2(arr[i] + m.arr[i]);
 		}
 
 		//! Component-wise matrix subtraction
-		inline mat<T, 2, 2> operator-(const mat<T, 2, 2>& m) const {
+		inline mat<2, 2, T> operator-(const mat<2, 2, T>& m) const {
 			GMTK_MAT2_OPERATOR2(arr[i] - m.arr[i]);
 		}
 
 		//! Component-wise matrix division
-		inline mat<T, 2, 2> operator/(const mat<T, 2, 2>& m) const {
+		inline mat<2, 2, T> operator/(const mat<2, 2, T>& m) const {
 			GMTK_MAT2_OPERATOR2(arr[i] / m.arr[i]);
 		}
 
 		//
 
 		//! Component-wise scalar addition
-		inline mat<T, 2, 2> operator+(const T& s) const {
+		inline mat<2, 2, T> operator+(const T& s) const {
 			GMTK_MAT2_OPERATOR2(arr[i] + s);
 		}
 
 		//! Component-wise scalar subtraction
-		inline mat<T, 2, 2> operator-(const T& s) const {
+		inline mat<2, 2, T> operator-(const T& s) const {
 			GMTK_MAT2_OPERATOR2(arr[i] - s);
 		}
 
 		//! Component-wise scalar division
-		inline mat<T, 2, 2> operator/(const T& s) const {
+		inline mat<2, 2, T> operator/(const T& s) const {
 			GMTK_MAT2_OPERATOR2(arr[i] / s);
 		}
 
 		//! Component-wise scalar multiplication
-		inline mat<T, 2, 2> operator*(const T& s) const {
+		inline mat<2, 2, T> operator*(const T& s) const {
 			GMTK_MAT2_OPERATOR2(arr[i] * s);
 		}
 
 		//
 
 		//! Component-wise matrix reference addition
-		inline mat<T, 2, 2>& operator+=(const mat<T, 2, 2>& m) {
+		inline mat<2, 2, T>& operator+=(const mat<2, 2, T>& m) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] += m.arr[i]);
 		}
 
 		//! Component-wise matrix reference subtraction
-		inline mat<T, 2, 2>& operator-=(const mat<T, 2, 2>& m) {
+		inline mat<2, 2, T>& operator-=(const mat<2, 2, T>& m) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] -= m.arr[i]);
 		}
 
 		//! Component-wise matrix reference division
-		inline mat<T, 2, 2>& operator/=(const mat<T, 2, 2>& m) {
+		inline mat<2, 2, T>& operator/=(const mat<2, 2, T>& m) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] /= m.arr[i]);
 		}
 
 		//
 
 		//! Component-wise scalar reference addition
-		inline mat<T, 2, 2>& operator+=(const T& s) {
+		inline mat<2, 2, T>& operator+=(const T& s) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] += s);
 		}
 
 		//! Component-wise scalar reference subtraction
-		inline mat<T, 2, 2>& operator-=(const T& s) {
+		inline mat<2, 2, T>& operator-=(const T& s) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] -= s);
 		}
 
 		//! Component-wise scalar reference division
-		inline mat<T, 2, 2>& operator/=(const T& s) {
+		inline mat<2, 2, T>& operator/=(const T& s) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] /= s);
 		}
 
 		//! Component-wise scalar reference multiplication
-		inline mat<T, 2, 2>& operator*=(const T& s) {
+		inline mat<2, 2, T>& operator*=(const T& s) {
 			GMTK_MAT2_REF_OPERATOR2(arr[i] *= s);
 		}
 		
@@ -267,112 +266,123 @@ namespace GMTK_NAMESPACE
 		/////////////////////////////////
 
 		//! Generates a 2x2 identity matrix
-		static inline constexpr mat<T, 2, 2> identity()
+		static inline constexpr mat<2, 2, T> identity()
 		{
-			return mat<T, 2, 2>(1, 0, 0, 1);
+			return mat<2, 2, T>(1, 0, 0, 1);
 		}
 
 		//! Creates a row-order matrix using individual elements
-		inline static mat<T, 2, 2> roworder(const T &s0, const T &s1, const T &s2, const T &s3)
+		inline static mat<2, 2, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3)
 		{
-			return mat<T, 2, 2>
+			return mat<2, 2, T>
 				(s0, s2,
 				 s1, s3);
 		}
 
 		//! Creates a 2x2 matrix using 2 row vectors
-		inline static mat<T, 2, 2> fromrows(vec<T, 2> r0, vec<T, 2> r1)
+		inline static mat<2, 2, T> fromrows(vec<2, T> r0, vec<2, T> r1)
 		{
-			return mat<T, 2, 2>
+			return mat<2, 2, T>
 				(r0.x, r1.x,
 				 r0.y, r1.y);
 		}
 
 		//! Creates a 2x2 matrix using 2 column vectors
-		inline static mat<T, 2, 2> fromcols(vec<T, 2> c0, vec<T, 2> c1)
+		inline static mat<2, 2, T> fromcols(vec<2, T> c0, vec<2, T> c1)
 		{
-			return mat<T, 2, 2>
+			return mat<2, 2, T>
 				(c0.x, c0.y,
 				c1.x, c1.y);
 		}
 		
 		//! Generates a clockwise rotation matrix using an angle
-		inline static mat<T, 2, 2> rotate(const ang<T>& a)
+		inline static mat<2, 2, T> rotate(const ang<T>& a)
 		{
 			float ca = cos(a.radians());
 			float sa = sin(a.radians());
-			return mat<T, 2, 2>(ca, sa, -sa, ca);
+			return mat<2, 2, T>(ca, sa, -sa, ca);
 		}
 
 		//! Generates a clockwise rotation matrix using an angle
-		inline static mat<T, 2, 2> rotatecw(const ang<T>& a)
+		inline static mat<2, 2, T> rotatecw(const ang<T>& a)
 		{
 			return rotate(a);
 		}
 
 		//! Generates a counter-clockwise rotation matrix using an angle
-		inline static mat<T, 2, 2> rotateccw(const ang<T>& a)
+		inline static mat<2, 2, T> rotateccw(const ang<T>& a)
 		{
 			float ca = cos(a.radians());
 			float sa = sin(a.radians());
-			return mat<T, 2, 2>(ca, -sa, sa, ca);
+			return mat<2, 2, T>(ca, -sa, sa, ca);
 		}
 
 		//! Generates a scaling matrix using a single scaling value
-		inline static mat<T, 2, 2> scale(const T& s)
+		inline static mat<2, 2, T> scale(const T& s)
 		{
-			return mat<T, 2, 2>(s, 0, 0, s);
+			return mat<2, 2, T>(s, 0, 0, s);
 		}
 
 		//! Generates a scaling matrix using an x and y scaling value
-		inline static mat<T, 2, 2> scale(const T& x, const T& y)
+		inline static mat<2, 2, T> scale(const T& x, const T& y)
 		{
-			return mat<T, 2, 2>(x, 0, 0, y);
+			return mat<2, 2, T>(x, 0, 0, y);
 		}
 
 		//! Shears along the x axis
-		inline static mat<T, 2, 2> shearx(const T& k)
+		inline static mat<2, 2, T> shearx(const T& k)
 		{
-			return mat<T, 2, 2>(1, 0, k, 1);
+			return mat<2, 2, T>(1, 0, k, 1);
 		}
 
 		//! Shears along the y axis
-		inline static mat<T, 2, 2> sheary(const T& k)
+		inline static mat<2, 2, T> sheary(const T& k)
 		{
-			return mat<T, 2, 2>(1, k, 0, 1);
+			return mat<2, 2, T>(1, k, 0, 1);
 		}
 
-		inline static mat<T, 3, 3> translate_affine(const T& x, const T& y)
+		inline static mat<3, 3, T> translate_affine(const T& x, const T& y)
 		{
-			mat<T, 3, 3> res = mat<T, 3, 3>::identity();
+			mat<3, 3, T> res = mat<3, 3, T>::identity();
 			res[2] = vec<T, 3>(x, y, 1);
 		}
 
-		inline static mat<T, 3, 3> translate_affine(const vec<T, 2>& t)
+		inline static mat<3, 3, T> translate_affine(const vec<2, T>& t)
 		{
 			return translate_affine(t.x, t.y);
 		}
 
 	}; //! struct mat
 
+	//! Matrix determinant
 	template<typename T>
-	inline T det(const mat<T, 2, 2>& m)
+	inline T det(const mat<2, 2, T>& m)
 	{
-		return (m.arr[0] * m.arr[3]) - (m.arr[1] * m.arr[2]);
+		return (m.arr[0] * m.arr[3]) 
+			- (m.arr[1] * m.arr[2]);
 	}
 
-	//
+	//! Inverts the matrix, such that m * inverse(m) = the identity
+	template<typename T>
+	inline mat<2, 2, T> inverse(const mat<2, 2, T>& m)
+	{
+		return mat<2, 2, T>(m.arr[3], -m.arr[1], -m.arr[2], m.arr[0]) / det(m);
+	}
+
+	///////////////////////
+	//! TYPE DEFINITIONS //
+	///////////////////////
 	
-	typedef mat<float, 2, 2>			mat2, mat2f;
-	typedef mat<double, 2, 2>			mat2d;
-	typedef mat<unsigned char, 2, 2>	mat2uc;
-	typedef mat<char, 2, 2>				mat2c;
-	typedef mat<unsigned short, 2, 2>	mat2us;
-	typedef mat<short, 2, 2>			mat2s;
-	typedef mat<unsigned int, 2, 2>		mat2ui;
-	typedef mat<int, 2, 2>				mat2i;
-	typedef mat<unsigned long, 2, 2>	mat2ul;
-	typedef mat<long, 2, 2>				mat2l;
+	typedef mat<2, 2, float>			mat2, mat2f;
+	typedef mat<2, 2, double>			mat2d;
+	typedef mat<2, 2, unsigned char>	mat2uc;
+	typedef mat<2, 2, char>				mat2c;
+	typedef mat<2, 2, unsigned short>	mat2us;
+	typedef mat<2, 2, short>			mat2s;
+	typedef mat<2, 2, unsigned int>		mat2ui;
+	typedef mat<2, 2, int>				mat2i;
+	typedef mat<2, 2, unsigned long>	mat2ul;
+	typedef mat<2, 2, long>				mat2l;
 
 }////
 

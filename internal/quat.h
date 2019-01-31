@@ -72,7 +72,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! initialize quat with one scalar (s) and a vec3 of complex (ijk)
-		inline Quat(const T &s, const vec<T, 3> &ijk)
+		inline Quat(const T &s, const vec<3, T> &ijk)
 		{
 			w = s;
 			x = ijk.data[0];
@@ -82,7 +82,7 @@ namespace GMTK_NAMESPACE
 
 		//! initialize quat with vec4 of complex(3)scalar(1)
 		//! NOTE: w becomes first element!
-		inline Quat(const vec<T, 4> &xyzw)
+		inline Quat(const vec<4, T> &xyzw)
 		{
 			w = xyzw.data[3];
 			x = xyzw.data[0];
@@ -155,15 +155,15 @@ namespace GMTK_NAMESPACE
 		}
 
 		//!
-		inline vec<T, 3> operator*(const vec<T, 3> &v) {
+		inline vec<3, T> operator*(const vec<3, T> &v) {
 			Quat<T> vp = (*this) * Quat<T>(0, v.x, v.y, v.z) * conj(*this);
-			return vec<T, 3>(vp.x, vp.y, vp.z);
+			return vec<3, T>(vp.x, vp.y, vp.z);
 		}
 		
 		//!
-		inline vec<T, 3> operator/(const vec<T, 3> &v) {
+		inline vec<3, T> operator/(const vec<3, T> &v) {
 			Quat<T> vp = (*this) * Quat<T>(0, -v.x, -v.y, -v.z) * conj(*this);
-			return vec<T, 3>(vp.x, vp.y, vp.z);
+			return vec<3, T>(vp.x, vp.y, vp.z);
 		}
 
 		//!
@@ -211,9 +211,9 @@ namespace GMTK_NAMESPACE
 		///////////////////////
 
 		//!
-		inline mat<T, 3, 3> tomat()
+		inline mat<3, 3, T> tomat()
 		{
-			return mat<T, 3, 3>
+			return mat<3, 3, T>
 			{
 				1 - 2 * (sq(k) + sq(j)), 
 					2 * (i * j + k * w),
@@ -234,7 +234,7 @@ namespace GMTK_NAMESPACE
 		//////////////////////////
 
 		//! creates a rotation quaternion rotated about an axis according to a specified angle
-		inline static Quat<T> axisangle(const vec<T, 3> &axis, const ang<T> &angle)
+		inline static Quat<T> axisangle(const vec<3, T> &axis, const ang<T> &angle)
 		{
 			float a2 = angle.radians() / 2;
 			float sa2 = sin(a2);

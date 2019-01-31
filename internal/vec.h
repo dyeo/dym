@@ -31,7 +31,7 @@ namespace GMTK_NAMESPACE
 {////
 
 	
-	template <typename T, int d>
+	template <int d, typename T = float>
 	//! A d-length vector of type T
 	struct vec
 	{
@@ -61,19 +61,20 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Copy constructor
-		inline vec(const vec<T, d>& v) {
+		inline vec(const vec<d, T>& v) {
 			GMTK_VEC_LOOP(data[i] = v.data[i]);
 		}
 
 		//! Copy constructor for arbitrarily larger vector
 		template<int d2>
-		inline vec(const vec<T, d2> &v) {
+		inline vec(const vec<d2, T> &v) {
 			GMTK_STATIC_ASSERT(d2 >= d);
 			GMTK_VEC_LOOP(data[i] = v.data[i]);
 		}
 
 		//! Explicit type-conversion copy constructor
-		template<typename U> explicit inline vec(const vec<U, d>& v) {
+		template<typename U> 
+		explicit inline vec(const vec<d, U>& v) {
 			GMTK_VEC_LOOP(data[i] = static_cast<T>(v[i]));
 		}
 
@@ -106,87 +107,87 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 
 		//! Returns a negative vector
-		inline vec<T, d> operator-() const {
+		inline vec<d, T> operator-() const {
 			GMTK_VEC_OPERATOR(-data[i]);
 		}
 
 		//! Component-wise vector multiplication
-		inline vec<T, d> operator*(const vec<T, d>& v) const {
+		inline vec<d, T> operator*(const vec<d, T>& v) const {
 			GMTK_VEC_OPERATOR(data[i] * v.data[i]);
 		}
 
 		//! Component-wise vector division
-		inline vec<T, d> operator/(const vec<T, d>& v) const {
+		inline vec<d, T> operator/(const vec<d, T>& v) const {
 			GMTK_VEC_OPERATOR(data[i] / v.data[i]);
 		}
 
 		//! Component-wise vector addition
-		inline vec<T, d> operator+(const vec<T, d>& v) const {
+		inline vec<d, T> operator+(const vec<d, T>& v) const {
 			GMTK_VEC_OPERATOR(data[i] + v.data[i]);
 		}
 
 		//! Component-wise vector subtraction
-		inline vec<T, d> operator-(const vec<T, d>& v) const {
+		inline vec<d, T> operator-(const vec<d, T>& v) const {
 			GMTK_VEC_OPERATOR(data[i] - v.data[i]);
 		}
 
 		//! Component-wise vector reference multiplication
-		inline vec<T, d>& operator*=(const vec<T, d>& v) {
+		inline vec<d, T>& operator*=(const vec<d, T>& v) {
 			GMTK_VEC_REF_OPERATOR(data[i] *= v.data[i]);
 		}
 
 		//! Component-wise vector reference division
-		inline vec<T, d>& operator/=(const vec<T, d>& v) {
+		inline vec<d, T>& operator/=(const vec<d, T>& v) {
 			GMTK_VEC_REF_OPERATOR(data[i] /= v.data[i]);
 		}
 
 		//! Component-wise vector reference addition
-		inline vec<T, d>& operator+=(const vec<T, d>& v) {
+		inline vec<d, T>& operator+=(const vec<d, T>& v) {
 			GMTK_VEC_REF_OPERATOR(data[i] += v.data[i]);
 		}
 
 		//! Component-wise vector reference subtraction
-		inline vec<T, d>& operator-=(const vec<T, d>& v) {
+		inline vec<d, T>& operator-=(const vec<d, T>& v) {
 			GMTK_VEC_REF_OPERATOR(data[i] -= v.data[i]);
 		}
 
 		//! Component-wise scalar multiplication
-		inline vec<T, d> operator*(const T& s) const {
+		inline vec<d, T> operator*(const T& s) const {
 			GMTK_VEC_OPERATOR(data[i] * s);
 		}
 
 		//! Component-wise scalar division
-		inline vec<T, d> operator/(const T& s) const {
+		inline vec<d, T> operator/(const T& s) const {
 			GMTK_VEC_OPERATOR(data[i] / s);
 		}
 
 		//! Component-wise scalar addition
-		inline vec<T, d> operator+(const T& s) const {
+		inline vec<d, T> operator+(const T& s) const {
 			GMTK_VEC_OPERATOR(data[i] + s);
 		}
 
 		//! Component-wise scalar subtraction
-		inline vec<T, d> operator-(const T& s) const {
+		inline vec<d, T> operator-(const T& s) const {
 			GMTK_VEC_OPERATOR(data[i] - s);
 		}
 
 		//! Component-wise scalar reference multiplication
-		inline vec<T, d>& operator*=(const T& s) {
+		inline vec<d, T>& operator*=(const T& s) {
 			GMTK_VEC_REF_OPERATOR(data[i] *= s);
 		}
 
 		//! Component-wise scalar reference division
-		inline vec<T, d>& operator/=(const T& s) {
+		inline vec<d, T>& operator/=(const T& s) {
 			GMTK_VEC_REF_OPERATOR(data[i] /= s);
 		}
 
 		//! Component-wise scalar reference addition
-		inline vec<T, d>& operator+=(const T& s) {
+		inline vec<d, T>& operator+=(const T& s) {
 			GMTK_VEC_REF_OPERATOR(data[i] += s);
 		}
 
 		//! Component-wise scalar reference subtraction
-		inline vec<T, d>& operator-=(const T& s) {
+		inline vec<d, T>& operator-=(const T& s) {
 			GMTK_VEC_REF_OPERATOR(data[i] -= s);
 		}
 
@@ -196,8 +197,8 @@ namespace GMTK_NAMESPACE
 	//! MISC. OPERATORS //
 	//////////////////////
 
-	template <typename T, int d>
-	inline std::ostream& operator<<(std::ostream& os, const vec<T, d>& v)
+	template <int d, typename T>
+	inline std::ostream& operator<<(std::ostream& os, const vec<d, T>& v)
 	{
 		os << "| ";
 		GMTK_VEC_LOOP(os << v.data[i] << ' ');
@@ -210,8 +211,8 @@ namespace GMTK_NAMESPACE
 	/////////////////////
 
 	//! Calculates the dot or scalar product of two vectors
-	template <typename T, int d>
-	inline T dot(const vec<T, d>& l, const vec<T, d>& r)
+	template <int d, typename T>
+	inline T dot(const vec<d, T>& l, const vec<d, T>& r)
 	{
 		T res = 0;
 		GMTK_VEC_LOOP(res += l[i] * r[i]);
@@ -219,16 +220,16 @@ namespace GMTK_NAMESPACE
 	}
 
 	//! Calculates the angle between two vectors
-	template <typename T, int d>
-	inline ang<T> angle(const vec<T, d> &l, const vec<T, d> &r)
+	template <int d, typename T>
+	inline ang<T> angle(const vec<d, T> &l, const vec<d, T> &r)
 	{
 		T dp = dot(l, r) / (magnitude(l) * magnitude(r));
 		return radians(acos(dp));
 	}
 
 	//! Rotates the source vector around the ais vector by the specified angle
-	template <typename T, int d>
-	inline vec<T, d> rotatearound(const vec<T, d> &src, const vec<T, d> &axs, const ang<T> &dlt)
+	template <int d, typename T>
+	inline vec<d, T> rotatearound(const vec<d, T> &src, const vec<d, T> &axs, const ang<T> &dlt)
 	{
 		T ct = cos(dlt.radians());
 		T st = sin(dlt.radians());
@@ -236,25 +237,25 @@ namespace GMTK_NAMESPACE
 	}
 		
 	//! Projects a vector onto another vector
-	template <typename T, int d>
-	inline vec<T, d> project(const vec<T, d> &l, const vec<T, d> &r)
+	template <int d, typename T>
+	inline vec<d, T> project(const vec<d, T> &l, const vec<d, T> &r)
 	{
-		vec<T, d> normal = normalize(r);
+		vec<d, T> normal = normalize(r);
 		return normal * dot(l, normal);
 	}
 
 	//! Calculates the cross product of two vectors
 	template <typename T>
-	inline T cross(const vec<T, 2>& l, const vec<T, 2>& r)
+	inline T cross(const vec<2, T>& l, const vec<2, T>& r)
 	{
 		return (l.data[0] * r.data[1]) - (l.data[0] * r.data[1]);
 	}
 
 	//! Calculates the cross product of two vectors
 	template <typename T>
-	inline vec<T, 3> cross(const vec<T, 3>& l, const vec<T, 3>& r)
+	inline vec<3, T> cross(const vec<3, T>& l, const vec<3, T>& r)
 	{
-		vec<T, 3> res;
+		vec<3, T> res;
 		res.data[0] = (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]);
 		res.data[1] = (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]);
 		res.data[2] = (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]);
@@ -263,9 +264,9 @@ namespace GMTK_NAMESPACE
 
 	//! Calculates the cross product of two vectors
 	template <typename T>
-	inline vec<T, 4> cross(const vec<T, 4>& l, const vec<T, 4>& r)
+	inline vec<4, T> cross(const vec<4, T>& l, const vec<4, T>& r)
 	{
-		vec<T, 4> res;
+		vec<4, T> res;
 		res.data[0] = (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]);
 		res.data[1] = (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]);
 		res.data[2] = (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]);
@@ -274,8 +275,8 @@ namespace GMTK_NAMESPACE
 	}
 
 	//! Returns length squared of vector
-	template <typename T, int d>
-	inline T lengthsq(const vec<T, d>& v)
+	template <int d, typename T>
+	inline T lengthsq(const vec<d, T>& v)
 	{
 		T res = 0;
 		GMTK_UNROLL_LOOP(i, d, res += sq(v.data[i]));
@@ -283,8 +284,8 @@ namespace GMTK_NAMESPACE
 	}
 
 	//! Returns length of vector, or sqrt(lengthsq)
-	template <typename T, int d>
-	inline T length(const vec<T, d>& v)
+	template <int d, typename T>
+	inline T length(const vec<d, T>& v)
 	{
 		T res = 0;
 		GMTK_UNROLL_LOOP(i, d, res += sq(v.data[i]));
@@ -292,103 +293,103 @@ namespace GMTK_NAMESPACE
 	}
 
 	//! Returns magnitude of vector, or length
-	template <typename T, int d>
-	inline T magnitude(const vec<T, d>& v)
+	template <int d, typename T>
+	inline T magnitude(const vec<d, T>& v)
 	{
 		return length(v);
 	}
 
 	//! Normalizes vector so it is a unit vector
-	template <typename T, int d>
-	inline vec<T, d> normalize(const vec<T, d>& v)
+	template <int d, typename T>
+	inline vec<d, T> normalize(const vec<d, T>& v)
 	{
 		return v / length(v);
 	}
 
 	//! Returns a component-wise minimum of two vectors
-	template <typename T, int d>
-	inline vec<T, d> min(const vec<T, d>& l, const vec<T, d>& r)
+	template <int d, typename T>
+	inline vec<d, T> min(const vec<d, T>& l, const vec<d, T>& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] < r[i]) ? l[i] : r[i]);
 	}
 
 	//! Returns a component-wise maximum of a vector and a scalar
-	template <typename T, int d>
-	inline vec<T, d> min(const vec<T, d>& l, const T& r)
+	template <int d, typename T>
+	inline vec<d, T> min(const vec<d, T>& l, const T& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] < r) ? l[i] : r);
 	}
 
 	//! Returns a component-wise minimum of two vectors
-	template <typename T, int d>
-	inline vec<T, d> max(const vec<T, d>& l, const vec<T, d>& r)
+	template <int d, typename T>
+	inline vec<d, T> max(const vec<d, T>& l, const vec<d, T>& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] > r[i]) ? l[i] : r[i]);
 	}
 
 	//! Returns a component-wise maximum of a vector and a scalar
-	template <typename T, int d>
-	inline vec<T, d> max(const vec<T, d>& l, const T& r)
+	template <int d, typename T>
+	inline vec<d, T> max(const vec<d, T>& l, const T& r)
 	{
 		GMTK_VEC_OPERATOR((l[i] > r) ? l[i] : r);
 	}
 
 	//! Clamps the value of a vector between a min and max vector
-	template <typename T, int d>
-	inline vec<T, d> clamp(const vec<T, d>& v, const vec<T, d>& minV, const vec<T, d>& maxV)
+	template <int d, typename T>
+	inline vec<d, T> clamp(const vec<d, T>& v, const vec<d, T>& minV, const vec<d, T>& maxV)
 	{
 		return min(max(v, minV), maxV);
 	}
 
 	//! Clamps the value of a vector between a min and max scalar
-	template <typename T, int d>
-	inline vec<T, d> clamp(const vec<T, d>& v, const T& minV, const T& maxV)
+	template <int d, typename T>
+	inline vec<d, T> clamp(const vec<d, T>& v, const T& minV, const T& maxV)
 	{
 		return min(max(v, minV), maxV);
 	}
 
 	//! Computes the distance between two vectors
-	template <typename T, int d>
-	inline T distance(const vec<T, d>& l, const vec<T, d>& r)
+	template <int d, typename T>
+	inline T distance(const vec<d, T>& l, const vec<d, T>& r)
 	{
 		return length(l - r);
 	}
 
 	//! Computes the distance squared between two vectors
-	template <typename T, int d>
-	inline T distancesq(const vec<T, d>& l, vec<T, d>& r)
+	template <int d, typename T>
+	inline T distancesq(const vec<d, T>& l, vec<d, T>& r)
 	{
 		return lengthsq(l - r);
 	}
 
 	//! Faces a normal forward according to the dot product of nRef and i
-	template<typename T, int d>
-	inline vec<T, d> faceforward(const vec<T, d>& n, const vec<T, d>& i, const vec<T, d>& nRef)
+	template<int d, typename T>
+	inline vec<d, T> faceforward(const vec<d, T>& n, const vec<d, T>& i, const vec<d, T>& nRef)
 	{
 		return (dot(nRef, i) < 0) ? n : -n;
 	}
 
 	//! Computes the reflection of vector v acording to the plane of normal vector 'n'
-	template<typename T, int d>
-	inline vec<T, d> reflect(const vec<T, d>& v, const vec<T, d>& n)
+	template<int d, typename T>
+	inline vec<d, T> reflect(const vec<d, T>& v, const vec<d, T>& n)
 	{
 		return v - 2.0f * dot(n, v) * n;
 	}
 
 	//! GLSL refraction function
-	template<typename T, int d>
-	inline vec<T, d> refract(const vec<T, d>& v, const vec<T, d>& n, float r)
+	template<int d, typename T>
+	inline vec<d, T> refract(const vec<d, T>& v, const vec<d, T>& n, float r)
 	{
 		float dir = 1.0 - r * r * (1.0 - dot(n, v) * dot(n, v));
-		if (dir < 0.0) return vec<T, d>(0.0); //! total internal reflection
+		if (dir < 0.0) return vec<d, T>(0.0); //! total internal reflection
 		return r * v - (r * dot(n, v) + sqrt(dir)) * n;
 	}
 
 	//! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
-	template<typename T, int d>
-	inline vec<T, d + 1> affine(const vec<T, d>&v)
+	template<int d, typename T>
+	inline vec<d + 1, T> affine(const vec<d, T>&v)
 	{
-		vec<T, d + 1> res;
+		vec<d + 1, T> res;
 		GMTK_VEC_LOOP(res[i] = v[i]);
 		res[d] = static_cast<T>(1);
 		return res;
@@ -396,16 +397,16 @@ namespace GMTK_NAMESPACE
 
 	//! Point vector constructor (xyz,1)
 	template<typename T = float>
-	inline vec<T, 4> point(const vec<T, 3> &xyz)
+	inline vec<4, T> point(const vec<3, T> &xyz)
 	{
-		return vec<T, 4>(xyz.data[0], xyz.data[1], xyz.data[2], 1);
+		return vec<4, T>(xyz.data[0], xyz.data[1], xyz.data[2], 1);
 	}
 
 	//! Point vector constructor (x,y,z,1)
 	template<typename T = float>
-	inline vec<T, 4> point(const T &x, const T &y, const T &z)
+	inline vec<4, T> point(const T &x, const T &y, const T &z)
 	{
-		return vec<T, 4>(x, y, z, 1);
+		return vec<4, T>(x, y, z, 1);
 	}
 
 }////
