@@ -59,13 +59,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 int main()
 {
 	// define a 3d float vector
-	// synonymous with gm::vec3 and gm::vec3f
-	gm::vec<float, 3> vecA;
+	// synonymous with gm::vec3, gm::vec3f, and gm::vec<3>
+	gm::vec<3, float> vecA;
 
 	// initialize a 3d float matrix
-	gm::mat3 matA(1, 0, 1,
-				  2, 4, 0,
-				  3, 5, 6);
+	// synonymous with gm::mat3 and gm::mat3f, and gm::mat<3>
+	gm::mat<3, 3, float> matA(1, 0, 1,
+							  2, 4, 0,
+							  3, 5, 6);
 
 	// initialize a 3d float matrix as the inverse of matA
 	gm::mat3 matB = gm::inverse(matA);
@@ -92,8 +93,8 @@ int main()
 
 	// output our results
 	std::cout << matA * matB << std::endl << std::endl
-			  << matH * imatH << std::endl << std::endl
-			  << 45_deg << std::endl;
+		<< matH * imatH << std::endl << std::endl
+		<< 45_deg << std::endl;
 
 	// constructs a column-major 3d float matrix from rows, using 3d float vectors
 	gm::mat3::fromrows(
