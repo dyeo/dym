@@ -247,6 +247,16 @@ namespace GMTK_NAMESPACE
 		GMTK_UNROLL_3D_LOOP(i, j, k, r1, c2, r2, res[j][i] += m.data[k][i] * n.data[j][k]);
 		return res;
 	}
+	
+	//! Matrix product (reference)
+	//! Accepts two matrices where cols and rows are equal
+	//! Is not commutative
+	template <int c, int r, typename T>
+	inline mat<c, r, T>& operator*=(mat<c, r, T>& m, const mat<c, r, T>& n) {
+		mat<c, r, T> res(static_cast<T>(0));
+		GMTK_UNROLL_3D_LOOP(i, j, k, r, c, r, res[j][i] += m.data[k][i] * n.data[j][k]);
+		return m = res;
+	}
 
 	///////////////////////////////////
 	//! MATRIX&VECTOR MULTIPLICATION //
@@ -254,18 +264,26 @@ namespace GMTK_NAMESPACE
 
 	//! Matrix-vector multiplication: column vector (matrix row)
 	template <int c, int r, typename T>
-	inline const vec<c, T> operator*(const mat<c, r, T>& m, const vec<c, T>& v) {
-		vec<c, T> res(static_cast<T>(0));
+	inline vec<r, T> operator*(const mat<c, r, T>& m, const vec<r, T>& v) {
+		vec<r, T> res(static_cast<T>(0));
 		GMTK_UNROLL_2D_LOOP(i, j, r, c, res.data[i] += m.data[j][i] * v.data[j]);
 		return res;
 	}
 
 	//! Matrix-vector multiplication: row vector (matrix column)
 	template <int c, int r, typename T>
-	inline const vec<c, T> operator*(const vec<c, T>& v, const mat<c, r, T>& m) {
+	inline vec<c, T> operator*(const vec<c, T>& v, const mat<c, r, T>& m) {
 		vec<c, T> res(static_cast<T>(0));
 		GMTK_UNROLL_2D_LOOP(i, j, c, r, res.data[i] += m.data[i][j] * v.data[j]);
 		return res;
+	}
+
+	//! Matrix-vector multiplication: row vector (matrix column, reference)
+	template <int c, int r, typename T>
+	inline vec<c, T>& operator*=(vec<c, T>& v, const mat<c, r, T>& m) {
+		vec<c, T> res(static_cast<T>(0));
+		GMTK_UNROLL_2D_LOOP(i, j, c, r, res.data[i] += m.data[i][j] * v.data[j]);
+		return v = res;
 	}
 
 	///////////////////////////////////
