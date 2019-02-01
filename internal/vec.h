@@ -40,7 +40,7 @@
 
 //
 
-#define GMTK_VEC_OPERATION(oper) { vec<d, T> res; GMTK_VEC_LOOP(res[i] = oper); return res; }
+#define GMTK_VEC_OPERATION(oper) { vec<d, T> res; GMTK_VEC_LOOP(res.data[i] = oper); return res; }
 
 //
 
