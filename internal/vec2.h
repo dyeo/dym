@@ -124,6 +124,9 @@ namespace GMTK_NAMESPACE
 		//! Component-wise unary negation
 		GMTK_VEC2_UN_OP(-)
 
+		//! Vector assignment
+		GMTK_VEC2_VEC_ROP(=)
+
 		//! Component-wise vector multiplication
 		GMTK_VEC2_VEC_OP(*)
 

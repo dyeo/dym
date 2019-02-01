@@ -219,6 +219,9 @@ namespace GMTK_NAMESPACE
 		//! Component-wise unary negation
 		GMTK_MAT3_UN_OP(-)
 			
+		//! Matrix assignment
+		GMTK_MAT3_MAT_ROP(=)
+
 		//! Component-wise matrix division
 		GMTK_MAT3_MAT_OP(/)
 
