@@ -16,11 +16,11 @@ namespace GMTK_NAMESPACE
 		typedef typename std::conditional<is_writable, swizzle<a, b, V, T>, struct operation_not_available>::type writable_type;
 
 		inline T& operator[](const int i) {
-			return ((const T*)this)[i];
+			return ((T* const)this)[i];
 		}
 
 		inline const T& operator[](const int i) const {
-			return ((const T*)this)[i];
+			return ((T* const)this)[i];
 		}
 
 		#define GMTK_SWZ2_UOP(op)															\
@@ -62,16 +62,23 @@ namespace GMTK_NAMESPACE
 			template<int a2, int b2, typename T>											\
 			writable_type& operator op (const swizzle<a2, b2, V, T> &s)						\
 			{																				\
-				(*this)[a] op ((const T*)&s)[a2]; 											\
-				(*this)[b] op ((const T*)&s)[b2];											\
+				((T*)this)[a] op ((const T*)&s)[a2]; 										\
+				((T*)this)[b] op ((const T*)&s)[b2];										\
+				return *this;																\
+			}																				\
+																							\
+			writable_type& operator op (const V &s)											\
+			{																				\
+				((T*)this)[a] op s.data[0]; 												\
+				((T*)this)[b] op s.data[1];													\
 				return *this;																\
 			}																				\
 																							\
 			template<int a2, int b2, typename T> 											\
 			writable_type& operator op (const T &s)											\
 			{																				\
-				(*this)[a] op s; 															\
-				(*this)[b] op s;															\
+				((const T*)&s)[a] op s; 													\
+				((const T*)&s)[b] op s;														\
 				return *this;																\
 			}
 
@@ -94,5 +101,7 @@ namespace GMTK_NAMESPACE
 		#undef GMTK_SWZ2_ROP
 	};
 }
+
+
 
 #endif //_GMTK_SWIZZLE_H_

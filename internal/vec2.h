@@ -22,27 +22,42 @@
 	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = op data[i]); return res; }
 
 #define GMTK_VEC2_VEC_OP(op) \
-	inline vec<2, T> operator op (const vec<2, T>& v) const \
-	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; } \
-	template<int a, int b> \
-	inline vec<2, T> operator op (const swizzle<a, b, vec<2, T>, T>& v) const \
-	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v[i]); return res; }
+	inline vec<2, T> operator op (const vec<2, T> &v) const \
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; }
 
 #define GMTK_VEC2_SCL_OP(op) \
 	inline vec<2, T> operator op (const T& v) const \
 	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; } 
 
 #define GMTK_VEC2_VEC_ROP(op) \
-	inline vec<2, T>& operator op (const vec<2, T>& v) \
-	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; } \
-	template<int a, int b> \
-	inline vec<2, T> operator op (const swizzle<a, b, vec<2, T>, T>& v) \
-	{ GMTK_VEC2_LOOP(data[i] op v[i]); return *this; }
+	inline vec<2, T>& operator op (const vec<2, T> &v) \
+	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; }
 
 #define GMTK_VEC2_SCL_ROP(op) \
-	inline vec<2, T>& operator op (const T& v) \
+	inline vec<2, T>& operator op (const T &v) \
 	{ GMTK_VEC2_LOOP(data[i] op v); return *this; }
 
+#define GMTK_VEC2_SWZ_BOP(op) \
+	template<int a, int b, typename T> \
+	static inline vec<2, T> operator op (const vec<2, T> &v, const swizzle<a, b, vec<2, T>, T> &s) \
+	{ vec<2, T> res; res.data[0] = data[0] op s[a]; res.data[1] = data[1] op s[b]; return res; } \
+	template<int a, int b, typename T> \
+	static inline vec<2, T> operator op (const swizzle<a, b, vec<2, T>, T> &s, const vec<2, T> &v) \
+	{ vec<2, T> res; res.data[0] = s[a] op data[0]; res.data[1] = s[b] op data[1]; return res; } \
+	template<int a1, int b1, int a2, int b2, typename T> \
+	static inline vec<2, T> operator op (const swizzle<a1, b1, vec<2, T>, T> &s, const swizzle<a2, b2, vec<2, T>, T> &t) \
+	{ vec<2, T> res; res.data[0] = s[a1] op t[a2]; res.data[1] = s[b1] op t[b2]; return res; }
+
+#define GMTK_VEC2_SWZ_BROP(op) \
+	template<int a, int b, typename T> \
+	static inline vec<2, T>& operator op (vec<2, T> &v, const swizzle<a, b, vec<2, T>, T> &s) \
+	{ v.data[0] op s[a]; v.data[1] op s[b]; return v; } \
+	template<int a, int b, typename T> \
+	static inline swizzle<a, b, vec<2, T>, T>& operator op (swizzle<a, b, vec<2, T>, T> &s, const vec<2, T> &v) \
+	{ s[a] op v.data[0]; s[b] op v.data[1]; return s; } \
+	template<int a1, int b1, int a2, int b2, typename T> \
+	static inline swizzle<a1, b1, vec<2, T>, T>& operator op (swizzle<a1, b1, vec<2, T>, T> &s, const swizzle<a2, b2, vec<2, T>, T> &t) \
+	{ s[a1] op t[a2]; s[b1] op t[b2]; return s; }
 //
 
 namespace GMTK_NAMESPACE
@@ -88,8 +103,7 @@ namespace GMTK_NAMESPACE
 
 		//! Swizzle constructor
 		template<int a, int b>
-		inline vec(const swizzle<a, b, vec<2, T>, T>&s)
-		{
+		inline vec(const swz2<a, b>&s) {
 			data[0] = s[a];
 			data[1] = s[b];
 		}
@@ -145,6 +159,13 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 		//! ARITHMETIC OPERATORS //
 		///////////////////////////
+
+		//! Swizzle assignment
+		template<int a, int b>
+		vec<2, T>& operator=(const swz2<a, b> &s) {
+			*this = vec<2, T>(s[a], s[b]);
+			return *this;
+		}
 
 		//! Component-wise unary negation
 		GMTK_VEC2_UN_OP(-)
@@ -223,6 +244,20 @@ namespace GMTK_NAMESPACE
 		static inline constexpr vec<2, T> left() { return vec<2, T>(-1, 0); }
 
 	}; //! struct vec2
+
+	//////////////////////////
+	//! SWIZZLING OPERATORS //
+	//////////////////////////
+	
+	GMTK_VEC2_SWZ_BOP(*)
+	GMTK_VEC2_SWZ_BOP(/)
+	GMTK_VEC2_SWZ_BOP(+)
+	GMTK_VEC2_SWZ_BOP(-)
+
+	GMTK_VEC2_SWZ_BROP(*=)
+	GMTK_VEC2_SWZ_BROP(/=)
+	GMTK_VEC2_SWZ_BROP(+=)
+	GMTK_VEC2_SWZ_BROP(-=)
 
 	///////////////////////
 	//! TYPE DEFINITIONS //
