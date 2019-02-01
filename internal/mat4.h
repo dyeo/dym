@@ -508,11 +508,11 @@ namespace GMTK_NAMESPACE
 		//! generates a 3d-perspective frustum transformation
 		inline static mat<4, 4, T> perspective(const ang<T> &fovy, const T &aspect, const T &near, const T &far)
 		{
-			T ys = 1.0 / tan(fovy.radians()*0.5);
+			T ys = static_cast<T>(1.0) / tan(fovy.radians()*static_cast<T>(0.5));
 			T xs = ys / aspect;
 			T nmf = near - far;
 			T B = (near + far) / nmf;
-			T C = (2.0 * near * far) / nmf;
+			T C = (static_cast<T>(2.0) * near * far) / nmf;
 
 			return mat<4, 4, T>(
 				 xs, 0, 0, 0,
