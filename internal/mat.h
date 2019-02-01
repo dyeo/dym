@@ -34,6 +34,7 @@
 #define GMTK_MAT_REF_OPERATOR(oper) { GMTK_MAT_LOOP(oper); return *this; }
 
 #define GMTK_MAT_REF_OPERATOR2(oper) { GMTK_MAT_LOOP2(oper); return *this; }
+#define GMTK_MAT_OPERATION(oper) { mat<c, r, T> res; GMTK_MAT_LOOP(res.arr[i] = oper); return res; }
 
 //
 
@@ -284,6 +285,20 @@ namespace GMTK_NAMESPACE
 		GMTK_UNROLL_2D_LOOP(i, j, c, r, res.data[i] += m.data[i][j] * v.data[j]);
 		return res;
 	}
+
+	///////////////////////////////////
+	//! MATRIX&SCALAR MULTIPLICATION //
+	///////////////////////////////////
+	
+	//! Matrix-scalar multiplication
+	template <int c, int r, typename T>
+	inline const mat<c, r, T> operator*(const T& v, const mat<c, r, T>& m)
+		GMTK_MAT_OPERATION(v * m.arr[i])
+
+	//! Matrix-scalar multiplication (odd-typed)
+	template <typename U, int c, int r, typename T>
+	inline const mat<c, r, T> operator*(const U& v, const mat<c, r, T>& m)
+		GMTK_MAT_OPERATION(static_cast<T>(v) * m.arr[i])
 
 	/////////////////////
 	//! FREE-FUNCTIONS //
