@@ -423,6 +423,16 @@ namespace GMTK_NAMESPACE
 
 //
 
+#undef GMTK_MAT3_LOOP
+#undef GMTK_MAT3_LOOP_2D
+#undef GMTK_MAT3_UN_OP
+#undef GMTK_MAT3_VEC_OP
+#undef GMTK_MAT3_SCL_OP
+#undef GMTK_MAT3_VEC_ROP
+#undef GMTK_MAT3_SCL_ROP
+
+//
+
 #pragma warning(pop)
 
 //

@@ -21,7 +21,7 @@
 
 //
 
-#define GMTK_IDENT_LOOP(oper) GMTK_UNROLL_LOOP(i, GMTK_MIN_OF(r, c), oper)
+#define GMTK_MAT_IDENT_LOOP(oper) GMTK_UNROLL_LOOP(i, GMTK_MIN_OF(r, c), oper)
 
 #define GMTK_MAT_LOOP(oper) GMTK_UNROLL_LONG_LOOP(i, r*c, oper)
 
@@ -214,7 +214,7 @@ namespace GMTK_NAMESPACE
 		static mat<c, r, T> identity()
 		{
 			mat<c, r, T> res(static_cast<T>(0));
-			GMTK_IDENT_LOOP(res.data[i][i] = static_cast<T>(1));
+			GMTK_MAT_IDENT_LOOP(res.data[i][i] = static_cast<T>(1));
 			return res;
 		}
 		
@@ -318,7 +318,7 @@ namespace GMTK_NAMESPACE
 	inline T trace(const mat<c, r, T>& m)
 	{
 		T res = 0;
-		GMTK_IDENT_LOOP(res += m.data[i][i];);
+		GMTK_MAT_IDENT_LOOP(res += m.data[i][i];);
 		return res;
 	}
 
@@ -482,6 +482,18 @@ namespace GMTK_NAMESPACE
 	}
 
 }////
+
+//
+
+#undef GMTK_MAT_IDENT_LOOP
+#undef GMTK_MAT_LOOP
+#undef GMTK_MAT_LOOP_2D
+#undef GMTK_MAT_UN_OP
+#undef GMTK_MAT_VEC_OP
+#undef GMTK_MAT_SCL_OP
+#undef GMTK_MAT_VEC_ROP
+#undef GMTK_MAT_SCL_ROP
+#undef GMTK_MAT_OPERATION
 
 //
 
