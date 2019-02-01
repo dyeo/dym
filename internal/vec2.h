@@ -9,6 +9,7 @@
 //
 
 #include "vec.h"
+#include "swizzle.h"
 
 //
 
@@ -22,15 +23,21 @@
 
 #define GMTK_VEC2_VEC_OP(op) \
 	inline vec<2, T> operator op (const vec<2, T>& v) const \
-	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; }
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; } \
+	template<int a, int b> \
+	inline vec<2, T> operator op (const swizzle<a, b, vec<2, T>, T>& v) const \
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v[i]); return res; }
 
 #define GMTK_VEC2_SCL_OP(op) \
 	inline vec<2, T> operator op (const T& v) const \
-	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; }
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; } 
 
 #define GMTK_VEC2_VEC_ROP(op) \
 	inline vec<2, T>& operator op (const vec<2, T>& v) \
-	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; }
+	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; } \
+	template<int a, int b> \
+	inline vec<2, T> operator op (const swizzle<a, b, vec<2, T>, T>& v) \
+	{ GMTK_VEC2_LOOP(data[i] op v[i]); return *this; }
 
 #define GMTK_VEC2_SCL_ROP(op) \
 	inline vec<2, T>& operator op (const T& v) \
@@ -43,6 +50,12 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec <2, T>
 	{
+		////////////
+		//! TYPES //
+		////////////
+
+		template<int a, int b> using swz2 = swizzle<a, b, vec<2, T>, T>;
+
 		///////////////////
 		//! DATA MEMBERS //
 		///////////////////
@@ -51,6 +64,10 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[2]; };
 			struct { T x, y; };
+			swz2<0, 0> xx;
+			swz2<0, 1> xy;
+			swz2<1, 0> yx;
+			swz2<1, 1> yy;
 		};
 
 		///////////////////
@@ -67,6 +84,14 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline vec() {
 			GMTK_VEC2_LOOP(data[i] = static_cast<T>(0));
+		}
+
+		//! Swizzle constructor
+		template<int a, int b>
+		inline vec(const swizzle<a, b, vec<2, T>, T>&s)
+		{
+			data[0] = s[a];
+			data[1] = s[b];
 		}
 
 		//! Initializer list constructor
