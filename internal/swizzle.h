@@ -62,8 +62,9 @@ namespace GMTK_NAMESPACE
 			template<int a2, int b2, typename T>											\
 			writable_type& operator op (const swizzle<a2, b2, V, T> &s)						\
 			{																				\
-				((T*)this)[a] op ((const T*)&s)[a2]; 										\
-				((T*)this)[b] op ((const T*)&s)[b2];										\
+				const T va2 = ((const T*)&s)[a2], vb2 = ((const T*)&s)[b2];					\
+				((T*)this)[a] op va2; 														\
+				((T*)this)[b] op vb2;														\
 				return *this;																\
 			}																				\
 																							\
