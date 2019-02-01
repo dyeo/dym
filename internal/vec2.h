@@ -14,14 +14,27 @@
 
 #define GMTK_VEC2_LOOP(oper) GMTK_UNROLL_LOOP(i,2,oper)
 
-#define GMTK_VEC2_OPERATOR(oper) \
-		{ vec<2, T> res; \
-		GMTK_VEC2_LOOP(res[i] = oper); \
-		return res; }
+//
 
-#define GMTK_VEC2_REF_OPERATOR(oper) \
-				{ GMTK_VEC2_LOOP(oper); \
-		return *this; }
+#define GMTK_VEC2_UN_OP(op) \
+	inline vec<2, T> operator op () const \
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = op data[i]); return res; }
+
+#define GMTK_VEC2_VEC_OP(op) \
+	inline vec<2, T> operator op (const vec<2, T>& v) const \
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; }
+
+#define GMTK_VEC2_SCL_OP(op) \
+	inline vec<2, T> operator op (const T& v) const \
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; }
+
+#define GMTK_VEC2_VEC_ROP(op) \
+	inline vec<2, T>& operator op (const vec<2, T>& v) \
+	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; }
+
+#define GMTK_VEC2_SCL_ROP(op) \
+	inline vec<2, T>& operator op (const T& v) \
+	{ GMTK_VEC2_LOOP(data[i] op v); return *this; }
 
 //
 
@@ -105,93 +118,59 @@ namespace GMTK_NAMESPACE
 		}
 
 		///////////////////////////
-		//! RIGHT-HAND OPERATORS //
+		//! ARITHMETIC OPERATORS //
 		///////////////////////////
 
-		//! Returns a negative vector
-		inline vec<2, T> operator-() const {
-			GMTK_VEC2_OPERATOR(-data[i]);
-		}
+		//! Component-wise unary negation
+		GMTK_VEC2_UN_OP(-)
 
 		//! Component-wise vector multiplication
-		inline vec<2, T> operator*(const vec<2, T>& v) const {
-			GMTK_VEC2_OPERATOR(data[i] * v.data[i]);
-		}
+		GMTK_VEC2_VEC_OP(*)
 
 		//! Component-wise vector division
-		inline vec<2, T> operator/(const vec<2, T>& v) const {
-			GMTK_VEC2_OPERATOR(data[i] / v.data[i]);
-		}
+		GMTK_VEC2_VEC_OP(/)
 
 		//! Component-wise vector addition
-		inline vec<2, T> operator+(const vec<2, T>& v) const {
-			GMTK_VEC2_OPERATOR(data[i] + v.data[i]);
-		}
+		GMTK_VEC2_VEC_OP(+)
 
 		//! Component-wise vector subtraction
-		inline vec<2, T> operator-(const vec<2, T>& v) const {
-			GMTK_VEC2_OPERATOR(data[i] - v.data[i]);
-		}
-
-		//! Component-wise vector reference multiplication
-		inline vec<2, T>& operator*=(const vec<2, T>& v) {
-			GMTK_VEC2_REF_OPERATOR(data[i] *= v.data[i]);
-		}
-
-		//! Component-wise vector reference division
-		inline vec<2, T>& operator/=(const vec<2, T>& v) {
-			GMTK_VEC2_REF_OPERATOR(data[i] /= v.data[i]);
-		}
-
-		//! Component-wise vector reference addition
-		inline vec<2, T>& operator+=(const vec<2, T>& v) {
-			GMTK_VEC2_REF_OPERATOR(data[i] += v.data[i]);
-		}
-
-		//! Component-wise vector reference subtraction
-		inline vec<2, T>& operator-=(const vec<2, T>& v) {
-			GMTK_VEC2_REF_OPERATOR(data[i] -= v.data[i]);
-		}
+		GMTK_VEC2_VEC_OP(-)
 
 		//! Component-wise scalar multiplication
-		inline vec<2, T> operator*(const T& s) const {
-			GMTK_VEC2_OPERATOR(data[i] * s);
-		}
+		GMTK_VEC2_SCL_OP(*)
 
 		//! Component-wise scalar division
-		inline vec<2, T> operator/(const T& s) const {
-			GMTK_VEC2_OPERATOR(data[i] / s);
-		}
+		GMTK_VEC2_SCL_OP(/)
 
 		//! Component-wise scalar addition
-		inline vec<2, T> operator+(const T& s) const {
-			GMTK_VEC2_OPERATOR(data[i] + s);
-		}
+		GMTK_VEC2_SCL_OP(+)
 
 		//! Component-wise scalar subtraction
-		inline vec<2, T> operator-(const T& s) const {
-			GMTK_VEC2_OPERATOR(data[i] - s);
-		}
+		GMTK_VEC2_SCL_OP(-)
 
 		//! Component-wise scalar reference multiplication
-		inline vec<2, T>& operator*=(const T& s) {
-			GMTK_VEC2_REF_OPERATOR(data[i] *= s);
-		}
+		GMTK_VEC2_SCL_ROP(*=)
+			
+		//! Component-wise vector reference multiplication
+		GMTK_VEC2_VEC_ROP(*=)
+
+		//! Component-wise vector reference division
+		GMTK_VEC2_VEC_ROP(/=)
+
+		//! Component-wise vector reference addition
+		GMTK_VEC2_VEC_ROP(+=)
+
+		//! Component-wise vector reference subtraction
+		GMTK_VEC2_VEC_ROP(-=)
 
 		//! Component-wise scalar reference division
-		inline vec<2, T>& operator/=(const T& s) {
-			GMTK_VEC2_REF_OPERATOR(data[i] /= s);
-		}
+		GMTK_VEC2_SCL_ROP(/=)
 
 		//! Component-wise scalar reference addition
-		inline vec<2, T>& operator+=(const T& s) {
-			GMTK_VEC2_REF_OPERATOR(data[i] += s);
-		}
+		GMTK_VEC2_SCL_ROP(+=)
 
 		//! Component-wise scalar reference subtraction
-		inline vec<2, T>& operator-=(const T& s) {
-			GMTK_VEC2_REF_OPERATOR(data[i] -= s);
-		}
+		GMTK_VEC2_SCL_ROP(-=)
 
 		//////////////////////////
 		//! GENERATOR FUNCTIONS //
@@ -233,6 +212,16 @@ namespace GMTK_NAMESPACE
 	typedef vec<2, long>			vec2l;
 
 }////
+
+//
+
+#undef GMTK_VEC2_LOOP
+#undef GMTK_VEC2_OPERATOR
+#undef GMTK_VEC2_UN_OP
+#undef GMTK_VEC2_VEC_OP
+#undef GMTK_VEC2_SCL_OP
+#undef GMTK_VEC2_VEC_ROP
+#undef GMTK_VEC2_SCL_ROP
 
 //
 
