@@ -6,14 +6,16 @@
 
 namespace GMTK_NAMESPACE
 {
-	template<int a, int b, typename V, typename T>
-	class swizzle
+	template<int a, int b, typename T>
+	class swizzle2
 	{
 	public:
 		
+		using vec_t = vec<2, T>;
+
 		static constexpr bool is_writable = (a != b);
 
-		typedef typename std::conditional<is_writable, swizzle<a, b, V, T>, struct operation_not_available>::type writable_type;
+		typedef typename std::conditional<is_writable, swizzle2<a, b, T>, struct operation_not_available>::type writable_type;
 
 		inline T& operator[](const int i) {
 			return ((T* const)this)[i];
@@ -24,7 +26,7 @@ namespace GMTK_NAMESPACE
 		}
 
 		#define GMTK_SWZ2_UOP(op)															\
-			V operator op () const															\
+			vec_t operator op () const														\
 			{																				\
 				vec<2, T> res(static_cast<T>(0));											\
 				res[0] = op ((const T*)this)[a];											\
@@ -33,8 +35,8 @@ namespace GMTK_NAMESPACE
 			}
 
 		#define GMTK_SWZ2_OP(op)															\
-			template<int a2, int b2, typename V, typename T>								\
-			V operator op (const swizzle<a2, b2, V, T> &s) const							\
+			template<int a2, int b2, typename T>											\
+			vec_t operator op (const swizzle2<a2, b2, T> &s) const							\
 			{																				\
 				vec<2, T> res(static_cast<T>(0));											\
 				res[0] = ((const T*)this)[a] op ((const T*)&s)[a2];							\
@@ -42,7 +44,7 @@ namespace GMTK_NAMESPACE
 				return res;																	\
 			}																				\
 																							\
-			V operator op (const T &v) const												\
+			vec_t operator op (const T &v) const											\
 			{																				\
 				vec<2, T> res(static_cast<T>(0));											\
 				res[0] = ((const T*)this)[a] op v;											\
@@ -50,7 +52,7 @@ namespace GMTK_NAMESPACE
 				return res;																	\
 			}																				\
 																							\
-			friend V operator op (const T &l, const swizzle<a, b, V, T> &r)					\
+			friend vec_t operator op (const T &l, const swizzle2<a, b, T> &r)				\
 			{																				\
 				vec<2, T> res(static_cast<T>(0));											\
 				res[0] = l op ((const T*)r)[a];												\
@@ -60,7 +62,7 @@ namespace GMTK_NAMESPACE
 
 		#define GMTK_SWZ2_ROP(op)															\
 			template<int a2, int b2, typename T>											\
-			writable_type& operator op (const swizzle<a2, b2, V, T> &s)						\
+			writable_type& operator op (const swizzle2<a2, b2, T> &s)						\
 			{																				\
 				const T va2 = ((const T*)&s)[a2], vb2 = ((const T*)&s)[b2];					\
 				((T*)this)[a] op va2; 														\
@@ -68,7 +70,7 @@ namespace GMTK_NAMESPACE
 				return *this;																\
 			}																				\
 																							\
-			writable_type& operator op (const V &s)											\
+			writable_type& operator op (const vec_t &s)										\
 			{																				\
 				((T*)this)[a] op s.data[0]; 												\
 				((T*)this)[b] op s.data[1];													\
