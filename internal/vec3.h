@@ -9,6 +9,9 @@
 //
 
 #include "vec.h"
+#include "swizzle2.h"
+#include "swizzle3.h"
+#include "swizzle4.h"
 
 //
 
@@ -43,6 +46,14 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec <3, T>
 	{
+		////////////
+		//! TYPES //
+		////////////
+		
+		GMTK_SWZ2_TYPE
+		GMTK_SWZ3_TYPE
+		GMTK_SWZ4_TYPE
+
 		///////////////////
 		//! DATA MEMBERS //
 		///////////////////
@@ -51,7 +62,8 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[3]; };
 			struct { T x, y, z; };
-			struct { vec<2, T> xy; };
+			struct { T r, g, b; };
+			GMTK_VEC3_SWIZZLES
 		};
 
 		///////////////////
@@ -77,6 +89,14 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline vec() {
 			GMTK_VEC3_LOOP(data[i] = static_cast<T>(0));
+		}
+
+		//! Swizzle3 constructor
+		template<int a, int b, int c>
+		inline vec(const swz3<a, b, c>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
+			data[2] = s[c];
 		}
 
 		//! Initializer list constructor
@@ -241,6 +261,9 @@ namespace GMTK_NAMESPACE
 #undef GMTK_VEC3_SCL_OP
 #undef GMTK_VEC3_VEC_ROP
 #undef GMTK_VEC3_SCL_ROP
+
+#undef GMTK_SWZ3_BOP
+#undef GMTK_SWZ3_BROP
 
 //
 

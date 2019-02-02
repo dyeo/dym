@@ -9,6 +9,9 @@
 //
 
 #include "vec.h"
+#include "swizzle2.h"
+#include "swizzle3.h"
+#include "swizzle4.h"
 
 //
 
@@ -21,19 +24,19 @@
 	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = op data[i]); return res; }
 
 #define GMTK_VEC2_VEC_OP(op) \
-	inline vec<2, T> operator op (const vec<2, T>& v) const \
+	inline vec<2, T> operator op (const vec<2, T> &v) const \
 	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; }
 
 #define GMTK_VEC2_SCL_OP(op) \
 	inline vec<2, T> operator op (const T& v) const \
-	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; }
+	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; } 
 
 #define GMTK_VEC2_VEC_ROP(op) \
-	inline vec<2, T>& operator op (const vec<2, T>& v) \
+	inline vec<2, T>& operator op (const vec<2, T> &v) \
 	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; }
 
 #define GMTK_VEC2_SCL_ROP(op) \
-	inline vec<2, T>& operator op (const T& v) \
+	inline vec<2, T>& operator op (const T &v) \
 	{ GMTK_VEC2_LOOP(data[i] op v); return *this; }
 
 //
@@ -43,6 +46,14 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec <2, T>
 	{
+		////////////
+		//! TYPES //
+		////////////
+		
+		GMTK_SWZ2_TYPE
+		GMTK_SWZ3_TYPE
+		GMTK_SWZ4_TYPE
+
 		///////////////////
 		//! DATA MEMBERS //
 		///////////////////
@@ -51,6 +62,8 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[2]; };
 			struct { T x, y; };
+			struct { T r, g; };
+			GMTK_VEC2_SWIZZLES
 		};
 
 		///////////////////
@@ -67,6 +80,13 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline vec() {
 			GMTK_VEC2_LOOP(data[i] = static_cast<T>(0));
+		}
+
+		//! Swizzle2 constructor
+		template<int a, int b>
+		inline vec(const swz2<a, b>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
 		}
 
 		//! Initializer list constructor
@@ -120,7 +140,7 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 		//! ARITHMETIC OPERATORS //
 		///////////////////////////
-
+		
 		//! Component-wise unary negation
 		GMTK_VEC2_UN_OP(-)
 
@@ -225,6 +245,9 @@ namespace GMTK_NAMESPACE
 #undef GMTK_VEC2_SCL_OP
 #undef GMTK_VEC2_VEC_ROP
 #undef GMTK_VEC2_SCL_ROP
+
+#undef GMTK_SWZ2_BOP
+#undef GMTK_SWZ2_BROP
 
 //
 
