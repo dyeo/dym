@@ -39,28 +39,6 @@
 	inline vec<3, T>& operator op (const T& v) \
 	{ GMTK_VEC3_LOOP(data[i] op v); return *this; }
 
-#define GMTK_VEC3_SWZ_BOP(op) \
-	template<int a, int b, int c, typename T> \
-	static inline vec<3, T> operator op (const vec<3, T> &v, const swizzle3<a, b, c, vec<3, T>, T> &s) \
-	{ vec<3, T> res; res.data[0] = data[0] op s[a]; res.data[1] = data[1] op s[b]; res.data[2] = data[2] op s[c]; return res; } \
-	template<int a, int b, int c, typename T> \
-	static inline vec<3, T> operator op (const swizzle3<a, b, c, vec<3, T>, T> &s, const vec<3, T> &v) \
-	{ vec<3, T> res; res.data[0] = s[a] op data[0]; res.data[1] = s[b] op data[1]; res.data[2] = s[c] op data[2]; return res; } \
-	template<int a1, int b1, int c1, int a2, int b2, int c2, typename T> \
-	static inline vec<3, T> operator op (const swizzle3<a1, b1, c1, vec<3, T>, T> &s, const swizzle3<a2, b2, c2, vec<3, T>, T> &t) \
-	{ vec<3, T> res; res.data[0] = s[a1] op t[a2]; res.data[1] = s[b1] op t[b2]; res.data[2] = s[c1] op t[c2]; return res; }
-
-#define GMTK_VEC3_SWZ_BROP(op) \
-	template<int a, int b, int c, typename T> \
-	static inline vec<3, T>& operator op (vec<3, T> &v, const swizzle3<a, b, c, vec<3, T>, T> &s) \
-	{ v.data[0] op s[a]; v.data[1] op s[b]; v.data[2] op s[c]; return v; } \
-	template<int a, int b, int c, typename T> \
-	static inline swizzle3<a, b, c, vec<3, T>, T>& operator op (swizzle3<a, b, c, vec<3, T>, T> &s, const vec<3, T> &v) \
-	{ s[a] op v.data[0]; s[b] op v.data[1]; s[c] op v.data[2]; return s; } \
-	template<int a1, int b1, int c1, int a2, int b2, int c2, typename T> \
-	static inline swizzle3<a1, b1, c1, vec<3, T>, T>& operator op (swizzle3<a1, b1, c1, vec<3, T>, T> &s, const swizzle3<a2, b2, c2, vec<3, T>, T> &t) \
-	{ s[a1] op t[a2]; s[b1] op t[b2]; s[c1] op t[c2]; return s; }
-
 //
 
 namespace GMTK_NAMESPACE
@@ -113,25 +91,9 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC3_LOOP(data[i] = static_cast<T>(0));
 		}
 
-		//! Swizzle2 constructor
-		template<int a, int b>
-		inline vec(const swz2<a, b>&s) {
-			data[0] = s[a];
-			data[1] = s[b];
-			data[2] = static_cast<T>(1);
-		}
-
 		//! Swizzle3 constructor
 		template<int a, int b, int c>
 		inline vec(const swz3<a, b, c>&s) {
-			data[0] = s[a];
-			data[1] = s[b];
-			data[2] = s[c];
-		}
-		
-		//! Swizzle4 constructor
-		template<int a, int b, int c, int d>
-		inline vec(const swz4<a, b, c, d>&s) {
 			data[0] = s[a];
 			data[1] = s[b];
 			data[2] = s[c];
@@ -272,20 +234,6 @@ namespace GMTK_NAMESPACE
 		static inline constexpr vec<3, T> back() { return vec<3, T>(0, 0, -1); }
 
 	}; //! struct vec3
-	
-	//////////////////////////
-	//! SWIZZLING OPERATORS //
-	//////////////////////////
-	
-	GMTK_VEC3_SWZ_BOP(*)
-	GMTK_VEC3_SWZ_BOP(/)
-	GMTK_VEC3_SWZ_BOP(+)
-	GMTK_VEC3_SWZ_BOP(-)
-
-	GMTK_VEC3_SWZ_BROP(*=)
-	GMTK_VEC3_SWZ_BROP(/=)
-	GMTK_VEC3_SWZ_BROP(+=)
-	GMTK_VEC3_SWZ_BROP(-=)
 
 	///////////////////////
 	//! TYPE DEFINITIONS //
@@ -314,8 +262,8 @@ namespace GMTK_NAMESPACE
 #undef GMTK_VEC3_VEC_ROP
 #undef GMTK_VEC3_SCL_ROP
 
-#undef GMTK_VEC3_SWZ_BOP
-#undef GMTK_VEC3_SWZ_BROP
+#undef GMTK_SWZ3_BOP
+#undef GMTK_SWZ3_BROP
 
 //
 

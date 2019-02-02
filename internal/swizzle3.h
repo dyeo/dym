@@ -47,9 +47,9 @@
 	template<int a2, int b2, int c2, typename T>									\
 	writable_type& operator op (const swizzle3<a2, b2, c2, V, T> &s)				\
 	{																				\
-		const T va2 = ((const T*)&s)[a2],											\
-			    vb2 = ((const T*)&s)[b2],											\
-			    vc2 = ((const T*)&s)[c2];											\
+		const T va2 = ((const T*)&s)[a2];											\
+		const T vb2 = ((const T*)&s)[b2];											\
+		const T vc2 = ((const T*)&s)[c2];											\
 		((T*)this)[a] op va2; 														\
 		((T*)this)[b] op vb2;														\
 		((T*)this)[c] op vc2;														\
@@ -73,6 +73,28 @@
 		return *this;																\
 	}
 
+#define GMTK_SWZ3_BOP(op) \
+	template<int a, int b, int c, typename T> \
+	static inline vec<3, T> operator op (const vec<3, T> &v, const swizzle3<a, b, c, vec<3, T>, T> &s) \
+	{ vec<3, T> res; res.data[0] = data[0] op s[a]; res.data[1] = data[1] op s[b]; res.data[2] = data[2] op s[c]; return res; } \
+	template<int a, int b, int c, typename T> \
+	static inline vec<3, T> operator op (const swizzle3<a, b, c, vec<3, T>, T> &s, const vec<3, T> &v) \
+	{ vec<3, T> res; res.data[0] = s[a] op data[0]; res.data[1] = s[b] op data[1]; res.data[2] = s[c] op data[2]; return res; } \
+	template<int a1, int b1, int c1, int a2, int b2, int c2, typename T> \
+	static inline vec<3, T> operator op (const swizzle3<a1, b1, c1, vec<3, T>, T> &s, const swizzle3<a2, b2, c2, vec<3, T>, T> &t) \
+	{ vec<3, T> res; res.data[0] = s[a1] op t[a2]; res.data[1] = s[b1] op t[b2]; res.data[2] = s[c1] op t[c2]; return res; }
+
+#define GMTK_SWZ3_BROP(op) \
+	template<int a, int b, int c, typename T> \
+	static inline vec<3, T>& operator op (vec<3, T> &v, const swizzle3<a, b, c, vec<3, T>, T> &s) \
+	{ v.data[0] op s[a]; v.data[1] op s[b]; v.data[2] op s[c]; return v; } \
+	template<int a, int b, int c, typename T> \
+	static inline swizzle3<a, b, c, vec<3, T>, T>& operator op (swizzle3<a, b, c, vec<3, T>, T> &s, const vec<3, T> &v) \
+	{ s[a] op v.data[0]; s[b] op v.data[1]; s[c] op v.data[2]; return s; } \
+	template<int a1, int b1, int c1, int a2, int b2, int c2, typename T> \
+	static inline swizzle3<a1, b1, c1, vec<3, T>, T>& operator op (swizzle3<a1, b1, c1, vec<3, T>, T> &s, const swizzle3<a2, b2, c2, vec<3, T>, T> &t) \
+	{ s[a1] op t[a2]; s[b1] op t[b2]; s[c1] op t[c2]; return s; }
+
 //
 
 namespace GMTK_NAMESPACE
@@ -83,7 +105,7 @@ namespace GMTK_NAMESPACE
 	{
 	public:
 
-		static constexpr bool is_writable = (a != b);
+		static constexpr bool is_writable = (a != b && a != c && b != c);
 
 		typedef typename std::conditional<is_writable, swizzle3<a, b, c, V, T>, struct operation_not_available>::type writable_type;
 
@@ -95,21 +117,25 @@ namespace GMTK_NAMESPACE
 			return ((T* const)this)[i];
 		}
 
-		GMTK_SWZ3_UOP(-)
+		GMTK_SWZ3_UOP( - )
 
-			GMTK_SWZ3_ROP(= )
+		GMTK_SWZ3_ROP( = )
 
-			GMTK_SWZ3_OP(*)
-			GMTK_SWZ3_OP(/ )
-			GMTK_SWZ3_OP(+)
-			GMTK_SWZ3_OP(-)
+		GMTK_SWZ3_OP( * )
+		GMTK_SWZ3_OP( / )
+		GMTK_SWZ3_OP( + )
+		GMTK_SWZ3_OP( - )
 
-			GMTK_SWZ3_ROP(*= )
-			GMTK_SWZ3_ROP(/= )
-			GMTK_SWZ3_ROP(+= )
-			GMTK_SWZ3_ROP(-= )
+		GMTK_SWZ3_ROP( *= )
+		GMTK_SWZ3_ROP( /= )
+		GMTK_SWZ3_ROP( += )
+		GMTK_SWZ3_ROP( -= )
 
 	}; //! class swizzle3
+
+	//////////////////////
+	//! OUTPUT OPERATOR //
+	//////////////////////
 
 	template <int a, int b, int c, typename V, typename T>
 	inline std::ostream& operator<<(std::ostream& os, const swizzle3<a, b, c, V, T>& s)
@@ -117,6 +143,20 @@ namespace GMTK_NAMESPACE
 		os << vec<3, T>(s[a], s[b], s[c]);
 		return os;
 	}
+	
+	///////////////////////
+	//! BINARY OPERATORS //
+	///////////////////////
+	
+	GMTK_SWZ3_BOP( * )
+	GMTK_SWZ3_BOP( / )
+	GMTK_SWZ3_BOP( + )
+	GMTK_SWZ3_BOP( - )
+
+	GMTK_SWZ3_BROP( *= )
+	GMTK_SWZ3_BROP( /= )
+	GMTK_SWZ3_BROP( += )
+	GMTK_SWZ3_BROP( -= )
 
 }////
 
