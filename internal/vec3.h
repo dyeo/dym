@@ -49,10 +49,10 @@ namespace GMTK_NAMESPACE
 		////////////
 		//! TYPES //
 		////////////
-
-		template<int a, int b> using swz2 = swizzle2<a, b, vec<2, T>, T>;
-		template<int a, int b, int c> using swz3 = swizzle3<a, b, c, vec<3, T>, T>;
-		template<int a, int b, int c, int d> using swz4 = swizzle4<a, b, c, d, vec<3, T>, T>;
+		
+		GMTK_SWZ2_TYPE
+		GMTK_SWZ3_TYPE
+		GMTK_SWZ4_TYPE
 
 		///////////////////
 		//! DATA MEMBERS //
