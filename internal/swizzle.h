@@ -103,6 +103,14 @@ namespace GMTK_NAMESPACE
 		#undef GMTK_SWZ2_OP
 		#undef GMTK_SWZ2_ROP
 	};
+
+	template <int a, int b, typename T>
+	inline std::ostream& operator<<(std::ostream& os, const swizzle2<a, b, T>& s)
+	{
+		os << "| " << s[a] << ' ' << s[b] << " |";
+		return os;
+	}
+
 }
 
 
