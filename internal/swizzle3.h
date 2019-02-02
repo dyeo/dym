@@ -114,7 +114,7 @@ namespace GMTK_NAMESPACE
 	template <int a, int b, int c, typename V, typename T>
 	inline std::ostream& operator<<(std::ostream& os, const swizzle3<a, b, c, V, T>& s)
 	{
-		os << "| " << s[a] << ' ' << s[b] << " |";
+		os << "| " << s[a] << ' ' << s[b] << ' ' << s[c] << " |";
 		return os;
 	}
 
