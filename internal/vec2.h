@@ -39,24 +39,24 @@
 
 #define GMTK_VEC2_SWZ_BOP(op) \
 	template<int a, int b, typename T> \
-	static inline vec<2, T> operator op (const vec<2, T> &v, const swizzle2<a, b, T> &s) \
+	static inline vec<2, T> operator op (const vec<2, T> &v, const swizzle<a, b, vec<2, T>, T> &s) \
 	{ vec<2, T> res; res.data[0] = data[0] op s[a]; res.data[1] = data[1] op s[b]; return res; } \
 	template<int a, int b, typename T> \
-	static inline vec<2, T> operator op (const swizzle2<a, b, T> &s, const vec<2, T> &v) \
+	static inline vec<2, T> operator op (const swizzle<a, b, vec<2, T>, T> &s, const vec<2, T> &v) \
 	{ vec<2, T> res; res.data[0] = s[a] op data[0]; res.data[1] = s[b] op data[1]; return res; } \
 	template<int a1, int b1, int a2, int b2, typename T> \
-	static inline vec<2, T> operator op (const swizzle2<a1, b1, T> &s, const swizzle2<a2, b2, T> &t) \
+	static inline vec<2, T> operator op (const swizzle<a1, b1, vec<2, T>, T> &s, const swizzle<a2, b2, vec<2, T>, T> &t) \
 	{ vec<2, T> res; res.data[0] = s[a1] op t[a2]; res.data[1] = s[b1] op t[b2]; return res; }
 
 #define GMTK_VEC2_SWZ_BROP(op) \
 	template<int a, int b, typename T> \
-	static inline vec<2, T>& operator op (vec<2, T> &v, const swizzle2<a, b, T> &s) \
+	static inline vec<2, T>& operator op (vec<2, T> &v, const swizzle<a, b, vec<2, T>, T> &s) \
 	{ v.data[0] op s[a]; v.data[1] op s[b]; return v; } \
 	template<int a, int b, typename T> \
-	static inline swizzle2<a, b, T>& operator op (swizzle2<a, b, T> &s, const vec<2, T> &v) \
+	static inline swizzle<a, b, vec<2, T>, T>& operator op (swizzle<a, b, vec<2, T>, T> &s, const vec<2, T> &v) \
 	{ s[a] op v.data[0]; s[b] op v.data[1]; return s; } \
 	template<int a1, int b1, int a2, int b2, typename T> \
-	static inline swizzle2<a1, b1, T>& operator op (swizzle2<a1, b1, T> &s, const swizzle2<a2, b2, T> &t) \
+	static inline swizzle<a1, b1, vec<2, T>, T>& operator op (swizzle<a1, b1, vec<2, T>, T> &s, const swizzle<a2, b2, vec<2, T>, T> &t) \
 	{ s[a1] op t[a2]; s[b1] op t[b2]; return s; }
 //
 
@@ -69,7 +69,7 @@ namespace GMTK_NAMESPACE
 		//! TYPES //
 		////////////
 
-		template<int a, int b> using swz2 = swizzle2<a, b, T>;
+		template<int a, int b> using swz2 = swizzle<a, b, vec<2, T>, T>;
 
 		///////////////////
 		//! DATA MEMBERS //
