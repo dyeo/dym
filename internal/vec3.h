@@ -36,6 +36,28 @@
 	inline vec<3, T>& operator op (const T& v) \
 	{ GMTK_VEC3_LOOP(data[i] op v); return *this; }
 
+#define GMTK_VEC3_SWZ_BOP(op) \
+	template<int a, int b, int c, typename T> \
+	static inline vec<3, T> operator op (const vec<3, T> &v, const swizzle3<a, b, c, vec<3, T>, T> &s) \
+	{ vec<3, T> res; res.data[0] = data[0] op s[a]; res.data[1] = data[1] op s[b]; res.data[2] = data[2] op s[c]; return res; } \
+	template<int a, int b, int c, typename T> \
+	static inline vec<3, T> operator op (const swizzle3<a, b, c, vec<3, T>, T> &s, const vec<3, T> &v) \
+	{ vec<3, T> res; res.data[0] = s[a] op data[0]; res.data[1] = s[b] op data[1]; res.data[2] = s[c] op data[2]; return res; } \
+	template<int a1, int b1, int c1, int a2, int b2, int c2, typename T> \
+	static inline vec<3, T> operator op (const swizzle3<a1, b1, c1, vec<3, T>, T> &s, const swizzle3<a2, b2, c2, vec<3, T>, T> &t) \
+	{ vec<3, T> res; res.data[0] = s[a1] op t[a2]; res.data[1] = s[b1] op t[b2]; res.data[2] = s[c1] op t[c2]; return res; }
+
+#define GMTK_VEC3_SWZ_BROP(op) \
+	template<int a, int b, int c, typename T> \
+	static inline vec<3, T>& operator op (vec<3, T> &v, const swizzle3<a, b, c, vec<3, T>, T> &s) \
+	{ v.data[0] op s[a]; v.data[1] op s[b]; v.data[2] op s[c]; return v; } \
+	template<int a, int b, int c, typename T> \
+	static inline swizzle3<a, b, c, vec<3, T>, T>& operator op (swizzle3<a, b, c, vec<3, T>, T> &s, const vec<3, T> &v) \
+	{ s[a] op v.data[0]; s[b] op v.data[1]; s[c] op v.data[2]; return s; } \
+	template<int a1, int b1, int c1, int a2, int b2, int c2, typename T> \
+	static inline swizzle3<a1, b1, c1, vec<3, T>, T>& operator op (swizzle3<a1, b1, c1, vec<3, T>, T> &s, const swizzle3<a2, b2, c2, vec<3, T>, T> &t) \
+	{ s[a1] op t[a2]; s[b1] op t[b2]; s[c1] op t[c2]; return s; }
+
 //
 
 namespace GMTK_NAMESPACE
@@ -43,6 +65,13 @@ namespace GMTK_NAMESPACE
 
 	template <typename T> struct vec <3, T>
 	{
+		////////////
+		//! TYPES //
+		////////////
+
+		template<int a, int b> using swz2 = swizzle2<a, b, vec<2, T>, T>;
+		template<int a, int b, int c> using swz3 = swizzle3<a, b, c, vec<3, T>, T>;
+
 		///////////////////
 		//! DATA MEMBERS //
 		///////////////////
@@ -51,7 +80,44 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[3]; };
 			struct { T x, y, z; };
-			struct { vec<2, T> xy; };
+			#pragma region swizzle
+			swz2 <0, 0>	   xx;
+			swz2 <0, 1>	   xy;
+			swz2 <0, 2>	   xz;
+			swz2 <1, 0>	   yx;
+			swz2 <1, 1>	   yy;
+			swz2 <1, 2>	   yz;
+			swz2 <2, 0>	   zx;
+			swz2 <2, 1>	   zy;
+			swz2 <2, 2>	   zz;
+			swz3 <0, 0, 0> xxx;
+			swz3 <0, 0, 1> xxy;
+			swz3 <0, 0, 2> xxz;
+			swz3 <0, 1, 0> xyx;
+			swz3 <0, 1, 1> xyy;
+			swz3 <0, 1, 2> xyz;
+			swz3 <0, 2, 0> xzx;
+			swz3 <0, 2, 1> xzy;
+			swz3 <0, 2, 2> xzz;
+			swz3 <1, 0, 0> yxx;
+			swz3 <1, 0, 1> yxy;
+			swz3 <1, 0, 2> yxz;
+			swz3 <1, 1, 0> yyx;
+			swz3 <1, 1, 1> yyy;
+			swz3 <1, 1, 2> yyz;
+			swz3 <1, 2, 0> yzx;
+			swz3 <1, 2, 1> yzy;
+			swz3 <1, 2, 2> yzz;
+			swz3 <2, 0, 0> zxx;
+			swz3 <2, 0, 1> zxy;
+			swz3 <2, 0, 2> zxz;
+			swz3 <2, 1, 0> zyx;
+			swz3 <2, 1, 1> zyy;
+			swz3 <2, 1, 2> zyz;
+			swz3 <2, 2, 0> zzx;
+			swz3 <2, 2, 1> zzy;
+			swz3 <2, 2, 2> zzz;
+			#pragma region swizzle
 		};
 
 		///////////////////
@@ -77,6 +143,22 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline vec() {
 			GMTK_VEC3_LOOP(data[i] = static_cast<T>(0));
+		}
+
+		//! Swizzle constructor
+		template<int a, int b>
+		inline vec(const swz2<a, b>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
+			data[2] = static_cast<T>(1);
+		}
+
+		//! Swizzle constructor
+		template<int a, int b, int c>
+		inline vec(const swz3<a, b, c>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
+			data[2] = s[c];
 		}
 
 		//! Initializer list constructor
@@ -214,6 +296,20 @@ namespace GMTK_NAMESPACE
 		static inline constexpr vec<3, T> back() { return vec<3, T>(0, 0, -1); }
 
 	}; //! struct vec3
+	
+	//////////////////////////
+	//! SWIZZLING OPERATORS //
+	//////////////////////////
+	
+	GMTK_VEC3_SWZ_BOP(*)
+	GMTK_VEC3_SWZ_BOP(/)
+	GMTK_VEC3_SWZ_BOP(+)
+	GMTK_VEC3_SWZ_BOP(-)
+
+	GMTK_VEC3_SWZ_BROP(*=)
+	GMTK_VEC3_SWZ_BROP(/=)
+	GMTK_VEC3_SWZ_BROP(+=)
+	GMTK_VEC3_SWZ_BROP(-=)
 
 	///////////////////////
 	//! TYPE DEFINITIONS //
@@ -241,6 +337,9 @@ namespace GMTK_NAMESPACE
 #undef GMTK_VEC3_SCL_OP
 #undef GMTK_VEC3_VEC_ROP
 #undef GMTK_VEC3_SCL_ROP
+
+#undef GMTK_VEC3_SWZ_BOP
+#undef GMTK_VEC3_SWZ_BROP
 
 //
 
