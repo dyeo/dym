@@ -11,6 +11,7 @@
 #include "vec.h"
 #include "swizzle2.h"
 #include "swizzle3.h"
+#include "swizzle4.h"
 
 //
 
@@ -72,6 +73,7 @@ namespace GMTK_NAMESPACE
 
 		template<int a, int b> using swz2 = swizzle2<a, b, vec<2, T>, T>;
 		template<int a, int b, int c> using swz3 = swizzle3<a, b, c, vec<3, T>, T>;
+		template<int a, int b, int c, int d> using swz4 = swizzle4<a, b, c, d, vec<3, T>, T>;
 
 		///////////////////
 		//! DATA MEMBERS //
@@ -81,18 +83,8 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[2]; };
 			struct { T x, y; };
-			swz2 <0, 0>	   xx;
-			swz2 <0, 1>	   xy;
-			swz2 <1, 0>	   yx;
-			swz2 <1, 1>	   yy;
-			swz3 <0, 0, 0> xxx;
-			swz3 <0, 0, 1> xxy;
-			swz3 <0, 1, 0> xyx;
-			swz3 <0, 1, 1> xyy;
-			swz3 <1, 0, 0> yxx;
-			swz3 <1, 0, 1> yxy;
-			swz3 <1, 1, 0> yyx;
-			swz3 <1, 1, 1> yyy;
+			struct { T r, g; };
+			GMTK_VEC2_SWIZZLES
 		};
 
 		///////////////////
@@ -111,9 +103,23 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC2_LOOP(data[i] = static_cast<T>(0));
 		}
 
-		//! Swizzle constructor
+		//! Swizzle2 constructor
 		template<int a, int b>
 		inline vec(const swz2<a, b>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
+		}
+
+		//! Swizzle3 constructor
+		template<int a, int b, int c>
+		inline vec(const swz3<a, b, c>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
+		}
+
+		//! Swizzle4 constructor
+		template<int a, int b, int c, int d>
+		inline vec(const swz4<a, b, c, d>&s) {
 			data[0] = s[a];
 			data[1] = s[b];
 		}
@@ -169,14 +175,7 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 		//! ARITHMETIC OPERATORS //
 		///////////////////////////
-
-		//! Swizzle assignment
-		template<int a, int b>
-		vec<2, T>& operator=(const swz2<a, b> &s) {
-			*this = vec<2, T>(s[a], s[b]);
-			return *this;
-		}
-
+		
 		//! Component-wise unary negation
 		GMTK_VEC2_UN_OP(-)
 

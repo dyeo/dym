@@ -9,6 +9,9 @@
 //
 
 #include "vec.h"
+#include "swizzle2.h"
+#include "swizzle3.h"
+#include "swizzle4.h"
 
 //
 
@@ -71,6 +74,7 @@ namespace GMTK_NAMESPACE
 
 		template<int a, int b> using swz2 = swizzle2<a, b, vec<2, T>, T>;
 		template<int a, int b, int c> using swz3 = swizzle3<a, b, c, vec<3, T>, T>;
+		template<int a, int b, int c, int d> using swz4 = swizzle4<a, b, c, d, vec<3, T>, T>;
 
 		///////////////////
 		//! DATA MEMBERS //
@@ -80,44 +84,8 @@ namespace GMTK_NAMESPACE
 		{
 			struct { T data[3]; };
 			struct { T x, y, z; };
-			#pragma region swizzle
-			swz2 <0, 0>	   xx;
-			swz2 <0, 1>	   xy;
-			swz2 <0, 2>	   xz;
-			swz2 <1, 0>	   yx;
-			swz2 <1, 1>	   yy;
-			swz2 <1, 2>	   yz;
-			swz2 <2, 0>	   zx;
-			swz2 <2, 1>	   zy;
-			swz2 <2, 2>	   zz;
-			swz3 <0, 0, 0> xxx;
-			swz3 <0, 0, 1> xxy;
-			swz3 <0, 0, 2> xxz;
-			swz3 <0, 1, 0> xyx;
-			swz3 <0, 1, 1> xyy;
-			swz3 <0, 1, 2> xyz;
-			swz3 <0, 2, 0> xzx;
-			swz3 <0, 2, 1> xzy;
-			swz3 <0, 2, 2> xzz;
-			swz3 <1, 0, 0> yxx;
-			swz3 <1, 0, 1> yxy;
-			swz3 <1, 0, 2> yxz;
-			swz3 <1, 1, 0> yyx;
-			swz3 <1, 1, 1> yyy;
-			swz3 <1, 1, 2> yyz;
-			swz3 <1, 2, 0> yzx;
-			swz3 <1, 2, 1> yzy;
-			swz3 <1, 2, 2> yzz;
-			swz3 <2, 0, 0> zxx;
-			swz3 <2, 0, 1> zxy;
-			swz3 <2, 0, 2> zxz;
-			swz3 <2, 1, 0> zyx;
-			swz3 <2, 1, 1> zyy;
-			swz3 <2, 1, 2> zyz;
-			swz3 <2, 2, 0> zzx;
-			swz3 <2, 2, 1> zzy;
-			swz3 <2, 2, 2> zzz;
-			#pragma region swizzle
+			struct { T r, g, b; };
+			GMTK_VEC3_SWIZZLES
 		};
 
 		///////////////////
@@ -145,7 +113,7 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC3_LOOP(data[i] = static_cast<T>(0));
 		}
 
-		//! Swizzle constructor
+		//! Swizzle2 constructor
 		template<int a, int b>
 		inline vec(const swz2<a, b>&s) {
 			data[0] = s[a];
@@ -153,9 +121,17 @@ namespace GMTK_NAMESPACE
 			data[2] = static_cast<T>(1);
 		}
 
-		//! Swizzle constructor
+		//! Swizzle3 constructor
 		template<int a, int b, int c>
 		inline vec(const swz3<a, b, c>&s) {
+			data[0] = s[a];
+			data[1] = s[b];
+			data[2] = s[c];
+		}
+		
+		//! Swizzle4 constructor
+		template<int a, int b, int c, int d>
+		inline vec(const swz4<a, b, c, d>&s) {
 			data[0] = s[a];
 			data[1] = s[b];
 			data[2] = s[c];

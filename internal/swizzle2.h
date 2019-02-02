@@ -105,7 +105,7 @@ namespace GMTK_NAMESPACE
 	template <int a, int b, typename V, typename T>
 	inline std::ostream& operator<<(std::ostream& os, const swizzle2<a, b, V, T>& s)
 	{
-		os << "| " << s[a] << ' ' << s[b] << " |";
+		os << vec<2, T>(s[a], s[b]);
 		return os;
 	}
 
@@ -116,6 +116,38 @@ namespace GMTK_NAMESPACE
 #undef GMTK_SWZ2_UOP
 #undef GMTK_SWZ2_OP
 #undef GMTK_SWZ2_ROP
+
+//
+
+#define GMTK_VEC2_SWIZZLES \
+swz2 <0, 0> xx, rr, uu; \
+swz2 <0, 1> xy, rg, uv; \
+swz2 <1, 0> yx, gr, vu; \
+swz2 <1, 1> yy, gg, vv; \
+swz3 <0, 0, 0> xxx, rrr, uuu; \
+swz3 <0, 0, 1> xxy, rrg, uuv; \
+swz3 <0, 1, 0> xyx, rgr, uvu; \
+swz3 <0, 1, 1> xyy, rgg, uvv; \
+swz3 <1, 0, 0> yxx, grr, vuu; \
+swz3 <1, 0, 1> yxy, grg, vuv; \
+swz3 <1, 1, 0> yyx, ggr, vvu; \
+swz3 <1, 1, 1> yyy, ggg, vvv; \
+swz4 <0, 0, 0, 0> xxxx, rrrr, uuuu; \
+swz4 <0, 0, 0, 1> xxxy, rrrg, uuuv; \
+swz4 <0, 0, 1, 0> xxyx, rrgr, uuvu; \
+swz4 <0, 0, 1, 1> xxyy, rrgg, uuvv; \
+swz4 <0, 1, 0, 0> xyxx, rgrr, uvuu; \
+swz4 <0, 1, 0, 1> xyxy, rgrg, uvuv; \
+swz4 <0, 1, 1, 0> xyyx, rggr, uvvu; \
+swz4 <0, 1, 1, 1> xyyy, rggg, uvvv; \
+swz4 <1, 0, 0, 0> yxxx, grrr, vuuu; \
+swz4 <1, 0, 0, 1> yxxy, grrg, vuuv; \
+swz4 <1, 0, 1, 0> yxyx, grgr, vuvu; \
+swz4 <1, 0, 1, 1> yxyy, grgg, vuvv; \
+swz4 <1, 1, 0, 0> yyxx, ggrr, vvuu; \
+swz4 <1, 1, 0, 1> yyxy, ggrg, vvuv; \
+swz4 <1, 1, 1, 0> yyyx, gggr, vvvu; \
+swz4 <1, 1, 1, 1> yyyy, gggg, vvvv; \
 
 //
 
