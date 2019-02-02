@@ -21,19 +21,37 @@
 
 //
 
-#define GMTK_IDENT_LOOP(oper) GMTK_UNROLL_LOOP(i, GMTK_MIN_OF(r, c), oper)
+#define GMTK_MAT_IDENT_LOOP(oper) GMTK_UNROLL_LOOP(i, GMTK_MIN_OF(r, c), oper)
 
-#define GMTK_MAT_LOOP(oper) GMTK_UNROLL_2D_LOOP(i, j, c, r, oper)
+#define GMTK_MAT_LOOP(oper) GMTK_UNROLL_LONG_LOOP(i, r*c, oper)
 
-#define GMTK_MAT_LOOP2(oper) GMTK_UNROLL_LONG_LOOP(i, r*c, oper)
+#define GMTK_MAT_LOOP_2D(oper) GMTK_UNROLL_2D_LOOP(i, j, c, r, oper)
 
-#define GMTK_MAT_OPERATOR(oper) { mat<c, r, T> res; GMTK_MAT_LOOP(res[i][j] = oper); return res; }
+//
 
-#define GMTK_MAT_OPERATOR2(oper) { mat<c, r, T> res; GMTK_MAT_LOOP2(res(i) = oper); return res; }
+#define GMTK_MAT_UN_OP(op) \
+	inline mat<c, r, T> operator op () const \
+	{ mat<c, r, T> res(static_cast<T>(0)); GMTK_mat_LOOP(res.arr[i] = op arr[i]); return res; }
 
-#define GMTK_MAT_REF_OPERATOR(oper) { GMTK_MAT_LOOP(oper); return *this; }
+#define GMTK_MAT_MAT_OP(op) \
+	inline mat<c, r, T> operator op (const mat<c, r, T>& v) const \
+	{ mat<c, r, T> res(static_cast<T>(0)); GMTK_mat_LOOP(res.arr[i] = arr[i] op v.arr[i]); return res; }
 
-#define GMTK_MAT_REF_OPERATOR2(oper) { GMTK_MAT_LOOP2(oper); return *this; }
+#define GMTK_MAT_SCL_OP(op) \
+	inline mat<c, r, T> operator op (const T& v) const \
+	{ mat<c, r, T> res(static_cast<T>(0)); GMTK_mat_LOOP(res.arr[i] = arr[i] op v); return res; }
+
+#define GMTK_MAT_MAT_ROP(op) \
+	inline mat<c, r, T>& operator op (const mat<c, r, T>& v) \
+	{ GMTK_mat_LOOP(arr[i] op v.arr[i]); return *this; }
+
+#define GMTK_MAT_SCL_ROP(op) \
+	inline mat<c, r, T>& operator op (const T& v) \
+	{ GMTK_mat_LOOP(arr[i] op v); return *this; }
+
+//
+
+#define GMTK_MAT_OPERATION(oper) { mat<c, r, T> res; GMTK_MAT_LOOP(res.arr[i] = oper); return res; }
 
 //
 
@@ -77,7 +95,7 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline mat()
 		{
-			GMTK_MAT_LOOP2(arr[i] = static_cast<T>(0));
+			GMTK_MAT_LOOP(arr[i] = static_cast<T>(0));
 		}
 
 		//! Initializer list constructor
@@ -85,12 +103,12 @@ namespace GMTK_NAMESPACE
 		//! This is because matrices are stored column-major
 		inline mat(std::initializer_list<T> list)
 		{
-			GMTK_MAT_LOOP2(arr[i] = *(list.begin() + i));
+			GMTK_MAT_LOOP(arr[i] = *(list.begin() + i));
 		}
 		
 		//! Copy constructor
 		inline mat(const mat<c, r, T>& v) {
-			GMTK_MAT_LOOP2(arr[i] = v.arr[i]);
+			GMTK_MAT_LOOP(arr[i] = v.arr[i]);
 		}
 
 		template<int cm, int rm>
@@ -103,17 +121,17 @@ namespace GMTK_NAMESPACE
 
 		//! Explicit type-conversion copy constructor
 		template<typename U> explicit inline mat(const mat<c, r, U>& v) {
-			GMTK_MAT_LOOP2(arr[i] = static_cast<T>(v.arr[i]));
+			GMTK_MAT_LOOP(arr[i] = static_cast<T>(v.arr[i]));
 		}
 
 		//! Fill constructor
 		explicit inline mat(const T& s) {
-			GMTK_MAT_LOOP2(arr[i] = s);
+			GMTK_MAT_LOOP(arr[i] = s);
 		}
 
 		//! Array initializer
 		explicit inline mat(const T* a) {
-			GMTK_MAT_LOOP2(arr[i] = a[i]);
+			GMTK_MAT_LOOP(arr[i] = a[i]);
 		}
 
 		///////////////////////
@@ -140,95 +158,63 @@ namespace GMTK_NAMESPACE
 			return arr[i];
 		}
 
-		////////////////
-		//! OPERATORS //
-		////////////////
+		///////////////////////////
+		//! ARITHMETIC OPERATORS //
+		///////////////////////////
 
-		//! Returns a negative matrix
-		inline mat<c, r, T> operator-() const {
-			GMTK_MAT_OPERATOR2(-arr[i]);
-		}
+		//! Component-wise unary negation
+		GMTK_MAT_UN_OP(-)
+			
+		//! Matrix assignment
+		GMTK_MAT_MAT_ROP(=)
+
+		//! Component-wise matrix division
+		GMTK_MAT_MAT_OP(/)
 
 		//! Component-wise matrix addition
-		inline mat<c, r, T> operator+(const mat<c, r, T>& m) const {
-			GMTK_MAT_OPERATOR2(arr[i] + m.arr[i]);
-		}
+		GMTK_MAT_MAT_OP(+)
 
 		//! Component-wise matrix subtraction
-		inline mat<c, r, T> operator-(const mat<c, r, T>& m) const {
-			GMTK_MAT_OPERATOR2(arr[i] - m.arr[i]);
-		}
-		
-		//! Component-wise matrix division
-		inline mat<c, r, T> operator/(const mat<c, r, T>& m) const {
-			GMTK_MAT_OPERATOR2(arr[i] / m.arr[i]);
-		}
-
-		//
-
-		//! Component-wise scalar addition
-		inline mat<c, r, T> operator+(const T& s) const {
-			GMTK_MAT_OPERATOR2(arr[i] + s);
-		}
-
-		//! Component-wise scalar subtraction
-		inline mat<c, r, T> operator-(const T& s) const {
-			GMTK_MAT_OPERATOR2(arr[i] - s);
-		}
-
-		//! Component-wise scalar division
-		inline mat<c, r, T> operator/(const T& s) const {
-			GMTK_MAT_OPERATOR2(arr[i] / s);
-		}
+		GMTK_MAT_MAT_OP(-)
 
 		//! Component-wise scalar multiplication
-		inline mat<c, r, T> operator*(const T& s) const {
-			GMTK_MAT_OPERATOR2(arr[i] * s);
-		}
+		GMTK_MAT_SCL_OP(*)
 
-		//
+		//! Component-wise scalar division
+		GMTK_MAT_SCL_OP(/)
+
+		//! Component-wise scalar addition
+		GMTK_MAT_SCL_OP(+)
+
+		//! Component-wise scalar subtraction
+		GMTK_MAT_SCL_OP(-)
+			
+		//! Component-wise matrix reference division
+		GMTK_MAT_MAT_ROP(/=)
 
 		//! Component-wise matrix reference addition
-		inline mat<c, r, T>& operator+=(const mat<c, r, T>& m) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] += m.arr[i]);
-		}
+		GMTK_MAT_MAT_ROP(+=)
 
 		//! Component-wise matrix reference subtraction
-		inline mat<c, r, T>& operator-=(const mat<c, r, T>& m) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] -= m.arr[i]);
-		}
-
-		//! Component-wise matrix reference division
-		inline mat<c, r, T>& operator/=(const mat<c, r, T>& m) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] /= m.arr[i]);
-		}
-
-		//
-
-		//! Component-wise scalar reference addition
-		inline mat<c, r, T>& operator+=(const T& s) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] += s);
-		}
-
-		//! Component-wise scalar reference subtraction
-		inline mat<c, r, T>& operator-=(const T& s) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] -= s);
-		}
+		GMTK_MAT_MAT_ROP(-=)
+			
+		//! Component-wise scalar reference multiplication
+		GMTK_MAT_SCL_ROP(*= )
 
 		//! Component-wise scalar reference division
-		inline mat<c, r, T>& operator/=(const T& s) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] /= s);
-		}
+		GMTK_MAT_SCL_ROP(/=)
 
-		//! Component-wise scalar reference multiplication
-		inline mat<c, r, T>& operator*=(const T& s) {
-			GMTK_MAT_REF_OPERATOR2(arr[i] *= s);
-		}
+		//! Component-wise scalar reference addition
+		GMTK_MAT_SCL_ROP(+=)
 
+		//! Component-wise scalar reference subtraction
+		GMTK_MAT_SCL_ROP(-=)
+
+		//! Matrix identity
 		static mat<c, r, T> identity()
 		{
-			mat<c, r, T> res;
-			GMTK_IDENT_LOOP(res.data[i][i] = static_cast<T>(1));
+			mat<c, r, T> res(static_cast<T>(0));
+			GMTK_MAT_IDENT_LOOP(res.data[i][i] = static_cast<T>(1));
 			return res;
 		}
 		
@@ -264,6 +250,16 @@ namespace GMTK_NAMESPACE
 		GMTK_UNROLL_3D_LOOP(i, j, k, r1, c2, r2, res[j][i] += m.data[k][i] * n.data[j][k]);
 		return res;
 	}
+	
+	//! Matrix product (reference)
+	//! Accepts two matrices where cols and rows are equal
+	//! Is not commutative
+	template <int c, int r, typename T>
+	inline mat<c, r, T>& operator*=(mat<c, r, T>& m, const mat<c, r, T>& n) {
+		mat<c, r, T> res(static_cast<T>(0));
+		GMTK_UNROLL_3D_LOOP(i, j, k, r, c, r, res[j][i] += m.data[k][i] * n.data[j][k]);
+		return m = res;
+	}
 
 	///////////////////////////////////
 	//! MATRIX&VECTOR MULTIPLICATION //
@@ -271,19 +267,41 @@ namespace GMTK_NAMESPACE
 
 	//! Matrix-vector multiplication: column vector (matrix row)
 	template <int c, int r, typename T>
-	inline const vec<c, T> operator*(const mat<c, r, T>& m, const vec<c, T>& v) {
-		vec<c, T> res(static_cast<T>(0));
+	inline vec<r, T> operator*(const mat<c, r, T>& m, const vec<r, T>& v) {
+		vec<r, T> res(static_cast<T>(0));
 		GMTK_UNROLL_2D_LOOP(i, j, r, c, res.data[i] += m.data[j][i] * v.data[j]);
 		return res;
 	}
 
 	//! Matrix-vector multiplication: row vector (matrix column)
 	template <int c, int r, typename T>
-	inline const vec<c, T> operator*(const vec<c, T>& v, const mat<c, r, T>& m) {
+	inline vec<c, T> operator*(const vec<c, T>& v, const mat<c, r, T>& m) {
 		vec<c, T> res(static_cast<T>(0));
 		GMTK_UNROLL_2D_LOOP(i, j, c, r, res.data[i] += m.data[i][j] * v.data[j]);
 		return res;
 	}
+
+	//! Matrix-vector multiplication: row vector (matrix column, reference)
+	template <int c, int r, typename T>
+	inline vec<c, T>& operator*=(vec<c, T>& v, const mat<c, r, T>& m) {
+		vec<c, T> res(static_cast<T>(0));
+		GMTK_UNROLL_2D_LOOP(i, j, c, r, res.data[i] += m.data[i][j] * v.data[j]);
+		return v = res;
+	}
+
+	///////////////////////////////////
+	//! MATRIX&SCALAR MULTIPLICATION //
+	///////////////////////////////////
+	
+	//! Matrix-scalar multiplication
+	template <int c, int r, typename T>
+	inline const mat<c, r, T> operator*(const T& v, const mat<c, r, T>& m)
+		GMTK_MAT_OPERATION(v * m.arr[i])
+
+	//! Matrix-scalar multiplication (odd-typed)
+	template <typename U, int c, int r, typename T>
+	inline const mat<c, r, T> operator*(const U& v, const mat<c, r, T>& m)
+		GMTK_MAT_OPERATION(static_cast<T>(v) * m.arr[i])
 
 	/////////////////////
 	//! FREE-FUNCTIONS //
@@ -292,7 +310,7 @@ namespace GMTK_NAMESPACE
 	//! Component-wise matrix multiplication
 	template <int c, int r, typename T>
 	inline mat<c, r, T> mult(const mat<c, r, T>& m, const mat<c, r, T>& n) {
-		GMTK_MAT_OPERATOR2(m.arr[i] * n.arr[i]);
+		GMTK_MAT_OPERATOR(m.arr[i] * n.arr[i]);
 	}
 
 	//! Returns sum of the matrix diagonal
@@ -300,7 +318,7 @@ namespace GMTK_NAMESPACE
 	inline T trace(const mat<c, r, T>& m)
 	{
 		T res = 0;
-		GMTK_IDENT_LOOP(res += m.data[i][i];);
+		GMTK_MAT_IDENT_LOOP(res += m.data[i][i];);
 		return res;
 	}
 
@@ -415,7 +433,7 @@ namespace GMTK_NAMESPACE
 	inline mat<r, c, T> transpose(const mat<c, r, T>& m)
 	{
 		mat<r, c, T> res(static_cast<T>(0));
-		GMTK_MAT_LOOP(res[j][i] = m[i][j]);
+		GMTK_MAT_LOOP_2D(res[j][i] = m[i][j]);
 		return res;
 	}
 
@@ -464,6 +482,18 @@ namespace GMTK_NAMESPACE
 	}
 
 }////
+
+//
+
+#undef GMTK_MAT_IDENT_LOOP
+#undef GMTK_MAT_LOOP
+#undef GMTK_MAT_LOOP_2D
+#undef GMTK_MAT_UN_OP
+#undef GMTK_MAT_VEC_OP
+#undef GMTK_MAT_SCL_OP
+#undef GMTK_MAT_VEC_ROP
+#undef GMTK_MAT_SCL_ROP
+#undef GMTK_MAT_OPERATION
 
 //
 
