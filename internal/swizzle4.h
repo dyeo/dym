@@ -155,18 +155,30 @@ namespace GMTK_NAMESPACE
 		}
 
 		GMTK_SWZ4_UOP(-)
-
+		GMTK_SWZ4_UOP(~)
 		GMTK_SWZ4_ROP(=)
 
 		GMTK_SWZ4_OP(*)
 		GMTK_SWZ4_OP(/)
 		GMTK_SWZ4_OP(+)
 		GMTK_SWZ4_OP(-)
+		GMTK_SWZ4_OP(|)
+		GMTK_SWZ4_OP(&)
+		GMTK_SWZ4_OP(^)
+		GMTK_SWZ4_OP(%)
+		GMTK_SWZ4_OP(<<)
+		GMTK_SWZ4_OP(>>)
 
 		GMTK_SWZ4_ROP(*=)
 		GMTK_SWZ4_ROP(/=)
 		GMTK_SWZ4_ROP(+=)
 		GMTK_SWZ4_ROP(-=)
+		GMTK_SWZ4_ROP(|=)
+		GMTK_SWZ4_ROP(&=)
+		GMTK_SWZ4_ROP(^=)
+		GMTK_SWZ4_ROP(%=)
+		GMTK_SWZ4_ROP(<<=)
+		GMTK_SWZ4_ROP(>>=)
 
 	}; //! class swizzle3
 
@@ -189,11 +201,23 @@ namespace GMTK_NAMESPACE
 	GMTK_SWZ4_BOP(/)
 	GMTK_SWZ4_BOP(+)
 	GMTK_SWZ4_BOP(-)
+	GMTK_SWZ4_BOP(|)
+	GMTK_SWZ4_BOP(&)
+	GMTK_SWZ4_BOP(^)
+	GMTK_SWZ4_BOP(%)
+	GMTK_SWZ4_BOP(<<)
+	GMTK_SWZ4_BOP(>>)
 
 	GMTK_SWZ4_BROP(*=)
 	GMTK_SWZ4_BROP(/=)
 	GMTK_SWZ4_BROP(+=)
 	GMTK_SWZ4_BROP(-=)
+	GMTK_SWZ4_BROP( |= )
+    GMTK_SWZ4_BROP( &= )
+    GMTK_SWZ4_BROP( ^= )
+    GMTK_SWZ4_BROP( %= )
+    GMTK_SWZ4_BROP( <<= )
+    GMTK_SWZ4_BROP( >>= )
 
 }////
 

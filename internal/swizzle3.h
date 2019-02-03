@@ -141,19 +141,31 @@ namespace GMTK_NAMESPACE
 			return ((T* const)this)[i];
 		}
 
-		GMTK_SWZ3_UOP( - )
+		GMTK_SWZ3_UOP(-)
+		GMTK_SWZ3_UOP(~)
+		GMTK_SWZ3_ROP(=)
+			
+		GMTK_SWZ3_OP(*)
+		GMTK_SWZ3_OP(/)
+		GMTK_SWZ3_OP(+)
+		GMTK_SWZ3_OP(-)
+		GMTK_SWZ3_OP(|)
+		GMTK_SWZ3_OP(&)
+		GMTK_SWZ3_OP(^)
+		GMTK_SWZ3_OP(%)
+		GMTK_SWZ3_OP(<<)
+		GMTK_SWZ3_OP(>>)
 
-		GMTK_SWZ3_ROP( = )
-
-		GMTK_SWZ3_OP( * )
-		GMTK_SWZ3_OP( / )
-		GMTK_SWZ3_OP( + )
-		GMTK_SWZ3_OP( - )
-
-		GMTK_SWZ3_ROP( *= )
-		GMTK_SWZ3_ROP( /= )
-		GMTK_SWZ3_ROP( += )
-		GMTK_SWZ3_ROP( -= )
+		GMTK_SWZ3_ROP(*=)
+		GMTK_SWZ3_ROP(/=)
+		GMTK_SWZ3_ROP(+=)
+		GMTK_SWZ3_ROP(-=)
+		GMTK_SWZ3_ROP(|=)
+		GMTK_SWZ3_ROP(&=)
+		GMTK_SWZ3_ROP(^=)
+		GMTK_SWZ3_ROP(%=)
+		GMTK_SWZ3_ROP(<<=)
+		GMTK_SWZ3_ROP(>>=)
 
 	}; //! class swizzle3
 
@@ -172,15 +184,27 @@ namespace GMTK_NAMESPACE
 	//! BINARY OPERATORS //
 	///////////////////////
 	
-	GMTK_SWZ3_BOP( * )
-	GMTK_SWZ3_BOP( / )
-	GMTK_SWZ3_BOP( + )
-	GMTK_SWZ3_BOP( - )
+	GMTK_SWZ3_BOP(*)
+	GMTK_SWZ3_BOP(/)
+	GMTK_SWZ3_BOP(+)
+	GMTK_SWZ3_BOP(-)
+	GMTK_SWZ3_BOP(|)
+	GMTK_SWZ3_BOP(&)
+	GMTK_SWZ3_BOP(^)
+	GMTK_SWZ3_BOP(%)
+	GMTK_SWZ3_BOP(<<)
+	GMTK_SWZ3_BOP(>>)
 
-	GMTK_SWZ3_BROP( *= )
-	GMTK_SWZ3_BROP( /= )
-	GMTK_SWZ3_BROP( += )
-	GMTK_SWZ3_BROP( -= )
+	GMTK_SWZ3_BROP(*=)
+	GMTK_SWZ3_BROP(/=)
+	GMTK_SWZ3_BROP(+=)
+	GMTK_SWZ3_BROP(-=)
+	GMTK_SWZ3_BROP(|=)
+    GMTK_SWZ3_BROP(&=)
+    GMTK_SWZ3_BROP(^=)
+    GMTK_SWZ3_BROP(%=)
+    GMTK_SWZ3_BROP(<<=)
+    GMTK_SWZ3_BROP(>>=)
 
 }////
 
