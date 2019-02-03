@@ -15,7 +15,7 @@
 //
 
 //! Unrolls a component-wise quaternion manipulation for generic implementation
-#define GMTK_QUAT_LOOP(oper) GMTK_UNROLL_LOOP(i,4,oper)
+#define GMTK_QUAT_LOOP(oper) GMTK_STATIC_LOOP(i,4,oper)
 
 //
 
@@ -27,7 +27,7 @@
 
 //
 
-#define GMTK_QUAT_SLERP_THRESHOLD = 0.9995
+#define GMTK_QUAT_SLERP_THRESHOLD 0.99951171875
 
 //
 
