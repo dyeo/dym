@@ -164,51 +164,86 @@ namespace GMTK_NAMESPACE
 
 		//! Component-wise unary negation
 		GMTK_MAT_UN_OP(-)
-			
-		//! Matrix assignment
+		//! Component-wise unary negation
+		GMTK_MAT_UN_OP(~)
+		//! Vector assignment
 		GMTK_MAT_MAT_ROP(=)
-
-		//! Component-wise matrix division
-		GMTK_MAT_MAT_OP(/)
-
+		
 		//! Component-wise matrix addition
-		GMTK_MAT_MAT_OP(+)
-
+		GMTK_MAT_MAT_OP(+)		
 		//! Component-wise matrix subtraction
-		GMTK_MAT_MAT_OP(-)
+		GMTK_MAT_MAT_OP(-)		
+		//! Component-wise matrix OR
+		GMTK_MAT_MAT_OP(|)
+		//! Component-wise matrix AND
+		GMTK_MAT_MAT_OP(&)
+		//! Component-wise matrix XOR
+		GMTK_MAT_MAT_OP(^)
+		//! Component-wise matrix modulus
+		GMTK_MAT_MAT_OP(%)
+		//! Component-wise matrix shift left
+		GMTK_MAT_MAT_OP(<<)
+		//! Component-wise matrix shift right
+		GMTK_MAT_MAT_OP(>>)	
 
 		//! Component-wise scalar multiplication
-		GMTK_MAT_SCL_OP(*)
-
+		GMTK_MAT_SCL_OP(*)		
 		//! Component-wise scalar division
-		GMTK_MAT_SCL_OP(/)
-
+		GMTK_MAT_SCL_OP(/)		
 		//! Component-wise scalar addition
-		GMTK_MAT_SCL_OP(+)
-
+		GMTK_MAT_SCL_OP(+)		
 		//! Component-wise scalar subtraction
-		GMTK_MAT_SCL_OP(-)
-			
-		//! Component-wise matrix reference division
-		GMTK_MAT_MAT_ROP(/=)
-
+		GMTK_MAT_SCL_OP(-)		
+		//! Component-wise scalar OR
+		GMTK_MAT_SCL_OP(|)
+		//! Component-wise scalar AND
+		GMTK_MAT_SCL_OP(&)
+		//! Component-wise scalar XOR
+		GMTK_MAT_SCL_OP(^)
+		//! Component-wise scalar modulus
+		GMTK_MAT_SCL_OP(%)
+		//! Component-wise scalar shift left
+		GMTK_MAT_SCL_OP(<<)
+		//! Component-wise scalar shift right
+		GMTK_MAT_SCL_OP(>>)
+							
 		//! Component-wise matrix reference addition
-		GMTK_MAT_MAT_ROP(+=)
-
+		GMTK_MAT_MAT_ROP(+=)		
 		//! Component-wise matrix reference subtraction
 		GMTK_MAT_MAT_ROP(-=)
-			
+		//! Component-wise matrix reference OR
+		GMTK_MAT_MAT_ROP(|=)
+		//! Component-wise matrix reference AND
+		GMTK_MAT_MAT_ROP(&=)
+		//! Component-wise matrix reference XOR
+		GMTK_MAT_MAT_ROP(^=)
+		//! Component-wise matrix reference modulus
+		GMTK_MAT_MAT_ROP(%=)
+		//! Component-wise matrix reference shift left
+		GMTK_MAT_MAT_ROP(<<=)
+		//! Component-wise matrix reference shift right
+		GMTK_MAT_MAT_ROP(>>=)
+
 		//! Component-wise scalar reference multiplication
-		GMTK_MAT_SCL_ROP(*= )
-
+		GMTK_MAT_SCL_ROP(*=)	
 		//! Component-wise scalar reference division
-		GMTK_MAT_SCL_ROP(/=)
-
+		GMTK_MAT_SCL_ROP(/=)		
 		//! Component-wise scalar reference addition
-		GMTK_MAT_SCL_ROP(+=)
-
+		GMTK_MAT_SCL_ROP(+=)		
 		//! Component-wise scalar reference subtraction
 		GMTK_MAT_SCL_ROP(-=)
+		//! Component-wise scalar reference OR
+		GMTK_MAT_SCL_ROP(|=)
+		//! Component-wise scalar reference AND
+		GMTK_MAT_SCL_ROP(&=)
+		//! Component-wise scalar reference XOR
+		GMTK_MAT_SCL_ROP(^=)
+		//! Component-wise scalar reference modulus
+		GMTK_MAT_SCL_ROP(%=)
+		//! Component-wise scalar reference shift left
+		GMTK_MAT_SCL_ROP(<<=)
+		//! Component-wise scalar reference shift right
+		GMTK_MAT_SCL_ROP(>>=)
 
 		//! Matrix identity
 		static mat<c, r, T> identity()
@@ -489,9 +524,9 @@ namespace GMTK_NAMESPACE
 #undef GMTK_MAT_LOOP
 #undef GMTK_MAT_LOOP_2D
 #undef GMTK_MAT_UN_OP
-#undef GMTK_MAT_VEC_OP
+#undef GMTK_MAT_MAT_OP
 #undef GMTK_MAT_SCL_OP
-#undef GMTK_MAT_VEC_ROP
+#undef GMTK_MAT_MAT_ROP
 #undef GMTK_MAT_SCL_ROP
 #undef GMTK_MAT_OPERATION
 
