@@ -537,13 +537,13 @@ namespace GMTK_NAMESPACE
 
 		//! generates a 3d-orthographic (flat) frustum transformation
 		inline static mat<4, 4, T> ortho(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
-		{
-			return mat<4, 4, T>
-				(2.0 / (right - left), 0, 0, 0,
-				 0,	2.0 / (top - bottom), 0, 0,
-				 0,	0, 2.0 / (near - far), 0,
-				(left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), 1);
-		}
+        {
+            return mat<4, 4, T>
+                (static_cast<T>(2.0) / (right - left), 0, 0, 0,
+                 0,    static_cast<T>(2.0) / (top - bottom), 0, 0,
+                 0,    0, static_cast<T>(2.0) / (near - far), 0,
+                (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), 1);
+        }
 
 		//! generates a catmull-rom identity transformation
 		inline static mat<4, 4, T> catmull()
