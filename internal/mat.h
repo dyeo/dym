@@ -66,17 +66,17 @@ namespace GMTK_NAMESPACE
 		//! DATA MEMBERS //
 		///////////////////
 
-		inline int rows() const
+		inline constexpr int rows() const
 		{
 			return r;
 		}
 
-		inline int cols() const
+		inline constexpr int cols() const
 		{
 			return c;
 		}
 
-		inline int dim() const
+		inline constexpr int dim() const
 		{
 			return GMTK_MIN_OF(r, c);
 		}

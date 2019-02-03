@@ -15,7 +15,7 @@
 
 //
 
-#define GMTK_VEC3_LOOP(oper) GMTK_UNROLL_LOOP(i,3,oper)
+#define GMTK_VEC3_LOOP(oper) GMTK_STATIC_LOOP(i,3,oper)
 
 //
 

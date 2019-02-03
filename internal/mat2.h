@@ -13,9 +13,9 @@
 
 //
 
-#define GMTK_MAT2_LOOP(oper) GMTK_UNROLL_LONG_LOOP(i, 4, oper)
+#define GMTK_MAT2_LOOP(oper) GMTK_STATIC_LOOP(i, 4, oper)
 
-#define GMTK_MAT2_LOOP_2D(oper) GMTK_UNROLL_2D_LOOP(i, j, 2, 2, oper)
+#define GMTK_MAT2_LOOP_2D(oper) GMTK_STATIC_2D_LOOP(i, j, 2, 2, oper)
 
 //
 
@@ -51,17 +51,17 @@ namespace GMTK_NAMESPACE
 		//! DATA MEMBERS //
 		///////////////////
 
-		int rows() const
+		inline constexpr int rows() const
 		{
 			return 2;
 		}
 
-		int cols() const
+		inline constexpr int cols() const
 		{
 			return 2;
 		}
 
-		inline int dim() const
+		inline constexpr int dim() const
 		{
 			return 2;
 		}
@@ -312,8 +312,8 @@ namespace GMTK_NAMESPACE
 		//! Generates a clockwise rotation matrix using an angle
 		inline static mat<2, 2, T> rotate(const ang<T>& a)
 		{
-			float ca = cos(a.radians());
-			float sa = sin(a.radians());
+			const T ca = cos(a.radians());
+			const T sa = sin(a.radians());
 			return mat<2, 2, T>(ca, sa, -sa, ca);
 		}
 

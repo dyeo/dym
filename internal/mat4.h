@@ -12,9 +12,9 @@
 
 //
 
-#define GMTK_MAT4_LOOP(oper) GMTK_UNROLL_LONG_LOOP(i, 16, oper)
+#define GMTK_MAT4_LOOP(oper) GMTK_STATIC_LOOP(i, 16, oper)
 
-#define GMTK_MAT4_LOOP_2D(oper) GMTK_UNROLL_2D_LOOP(i, j, 4, 4, oper)
+#define GMTK_MAT4_LOOP_2D(oper) GMTK_STATIC_2D_LOOP(i, j, 4, 4, oper)
 
 //
 
@@ -50,17 +50,17 @@ namespace GMTK_NAMESPACE
 		//! DATA MEMBERS //
 		///////////////////
 
-		int rows() const
+		inline constexpr int rows() const
 		{
 			return 4;
 		}
 
-		int cols() const
+		inline constexpr int cols() const
 		{
 			return 4;
 		}
 
-		inline int dim() const
+		inline constexpr int dim() const
 		{
 			return 4;
 		}
@@ -420,9 +420,9 @@ namespace GMTK_NAMESPACE
 
 		inline static mat<4, 4, T> rotate(const ang<T>& an, const vec<3, T>& ax)
 		{
-			T c = cos(an.radians());
-			T s = sin(an.radians());
-			T t = 1 - c;
+			const T c = cos(an.radians());
+			const T s = sin(an.radians());
+			const T t = 1 - c;
 			return mat<4, 4, T>
 				((t*ax.x*ax.x) + c, (t*ax.x*ax.y) + ax.z*s, (t*ax.x*ax.z) - ax.y*s, 0,
 				(t*ax.x*ax.y) - ax.z*s, (t*ax.y*ax.y) + c, (t*ax.y*ax.z) + ax.x*s, 0,
@@ -432,8 +432,8 @@ namespace GMTK_NAMESPACE
 
 		inline static mat<4, 4, T> rotatex(const ang<T>& x)
 		{
-			T c = cos(x.radians());
-			T s = sin(x.radians());
+			const T c = cos(x.radians());
+			const T s = sin(x.radians());
 			return mat<4, 4, T>
 				(1, 0, 0, 0,
 				0, c, s, 0,
@@ -443,8 +443,8 @@ namespace GMTK_NAMESPACE
 
 		inline static mat<4, 4, T> rotatey(const ang<T>& x)
 		{
-			T c = cos(x.radians());
-			T s = sin(x.radians());
+			const T c = cos(x.radians());
+			const T s = sin(x.radians());
 			return mat<4, 4, T>
 				(c, 0, -s, 0,
 				0, 1, 0, 0,
@@ -454,8 +454,8 @@ namespace GMTK_NAMESPACE
 
 		inline static mat<4, 4, T> rotatez(const ang<T>& x)
 		{
-			T c = cos(x.radians());
-			T s = sin(x.radians());
+			const T c = cos(x.radians());
+			const T s = sin(x.radians());
 			return mat<4, 4, T>
 				(c, s, 0, 0,
 				-s, c, 0, 0,
@@ -507,10 +507,10 @@ namespace GMTK_NAMESPACE
 		//! generates a generic frustum transformation
 		inline static mat<4, 4, T> frustum(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
 		{
-			float n2 = 2 * near;
-			float rml = right - left;
-			float tmb = top - bottom;
-			float nmf = near - far;
+			const T n2 = 2 * near;
+			const T rml = right - left;
+			const T tmb = top - bottom;
+			const T nmf = near - far;
 
 			return mat<4, 4, T>
 				(n2 / rml, 0.f, 0.f, 0.f,
@@ -522,11 +522,11 @@ namespace GMTK_NAMESPACE
 		//! generates a 3d-perspective frustum transformation
 		inline static mat<4, 4, T> perspective(const ang<T> &fovy, const T &aspect, const T &near, const T &far)
 		{
-			T ys = static_cast<T>(1.0) / tan(fovy.radians()*static_cast<T>(0.5));
-			T xs = ys / aspect;
-			T nmf = near - far;
-			T B = (near + far) / nmf;
-			T C = (static_cast<T>(2.0) * near * far) / nmf;
+			const T ys = static_cast<T>(1.0) / tan(fovy.radians()*static_cast<T>(0.5));
+			const T xs = ys / aspect;
+			const T nmf = near - far;
+			const T B = (near + far) / nmf;
+			const T C = (static_cast<T>(2.0) * near * far) / nmf;
 
 			return mat<4, 4, T>(
 				 xs, 0, 0, 0,
@@ -540,8 +540,8 @@ namespace GMTK_NAMESPACE
         {
             return mat<4, 4, T>
                 (static_cast<T>(2.0) / (right - left), 0, 0, 0,
-                 0,    static_cast<T>(2.0) / (top - bottom), 0, 0,
-                 0,    0, static_cast<T>(2.0) / (near - far), 0,
+                0, static_cast<T>(2.0) / (top - bottom), 0, 0,
+                0, 0, static_cast<T>(2.0) / (near - far), 0,
                 (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), 1);
         }
 

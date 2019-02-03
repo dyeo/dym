@@ -12,9 +12,9 @@
 
 //
 
-#define GMTK_MAT3_LOOP(oper) GMTK_UNROLL_LONG_LOOP(i, 9, oper)
+#define GMTK_MAT3_LOOP(oper) GMTK_STATIC_LOOP(i, 9, oper)
 
-#define GMTK_MAT3_LOOP_2D(oper) GMTK_UNROLL_2D_LOOP(i, j, 3, 3, oper)
+#define GMTK_MAT3_LOOP_2D(oper) GMTK_STATIC_2D_LOOP(i, j, 3, 3, oper)
 
 //
 
@@ -50,17 +50,17 @@ namespace GMTK_NAMESPACE
 		//! DATA MEMBERS //
 		///////////////////
 
-		int rows() const
+		inline constexpr int rows() const
 		{
 			return 3;
 		}
 
-		int cols() const
+		inline constexpr int cols() const
 		{
 			return 3;
 		}
 
-		inline int dim() const
+		inline constexpr int dim() const
 		{
 			return 3;
 		}
