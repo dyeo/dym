@@ -19,6 +19,8 @@
 
 //
 
+#define GMTK_MAT2_INIT(a,b,c,d) : arr { a, b, c, d } { }
+
 #define GMTK_MAT2_UN_OP(op) \
 	inline mat<2, 2, T> operator op () const \
 	{ mat<2, 2, T> res(static_cast<T>(0)); GMTK_MAT2_LOOP(res.arr[i] = op arr[i]); return res; }
@@ -70,7 +72,7 @@ namespace GMTK_NAMESPACE
 		union
 		{
 			struct { vec<2, T> data[2]; };
-			struct { T arr[(4)]; };
+			struct { T arr[4]; };
 		};
 
 		///////////////////
@@ -79,78 +81,54 @@ namespace GMTK_NAMESPACE
 
 		//! Default constructor
 		inline mat()
-		{
-			GMTK_MAT2_LOOP_2D(data[i][j] = static_cast<T>(i == j));
-		}
+			GMTK_MAT2_INIT(static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1))
 
 		//! Initializer list constructor
 		//! Columns span left-to-right in initialization, and rows span top-to-bottom
 		//! This is because matrices are stored column-major
-		inline mat(std::initializer_list<T> list)
-		{
-			GMTK_MAT2_LOOP(arr[i] = *(list.begin() + i));
-		}
+		inline mat(std::initializer_list<T> l)
+			GMTK_MAT2_INIT(*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3))
 
 		//! Copy constructor
-		inline mat(const mat<2, 2, T>& v) {
-			GMTK_MAT2_LOOP(arr[i] = v.arr[i]);
-		}
+		inline mat(const mat<2, 2, T>& v)
+			GMTK_MAT2_INIT(v.arr[0], v.arr[1], v.arr[2], v.arr[3])
 
-		template<int cm, int rm>
+		//! Explicit type-conversion copy constructor
+		template<typename U>
+		explicit inline mat(const mat<2, 2, U>& v)
+			GMTK_MAT2_INIT(static_cast<T>(v.arr[0]), static_cast<T>(v.arr[1]), static_cast<T>(v.arr[2]), static_cast<T>(v.arr[3]))
+
+		//! Fill constructor
+		explicit inline mat(const T& s)
+			GMTK_MAT2_INIT(s, s, s, s)
+
+		//! Array initializer
+		explicit inline mat(const T* a)
+			GMTK_MAT2_INIT(a[0], a[1], a[2], a[3])
+
+		//! Value constructor
+		inline mat(const T& s0, const T& s1, const T& s2, const T& s3) 
+			GMTK_MAT2_INIT(s0, s1, s2, s3)
+
+		//! Explicit type-conversionm value constructor
+		template<typename U>
+		explicit inline mat(const U& s0, const U& s1, const U& s2, const U& s3) 
+			GMTK_MAT2_INIT(static_cast<T>(s0), static_cast<T>(s1), static_cast<T>(s2), static_cast<T>(s3))
+
+		//! Constructs a 2x2 matrix using the top-left portion of a 3x3 matrix;
+		inline mat(const mat<3, 3, T>& m)
+			GMTK_MAT2_INIT(m.arr[0], m.arr[1], m.arr[3], m.arr[4])
+
+		//! Constructs a 2x2 matrix using the top-left portion of a 4x4 matrix;
+		inline mat(const mat<4, 4, T>& m)
+			GMTK_MAT2_INIT(m.arr[0], m.arr[1], m.arr[4], m.arr[5])
+
 		//! Minor matrix constructor
+		template<int cm, int rm>
 		inline mat(const mat<cm, rm, T>& m)
 		{
 			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
 			GMTK_UNROLL_2D_LOOP(i, j, cm, rm, data[i][j] = m.data[i][j]);
-		}
-
-		template<typename U>
-		//! Explicit type-conversion copy constructor
-		explicit inline mat(const mat<2, 2, U>& v) {
-			GMTK_MAT2_LOOP(arr[i] = static_cast<T>(v.arr[i]));
-		}
-
-		//! Fill constructor
-		explicit inline mat(const T& s) {
-			GMTK_MAT2_LOOP(arr[i] = s);
-		}
-
-		//! Array initializer
-		explicit inline mat(const T* a) {
-			GMTK_MAT2_LOOP(arr[i] = a[i]);
-		}
-
-		inline mat(const T& s0, const T& s1, const T& s2, const T& s3) {
-			arr[0] = s0;
-			arr[1] = s1;
-			arr[2] = s2;
-			arr[3] = s3;
-		}
-
-		template<typename U>
-		explicit inline mat(const U& s0, const U& s1, const U& s2, const U& s3) {
-			arr[0] = static_cast<T>(s0);
-			arr[1] = static_cast<T>(s1);
-			arr[2] = static_cast<T>(s2);
-			arr[3] = static_cast<T>(s3);
-		}
-
-		//! Constructs a 2x2 matrix using the top-left portion of a 3x3 matrix;
-		inline mat(const mat<3, 3, T>& m)
-		{
-			arr[0] = m.arr[0];
-			arr[1] = m.arr[1];
-			arr[2] = m.arr[3];
-			arr[3] = m.arr[4];
-		}
-
-		//! Constructs a 2x2 matrix using the top-left portion of a 4x4 matrix;
-		inline mat(const mat<4, 4, T>& m)
-		{
-			arr[0] = m.arr[0];
-			arr[1] = m.arr[1];
-			arr[2] = m.arr[4];
-			arr[3] = m.arr[5];
 		}
 
 		///////////////////////
@@ -404,6 +382,8 @@ namespace GMTK_NAMESPACE
 
 #undef GMTK_MAT2_LOOP
 #undef GMTK_MAT2_LOOP_2D
+
+#undef GMTK_MAT2_INIT
 #undef GMTK_MAT2_UN_OP
 #undef GMTK_MAT2_VEC_OP
 #undef GMTK_MAT2_SCL_OP
