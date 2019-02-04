@@ -48,8 +48,8 @@ namespace GMTK_NAMESPACE
 {////
 
 	
-	template <int d, typename T = float>
 	//! A d-length vector of type T
+	template <int d, typename T = float>
 	struct vec
 	{
 		///////////////////
@@ -392,8 +392,8 @@ namespace GMTK_NAMESPACE
 	template<int d, typename T>
 	inline vec<d, T> refract(const vec<d, T>& v, const vec<d, T>& n, float r)
 	{
-		float dir = 1.0 - r * r * (1.0 - dot(n, v) * dot(n, v));
-		if (dir < 0.0) return vec<d, T>(0.0); //! total internal reflection
+		float dir = static_cast<T>(1.0) - r * r * (static_cast<T>(1.0) - dot(n, v) * dot(n, v));
+		if (dir < static_cast<T>(0.0)) return vec<d, T>(static_cast<T>(0.0)); //! total internal reflection
 		return r * v - (r * dot(n, v) + sqrt(dir)) * n;
 	}
 

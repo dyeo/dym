@@ -27,18 +27,6 @@ namespace GMTK_NAMESPACE
 			Degrees = 1
 		};
 
-		inline ang(T amount, AngleUnits units)
-		{
-			switch (units)
-			{
-			case Radians:
-				_rads = amount;
-				break;
-			case Degrees:
-				_rads = amount * static_cast<T>(DEG2RAD);
-				break;
-			}
-		};
 
 		///////////////////
 		//! CONSTRUCTORS //
@@ -62,6 +50,20 @@ namespace GMTK_NAMESPACE
 		{
 			_rads = static_cast<T>(a._rads);
 		}
+
+		//! Selectable constructor
+		inline ang(T amount, AngleUnits units)
+		{
+			switch (units)
+			{
+			case Radians:
+				_rads = amount;
+				break;
+			case Degrees:
+				_rads = amount * static_cast<T>(DEG2RAD);
+				break;
+			}
+		};
 
 		///////////////////////////
 		//! RIGHT-HAND OPERATORS //
@@ -132,11 +134,8 @@ namespace GMTK_NAMESPACE
 
 	private:
 
-		//! Efficient private inline constructor.
-		inline ang(const T& v)
-		{
-			_rads = v;
-		}
+		//! Private inline constructor.
+		inline ang(const T& v) : _rads(v) { }
 
 		T _rads = 0;
 
@@ -180,7 +179,11 @@ namespace GMTK_NAMESPACE
 
 }////
 
-//
+///////////////
+//! LITERALS //
+///////////////
+
+#ifndef GMTK_DISABLE_LITERALS
 
 inline GMTK_NAMESPACE::ang<> operator "" _deg(unsigned long long value)
 {
@@ -201,6 +204,8 @@ inline GMTK_NAMESPACE::ang<> operator "" _rad(long double value)
 {
 	return GMTK_NAMESPACE::radians(static_cast<float>(value));
 }
+
+#endif
 
 //
 

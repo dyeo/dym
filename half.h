@@ -135,6 +135,8 @@ namespace GMTK_NAMESPACE
 //! LITERALS //
 ///////////////
 
+#ifndef GMTK_DISABLE_LITERALS
+
 inline GMTK_NAMESPACE::half operator "" _h(unsigned long long i)
 {
 	return GMTK_NAMESPACE::half(static_cast<float>(i));
@@ -144,6 +146,8 @@ inline GMTK_NAMESPACE::half operator "" _h(long double d)
 {
 	return GMTK_NAMESPACE::half(static_cast<float>(d));
 }
+
+#endif
 
 //
 

@@ -15,9 +15,11 @@
 
 //
 
-#define GMTK_VEC2_LOOP(oper) GMTK_UNROLL_LOOP(i,2,oper)
+#define GMTK_VEC2_LOOP(oper) GMTK_STATIC_LOOP(i,2,oper)
 
 //
+
+#define GMTK_VEC2_INIT(a, b) : x( a ), y( b ) { }
 
 #define GMTK_VEC2_UN_OP(op) \
 	inline vec<2, T> operator op () const \
@@ -71,56 +73,44 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! Initialize vec2 with two values
-		inline vec(const T& s0, const T& s1)
-		{
-			data[0] = s0;
-			data[1] = s1;
-		}
+		inline vec(const T& s0, const T& s1) 
+			GMTK_VEC2_INIT(s0, s1)
 
 		//! Default constructor
-		inline vec() {
-			GMTK_VEC2_LOOP(data[i] = static_cast<T>(0));
-		}
+		inline vec() 
+			GMTK_VEC2_INIT(static_cast<T>(0), static_cast<T>(0))
 
-		//! Swizzle2 constructor
+		//! Swizzle constructor
 		template<int a, int b>
-		inline vec(const swz2<a, b>&s) {
-			data[0] = s[a];
-			data[1] = s[b];
-		}
-
-		//! Initializer list constructor
-		inline vec(std::initializer_list<T> list)
-		{
-			GMTK_VEC2_LOOP(data[i] = *(list.begin() + i));
-		}
+		inline vec(const swz2<a, b>&s) 
+			GMTK_VEC2_INIT(s[a], s[b])
 
 		//! Copy constructor
-		inline vec(const vec<2, T>& v) {
-			GMTK_VEC2_LOOP(data[i] = v.data[i]);
-		}
+		inline vec(const vec<2, T>& v) 
+			GMTK_VEC2_INIT(v.x, v.y)
+
+		//! Explicit type-conversion copy constructor
+		template<typename U> 
+		explicit inline vec(const vec<2, U>& v) 
+			GMTK_VEC2_INIT(static_cast<T>(v.x), static_cast<T>(v.y))
+
+		//! Fill constructor
+		explicit inline vec(const T& s) 
+			GMTK_VEC2_INIT(s, s)
+
+		//! Array initializer
+		explicit inline vec(const T* a) 
+			GMTK_VEC2_INIT(a[0], a[1])
+
+		//! Initializer list constructor
+		inline vec(std::initializer_list<T> l)
+			GMTK_VEC2_INIT(*(l.begin()), *(l.begin() + 1))
 
 		//! Copy constructor for arbitrarily larger vector
 		template<int d2>
 		inline vec(const vec<d2, T> &v) {
 			GMTK_STATIC_ASSERT(d2 >= 2);
 			GMTK_VEC2_LOOP(data[i] = v.data[i]);
-		}
-
-		//! Explicit type-conversion copy constructor
-		template<typename U> 
-		explicit inline vec(const vec<2, U>& v) {
-			GMTK_VEC2_LOOP(data[i] = static_cast<T>(v[i]));
-		}
-
-		//! Fill constructor
-		explicit inline vec(const T& s) {
-			GMTK_VEC2_LOOP(data[i] = s);
-		}
-
-		//! Array initializer
-		explicit inline vec(const T* a) {
-			GMTK_VEC2_LOOP(data[i] = a[i]);
 		}
 
 		///////////////////////
@@ -276,7 +266,8 @@ namespace GMTK_NAMESPACE
 //
 
 #undef GMTK_VEC2_LOOP
-#undef GMTK_VEC2_OPERATOR
+
+#undef GMTK_VEC2_INIT
 #undef GMTK_VEC2_UN_OP
 #undef GMTK_VEC2_VEC_OP
 #undef GMTK_VEC2_SCL_OP

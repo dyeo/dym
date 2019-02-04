@@ -25,8 +25,30 @@
 
 template<bool> struct static_assert_util;
 template<> struct static_assert_util < true > {};
-
 #define GMTK_STATIC_ASSERT(cond) static_assert_util<(cond)>()
+
+//
+
+#define _GMTK_STATIC_LOOP1(iter, oper) oper ; iter++ ;
+#define _GMTK_STATIC_LOOP2(iter, oper) _GMTK_STATIC_LOOP1(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP3(iter, oper) _GMTK_STATIC_LOOP2(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP4(iter, oper) _GMTK_STATIC_LOOP3(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP5(iter, oper) _GMTK_STATIC_LOOP4(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP6(iter, oper) _GMTK_STATIC_LOOP5(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP7(iter, oper) _GMTK_STATIC_LOOP6(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP8(iter, oper) _GMTK_STATIC_LOOP7(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP9(iter, oper) _GMTK_STATIC_LOOP8(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP10(iter, oper) _GMTK_STATIC_LOOP9(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP11(iter, oper) _GMTK_STATIC_LOOP10(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP12(iter, oper) _GMTK_STATIC_LOOP11(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP13(iter, oper) _GMTK_STATIC_LOOP12(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP14(iter, oper) _GMTK_STATIC_LOOP13(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP15(iter, oper) _GMTK_STATIC_LOOP14(iter, oper) ; oper ; iter++ ;
+#define _GMTK_STATIC_LOOP16(iter, oper) _GMTK_STATIC_LOOP15(iter, oper) ; oper ; iter++ ;
+#define GMTK_STATIC_LOOP(iter, count, oper) { int iter = 0; _GMTK_STATIC_LOOP##count(iter,  oper) }
+
+#define GMTK_STATIC_2D_LOOP(iter1, iter2, count1, count2, oper) \
+		GMTK_STATIC_LOOP(iter1, count1, GMTK_STATIC_LOOP(iter2, count2, oper))
 
 //
 
