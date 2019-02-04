@@ -83,6 +83,14 @@ namespace GMTK_NAMESPACE
 		template< typename U >
 		inline Quat(const Quat<U> &q)
 			GMTK_QUAT_INIT( static_cast<T>(q.data[0]), static_cast<T>(q.data[1]), static_cast<T>(q.data[2]), static_cast<T>(q.data[3]) ) 
+					
+		//! Array initializer
+		explicit inline Quat(const T* a)
+			GMTK_QUAT_INIT(a[0], a[1], a[2], a[3])
+
+		//! Initializer list constructor
+		inline Quat(std::initializer_list<T> l)
+			GMTK_QUAT_INIT(*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3))
 
 		///////////////////////
 		//! ACCESS OPERATORS //
