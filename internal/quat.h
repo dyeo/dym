@@ -16,6 +16,8 @@
 
 #define GMTK_QUAT_LOOP(oper) GMTK_STATIC_LOOP(i,4,oper)
 
+#define GMTK_QUAT_INIT(a, b, c, d) : w( a ), x( b ), y( c ), z( d ) { }
+
 #define GMTK_QUAT_QUAT_OP(op) \
 	inline Quat<T> operator op(const Quat<T> &q) const \
 	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op q.data[i]); return res; }
@@ -62,50 +64,25 @@ namespace GMTK_NAMESPACE
 
 		//! default constructor
 		inline Quat()
-		{
-			w = 0;
-			x = 0;
-			y = 0;
-			z = 0;
-		}
+			GMTK_QUAT_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
 
 		//! initialize quat with one scalar (s) and three complex (i, j, k)
 		inline Quat(const T &s, const T &i, const T &j, const T &k)
-		{
-			w = s;
-			x = i;
-			y = j;
-			z = k;
-		}
+			GMTK_QUAT_INIT(s, i, j, k)
 
 		//! initialize quat with one scalar (s) and a vec3 of complex (ijk)
 		inline Quat(const T &s, const vec<3, T> &ijk)
-		{
-			w = s;
-			x = ijk.data[0];
-			y = ijk.data[1];
-			z = ijk.data[2];
-		}
+			GMTK_QUAT_INIT(s, ijk.data[0], ijk.data[1], ijk.data[2])
 
 		//! initialize quat with vec4 of complex(3)scalar(1)
 		//! NOTE: w becomes first element!
 		inline Quat(const vec<4, T> &xyzw)
-		{
-			w = xyzw.data[3];
-			x = xyzw.data[0];
-			y = xyzw.data[1];
-			z = xyzw.data[2];
-		}
+			GMTK_QUAT_INIT(xyzw.data[3], xyzw.data[0], xyzw.data[1], xyzw.data[2])
 
 		//! Copy constructor
 		template< typename U >
-		inline Quat(const Quat<U> &copy)
-		{
-			data[0] = static_cast<T>(copy.data[0]);
-			data[1] = static_cast<T>(copy.data[1]);
-			data[2] = static_cast<T>(copy.data[2]);
-			data[3] = static_cast<T>(copy.data[3]);
-		}
+		inline Quat(const Quat<U> &q)
+			GMTK_QUAT_INIT( static_cast<T>(q.data[0]), static_cast<T>(q.data[1]), static_cast<T>(q.data[2]), static_cast<T>(q.data[3]) ) 
 
 		///////////////////////
 		//! ACCESS OPERATORS //
