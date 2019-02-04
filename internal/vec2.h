@@ -65,6 +65,7 @@ namespace GMTK_NAMESPACE
 			struct { T data[2]; };
 			struct { T x, y; };
 			struct { T r, g; };
+			struct { T s, t; };
 			GMTK_VEC2_SWIZZLES
 		};
 
