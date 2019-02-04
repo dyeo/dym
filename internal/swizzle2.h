@@ -204,34 +204,34 @@ namespace GMTK_NAMESPACE
 //
 
 #define GMTK_VEC2_SWIZZLES \
-swz2 <0, 0> xx, rr, uu; \
-swz2 <0, 1> xy, rg, uv; \
-swz2 <1, 0> yx, gr, vu; \
-swz2 <1, 1> yy, gg, vv; \
-swz3 <0, 0, 0> xxx, rrr, uuu; \
-swz3 <0, 0, 1> xxy, rrg, uuv; \
-swz3 <0, 1, 0> xyx, rgr, uvu; \
-swz3 <0, 1, 1> xyy, rgg, uvv; \
-swz3 <1, 0, 0> yxx, grr, vuu; \
-swz3 <1, 0, 1> yxy, grg, vuv; \
-swz3 <1, 1, 0> yyx, ggr, vvu; \
-swz3 <1, 1, 1> yyy, ggg, vvv; \
-swz4 <0, 0, 0, 0> xxxx, rrrr, uuuu; \
-swz4 <0, 0, 0, 1> xxxy, rrrg, uuuv; \
-swz4 <0, 0, 1, 0> xxyx, rrgr, uuvu; \
-swz4 <0, 0, 1, 1> xxyy, rrgg, uuvv; \
-swz4 <0, 1, 0, 0> xyxx, rgrr, uvuu; \
-swz4 <0, 1, 0, 1> xyxy, rgrg, uvuv; \
-swz4 <0, 1, 1, 0> xyyx, rggr, uvvu; \
-swz4 <0, 1, 1, 1> xyyy, rggg, uvvv; \
-swz4 <1, 0, 0, 0> yxxx, grrr, vuuu; \
-swz4 <1, 0, 0, 1> yxxy, grrg, vuuv; \
-swz4 <1, 0, 1, 0> yxyx, grgr, vuvu; \
-swz4 <1, 0, 1, 1> yxyy, grgg, vuvv; \
-swz4 <1, 1, 0, 0> yyxx, ggrr, vvuu; \
-swz4 <1, 1, 0, 1> yyxy, ggrg, vvuv; \
-swz4 <1, 1, 1, 0> yyyx, gggr, vvvu; \
-swz4 <1, 1, 1, 1> yyyy, gggg, vvvv; \
+swz2 <0, 0> xx, rr, ss; \
+swz2 <0, 1> xy, rg, st; \
+swz2 <1, 0> yx, gr, ts; \
+swz2 <1, 1> yy, gg, tt; \
+swz3 <0, 0, 0> xxx, rrr, sss; \
+swz3 <0, 0, 1> xxy, rrg, sst; \
+swz3 <0, 1, 0> xyx, rgr, sts; \
+swz3 <0, 1, 1> xyy, rgg, stt; \
+swz3 <1, 0, 0> yxx, grr, tss; \
+swz3 <1, 0, 1> yxy, grg, tst; \
+swz3 <1, 1, 0> yyx, ggr, tts; \
+swz3 <1, 1, 1> yyy, ggg, ttt; \
+swz4 <0, 0, 0, 0> xxxx, rrrr, ssss; \
+swz4 <0, 0, 0, 1> xxxy, rrrg, ssst; \
+swz4 <0, 0, 1, 0> xxyx, rrgr, ssts; \
+swz4 <0, 0, 1, 1> xxyy, rrgg, sstt; \
+swz4 <0, 1, 0, 0> xyxx, rgrr, stss; \
+swz4 <0, 1, 0, 1> xyxy, rgrg, stst; \
+swz4 <0, 1, 1, 0> xyyx, rggr, stts; \
+swz4 <0, 1, 1, 1> xyyy, rggg, sttt; \
+swz4 <1, 0, 0, 0> yxxx, grrr, tsss; \
+swz4 <1, 0, 0, 1> yxxy, grrg, tsst; \
+swz4 <1, 0, 1, 0> yxyx, grgr, tsts; \
+swz4 <1, 0, 1, 1> yxyy, grgg, tstt; \
+swz4 <1, 1, 0, 0> yyxx, ggrr, ttss; \
+swz4 <1, 1, 0, 1> yyxy, ggrg, ttst; \
+swz4 <1, 1, 1, 0> yyyx, gggr, ttts; \
+swz4 <1, 1, 1, 1> yyyy, gggg, tttt; \
 
 //
 
