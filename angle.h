@@ -179,7 +179,11 @@ namespace GMTK_NAMESPACE
 
 }////
 
-//
+///////////////
+//! LITERALS //
+///////////////
+
+#ifndef GMTK_DISABLE_LITERALS
 
 inline GMTK_NAMESPACE::ang<> operator "" _deg(unsigned long long value)
 {
@@ -200,6 +204,8 @@ inline GMTK_NAMESPACE::ang<> operator "" _rad(long double value)
 {
 	return GMTK_NAMESPACE::radians(static_cast<float>(value));
 }
+
+#endif
 
 //
 
