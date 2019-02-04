@@ -8,10 +8,13 @@
 
 //
 
-#include "vec.h"
+#include "vec.h"			
+
+#ifndef GMTK_DISABLE_SWIZZLING
 #include "swizzle2.h"
 #include "swizzle3.h"
 #include "swizzle4.h"
+#endif
 
 //
 
@@ -50,11 +53,13 @@ namespace GMTK_NAMESPACE
 	{
 		////////////
 		//! TYPES //
-		////////////
-		
+		////////////	
+
+		#ifndef GMTK_DISABLE_SWIZZLING
 		GMTK_SWZ2_TYPE
 		GMTK_SWZ3_TYPE
 		GMTK_SWZ4_TYPE
+		#endif
 
 		///////////////////
 		//! DATA MEMBERS //
@@ -65,8 +70,10 @@ namespace GMTK_NAMESPACE
 			struct { T data[4]; };
 			struct { T x, y, z, w; };
 			struct { T r, g, b, a; };
-			struct { T s, t, p, q; };
+			struct { T s, t, p, q; };			
+			#ifndef GMTK_DISABLE_SWIZZLING
 			GMTK_VEC4_SWIZZLES
+			#endif
 		};
 
 		///////////////////
