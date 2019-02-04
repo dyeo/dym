@@ -14,16 +14,23 @@
 
 //
 
-//! Unrolls a component-wise quaternion manipulation for generic implementation
 #define GMTK_QUAT_LOOP(oper) GMTK_STATIC_LOOP(i,4,oper)
 
-//
+#define GMTK_QUAT_QUAT_OP(op) \
+	inline Quat<T> operator op(const Quat<T> &q) const \
+	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op q.data[i]); return res; }
 
-#define GMTK_QUAT_OPERATOR(oper) { Quat<T> res; GMTK_QUAT_LOOP(res[i] = oper); return res; }
+#define GMTK_QUAT_SCL_OP(op) \
+	inline Quat<T> operator op (const T& v) const \
+	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op v); return res; }
 
-//
+#define GMTK_QUAT_QUAT_ROP(op) \
+	inline Quat<T>& operator op (const Quat<T>&  q) \
+	{ GMTK_QUAT_LOOP(data[i] op v.data[i]); return *this; }
 
-#define GMTK_QUAT_REF_OPERATOR(oper) { GMTK_QUAT_LOOP(oper); return *this; }
+#define GMTK_QUAT_SCL_ROP(op) \
+	inline Quat<T>& operator op (const T& v) \
+	{ GMTK_QUAT_LOOP(data[i] op v); return *this; }
 
 //
 
@@ -118,14 +125,10 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 
 		//!
-		inline Quat<T> operator+(const Quat &q) {
-			GMTK_QUAT_OPERATOR(data[i] + q.data[i]);
-		}
+		GMTK_QUAT_QUAT_OP(+)
 
 		//!
-		inline Quat<T> operator-(const Quat &q) {
-			GMTK_QUAT_OPERATOR(data[i] - q.data[i]);
-		}
+		GMTK_QUAT_QUAT_OP(-)
 
 		//!
 		inline Quat<T> operator*(const Quat &q) {
@@ -143,16 +146,12 @@ namespace GMTK_NAMESPACE
 			res = (*this) * conjugate(q);
 			return res;
 		}
+		
+		//!
+		GMTK_QUAT_QUAT_ROP(+=)
 
 		//!
-		inline Quat<T> operator+=(const Quat &q) {
-			GMTK_QUAT_REF_OPERATOR(data[i] += q.data[i]);
-		}
-
-		//!
-		inline Quat<T> operator-=(const Quat &q) {
-			GMTK_QUAT_REF_OPERATOR(data[i] -= q.data[i]);
-		}
+		GMTK_QUAT_QUAT_ROP(-=)
 
 		//!
 		inline vec<3, T> operator*(const vec<3, T> &v) {
@@ -167,44 +166,28 @@ namespace GMTK_NAMESPACE
 		}
 
 		//!
-		inline Quat<T> operator+(const T &s) const {
-			GMTK_QUAT_OPERATOR(data[i] + s);
-		}
+		GMTK_QUAT_SCL_OP(+)
 
 		//!
-		inline Quat<T> operator-(const T &s) const {
-			GMTK_QUAT_OPERATOR(data[i] - s);
-		}
+		GMTK_QUAT_SCL_OP(-)
 
 		//!
-		inline Quat<T> operator*(const T &s) const {
-			GMTK_QUAT_OPERATOR(data[i] * s);
-		}
+		GMTK_QUAT_SCL_OP(*)
 
 		//!
-		inline Quat<T> operator/(const T &s) const {
-			GMTK_QUAT_OPERATOR(data[i] / s);
-		}
+		GMTK_QUAT_SCL_OP(/)
 
 		//!
-		inline Quat<T> &operator+=(const T &s) {
-			GMTK_QUAT_REF_OPERATOR(data[i] += s);
-		}
+		GMTK_QUAT_SCL_ROP(+=)
 
 		//!
-		inline Quat<T> &operator-=(const T &s) {
-			GMTK_QUAT_REF_OPERATOR(data[i] -= s);
-		}
+		GMTK_QUAT_SCL_ROP(-=)
 
 		//!
-		inline Quat<T> &operator*=(const T &s) {
-			GMTK_QUAT_REF_OPERATOR(data[i] *= s);
-		}
+		GMTK_QUAT_SCL_ROP(*=)
 
 		//!
-		inline Quat<T> &operator/=(const T &s) {
-			GMTK_QUAT_REF_OPERATOR(data[i] /= s);
-		}
+		GMTK_QUAT_SCL_ROP(/=)
 
 		///////////////////////
 		//! TYPE CONVERSIONS //
@@ -215,17 +198,17 @@ namespace GMTK_NAMESPACE
 		{
 			return mat<3, 3, T>
 			{
-				1 - 2 * (sq(k) + sq(j)), 
-					2 * (i * j + k * w),
-					2 * (i * k - j * w),
+				static_cast<T>(1) - static_cast<T>(2) * (sq(k) + sq(j)), 
+				static_cast<T>(2) * (i * j + k * w),
+				static_cast<T>(2) * (i * k - j * w),
 					//
-					2 * (i * j - k * w), 
-				1 - 2 * (sq(i) + sq(k)), 
-					2 * (j * k + i * w),
+				static_cast<T>(2) * (i * j - k * w),
+				static_cast<T>(1) - static_cast<T>(2) * (sq(i) + sq(k)),
+				static_cast<T>(2) * (j * k + i * w),
 					//
-					2 * (j * w + i * k), 
-					2 * (j * k - i * w), 
-				1 - 2 * (sq(j) + sq(i))
+				static_cast<T>(2) * (j * w + i * k),
+				static_cast<T>(2) * (j * k - i * w), 
+				static_cast<T>(1) - static_cast<T>(2) * (sq(j) + sq(i))
 			};
 		}
 		
@@ -358,12 +341,25 @@ namespace GMTK_NAMESPACE
 	//! TYPE DEFINITIONS //
 	///////////////////////
 
-	typedef Quat<float> quat;
+	typedef Quat<float> quat, quatf;
 	typedef Quat<double> quatd;
 	typedef Quat<int> quati;
 	typedef Quat<unsigned> quatui;
 
 }////
+
+//
+
+#undef GMTK_QUAT_INIT
+
+#undef GMTK_QUAT_LOOP
+
+#undef GMTK_QUAT_QUAT_OP
+#undef GMTK_QUAT_SCL_OP
+#undef GMTK_QUAT_QUAT_ROP
+#undef GMTK_QUAT_SCL_ROP
+
+#undef GMTK_QUAT_SLERP_THRESHOLD
 
 //
 
