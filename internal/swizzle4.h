@@ -230,342 +230,342 @@ namespace GMTK_NAMESPACE
 //
 
 #define GMTK_VEC4_SWIZZLES \
-swz2 <0, 0> xx, rr, uu; \
-swz2 <0, 1> xy, rg, uv; \
-swz2 <0, 2> xz, rb, us; \
-swz2 <0, 3> xw, ra, ut; \
-swz2 <1, 0> yx, gr, vu; \
-swz2 <1, 1> yy, gg, vv; \
-swz2 <1, 2> yz, gb, vs; \
-swz2 <1, 3> yw, ga, vt; \
-swz2 <2, 0> zx, br, su; \
-swz2 <2, 1> zy, bg, sv; \
-swz2 <2, 2> zz, bb, ss; \
-swz2 <2, 3> zw, ba, st; \
-swz2 <3, 0> wx, ar, tu; \
-swz2 <3, 1> wy, ag, tv; \
-swz2 <3, 2> wz, ab, ts; \
-swz2 <3, 3> ww, aa, tt; \
-swz3 <0, 0, 0> xxx, rrr, uuu; \
-swz3 <0, 0, 1> xxy, rrg, uuv; \
-swz3 <0, 0, 2> xxz, rrb, uus; \
-swz3 <0, 0, 3> xxw, rra, uut; \
-swz3 <0, 1, 0> xyx, rgr, uvu; \
-swz3 <0, 1, 1> xyy, rgg, uvv; \
-swz3 <0, 1, 2> xyz, rgb, uvs; \
-swz3 <0, 1, 3> xyw, rga, uvt; \
-swz3 <0, 2, 0> xzx, rbr, usu; \
-swz3 <0, 2, 1> xzy, rbg, usv; \
-swz3 <0, 2, 2> xzz, rbb, uss; \
-swz3 <0, 2, 3> xzw, rba, ust; \
-swz3 <0, 3, 0> xwx, rar, utu; \
-swz3 <0, 3, 1> xwy, rag, utv; \
-swz3 <0, 3, 2> xwz, rab, uts; \
-swz3 <0, 3, 3> xww, raa, utt; \
-swz3 <1, 0, 0> yxx, grr, vuu; \
-swz3 <1, 0, 1> yxy, grg, vuv; \
-swz3 <1, 0, 2> yxz, grb, vus; \
-swz3 <1, 0, 3> yxw, gra, vut; \
-swz3 <1, 1, 0> yyx, ggr, vvu; \
-swz3 <1, 1, 1> yyy, ggg, vvv; \
-swz3 <1, 1, 2> yyz, ggb, vvs; \
-swz3 <1, 1, 3> yyw, gga, vvt; \
-swz3 <1, 2, 0> yzx, gbr, vsu; \
-swz3 <1, 2, 1> yzy, gbg, vsv; \
-swz3 <1, 2, 2> yzz, gbb, vss; \
-swz3 <1, 2, 3> yzw, gba, vst; \
-swz3 <1, 3, 0> ywx, gar, vtu; \
-swz3 <1, 3, 1> ywy, gag, vtv; \
-swz3 <1, 3, 2> ywz, gab, vts; \
-swz3 <1, 3, 3> yww, gaa, vtt; \
-swz3 <2, 0, 0> zxx, brr, suu; \
-swz3 <2, 0, 1> zxy, brg, suv; \
-swz3 <2, 0, 2> zxz, brb, sus; \
-swz3 <2, 0, 3> zxw, bra, sut; \
-swz3 <2, 1, 0> zyx, bgr, svu; \
-swz3 <2, 1, 1> zyy, bgg, svv; \
-swz3 <2, 1, 2> zyz, bgb, svs; \
-swz3 <2, 1, 3> zyw, bga, svt; \
-swz3 <2, 2, 0> zzx, bbr, ssu; \
-swz3 <2, 2, 1> zzy, bbg, ssv; \
-swz3 <2, 2, 2> zzz, bbb, sss; \
-swz3 <2, 2, 3> zzw, bba, sst; \
-swz3 <2, 3, 0> zwx, bar, stu; \
-swz3 <2, 3, 1> zwy, bag, stv; \
-swz3 <2, 3, 2> zwz, bab, sts; \
-swz3 <2, 3, 3> zww, baa, stt; \
-swz3 <3, 0, 0> wxx, arr, tuu; \
-swz3 <3, 0, 1> wxy, arg, tuv; \
-swz3 <3, 0, 2> wxz, arb, tus; \
-swz3 <3, 0, 3> wxw, ara, tut; \
-swz3 <3, 1, 0> wyx, agr, tvu; \
-swz3 <3, 1, 1> wyy, agg, tvv; \
-swz3 <3, 1, 2> wyz, agb, tvs; \
-swz3 <3, 1, 3> wyw, aga, tvt; \
-swz3 <3, 2, 0> wzx, abr, tsu; \
-swz3 <3, 2, 1> wzy, abg, tsv; \
-swz3 <3, 2, 2> wzz, abb, tss; \
-swz3 <3, 2, 3> wzw, aba, tst; \
-swz3 <3, 3, 0> wwx, aar, ttu; \
-swz3 <3, 3, 1> wwy, aag, ttv; \
-swz3 <3, 3, 2> wwz, aab, tts; \
-swz3 <3, 3, 3> www, aaa, ttt; \
-swz4 <0, 0, 0, 0> xxxx, rrrr, uuuu; \
-swz4 <0, 0, 0, 1> xxxy, rrrg, uuuv; \
-swz4 <0, 0, 0, 2> xxxz, rrrb, uuus; \
-swz4 <0, 0, 0, 3> xxxw, rrra, uuut; \
-swz4 <0, 0, 1, 0> xxyx, rrgr, uuvu; \
-swz4 <0, 0, 1, 1> xxyy, rrgg, uuvv; \
-swz4 <0, 0, 1, 2> xxyz, rrgb, uuvs; \
-swz4 <0, 0, 1, 3> xxyw, rrga, uuvt; \
-swz4 <0, 0, 2, 0> xxzx, rrbr, uusu; \
-swz4 <0, 0, 2, 1> xxzy, rrbg, uusv; \
-swz4 <0, 0, 2, 2> xxzz, rrbb, uuss; \
-swz4 <0, 0, 2, 3> xxzw, rrba, uust; \
-swz4 <0, 0, 3, 0> xxwx, rrar, uutu; \
-swz4 <0, 0, 3, 1> xxwy, rrag, uutv; \
-swz4 <0, 0, 3, 2> xxwz, rrab, uuts; \
-swz4 <0, 0, 3, 3> xxww, rraa, uutt; \
-swz4 <0, 1, 0, 0> xyxx, rgrr, uvuu; \
-swz4 <0, 1, 0, 1> xyxy, rgrg, uvuv; \
-swz4 <0, 1, 0, 2> xyxz, rgrb, uvus; \
-swz4 <0, 1, 0, 3> xyxw, rgra, uvut; \
-swz4 <0, 1, 1, 0> xyyx, rggr, uvvu; \
-swz4 <0, 1, 1, 1> xyyy, rggg, uvvv; \
-swz4 <0, 1, 1, 2> xyyz, rggb, uvvs; \
-swz4 <0, 1, 1, 3> xyyw, rgga, uvvt; \
-swz4 <0, 1, 2, 0> xyzx, rgbr, uvsu; \
-swz4 <0, 1, 2, 1> xyzy, rgbg, uvsv; \
-swz4 <0, 1, 2, 2> xyzz, rgbb, uvss; \
-swz4 <0, 1, 2, 3> xyzw, rgba, uvst; \
-swz4 <0, 1, 3, 0> xywx, rgar, uvtu; \
-swz4 <0, 1, 3, 1> xywy, rgag, uvtv; \
-swz4 <0, 1, 3, 2> xywz, rgab, uvts; \
-swz4 <0, 1, 3, 3> xyww, rgaa, uvtt; \
-swz4 <0, 2, 0, 0> xzxx, rbrr, usuu; \
-swz4 <0, 2, 0, 1> xzxy, rbrg, usuv; \
-swz4 <0, 2, 0, 2> xzxz, rbrb, usus; \
-swz4 <0, 2, 0, 3> xzxw, rbra, usut; \
-swz4 <0, 2, 1, 0> xzyx, rbgr, usvu; \
-swz4 <0, 2, 1, 1> xzyy, rbgg, usvv; \
-swz4 <0, 2, 1, 2> xzyz, rbgb, usvs; \
-swz4 <0, 2, 1, 3> xzyw, rbga, usvt; \
-swz4 <0, 2, 2, 0> xzzx, rbbr, ussu; \
-swz4 <0, 2, 2, 1> xzzy, rbbg, ussv; \
-swz4 <0, 2, 2, 2> xzzz, rbbb, usss; \
-swz4 <0, 2, 2, 3> xzzw, rbba, usst; \
-swz4 <0, 2, 3, 0> xzwx, rbar, ustu; \
-swz4 <0, 2, 3, 1> xzwy, rbag, ustv; \
-swz4 <0, 2, 3, 2> xzwz, rbab, usts; \
-swz4 <0, 2, 3, 3> xzww, rbaa, ustt; \
-swz4 <0, 3, 0, 0> xwxx, rarr, utuu; \
-swz4 <0, 3, 0, 1> xwxy, rarg, utuv; \
-swz4 <0, 3, 0, 2> xwxz, rarb, utus; \
-swz4 <0, 3, 0, 3> xwxw, rara, utut; \
-swz4 <0, 3, 1, 0> xwyx, ragr, utvu; \
-swz4 <0, 3, 1, 1> xwyy, ragg, utvv; \
-swz4 <0, 3, 1, 2> xwyz, ragb, utvs; \
-swz4 <0, 3, 1, 3> xwyw, raga, utvt; \
-swz4 <0, 3, 2, 0> xwzx, rabr, utsu; \
-swz4 <0, 3, 2, 1> xwzy, rabg, utsv; \
-swz4 <0, 3, 2, 2> xwzz, rabb, utss; \
-swz4 <0, 3, 2, 3> xwzw, raba, utst; \
-swz4 <0, 3, 3, 0> xwwx, raar, uttu; \
-swz4 <0, 3, 3, 1> xwwy, raag, uttv; \
-swz4 <0, 3, 3, 2> xwwz, raab, utts; \
-swz4 <0, 3, 3, 3> xwww, raaa, uttt; \
-swz4 <1, 0, 0, 0> yxxx, grrr, vuuu; \
-swz4 <1, 0, 0, 1> yxxy, grrg, vuuv; \
-swz4 <1, 0, 0, 2> yxxz, grrb, vuus; \
-swz4 <1, 0, 0, 3> yxxw, grra, vuut; \
-swz4 <1, 0, 1, 0> yxyx, grgr, vuvu; \
-swz4 <1, 0, 1, 1> yxyy, grgg, vuvv; \
-swz4 <1, 0, 1, 2> yxyz, grgb, vuvs; \
-swz4 <1, 0, 1, 3> yxyw, grga, vuvt; \
-swz4 <1, 0, 2, 0> yxzx, grbr, vusu; \
-swz4 <1, 0, 2, 1> yxzy, grbg, vusv; \
-swz4 <1, 0, 2, 2> yxzz, grbb, vuss; \
-swz4 <1, 0, 2, 3> yxzw, grba, vust; \
-swz4 <1, 0, 3, 0> yxwx, grar, vutu; \
-swz4 <1, 0, 3, 1> yxwy, grag, vutv; \
-swz4 <1, 0, 3, 2> yxwz, grab, vuts; \
-swz4 <1, 0, 3, 3> yxww, graa, vutt; \
-swz4 <1, 1, 0, 0> yyxx, ggrr, vvuu; \
-swz4 <1, 1, 0, 1> yyxy, ggrg, vvuv; \
-swz4 <1, 1, 0, 2> yyxz, ggrb, vvus; \
-swz4 <1, 1, 0, 3> yyxw, ggra, vvut; \
-swz4 <1, 1, 1, 0> yyyx, gggr, vvvu; \
-swz4 <1, 1, 1, 1> yyyy, gggg, vvvv; \
-swz4 <1, 1, 1, 2> yyyz, gggb, vvvs; \
-swz4 <1, 1, 1, 3> yyyw, ggga, vvvt; \
-swz4 <1, 1, 2, 0> yyzx, ggbr, vvsu; \
-swz4 <1, 1, 2, 1> yyzy, ggbg, vvsv; \
-swz4 <1, 1, 2, 2> yyzz, ggbb, vvss; \
-swz4 <1, 1, 2, 3> yyzw, ggba, vvst; \
-swz4 <1, 1, 3, 0> yywx, ggar, vvtu; \
-swz4 <1, 1, 3, 1> yywy, ggag, vvtv; \
-swz4 <1, 1, 3, 2> yywz, ggab, vvts; \
-swz4 <1, 1, 3, 3> yyww, ggaa, vvtt; \
-swz4 <1, 2, 0, 0> yzxx, gbrr, vsuu; \
-swz4 <1, 2, 0, 1> yzxy, gbrg, vsuv; \
-swz4 <1, 2, 0, 2> yzxz, gbrb, vsus; \
-swz4 <1, 2, 0, 3> yzxw, gbra, vsut; \
-swz4 <1, 2, 1, 0> yzyx, gbgr, vsvu; \
-swz4 <1, 2, 1, 1> yzyy, gbgg, vsvv; \
-swz4 <1, 2, 1, 2> yzyz, gbgb, vsvs; \
-swz4 <1, 2, 1, 3> yzyw, gbga, vsvt; \
-swz4 <1, 2, 2, 0> yzzx, gbbr, vssu; \
-swz4 <1, 2, 2, 1> yzzy, gbbg, vssv; \
-swz4 <1, 2, 2, 2> yzzz, gbbb, vsss; \
-swz4 <1, 2, 2, 3> yzzw, gbba, vsst; \
-swz4 <1, 2, 3, 0> yzwx, gbar, vstu; \
-swz4 <1, 2, 3, 1> yzwy, gbag, vstv; \
-swz4 <1, 2, 3, 2> yzwz, gbab, vsts; \
-swz4 <1, 2, 3, 3> yzww, gbaa, vstt; \
-swz4 <1, 3, 0, 0> ywxx, garr, vtuu; \
-swz4 <1, 3, 0, 1> ywxy, garg, vtuv; \
-swz4 <1, 3, 0, 2> ywxz, garb, vtus; \
-swz4 <1, 3, 0, 3> ywxw, gara, vtut; \
-swz4 <1, 3, 1, 0> ywyx, gagr, vtvu; \
-swz4 <1, 3, 1, 1> ywyy, gagg, vtvv; \
-swz4 <1, 3, 1, 2> ywyz, gagb, vtvs; \
-swz4 <1, 3, 1, 3> ywyw, gaga, vtvt; \
-swz4 <1, 3, 2, 0> ywzx, gabr, vtsu; \
-swz4 <1, 3, 2, 1> ywzy, gabg, vtsv; \
-swz4 <1, 3, 2, 2> ywzz, gabb, vtss; \
-swz4 <1, 3, 2, 3> ywzw, gaba, vtst; \
-swz4 <1, 3, 3, 0> ywwx, gaar, vttu; \
-swz4 <1, 3, 3, 1> ywwy, gaag, vttv; \
-swz4 <1, 3, 3, 2> ywwz, gaab, vtts; \
-swz4 <1, 3, 3, 3> ywww, gaaa, vttt; \
-swz4 <2, 0, 0, 0> zxxx, brrr, suuu; \
-swz4 <2, 0, 0, 1> zxxy, brrg, suuv; \
-swz4 <2, 0, 0, 2> zxxz, brrb, suus; \
-swz4 <2, 0, 0, 3> zxxw, brra, suut; \
-swz4 <2, 0, 1, 0> zxyx, brgr, suvu; \
-swz4 <2, 0, 1, 1> zxyy, brgg, suvv; \
-swz4 <2, 0, 1, 2> zxyz, brgb, suvs; \
-swz4 <2, 0, 1, 3> zxyw, brga, suvt; \
-swz4 <2, 0, 2, 0> zxzx, brbr, susu; \
-swz4 <2, 0, 2, 1> zxzy, brbg, susv; \
-swz4 <2, 0, 2, 2> zxzz, brbb, suss; \
-swz4 <2, 0, 2, 3> zxzw, brba, sust; \
-swz4 <2, 0, 3, 0> zxwx, brar, sutu; \
-swz4 <2, 0, 3, 1> zxwy, brag, sutv; \
-swz4 <2, 0, 3, 2> zxwz, brab, suts; \
-swz4 <2, 0, 3, 3> zxww, braa, sutt; \
-swz4 <2, 1, 0, 0> zyxx, bgrr, svuu; \
-swz4 <2, 1, 0, 1> zyxy, bgrg, svuv; \
-swz4 <2, 1, 0, 2> zyxz, bgrb, svus; \
-swz4 <2, 1, 0, 3> zyxw, bgra, svut; \
-swz4 <2, 1, 1, 0> zyyx, bggr, svvu; \
-swz4 <2, 1, 1, 1> zyyy, bggg, svvv; \
-swz4 <2, 1, 1, 2> zyyz, bggb, svvs; \
-swz4 <2, 1, 1, 3> zyyw, bgga, svvt; \
-swz4 <2, 1, 2, 0> zyzx, bgbr, svsu; \
-swz4 <2, 1, 2, 1> zyzy, bgbg, svsv; \
-swz4 <2, 1, 2, 2> zyzz, bgbb, svss; \
-swz4 <2, 1, 2, 3> zyzw, bgba, svst; \
-swz4 <2, 1, 3, 0> zywx, bgar, svtu; \
-swz4 <2, 1, 3, 1> zywy, bgag, svtv; \
-swz4 <2, 1, 3, 2> zywz, bgab, svts; \
-swz4 <2, 1, 3, 3> zyww, bgaa, svtt; \
-swz4 <2, 2, 0, 0> zzxx, bbrr, ssuu; \
-swz4 <2, 2, 0, 1> zzxy, bbrg, ssuv; \
-swz4 <2, 2, 0, 2> zzxz, bbrb, ssus; \
-swz4 <2, 2, 0, 3> zzxw, bbra, ssut; \
-swz4 <2, 2, 1, 0> zzyx, bbgr, ssvu; \
-swz4 <2, 2, 1, 1> zzyy, bbgg, ssvv; \
-swz4 <2, 2, 1, 2> zzyz, bbgb, ssvs; \
-swz4 <2, 2, 1, 3> zzyw, bbga, ssvt; \
-swz4 <2, 2, 2, 0> zzzx, bbbr, sssu; \
-swz4 <2, 2, 2, 1> zzzy, bbbg, sssv; \
-swz4 <2, 2, 2, 2> zzzz, bbbb, ssss; \
-swz4 <2, 2, 2, 3> zzzw, bbba, ssst; \
-swz4 <2, 2, 3, 0> zzwx, bbar, sstu; \
-swz4 <2, 2, 3, 1> zzwy, bbag, sstv; \
-swz4 <2, 2, 3, 2> zzwz, bbab, ssts; \
-swz4 <2, 2, 3, 3> zzww, bbaa, sstt; \
-swz4 <2, 3, 0, 0> zwxx, barr, stuu; \
-swz4 <2, 3, 0, 1> zwxy, barg, stuv; \
-swz4 <2, 3, 0, 2> zwxz, barb, stus; \
-swz4 <2, 3, 0, 3> zwxw, bara, stut; \
-swz4 <2, 3, 1, 0> zwyx, bagr, stvu; \
-swz4 <2, 3, 1, 1> zwyy, bagg, stvv; \
-swz4 <2, 3, 1, 2> zwyz, bagb, stvs; \
-swz4 <2, 3, 1, 3> zwyw, baga, stvt; \
-swz4 <2, 3, 2, 0> zwzx, babr, stsu; \
-swz4 <2, 3, 2, 1> zwzy, babg, stsv; \
-swz4 <2, 3, 2, 2> zwzz, babb, stss; \
-swz4 <2, 3, 2, 3> zwzw, baba, stst; \
-swz4 <2, 3, 3, 0> zwwx, baar, sttu; \
-swz4 <2, 3, 3, 1> zwwy, baag, sttv; \
-swz4 <2, 3, 3, 2> zwwz, baab, stts; \
-swz4 <2, 3, 3, 3> zwww, baaa, sttt; \
-swz4 <3, 0, 0, 0> wxxx, arrr, tuuu; \
-swz4 <3, 0, 0, 1> wxxy, arrg, tuuv; \
-swz4 <3, 0, 0, 2> wxxz, arrb, tuus; \
-swz4 <3, 0, 0, 3> wxxw, arra, tuut; \
-swz4 <3, 0, 1, 0> wxyx, argr, tuvu; \
-swz4 <3, 0, 1, 1> wxyy, argg, tuvv; \
-swz4 <3, 0, 1, 2> wxyz, argb, tuvs; \
-swz4 <3, 0, 1, 3> wxyw, arga, tuvt; \
-swz4 <3, 0, 2, 0> wxzx, arbr, tusu; \
-swz4 <3, 0, 2, 1> wxzy, arbg, tusv; \
-swz4 <3, 0, 2, 2> wxzz, arbb, tuss; \
-swz4 <3, 0, 2, 3> wxzw, arba, tust; \
-swz4 <3, 0, 3, 0> wxwx, arar, tutu; \
-swz4 <3, 0, 3, 1> wxwy, arag, tutv; \
-swz4 <3, 0, 3, 2> wxwz, arab, tuts; \
-swz4 <3, 0, 3, 3> wxww, araa, tutt; \
-swz4 <3, 1, 0, 0> wyxx, agrr, tvuu; \
-swz4 <3, 1, 0, 1> wyxy, agrg, tvuv; \
-swz4 <3, 1, 0, 2> wyxz, agrb, tvus; \
-swz4 <3, 1, 0, 3> wyxw, agra, tvut; \
-swz4 <3, 1, 1, 0> wyyx, aggr, tvvu; \
-swz4 <3, 1, 1, 1> wyyy, aggg, tvvv; \
-swz4 <3, 1, 1, 2> wyyz, aggb, tvvs; \
-swz4 <3, 1, 1, 3> wyyw, agga, tvvt; \
-swz4 <3, 1, 2, 0> wyzx, agbr, tvsu; \
-swz4 <3, 1, 2, 1> wyzy, agbg, tvsv; \
-swz4 <3, 1, 2, 2> wyzz, agbb, tvss; \
-swz4 <3, 1, 2, 3> wyzw, agba, tvst; \
-swz4 <3, 1, 3, 0> wywx, agar, tvtu; \
-swz4 <3, 1, 3, 1> wywy, agag, tvtv; \
-swz4 <3, 1, 3, 2> wywz, agab, tvts; \
-swz4 <3, 1, 3, 3> wyww, agaa, tvtt; \
-swz4 <3, 2, 0, 0> wzxx, abrr, tsuu; \
-swz4 <3, 2, 0, 1> wzxy, abrg, tsuv; \
-swz4 <3, 2, 0, 2> wzxz, abrb, tsus; \
-swz4 <3, 2, 0, 3> wzxw, abra, tsut; \
-swz4 <3, 2, 1, 0> wzyx, abgr, tsvu; \
-swz4 <3, 2, 1, 1> wzyy, abgg, tsvv; \
-swz4 <3, 2, 1, 2> wzyz, abgb, tsvs; \
-swz4 <3, 2, 1, 3> wzyw, abga, tsvt; \
-swz4 <3, 2, 2, 0> wzzx, abbr, tssu; \
-swz4 <3, 2, 2, 1> wzzy, abbg, tssv; \
-swz4 <3, 2, 2, 2> wzzz, abbb, tsss; \
-swz4 <3, 2, 2, 3> wzzw, abba, tsst; \
-swz4 <3, 2, 3, 0> wzwx, abar, tstu; \
-swz4 <3, 2, 3, 1> wzwy, abag, tstv; \
-swz4 <3, 2, 3, 2> wzwz, abab, tsts; \
-swz4 <3, 2, 3, 3> wzww, abaa, tstt; \
-swz4 <3, 3, 0, 0> wwxx, aarr, ttuu; \
-swz4 <3, 3, 0, 1> wwxy, aarg, ttuv; \
-swz4 <3, 3, 0, 2> wwxz, aarb, ttus; \
-swz4 <3, 3, 0, 3> wwxw, aara, ttut; \
-swz4 <3, 3, 1, 0> wwyx, aagr, ttvu; \
-swz4 <3, 3, 1, 1> wwyy, aagg, ttvv; \
-swz4 <3, 3, 1, 2> wwyz, aagb, ttvs; \
-swz4 <3, 3, 1, 3> wwyw, aaga, ttvt; \
-swz4 <3, 3, 2, 0> wwzx, aabr, ttsu; \
-swz4 <3, 3, 2, 1> wwzy, aabg, ttsv; \
-swz4 <3, 3, 2, 2> wwzz, aabb, ttss; \
-swz4 <3, 3, 2, 3> wwzw, aaba, ttst; \
-swz4 <3, 3, 3, 0> wwwx, aaar, tttu; \
-swz4 <3, 3, 3, 1> wwwy, aaag, tttv; \
-swz4 <3, 3, 3, 2> wwwz, aaab, ttts; \
-swz4 <3, 3, 3, 3> wwww, aaaa, tttt; \
+swz2 <0, 0> xx, rr, ss; \
+swz2 <0, 1> xy, rg, st; \
+swz2 <0, 2> xz, rb, sp; \
+swz2 <0, 3> xw, ra, sq; \
+swz2 <1, 0> yx, gr, ts; \
+swz2 <1, 1> yy, gg, tt; \
+swz2 <1, 2> yz, gb, tp; \
+swz2 <1, 3> yw, ga, tq; \
+swz2 <2, 0> zx, br, ps; \
+swz2 <2, 1> zy, bg, pt; \
+swz2 <2, 2> zz, bb, pp; \
+swz2 <2, 3> zw, ba, pq; \
+swz2 <3, 0> wx, ar, qs; \
+swz2 <3, 1> wy, ag, qt; \
+swz2 <3, 2> wz, ab, qp; \
+swz2 <3, 3> ww, aa, qq; \
+swz3 <0, 0, 0> xxx, rrr, sss; \
+swz3 <0, 0, 1> xxy, rrg, sst; \
+swz3 <0, 0, 2> xxz, rrb, ssp; \
+swz3 <0, 0, 3> xxw, rra, ssq; \
+swz3 <0, 1, 0> xyx, rgr, sts; \
+swz3 <0, 1, 1> xyy, rgg, stt; \
+swz3 <0, 1, 2> xyz, rgb, stp; \
+swz3 <0, 1, 3> xyw, rga, stq; \
+swz3 <0, 2, 0> xzx, rbr, sps; \
+swz3 <0, 2, 1> xzy, rbg, spt; \
+swz3 <0, 2, 2> xzz, rbb, spp; \
+swz3 <0, 2, 3> xzw, rba, spq; \
+swz3 <0, 3, 0> xwx, rar, sqs; \
+swz3 <0, 3, 1> xwy, rag, sqt; \
+swz3 <0, 3, 2> xwz, rab, sqp; \
+swz3 <0, 3, 3> xww, raa, sqq; \
+swz3 <1, 0, 0> yxx, grr, tss; \
+swz3 <1, 0, 1> yxy, grg, tst; \
+swz3 <1, 0, 2> yxz, grb, tsp; \
+swz3 <1, 0, 3> yxw, gra, tsq; \
+swz3 <1, 1, 0> yyx, ggr, tts; \
+swz3 <1, 1, 1> yyy, ggg, ttt; \
+swz3 <1, 1, 2> yyz, ggb, ttp; \
+swz3 <1, 1, 3> yyw, gga, ttq; \
+swz3 <1, 2, 0> yzx, gbr, tps; \
+swz3 <1, 2, 1> yzy, gbg, tpt; \
+swz3 <1, 2, 2> yzz, gbb, tpp; \
+swz3 <1, 2, 3> yzw, gba, tpq; \
+swz3 <1, 3, 0> ywx, gar, tqs; \
+swz3 <1, 3, 1> ywy, gag, tqt; \
+swz3 <1, 3, 2> ywz, gab, tqp; \
+swz3 <1, 3, 3> yww, gaa, tqq; \
+swz3 <2, 0, 0> zxx, brr, pss; \
+swz3 <2, 0, 1> zxy, brg, pst; \
+swz3 <2, 0, 2> zxz, brb, psp; \
+swz3 <2, 0, 3> zxw, bra, psq; \
+swz3 <2, 1, 0> zyx, bgr, pts; \
+swz3 <2, 1, 1> zyy, bgg, ptt; \
+swz3 <2, 1, 2> zyz, bgb, ptp; \
+swz3 <2, 1, 3> zyw, bga, ptq; \
+swz3 <2, 2, 0> zzx, bbr, pps; \
+swz3 <2, 2, 1> zzy, bbg, ppt; \
+swz3 <2, 2, 2> zzz, bbb, ppp; \
+swz3 <2, 2, 3> zzw, bba, ppq; \
+swz3 <2, 3, 0> zwx, bar, pqs; \
+swz3 <2, 3, 1> zwy, bag, pqt; \
+swz3 <2, 3, 2> zwz, bab, pqp; \
+swz3 <2, 3, 3> zww, baa, pqq; \
+swz3 <3, 0, 0> wxx, arr, qss; \
+swz3 <3, 0, 1> wxy, arg, qst; \
+swz3 <3, 0, 2> wxz, arb, qsp; \
+swz3 <3, 0, 3> wxw, ara, qsq; \
+swz3 <3, 1, 0> wyx, agr, qts; \
+swz3 <3, 1, 1> wyy, agg, qtt; \
+swz3 <3, 1, 2> wyz, agb, qtp; \
+swz3 <3, 1, 3> wyw, aga, qtq; \
+swz3 <3, 2, 0> wzx, abr, qps; \
+swz3 <3, 2, 1> wzy, abg, qpt; \
+swz3 <3, 2, 2> wzz, abb, qpp; \
+swz3 <3, 2, 3> wzw, aba, qpq; \
+swz3 <3, 3, 0> wwx, aar, qqs; \
+swz3 <3, 3, 1> wwy, aag, qqt; \
+swz3 <3, 3, 2> wwz, aab, qqp; \
+swz3 <3, 3, 3> www, aaa, qqq; \
+swz4 <0, 0, 0, 0> xxxx, rrrr, ssss; \
+swz4 <0, 0, 0, 1> xxxy, rrrg, ssst; \
+swz4 <0, 0, 0, 2> xxxz, rrrb, sssp; \
+swz4 <0, 0, 0, 3> xxxw, rrra, sssq; \
+swz4 <0, 0, 1, 0> xxyx, rrgr, ssts; \
+swz4 <0, 0, 1, 1> xxyy, rrgg, sstt; \
+swz4 <0, 0, 1, 2> xxyz, rrgb, sstp; \
+swz4 <0, 0, 1, 3> xxyw, rrga, sstq; \
+swz4 <0, 0, 2, 0> xxzx, rrbr, ssps; \
+swz4 <0, 0, 2, 1> xxzy, rrbg, sspt; \
+swz4 <0, 0, 2, 2> xxzz, rrbb, sspp; \
+swz4 <0, 0, 2, 3> xxzw, rrba, sspq; \
+swz4 <0, 0, 3, 0> xxwx, rrar, ssqs; \
+swz4 <0, 0, 3, 1> xxwy, rrag, ssqt; \
+swz4 <0, 0, 3, 2> xxwz, rrab, ssqp; \
+swz4 <0, 0, 3, 3> xxww, rraa, ssqq; \
+swz4 <0, 1, 0, 0> xyxx, rgrr, stss; \
+swz4 <0, 1, 0, 1> xyxy, rgrg, stst; \
+swz4 <0, 1, 0, 2> xyxz, rgrb, stsp; \
+swz4 <0, 1, 0, 3> xyxw, rgra, stsq; \
+swz4 <0, 1, 1, 0> xyyx, rggr, stts; \
+swz4 <0, 1, 1, 1> xyyy, rggg, sttt; \
+swz4 <0, 1, 1, 2> xyyz, rggb, sttp; \
+swz4 <0, 1, 1, 3> xyyw, rgga, sttq; \
+swz4 <0, 1, 2, 0> xyzx, rgbr, stps; \
+swz4 <0, 1, 2, 1> xyzy, rgbg, stpt; \
+swz4 <0, 1, 2, 2> xyzz, rgbb, stpp; \
+swz4 <0, 1, 2, 3> xyzw, rgba, stpq; \
+swz4 <0, 1, 3, 0> xywx, rgar, stqs; \
+swz4 <0, 1, 3, 1> xywy, rgag, stqt; \
+swz4 <0, 1, 3, 2> xywz, rgab, stqp; \
+swz4 <0, 1, 3, 3> xyww, rgaa, stqq; \
+swz4 <0, 2, 0, 0> xzxx, rbrr, spss; \
+swz4 <0, 2, 0, 1> xzxy, rbrg, spst; \
+swz4 <0, 2, 0, 2> xzxz, rbrb, spsp; \
+swz4 <0, 2, 0, 3> xzxw, rbra, spsq; \
+swz4 <0, 2, 1, 0> xzyx, rbgr, spts; \
+swz4 <0, 2, 1, 1> xzyy, rbgg, sptt; \
+swz4 <0, 2, 1, 2> xzyz, rbgb, sptp; \
+swz4 <0, 2, 1, 3> xzyw, rbga, sptq; \
+swz4 <0, 2, 2, 0> xzzx, rbbr, spps; \
+swz4 <0, 2, 2, 1> xzzy, rbbg, sppt; \
+swz4 <0, 2, 2, 2> xzzz, rbbb, sppp; \
+swz4 <0, 2, 2, 3> xzzw, rbba, sppq; \
+swz4 <0, 2, 3, 0> xzwx, rbar, spqs; \
+swz4 <0, 2, 3, 1> xzwy, rbag, spqt; \
+swz4 <0, 2, 3, 2> xzwz, rbab, spqp; \
+swz4 <0, 2, 3, 3> xzww, rbaa, spqq; \
+swz4 <0, 3, 0, 0> xwxx, rarr, sqss; \
+swz4 <0, 3, 0, 1> xwxy, rarg, sqst; \
+swz4 <0, 3, 0, 2> xwxz, rarb, sqsp; \
+swz4 <0, 3, 0, 3> xwxw, rara, sqsq; \
+swz4 <0, 3, 1, 0> xwyx, ragr, sqts; \
+swz4 <0, 3, 1, 1> xwyy, ragg, sqtt; \
+swz4 <0, 3, 1, 2> xwyz, ragb, sqtp; \
+swz4 <0, 3, 1, 3> xwyw, raga, sqtq; \
+swz4 <0, 3, 2, 0> xwzx, rabr, sqps; \
+swz4 <0, 3, 2, 1> xwzy, rabg, sqpt; \
+swz4 <0, 3, 2, 2> xwzz, rabb, sqpp; \
+swz4 <0, 3, 2, 3> xwzw, raba, sqpq; \
+swz4 <0, 3, 3, 0> xwwx, raar, sqqs; \
+swz4 <0, 3, 3, 1> xwwy, raag, sqqt; \
+swz4 <0, 3, 3, 2> xwwz, raab, sqqp; \
+swz4 <0, 3, 3, 3> xwww, raaa, sqqq; \
+swz4 <1, 0, 0, 0> yxxx, grrr, tsss; \
+swz4 <1, 0, 0, 1> yxxy, grrg, tsst; \
+swz4 <1, 0, 0, 2> yxxz, grrb, tssp; \
+swz4 <1, 0, 0, 3> yxxw, grra, tssq; \
+swz4 <1, 0, 1, 0> yxyx, grgr, tsts; \
+swz4 <1, 0, 1, 1> yxyy, grgg, tstt; \
+swz4 <1, 0, 1, 2> yxyz, grgb, tstp; \
+swz4 <1, 0, 1, 3> yxyw, grga, tstq; \
+swz4 <1, 0, 2, 0> yxzx, grbr, tsps; \
+swz4 <1, 0, 2, 1> yxzy, grbg, tspt; \
+swz4 <1, 0, 2, 2> yxzz, grbb, tspp; \
+swz4 <1, 0, 2, 3> yxzw, grba, tspq; \
+swz4 <1, 0, 3, 0> yxwx, grar, tsqs; \
+swz4 <1, 0, 3, 1> yxwy, grag, tsqt; \
+swz4 <1, 0, 3, 2> yxwz, grab, tsqp; \
+swz4 <1, 0, 3, 3> yxww, graa, tsqq; \
+swz4 <1, 1, 0, 0> yyxx, ggrr, ttss; \
+swz4 <1, 1, 0, 1> yyxy, ggrg, ttst; \
+swz4 <1, 1, 0, 2> yyxz, ggrb, ttsp; \
+swz4 <1, 1, 0, 3> yyxw, ggra, ttsq; \
+swz4 <1, 1, 1, 0> yyyx, gggr, ttts; \
+swz4 <1, 1, 1, 1> yyyy, gggg, tttt; \
+swz4 <1, 1, 1, 2> yyyz, gggb, tttp; \
+swz4 <1, 1, 1, 3> yyyw, ggga, tttq; \
+swz4 <1, 1, 2, 0> yyzx, ggbr, ttps; \
+swz4 <1, 1, 2, 1> yyzy, ggbg, ttpt; \
+swz4 <1, 1, 2, 2> yyzz, ggbb, ttpp; \
+swz4 <1, 1, 2, 3> yyzw, ggba, ttpq; \
+swz4 <1, 1, 3, 0> yywx, ggar, ttqs; \
+swz4 <1, 1, 3, 1> yywy, ggag, ttqt; \
+swz4 <1, 1, 3, 2> yywz, ggab, ttqp; \
+swz4 <1, 1, 3, 3> yyww, ggaa, ttqq; \
+swz4 <1, 2, 0, 0> yzxx, gbrr, tpss; \
+swz4 <1, 2, 0, 1> yzxy, gbrg, tpst; \
+swz4 <1, 2, 0, 2> yzxz, gbrb, tpsp; \
+swz4 <1, 2, 0, 3> yzxw, gbra, tpsq; \
+swz4 <1, 2, 1, 0> yzyx, gbgr, tpts; \
+swz4 <1, 2, 1, 1> yzyy, gbgg, tptt; \
+swz4 <1, 2, 1, 2> yzyz, gbgb, tptp; \
+swz4 <1, 2, 1, 3> yzyw, gbga, tptq; \
+swz4 <1, 2, 2, 0> yzzx, gbbr, tpps; \
+swz4 <1, 2, 2, 1> yzzy, gbbg, tppt; \
+swz4 <1, 2, 2, 2> yzzz, gbbb, tppp; \
+swz4 <1, 2, 2, 3> yzzw, gbba, tppq; \
+swz4 <1, 2, 3, 0> yzwx, gbar, tpqs; \
+swz4 <1, 2, 3, 1> yzwy, gbag, tpqt; \
+swz4 <1, 2, 3, 2> yzwz, gbab, tpqp; \
+swz4 <1, 2, 3, 3> yzww, gbaa, tpqq; \
+swz4 <1, 3, 0, 0> ywxx, garr, tqss; \
+swz4 <1, 3, 0, 1> ywxy, garg, tqst; \
+swz4 <1, 3, 0, 2> ywxz, garb, tqsp; \
+swz4 <1, 3, 0, 3> ywxw, gara, tqsq; \
+swz4 <1, 3, 1, 0> ywyx, gagr, tqts; \
+swz4 <1, 3, 1, 1> ywyy, gagg, tqtt; \
+swz4 <1, 3, 1, 2> ywyz, gagb, tqtp; \
+swz4 <1, 3, 1, 3> ywyw, gaga, tqtq; \
+swz4 <1, 3, 2, 0> ywzx, gabr, tqps; \
+swz4 <1, 3, 2, 1> ywzy, gabg, tqpt; \
+swz4 <1, 3, 2, 2> ywzz, gabb, tqpp; \
+swz4 <1, 3, 2, 3> ywzw, gaba, tqpq; \
+swz4 <1, 3, 3, 0> ywwx, gaar, tqqs; \
+swz4 <1, 3, 3, 1> ywwy, gaag, tqqt; \
+swz4 <1, 3, 3, 2> ywwz, gaab, tqqp; \
+swz4 <1, 3, 3, 3> ywww, gaaa, tqqq; \
+swz4 <2, 0, 0, 0> zxxx, brrr, psss; \
+swz4 <2, 0, 0, 1> zxxy, brrg, psst; \
+swz4 <2, 0, 0, 2> zxxz, brrb, pssp; \
+swz4 <2, 0, 0, 3> zxxw, brra, pssq; \
+swz4 <2, 0, 1, 0> zxyx, brgr, psts; \
+swz4 <2, 0, 1, 1> zxyy, brgg, pstt; \
+swz4 <2, 0, 1, 2> zxyz, brgb, pstp; \
+swz4 <2, 0, 1, 3> zxyw, brga, pstq; \
+swz4 <2, 0, 2, 0> zxzx, brbr, psps; \
+swz4 <2, 0, 2, 1> zxzy, brbg, pspt; \
+swz4 <2, 0, 2, 2> zxzz, brbb, pspp; \
+swz4 <2, 0, 2, 3> zxzw, brba, pspq; \
+swz4 <2, 0, 3, 0> zxwx, brar, psqs; \
+swz4 <2, 0, 3, 1> zxwy, brag, psqt; \
+swz4 <2, 0, 3, 2> zxwz, brab, psqp; \
+swz4 <2, 0, 3, 3> zxww, braa, psqq; \
+swz4 <2, 1, 0, 0> zyxx, bgrr, ptss; \
+swz4 <2, 1, 0, 1> zyxy, bgrg, ptst; \
+swz4 <2, 1, 0, 2> zyxz, bgrb, ptsp; \
+swz4 <2, 1, 0, 3> zyxw, bgra, ptsq; \
+swz4 <2, 1, 1, 0> zyyx, bggr, ptts; \
+swz4 <2, 1, 1, 1> zyyy, bggg, pttt; \
+swz4 <2, 1, 1, 2> zyyz, bggb, pttp; \
+swz4 <2, 1, 1, 3> zyyw, bgga, pttq; \
+swz4 <2, 1, 2, 0> zyzx, bgbr, ptps; \
+swz4 <2, 1, 2, 1> zyzy, bgbg, ptpt; \
+swz4 <2, 1, 2, 2> zyzz, bgbb, ptpp; \
+swz4 <2, 1, 2, 3> zyzw, bgba, ptpq; \
+swz4 <2, 1, 3, 0> zywx, bgar, ptqs; \
+swz4 <2, 1, 3, 1> zywy, bgag, ptqt; \
+swz4 <2, 1, 3, 2> zywz, bgab, ptqp; \
+swz4 <2, 1, 3, 3> zyww, bgaa, ptqq; \
+swz4 <2, 2, 0, 0> zzxx, bbrr, ppss; \
+swz4 <2, 2, 0, 1> zzxy, bbrg, ppst; \
+swz4 <2, 2, 0, 2> zzxz, bbrb, ppsp; \
+swz4 <2, 2, 0, 3> zzxw, bbra, ppsq; \
+swz4 <2, 2, 1, 0> zzyx, bbgr, ppts; \
+swz4 <2, 2, 1, 1> zzyy, bbgg, pptt; \
+swz4 <2, 2, 1, 2> zzyz, bbgb, pptp; \
+swz4 <2, 2, 1, 3> zzyw, bbga, pptq; \
+swz4 <2, 2, 2, 0> zzzx, bbbr, ppps; \
+swz4 <2, 2, 2, 1> zzzy, bbbg, pppt; \
+swz4 <2, 2, 2, 2> zzzz, bbbb, pppp; \
+swz4 <2, 2, 2, 3> zzzw, bbba, pppq; \
+swz4 <2, 2, 3, 0> zzwx, bbar, ppqs; \
+swz4 <2, 2, 3, 1> zzwy, bbag, ppqt; \
+swz4 <2, 2, 3, 2> zzwz, bbab, ppqp; \
+swz4 <2, 2, 3, 3> zzww, bbaa, ppqq; \
+swz4 <2, 3, 0, 0> zwxx, barr, pqss; \
+swz4 <2, 3, 0, 1> zwxy, barg, pqst; \
+swz4 <2, 3, 0, 2> zwxz, barb, pqsp; \
+swz4 <2, 3, 0, 3> zwxw, bara, pqsq; \
+swz4 <2, 3, 1, 0> zwyx, bagr, pqts; \
+swz4 <2, 3, 1, 1> zwyy, bagg, pqtt; \
+swz4 <2, 3, 1, 2> zwyz, bagb, pqtp; \
+swz4 <2, 3, 1, 3> zwyw, baga, pqtq; \
+swz4 <2, 3, 2, 0> zwzx, babr, pqps; \
+swz4 <2, 3, 2, 1> zwzy, babg, pqpt; \
+swz4 <2, 3, 2, 2> zwzz, babb, pqpp; \
+swz4 <2, 3, 2, 3> zwzw, baba, pqpq; \
+swz4 <2, 3, 3, 0> zwwx, baar, pqqs; \
+swz4 <2, 3, 3, 1> zwwy, baag, pqqt; \
+swz4 <2, 3, 3, 2> zwwz, baab, pqqp; \
+swz4 <2, 3, 3, 3> zwww, baaa, pqqq; \
+swz4 <3, 0, 0, 0> wxxx, arrr, qsss; \
+swz4 <3, 0, 0, 1> wxxy, arrg, qsst; \
+swz4 <3, 0, 0, 2> wxxz, arrb, qssp; \
+swz4 <3, 0, 0, 3> wxxw, arra, qssq; \
+swz4 <3, 0, 1, 0> wxyx, argr, qsts; \
+swz4 <3, 0, 1, 1> wxyy, argg, qstt; \
+swz4 <3, 0, 1, 2> wxyz, argb, qstp; \
+swz4 <3, 0, 1, 3> wxyw, arga, qstq; \
+swz4 <3, 0, 2, 0> wxzx, arbr, qsps; \
+swz4 <3, 0, 2, 1> wxzy, arbg, qspt; \
+swz4 <3, 0, 2, 2> wxzz, arbb, qspp; \
+swz4 <3, 0, 2, 3> wxzw, arba, qspq; \
+swz4 <3, 0, 3, 0> wxwx, arar, qsqs; \
+swz4 <3, 0, 3, 1> wxwy, arag, qsqt; \
+swz4 <3, 0, 3, 2> wxwz, arab, qsqp; \
+swz4 <3, 0, 3, 3> wxww, araa, qsqq; \
+swz4 <3, 1, 0, 0> wyxx, agrr, qtss; \
+swz4 <3, 1, 0, 1> wyxy, agrg, qtst; \
+swz4 <3, 1, 0, 2> wyxz, agrb, qtsp; \
+swz4 <3, 1, 0, 3> wyxw, agra, qtsq; \
+swz4 <3, 1, 1, 0> wyyx, aggr, qtts; \
+swz4 <3, 1, 1, 1> wyyy, aggg, qttt; \
+swz4 <3, 1, 1, 2> wyyz, aggb, qttp; \
+swz4 <3, 1, 1, 3> wyyw, agga, qttq; \
+swz4 <3, 1, 2, 0> wyzx, agbr, qtps; \
+swz4 <3, 1, 2, 1> wyzy, agbg, qtpt; \
+swz4 <3, 1, 2, 2> wyzz, agbb, qtpp; \
+swz4 <3, 1, 2, 3> wyzw, agba, qtpq; \
+swz4 <3, 1, 3, 0> wywx, agar, qtqs; \
+swz4 <3, 1, 3, 1> wywy, agag, qtqt; \
+swz4 <3, 1, 3, 2> wywz, agab, qtqp; \
+swz4 <3, 1, 3, 3> wyww, agaa, qtqq; \
+swz4 <3, 2, 0, 0> wzxx, abrr, qpss; \
+swz4 <3, 2, 0, 1> wzxy, abrg, qpst; \
+swz4 <3, 2, 0, 2> wzxz, abrb, qpsp; \
+swz4 <3, 2, 0, 3> wzxw, abra, qpsq; \
+swz4 <3, 2, 1, 0> wzyx, abgr, qpts; \
+swz4 <3, 2, 1, 1> wzyy, abgg, qptt; \
+swz4 <3, 2, 1, 2> wzyz, abgb, qptp; \
+swz4 <3, 2, 1, 3> wzyw, abga, qptq; \
+swz4 <3, 2, 2, 0> wzzx, abbr, qpps; \
+swz4 <3, 2, 2, 1> wzzy, abbg, qppt; \
+swz4 <3, 2, 2, 2> wzzz, abbb, qppp; \
+swz4 <3, 2, 2, 3> wzzw, abba, qppq; \
+swz4 <3, 2, 3, 0> wzwx, abar, qpqs; \
+swz4 <3, 2, 3, 1> wzwy, abag, qpqt; \
+swz4 <3, 2, 3, 2> wzwz, abab, qpqp; \
+swz4 <3, 2, 3, 3> wzww, abaa, qpqq; \
+swz4 <3, 3, 0, 0> wwxx, aarr, qqss; \
+swz4 <3, 3, 0, 1> wwxy, aarg, qqst; \
+swz4 <3, 3, 0, 2> wwxz, aarb, qqsp; \
+swz4 <3, 3, 0, 3> wwxw, aara, qqsq; \
+swz4 <3, 3, 1, 0> wwyx, aagr, qqts; \
+swz4 <3, 3, 1, 1> wwyy, aagg, qqtt; \
+swz4 <3, 3, 1, 2> wwyz, aagb, qqtp; \
+swz4 <3, 3, 1, 3> wwyw, aaga, qqtq; \
+swz4 <3, 3, 2, 0> wwzx, aabr, qqps; \
+swz4 <3, 3, 2, 1> wwzy, aabg, qqpt; \
+swz4 <3, 3, 2, 2> wwzz, aabb, qqpp; \
+swz4 <3, 3, 2, 3> wwzw, aaba, qqpq; \
+swz4 <3, 3, 3, 0> wwwx, aaar, qqqs; \
+swz4 <3, 3, 3, 1> wwwy, aaag, qqqt; \
+swz4 <3, 3, 3, 2> wwwz, aaab, qqqp; \
+swz4 <3, 3, 3, 3> wwww, aaaa, qqqq; \
 
 //
 

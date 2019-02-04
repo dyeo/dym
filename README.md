@@ -23,7 +23,7 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] Type-Templated
   - [x] Dot and Cross Product
   - [x] All GLSL Vector Operations
-  - [ ] Vector Swizzling
+  - [x] Vector Swizzling
 - [x] Generic Quaternions
   - [x] Type-Templated
   - [x] Quaternion SLERP
