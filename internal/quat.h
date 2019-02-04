@@ -335,10 +335,9 @@ namespace GMTK_NAMESPACE
 
 //
 
-#undef GMTK_QUAT_INIT
-
 #undef GMTK_QUAT_LOOP
 
+#undef GMTK_QUAT_INIT
 #undef GMTK_QUAT_QUAT_OP
 #undef GMTK_QUAT_SCL_OP
 #undef GMTK_QUAT_QUAT_ROP
