@@ -19,6 +19,8 @@
 
 //
 
+#define GMTK_VEC4_INIT(a, b, c, d) : x( a ), y( b ), z( c ), w( d ) { }
+
 #define GMTK_VEC4_UN_OP(op) \
 	inline vec<4, T> operator op () const \
 	{ vec<4, T> res; GMTK_VEC4_LOOP(res.data[i] = op data[i]); return res; }
@@ -72,77 +74,51 @@ namespace GMTK_NAMESPACE
 
 		//! Initialize vec4 with four values
 		inline vec(const T& s0, const T& s1, const T& s2, const T& s3)
-		{
-			data[0] = s0;
-			data[1] = s1;
-			data[2] = s2;
-			data[3] = s3;
-		}
+			GMTK_VEC4_INIT(s0, s1, s2, s3)
 
 		//! Initialize vec4 with a vec3 and a fourth value
 		inline vec(const vec<3, T>& v012, const T& s3)
-		{
-			data[0] = v012.data[0];
-			data[1] = v012.data[1];
-			data[2] = v012.data[2];
-			data[3] = s3;
-		}
+			GMTK_VEC4_INIT(v012.x, v012.y, v012.z, s3)
 
 		//! Initialize vec4 with two vec2s
 		inline vec(const vec<2, T>& v01, const vec<2, T>& v23)
-		{
-			data[0] = v01.data[0];
-			data[1] = v01.data[1];
-			data[2] = v23.data[0];
-			data[2] = v23.data[1];
-		}
+			GMTK_VEC4_INIT(v01.x, v01.y, v23.x, v23.y)
 
 		//! Default constructor
-		inline vec() {
-			GMTK_VEC4_LOOP(data[i] = static_cast<T>(0));
-		}
+		inline vec() 
+			GMTK_VEC4_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
 
 		//! Swizzle4 constructor
 		template<int a, int b, int c, int d>
-		inline vec(const swz4<a, b, c, d>&s) {
-			data[0] = s[a];
-			data[1] = s[b];
-			data[2] = s[c];
-			data[3] = s[d];
-		}
-
-		//! Initializer list constructor
-		inline vec(std::initializer_list<T> list)
-		{
-			GMTK_VEC4_LOOP(data[i] = *(list.begin() + i));
-		}
+		inline vec(const swz4<a, b, c, d>&s) 
+			GMTK_VEC4_INIT(s[a], s[b], s[c], s[d])
 
 		//! Copy constructor
-		inline vec(const vec<4, T>& v) {
-			GMTK_VEC4_LOOP(data[i] = v.data[i]);
-		}
+		inline vec(const vec<4, T>& v) 
+			GMTK_VEC4_INIT(v.x, v.y, v.z, v.w)
+
+		//! Explicit type-conversion copy constructor
+		template<typename U> 
+		explicit inline vec(const vec<4, U>& v)
+			GMTK_VEC4_INIT(static_cast<T>(v.x), static_cast<T>(v.y), static_cast<T>(v.z), static_cast<T>(v.w))
+
+		//! Fill constructor
+		explicit inline vec(const T& s) 
+			GMTK_VEC4_INIT(s, s, s, s)
+
+		//! Array initializer
+		explicit inline vec(const T* a) 
+			GMTK_VEC4_INIT(a[0], a[1], a[2], a[3])
+
+		//! Initializer list constructor
+		inline vec(std::initializer_list<T> l)
+			GMTK_VEC4_INIT(*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3))
 
 		//! Copy constructor for arbitrarily larger vector
 		template<int d2>
 		inline vec(const vec<d2, T> &v) {
 			GMTK_STATIC_ASSERT(d2 >= 4);
 			GMTK_VEC4_LOOP(data[i] = v.data[i]);
-		}
-
-		//! Explicit type-conversion copy constructor
-		template<typename U> 
-		explicit inline vec(const vec<4, U>& v) {
-			GMTK_VEC4_LOOP(data[i] = static_cast<T>(v[i]));
-		}
-
-		//! Fill constructor
-		explicit inline vec(const T& s) {
-			GMTK_VEC4_LOOP(data[i] = s);
-		}
-
-		//! Array initializer
-		explicit inline vec(const T* a) {
-			GMTK_VEC4_LOOP(data[i] = a[i]);
 		}
 
 		///////////////////////
@@ -304,7 +280,8 @@ namespace GMTK_NAMESPACE
 //
 
 #undef GMTK_VEC4_LOOP
-#undef GMTK_VEC4_OPERATOR
+
+#undef GMTK_VEC4_INIT
 #undef GMTK_VEC4_UN_OP
 #undef GMTK_VEC4_VEC_OP
 #undef GMTK_VEC4_SCL_OP
