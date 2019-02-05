@@ -13,10 +13,9 @@
 #define GMTK_NAMESPACE gmtk
 #endif
 
-#include <math.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <stdint.h>
+#include <cmath>
+#include <cstdlib>
+#include <cassert>
 #include <random>
 
 #include <initializer_list>
