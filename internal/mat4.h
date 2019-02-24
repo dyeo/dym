@@ -492,10 +492,10 @@ namespace GMTK_NAMESPACE
 		inline static mat<4, 4, T> catmull()
 		{
 			return mat<4, 4, T>::roworder(
-				-0.5f, 1.5f, -1.5f, 0.5f,
-				1.0f, -2.5f, 2.0f, -0.5f,
+				-0.5f, 1.5f,-1.5f, 0.5f,
+				 1.0f,-2.5f, 2.0f,-0.5f,
 				-0.5f, 0.0f, 0.5f, 0.0f,
-				0.0f, 1.0f, 0.0f, 0.0f);
+				 0.0f, 1.0f, 0.0f, 0.0f);
 		}
 
 		//! generates a bezier identity transformation
@@ -507,6 +507,26 @@ namespace GMTK_NAMESPACE
 				-3.0f, 3.0f, 0.0f, 0.0f,
 				 1.0f, 0.0f, 0.0f, 0.0f);
 		}
+		
+		//! converts clipspace matrix to screenspace matrix
+		inline static mat<4, 4, T> cliptoscreen()
+		{
+			return mat<4, 4, T>(
+				0.5f, 0.0f, 0.0f, 0.0f,
+				0.0f, 0.5f, 0.0f, 0.0f,
+				0.0f, 0.0f, 0.5f, 0.0f,
+				0.5f, 0.5f, 0.5f, 1.0f);
+		}
+
+		//! converts screenspace to clipspace
+		inline static mat<4, 4, T> screentoclip()
+		{
+			return mat<4, 4, T>(
+				 2.0f, 0.0f, 0.0f, 0.0f,
+				 0.0f, 2.0f, 0.0f, 0.0f,
+				 0.0f, 0.0f, 2.0f, 0.0f,
+				-1.0f,-1.0f,-1.0f, 1.0f);
+		}
 
 	}; //! struct mat
 
@@ -516,28 +536,28 @@ namespace GMTK_NAMESPACE
 	{
 		return (m.arr[0] * m.arr[5] * m.arr[10] * m.arr[15]) 
 			 - (m.arr[0] * m.arr[5] * m.arr[11] * m.arr[14]) 
-			 - (m.arr[0] * m.arr[6] * m.arr[9] * m.arr[15]) 
+			 - (m.arr[0] * m.arr[6] * m.arr[9]	* m.arr[15]) 
 			 + (m.arr[0] * m.arr[6] * m.arr[11] * m.arr[13]) 
-			 + (m.arr[0] * m.arr[7] * m.arr[9] * m.arr[14]) 
+			 + (m.arr[0] * m.arr[7] * m.arr[9]	* m.arr[14]) 
 			 - (m.arr[0] * m.arr[7] * m.arr[10] * m.arr[13]) 
 			 - (m.arr[1] * m.arr[4] * m.arr[10] * m.arr[15]) 
 			 + (m.arr[1] * m.arr[4] * m.arr[11] * m.arr[14]) 
-			 + (m.arr[1] * m.arr[6] * m.arr[8] * m.arr[15]) 
+			 + (m.arr[1] * m.arr[6] * m.arr[8]	* m.arr[15]) 
 			 - (m.arr[1] * m.arr[6] * m.arr[11] * m.arr[12]) 
-			 - (m.arr[1] * m.arr[7] * m.arr[8] * m.arr[14])
+			 - (m.arr[1] * m.arr[7] * m.arr[8]	* m.arr[14])
 			 + (m.arr[1] * m.arr[7] * m.arr[10] * m.arr[12]) 
-			 + (m.arr[2] * m.arr[4] * m.arr[9] * m.arr[15]) 
+			 + (m.arr[2] * m.arr[4] * m.arr[9]	* m.arr[15]) 
 			 - (m.arr[2] * m.arr[4] * m.arr[11] * m.arr[13]) 
-			 - (m.arr[2] * m.arr[5] * m.arr[8] * m.arr[15]) 
+			 - (m.arr[2] * m.arr[5] * m.arr[8]	* m.arr[15]) 
 			 + (m.arr[2] * m.arr[5] * m.arr[11] * m.arr[12]) 
-			 + (m.arr[2] * m.arr[7] * m.arr[8] * m.arr[13]) 
-			 - (m.arr[2] * m.arr[7] * m.arr[9] * m.arr[12]) 
-			 - (m.arr[3] * m.arr[4] * m.arr[9] * m.arr[14]) 
+			 + (m.arr[2] * m.arr[7] * m.arr[8]	* m.arr[13]) 
+			 - (m.arr[2] * m.arr[7] * m.arr[9]	* m.arr[12]) 
+			 - (m.arr[3] * m.arr[4] * m.arr[9]	* m.arr[14]) 
 			 + (m.arr[3] * m.arr[4] * m.arr[10] * m.arr[13]) 
-			 + (m.arr[3] * m.arr[5] * m.arr[8] * m.arr[14]) 
+			 + (m.arr[3] * m.arr[5] * m.arr[8]	* m.arr[14]) 
 			 - (m.arr[3] * m.arr[5] * m.arr[10] * m.arr[12]) 
-			 - (m.arr[3] * m.arr[6] * m.arr[8] * m.arr[13]) 
-			 + (m.arr[3] * m.arr[6] * m.arr[9] * m.arr[12]);
+			 - (m.arr[3] * m.arr[6] * m.arr[8]	* m.arr[13]) 
+			 + (m.arr[3] * m.arr[6] * m.arr[9]	* m.arr[12]);
 	}
 
 	//! Inverts the matrix, such that m * inverse(m) = the identity
