@@ -122,11 +122,17 @@ namespace GMTK_NAMESPACE
 		inline vec(std::initializer_list<T> l)
 			GMTK_VEC4_INIT(*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3))
 
-		//! Copy constructor for arbitrarily larger vector
+		//! Copy constructor for differently-sized vector
 		template<int d2>
 		inline vec(const vec<d2, T> &v) {
-			GMTK_STATIC_ASSERT(d2 >= 4);
-			GMTK_VEC4_LOOP(data[i] = v.data[i]);
+			if constexpr (d2 < 4)
+			{
+				GMTK_UNROLL_LOOP(i, d2, data[i] = v.data[i]);
+			}
+			else
+			{
+				GMTK_UNROLL_LOOP(i, d, data[i] = v.data[i]);
+			}
 		}
 
 		///////////////////////
