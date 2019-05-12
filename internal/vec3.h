@@ -121,13 +121,13 @@ namespace GMTK_NAMESPACE
 		//! Copy constructor for differently-sized vector
 		template<int d2>
 		inline vec(const vec<d2, T> &v) {
-			if constexpr (d2 < 3)
+			if (d2 < 3)
 			{
 				GMTK_UNROLL_LOOP(i, d2, data[i] = v.data[i]);
 			}
 			else
 			{
-				GMTK_UNROLL_LOOP(i, d, data[i] = v.data[i]);
+				GMTK_UNROLL_LOOP(i, 3, data[i] = v.data[i]);
 			}
 		}
 
