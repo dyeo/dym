@@ -226,6 +226,11 @@ namespace GMTK_NAMESPACE
 		return os;
 	}
 
+	//! Scalar-Vector multiplication
+	template <int d, typename T>
+	inline vec<d, T> operator*(const T &l, const vec<d, T> &r)
+		GMTK_VEC_OPERATION(l * r[i])
+
 	/////////////////////
 	//! FREE FUNCTIONS //
 	/////////////////////
