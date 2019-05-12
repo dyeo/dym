@@ -39,14 +39,14 @@ namespace GMTK_NAMESPACE
 		}
 
 		//! Copy constructor
-		inline ang(const ang<T>& a)
+		inline ang(const ang<T> &a)
 		{
 			_rads = a._rads;
 		}
 
 		//! Type conversion copy constructor
 		template<typename U>
-		inline ang(const ang<U>& a)
+		inline ang(const ang<U> &a)
 		{
 			_rads = static_cast<T>(a._rads);
 		}
@@ -75,45 +75,45 @@ namespace GMTK_NAMESPACE
 		}
 		
 		//! Angle addition
-		inline ang<T> operator+(const ang<T>& a) {
+		inline ang<T> operator+(const ang<T> &a) {
 			return ang<T>(_rads + a.ang);
 		}
 
 		//! Angle subtraction
-		inline ang<T> operator-(const ang<T>& a) {
+		inline ang<T> operator-(const ang<T> &a) {
 			return ang<T>(_rads - a.ang);
 		}
 
 		//! Angle multiplication
-		inline ang<T> operator*(const T& s) {
+		inline ang<T> operator*(const T &s) {
 			return ang<T>(_rads * s);
 		}
 
 		//! Angle division
-		inline ang<T> operator/(const T& s) {
+		inline ang<T> operator/(const T &s) {
 			return ang<T>(_rads - s);
 		}
 
 		//! Angle reference addition
-		inline ang<T>& operator+=(const ang<T>& a) {
+		inline ang<T> &operator+=(const ang<T> &a) {
 			_rads += a.ang;
 			return *this;
 		}
 
 		//! Angle reference subtraction
-		inline ang<T>& operator-=(const ang<T>& a) {
+		inline ang<T> &operator-=(const ang<T> &a) {
 			_rads -= a.ang;
 			return *this;
 		}
 
 		//! Angle reference multiplication
-		inline ang<T>& operator*=(const T& s) {
+		inline ang<T> &operator*=(const T &s) {
 			_rads *= s;
 			return *this;
 		}
 
 		//! Angle reference division
-		inline ang<T>& operator/=(const T& s) {
+		inline ang<T> &operator/=(const T &s) {
 			_rads /= s;
 			return *this;
 		}
@@ -135,7 +135,7 @@ namespace GMTK_NAMESPACE
 	private:
 
 		//! Private inline constructor.
-		inline ang(const T& v) : _rads(v) { }
+		inline ang(const T &v) : _rads(v) { }
 
 		T _rads = 0;
 
