@@ -76,12 +76,12 @@ namespace GMTK_NAMESPACE
 		
 		//! Angle addition
 		inline ang<T> operator+(const ang<T> &a) {
-			return ang<T>(_rads + a.ang);
+			return ang<T>(_rads + a._rads);
 		}
 
 		//! Angle subtraction
 		inline ang<T> operator-(const ang<T> &a) {
-			return ang<T>(_rads - a.ang);
+			return ang<T>(_rads - a._rads);
 		}
 
 		//! Angle multiplication
@@ -96,13 +96,13 @@ namespace GMTK_NAMESPACE
 
 		//! Angle reference addition
 		inline ang<T> &operator+=(const ang<T> &a) {
-			_rads += a.ang;
+			_rads += a._rads;
 			return *this;
 		}
 
 		//! Angle reference subtraction
 		inline ang<T> &operator-=(const ang<T> &a) {
-			_rads -= a.ang;
+			_rads -= a._rads;
 			return *this;
 		}
 
@@ -170,7 +170,7 @@ namespace GMTK_NAMESPACE
 	//////////////////////
 	//! MISC. OPERATORS //
 	//////////////////////
-
+	
 	inline std::ostream& operator<<(std::ostream& os, const ang<> &a)
 	{
 		os << a.degrees() << "deg";
