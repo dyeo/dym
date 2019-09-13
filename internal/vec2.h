@@ -33,15 +33,15 @@
 	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v.data[i]); return res; }
 
 #define GMTK_VEC2_SCL_OP(op) \
-	inline vec<2, T> operator op (const T& v) const \
+	inline vec<2, T> operator op (const T &v) const \
 	{ vec<2, T> res; GMTK_VEC2_LOOP(res.data[i] = data[i] op v); return res; } 
 
 #define GMTK_VEC2_VEC_ROP(op) \
-	inline vec<2, T>& operator op (const vec<2, T> &v) \
+	inline vec<2, T> &operator op (const vec<2, T> &v) \
 	{ GMTK_VEC2_LOOP(data[i] op v.data[i]); return *this; }
 
 #define GMTK_VEC2_SCL_ROP(op) \
-	inline vec<2, T>& operator op (const T &v) \
+	inline vec<2, T> &operator op (const T &v) \
 	{ GMTK_VEC2_LOOP(data[i] op v); return *this; }
 
 //
@@ -81,7 +81,7 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! Initialize vec2 with two values
-		inline vec(const T& s0, const T& s1) 
+		inline vec(const T &s0, const T &s1) 
 			GMTK_VEC2_INIT(s0, s1)
 
 		//! Default constructor
@@ -94,31 +94,37 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC2_INIT(s[a], s[b])
 
 		//! Copy constructor
-		inline vec(const vec<2, T>& v) 
+		inline vec(const vec<2, T> &v) 
 			GMTK_VEC2_INIT(v.x, v.y)
 
 		//! Explicit type-conversion copy constructor
 		template<typename U> 
-		explicit inline vec(const vec<2, U>& v) 
+		explicit inline vec(const vec<2, U> &v) 
 			GMTK_VEC2_INIT(static_cast<T>(v.x), static_cast<T>(v.y))
 
 		//! Fill constructor
-		explicit inline vec(const T& s) 
+		explicit inline vec(const T &s) 
 			GMTK_VEC2_INIT(s, s)
 
 		//! Array initializer
-		explicit inline vec(const T* a) 
+		explicit inline vec(const T *a) 
 			GMTK_VEC2_INIT(a[0], a[1])
 
 		//! Initializer list constructor
 		inline vec(std::initializer_list<T> l)
 			GMTK_VEC2_INIT(*(l.begin()), *(l.begin() + 1))
 
-		//! Copy constructor for arbitrarily larger vector
+		//! Copy constructor for differently-sized vector
 		template<int d2>
 		inline vec(const vec<d2, T> &v) {
-			GMTK_STATIC_ASSERT(d2 >= 2);
-			GMTK_VEC2_LOOP(data[i] = v.data[i]);
+			if (d2 < 2)
+			{
+				GMTK_UNROLL_LOOP(i, d2, data[i] = v.data[i]);
+			}
+			else
+			{
+				GMTK_UNROLL_LOOP(i, 2, data[i] = v.data[i]);
+			}
 		}
 
 		///////////////////////
@@ -126,12 +132,12 @@ namespace GMTK_NAMESPACE
 		///////////////////////
 
 		//! Vector index operator
-		inline T& operator[](const int i) {
+		inline T &operator[](const int i) {
 			return data[i];
 		}
 
 		//! Vector const index operator
-		inline const T& operator[](const int i) const {
+		inline const T &operator[](const int i) const {
 			return data[i];
 		}
 

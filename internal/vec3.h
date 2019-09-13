@@ -29,19 +29,19 @@
 	{ vec<3, T> res; GMTK_VEC3_LOOP(res.data[i] = op data[i]); return res; }
 
 #define GMTK_VEC3_VEC_OP(op) \
-	inline vec<3, T> operator op (const vec<3, T>& v) const \
+	inline vec<3, T> operator op (const vec<3, T> &v) const \
 	{ vec<3, T> res; GMTK_VEC3_LOOP(res.data[i] = data[i] op v.data[i]); return res; }
 
 #define GMTK_VEC3_SCL_OP(op) \
-	inline vec<3, T> operator op (const T& v) const \
+	inline vec<3, T> operator op (const T &v) const \
 	{ vec<3, T> res; GMTK_VEC3_LOOP(res.data[i] = data[i] op v); return res; }
 
 #define GMTK_VEC3_VEC_ROP(op) \
-	inline vec<3, T>& operator op (const vec<3, T>& v) \
+	inline vec<3, T> &operator op (const vec<3, T> &v) \
 	{ GMTK_VEC3_LOOP(data[i] op v.data[i]); return *this; }
 
 #define GMTK_VEC3_SCL_ROP(op) \
-	inline vec<3, T>& operator op (const T& v) \
+	inline vec<3, T> &operator op (const T &v) \
 	{ GMTK_VEC3_LOOP(data[i] op v); return *this; }
 
 //
@@ -81,11 +81,11 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! Initialize vec3 with three values
-		inline vec(const T& s0, const T& s1, const T& s2)
+		inline vec(const T &s0, const T &s1, const T &s2)
 			GMTK_VEC3_INIT(s0, s1, s2)
 
 		//! Initialize vec3 with a vec2 and a third value
-		inline vec(const vec<2, T>& v01, const T& s2)
+		inline vec(const vec<2, T> &v01, const T &s2)
 			GMTK_VEC3_INIT(v0.x, v0.y, s2)
 
 		//! Default constructor
@@ -94,20 +94,20 @@ namespace GMTK_NAMESPACE
 
 		//! Swizzle constructor
 		template<int a, int b, int c>
-		inline vec(const swz3<a, b, c>&s) 
+		inline vec(const swz3<a, b, c> &s) 
 			GMTK_VEC3_INIT(s[a], s[b], s[c])
 		
 		//! Copy constructor
-		inline vec(const vec<3, T>& v) 
+		inline vec(const vec<3, T> &v) 
 			GMTK_VEC3_INIT(v.x, v.y, v.z)
 
 		//! Explicit type-conversion copy constructor
 		template<typename U> 
-		explicit inline vec(const vec<3, U>& v)
+		explicit inline vec(const vec<3, U> &v)
 			GMTK_VEC3_INIT(static_cast<T>(v.x), static_cast<T>(v.y), static_cast<T>(v.z))
 
 		//! Fill constructor
-		explicit inline vec(const T& s)
+		explicit inline vec(const T &s)
 			GMTK_VEC3_INIT(s, s, s)
 
 		//! Array initializer
@@ -118,11 +118,17 @@ namespace GMTK_NAMESPACE
 		inline vec(std::initializer_list<T> l)
 			GMTK_VEC3_INIT(*(l.begin()), *(l.begin() + 1), *(l.begin() + 2))
 
-		//! Copy constructor for arbitrarily larger vector
+		//! Copy constructor for differently-sized vector
 		template<int d2>
 		inline vec(const vec<d2, T> &v) {
-			GMTK_STATIC_ASSERT(d2 >= 3);
-			GMTK_VEC3_LOOP(data[i] = v.data[i]);
+			if (d2 < 3)
+			{
+				GMTK_UNROLL_LOOP(i, d2, data[i] = v.data[i]);
+			}
+			else
+			{
+				GMTK_UNROLL_LOOP(i, 3, data[i] = v.data[i]);
+			}
 		}
 
 		///////////////////////
@@ -130,12 +136,12 @@ namespace GMTK_NAMESPACE
 		///////////////////////
 
 		//! Vector index operator
-		inline T& operator[](const int i) {
+		inline T &operator[](const int i) {
 			return data[i];
 		}
 
 		//! Vector const index operator
-		inline const T& operator[](const int i) const {
+		inline const T &operator[](const int i) const {
 			return data[i];
 		}
 

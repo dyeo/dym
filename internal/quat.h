@@ -23,16 +23,16 @@
 	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op q.data[i]); return res; }
 
 #define GMTK_QUAT_SCL_OP(op) \
-	inline Quat<T> operator op (const T& v) const \
-	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op v); return res; }
+	inline Quat<T> operator op (const T& q) const \
+	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op q); return res; }
 
 #define GMTK_QUAT_QUAT_ROP(op) \
-	inline Quat<T>& operator op (const Quat<T>&  q) \
-	{ GMTK_QUAT_LOOP(data[i] op v.data[i]); return *this; }
+	inline Quat<T>& operator op (const Quat<T>& q) \
+	{ GMTK_QUAT_LOOP(data[i] op q.data[i]); return *this; }
 
 #define GMTK_QUAT_SCL_ROP(op) \
-	inline Quat<T>& operator op (const T& v) \
-	{ GMTK_QUAT_LOOP(data[i] op v); return *this; }
+	inline Quat<T>& operator op (const T& q) \
+	{ GMTK_QUAT_LOOP(data[i] op q); return *this; }
 
 //
 
