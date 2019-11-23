@@ -80,17 +80,21 @@ namespace GMTK_NAMESPACE
 		//! CONSTRUCTORS //
 		///////////////////
 
-		//! Initialize vec3 with three values
+		//! Default constructor
+		inline vec()
+			GMTK_VEC3_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
+
+		//! Initialize vec3 with three scalar values
 		inline vec(const T &s0, const T &s1, const T &s2)
 			GMTK_VEC3_INIT(s0, s1, s2)
 
-		//! Initialize vec3 with a vec2 and a third value
+		//! Initialize vec3 with a vec2 and a scalar value
 		inline vec(const vec<2, T> &v01, const T &s2)
-			GMTK_VEC3_INIT(v0.x, v0.y, s2)
+			GMTK_VEC3_INIT(v01.x, v01.y, s2)
 
-		//! Default constructor
-		inline vec() 
-			GMTK_VEC3_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
+		//! Initialize vec3 with a scalar value and a vec2
+		inline vec(const T &s0, const vec<2, T> &v12)
+			GMTK_VEC3_INIT(s0, v12.x, v12.y)
 			
 		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle constructor

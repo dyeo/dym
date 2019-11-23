@@ -80,21 +80,37 @@ namespace GMTK_NAMESPACE
 		//! CONSTRUCTORS //
 		///////////////////
 
-		//! Initialize vec4 with four values
+		//! Default constructor
+		inline vec()
+			GMTK_VEC4_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
+
+		//! Initialize vec4 with four scalar values
 		inline vec(const T &s0, const T &s1, const T &s2, const T &s3)
 			GMTK_VEC4_INIT(s0, s1, s2, s3)
-
-		//! Initialize vec4 with a vec3 and a fourth value
-		inline vec(const vec<3, T> &v012, const T &s3)
-			GMTK_VEC4_INIT(v012.x, v012.y, v012.z, s3)
 
 		//! Initialize vec4 with two vec2s
 		inline vec(const vec<2, T> &v01, const vec<2, T> &v23)
 			GMTK_VEC4_INIT(v01.x, v01.y, v23.x, v23.y)
 
-		//! Default constructor
-		inline vec() 
-			GMTK_VEC4_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
+		//! Initialize vec4 with a vec2 and two scalar values
+		inline vec(const vec<2, T> &v01, const T &s2, const T &s3)
+			GMTK_VEC4_INIT(v01.x, v01.y, s2, s3)
+
+		//! Initialize vec4 with a scalar value, a vec2, and another scalar value
+		inline vec(const T &s0, const vec<2, T> &v12, const T &s3)
+			GMTK_VEC4_INIT(s0, v12.x, v12.y, s3)
+
+		//! Initialize vec4 with two scalar values and a vec2
+		inline vec(const T &s0, const T &s1, const vec<2, T> &v23)
+			GMTK_VEC4_INIT(s0, s1, v23.x, v23.y)
+
+		//! Initialize vec4 with a vec3 and a scalar value
+		inline vec(const vec<3, T> &v012, const T &s3)
+		GMTK_VEC4_INIT(v012.x, v012.y, v012.z, s3)
+
+		//! Initialize vec4 with a scalar value and a vec3
+		inline vec(const T &s0, const vec<3, T> &v123)
+		GMTK_VEC4_INIT(s0, v123.x, v123.y, v123.z)
 
 		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle4 constructor

@@ -80,13 +80,13 @@ namespace GMTK_NAMESPACE
 		//! CONSTRUCTORS //
 		///////////////////
 
+		//! Default constructor
+		inline vec()
+			GMTK_VEC2_INIT(static_cast<T>(0), static_cast<T>(0))
+
 		//! Initialize vec2 with two values
 		inline vec(const T &s0, const T &s1) 
 			GMTK_VEC2_INIT(s0, s1)
-
-		//! Default constructor
-		inline vec() 
-			GMTK_VEC2_INIT(static_cast<T>(0), static_cast<T>(0))
 
 		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle constructor
