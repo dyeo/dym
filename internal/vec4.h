@@ -96,10 +96,12 @@ namespace GMTK_NAMESPACE
 		inline vec() 
 			GMTK_VEC4_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
 
+		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle4 constructor
 		template<int a, int b, int c, int d>
-		inline vec(const swz4<a, b, c, d>&s) 
+		inline vec(const swz4<a, b, c, d>&s)
 			GMTK_VEC4_INIT(s[a], s[b], s[c], s[d])
+		#endif
 
 		//! Copy constructor
 		inline vec(const vec<4, T> &v) 

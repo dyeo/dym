@@ -88,10 +88,12 @@ namespace GMTK_NAMESPACE
 		inline vec() 
 			GMTK_VEC2_INIT(static_cast<T>(0), static_cast<T>(0))
 
+		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b>
-		inline vec(const swz2<a, b>&s) 
+		inline vec(const swz2<a, b>&s)
 			GMTK_VEC2_INIT(s[a], s[b])
+		#endif
 
 		//! Copy constructor
 		inline vec(const vec<2, T> &v) 

@@ -91,11 +91,13 @@ namespace GMTK_NAMESPACE
 		//! Default constructor
 		inline vec() 
 			GMTK_VEC3_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
-
+			
+		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b, int c>
 		inline vec(const swz3<a, b, c> &s) 
 			GMTK_VEC3_INIT(s[a], s[b], s[c])
+		#endif
 		
 		//! Copy constructor
 		inline vec(const vec<3, T> &v) 
