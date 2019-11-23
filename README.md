@@ -106,8 +106,8 @@ int main()
 	gm::f_pi;
 	
 	// vector swizzling
-	vec4 vecS = { 0, 1, 2, 3 };
-	vec3 vecT = vecS.yzx;
+	gm::vec4 vecS = { 0, 1, 2, 3 };
+	gm::vec3 vecT = vecS.yzx;
 	vecT.yzx = vecS.xyz;
 }
 
