@@ -104,7 +104,7 @@ namespace GMTK_NAMESPACE
 		#endif
 
 		//! Copy constructor
-		inline vec(const vec<4, T> &v) 
+		inline vec(const vec<4, T> &v)
 			GMTK_VEC4_INIT(v.x, v.y, v.z, v.w)
 
 		//! Explicit type-conversion copy constructor
@@ -113,11 +113,11 @@ namespace GMTK_NAMESPACE
 			GMTK_VEC4_INIT(static_cast<T>(v.x), static_cast<T>(v.y), static_cast<T>(v.z), static_cast<T>(v.w))
 
 		//! Fill constructor
-		explicit inline vec(const T &s) 
+		explicit inline vec(const T &s)
 			GMTK_VEC4_INIT(s, s, s, s)
 
 		//! Array initializer
-		explicit inline vec(const T *a) 
+		explicit inline vec(const T *a)
 			GMTK_VEC4_INIT(a[0], a[1], a[2], a[3])
 
 		//! Initializer list constructor
@@ -181,16 +181,16 @@ namespace GMTK_NAMESPACE
 		//! Component-wise vector shift left
 		GMTK_VEC4_VEC_OP(<<)
 		//! Component-wise vector shift right
-		GMTK_VEC4_VEC_OP(>>)	
+		GMTK_VEC4_VEC_OP(>>)
 
 		//! Component-wise scalar multiplication
-		GMTK_VEC4_SCL_OP(*)		
+		GMTK_VEC4_SCL_OP(*)
 		//! Component-wise scalar division
-		GMTK_VEC4_SCL_OP(/)		
+		GMTK_VEC4_SCL_OP(/)
 		//! Component-wise scalar addition
-		GMTK_VEC4_SCL_OP(+)		
+		GMTK_VEC4_SCL_OP(+)
 		//! Component-wise scalar subtraction
-		GMTK_VEC4_SCL_OP(-)		
+		GMTK_VEC4_SCL_OP(-)
 		//! Component-wise scalar OR
 		GMTK_VEC4_SCL_OP(|)
 		//! Component-wise scalar AND
@@ -205,11 +205,11 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC4_SCL_OP(>>)
 						
 		//! Component-wise vector reference multiplication
-		GMTK_VEC4_VEC_ROP(*=)		
+		GMTK_VEC4_VEC_ROP(*=)
 		//! Component-wise vector reference division
-		GMTK_VEC4_VEC_ROP(/=)		
+		GMTK_VEC4_VEC_ROP(/=)
 		//! Component-wise vector reference addition
-		GMTK_VEC4_VEC_ROP(+=)		
+		GMTK_VEC4_VEC_ROP(+=)
 		//! Component-wise vector reference subtraction
 		GMTK_VEC4_VEC_ROP(-=)
 		//! Component-wise vector reference OR
@@ -226,11 +226,11 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC4_VEC_ROP(>>=)
 
 		//! Component-wise scalar reference multiplication
-		GMTK_VEC4_SCL_ROP(*=)	
+		GMTK_VEC4_SCL_ROP(*=)
 		//! Component-wise scalar reference division
-		GMTK_VEC4_SCL_ROP(/=)		
+		GMTK_VEC4_SCL_ROP(/=)
 		//! Component-wise scalar reference addition
-		GMTK_VEC4_SCL_ROP(+=)		
+		GMTK_VEC4_SCL_ROP(+=)
 		//! Component-wise scalar reference subtraction
 		GMTK_VEC4_SCL_ROP(-=)
 		//! Component-wise scalar reference OR

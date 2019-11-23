@@ -70,7 +70,7 @@ namespace GMTK_NAMESPACE
 			struct { T data[3]; };
 			struct { T x, y, z; };
 			struct { T r, g, b; };
-			struct { T s, t, p; };			
+			struct { T s, t, p; };
 			#ifndef GMTK_DISABLE_SWIZZLING
 			GMTK_VEC3_SWIZZLES
 			#endif
@@ -159,13 +159,13 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC3_VEC_ROP(=)
 		
 		//! Component-wise vector multiplication
-		GMTK_VEC3_VEC_OP(*)		
+		GMTK_VEC3_VEC_OP(*)
 		//! Component-wise vector division
-		GMTK_VEC3_VEC_OP(/)		
+		GMTK_VEC3_VEC_OP(/)
 		//! Component-wise vector addition
-		GMTK_VEC3_VEC_OP(+)		
+		GMTK_VEC3_VEC_OP(+)
 		//! Component-wise vector subtraction
-		GMTK_VEC3_VEC_OP(-)		
+		GMTK_VEC3_VEC_OP(-)
 		//! Component-wise vector OR
 		GMTK_VEC3_VEC_OP(|)
 		//! Component-wise vector AND
@@ -177,16 +177,16 @@ namespace GMTK_NAMESPACE
 		//! Component-wise vector shift left
 		GMTK_VEC3_VEC_OP(<<)
 		//! Component-wise vector shift right
-		GMTK_VEC3_VEC_OP(>>)	
+		GMTK_VEC3_VEC_OP(>>)
 
 		//! Component-wise scalar multiplication
-		GMTK_VEC3_SCL_OP(*)		
+		GMTK_VEC3_SCL_OP(*)
 		//! Component-wise scalar division
-		GMTK_VEC3_SCL_OP(/)		
+		GMTK_VEC3_SCL_OP(/)
 		//! Component-wise scalar addition
-		GMTK_VEC3_SCL_OP(+)		
+		GMTK_VEC3_SCL_OP(+)
 		//! Component-wise scalar subtraction
-		GMTK_VEC3_SCL_OP(-)		
+		GMTK_VEC3_SCL_OP(-)
 		//! Component-wise scalar OR
 		GMTK_VEC3_SCL_OP(|)
 		//! Component-wise scalar AND
@@ -199,13 +199,13 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC3_SCL_OP(<<)
 		//! Component-wise scalar shift right
 		GMTK_VEC3_SCL_OP(>>)
-						
+
 		//! Component-wise vector reference multiplication
-		GMTK_VEC3_VEC_ROP(*=)		
+		GMTK_VEC3_VEC_ROP(*=)
 		//! Component-wise vector reference division
-		GMTK_VEC3_VEC_ROP(/=)		
+		GMTK_VEC3_VEC_ROP(/=)
 		//! Component-wise vector reference addition
-		GMTK_VEC3_VEC_ROP(+=)		
+		GMTK_VEC3_VEC_ROP(+=)
 		//! Component-wise vector reference subtraction
 		GMTK_VEC3_VEC_ROP(-=)
 		//! Component-wise vector reference OR
@@ -222,11 +222,11 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC3_VEC_ROP(>>=)
 
 		//! Component-wise scalar reference multiplication
-		GMTK_VEC3_SCL_ROP(*=)	
+		GMTK_VEC3_SCL_ROP(*=)
 		//! Component-wise scalar reference division
-		GMTK_VEC3_SCL_ROP(/=)		
+		GMTK_VEC3_SCL_ROP(/=)
 		//! Component-wise scalar reference addition
-		GMTK_VEC3_SCL_ROP(+=)		
+		GMTK_VEC3_SCL_ROP(+=)
 		//! Component-wise scalar reference subtraction
 		GMTK_VEC3_SCL_ROP(-=)
 		//! Component-wise scalar reference OR
