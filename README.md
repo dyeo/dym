@@ -1,5 +1,4 @@
-# Graphics/Math Toolkit (GMTK) 
-### Also known as GMath
+# Game Math Toolkit (GMTK)
 
 GMTK is a C++ library that provides efficient and flexible math utility for the purpose of graphics programming, game programming, and fields with similar requirements. The toolkit boasts matrix and vector classes which are templated by value type and by dimension. The entire library is defined in header files, and math code is implemented generically in a manner which allows for efficient runtime calculations. The entire library is free-to-use under the terms of the MIT License.
 
@@ -17,7 +16,6 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] All GLSL Matrix Operations
   - [x] Catmull-Rom and Bezier Matrices
   - [x] Row-Major Conversion
-  - [ ] Eigenvector and Eigenvalue
 - [x] Vectors
   - [x] Dimension-Templated
   - [x] Type-Templated
@@ -30,8 +28,7 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] Axis-Angle Representation
   - [x] 3D Vector Transformation
   - [x] Matrix Conversion
-- [ ] Generic Scene Graph
-- [ ] Simple General OpenGL Classes
+- [ ] Physics Utilities
 - [ ] Tensors
 
 ### License
@@ -107,6 +104,11 @@ int main()
 	// pi constant, change to d_pi for double precision
 	// all commonly used constants supported
 	gm::f_pi;
+	
+	// vector swizzling
+	vec4 vecS = { 0, 1, 2, 3 };
+	vec3 vecT = vecS.yzx;
+	vecT.yzx = vecS.xyz;
 }
 
 ```
