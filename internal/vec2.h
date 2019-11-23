@@ -80,18 +80,20 @@ namespace GMTK_NAMESPACE
 		//! CONSTRUCTORS //
 		///////////////////
 
+		//! Default constructor
+		inline vec()
+			GMTK_VEC2_INIT(static_cast<T>(0), static_cast<T>(0))
+
 		//! Initialize vec2 with two values
 		inline vec(const T &s0, const T &s1) 
 			GMTK_VEC2_INIT(s0, s1)
 
-		//! Default constructor
-		inline vec() 
-			GMTK_VEC2_INIT(static_cast<T>(0), static_cast<T>(0))
-
+		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b>
-		inline vec(const swz2<a, b>&s) 
+		inline vec(const swz2<a, b>&s)
 			GMTK_VEC2_INIT(s[a], s[b])
+		#endif
 
 		//! Copy constructor
 		inline vec(const vec<2, T> &v) 
@@ -153,13 +155,13 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC2_VEC_ROP(=)
 		
 		//! Component-wise vector multiplication
-		GMTK_VEC2_VEC_OP(*)		
+		GMTK_VEC2_VEC_OP(*)
 		//! Component-wise vector division
-		GMTK_VEC2_VEC_OP(/)		
+		GMTK_VEC2_VEC_OP(/)
 		//! Component-wise vector addition
-		GMTK_VEC2_VEC_OP(+)		
+		GMTK_VEC2_VEC_OP(+)
 		//! Component-wise vector subtraction
-		GMTK_VEC2_VEC_OP(-)		
+		GMTK_VEC2_VEC_OP(-)
 		//! Component-wise vector OR
 		GMTK_VEC2_VEC_OP(|)
 		//! Component-wise vector AND
@@ -171,16 +173,16 @@ namespace GMTK_NAMESPACE
 		//! Component-wise vector shift left
 		GMTK_VEC2_VEC_OP(<<)
 		//! Component-wise vector shift right
-		GMTK_VEC2_VEC_OP(>>)	
+		GMTK_VEC2_VEC_OP(>>)
 
 		//! Component-wise scalar multiplication
-		GMTK_VEC2_SCL_OP(*)		
+		GMTK_VEC2_SCL_OP(*)
 		//! Component-wise scalar division
-		GMTK_VEC2_SCL_OP(/)		
+		GMTK_VEC2_SCL_OP(/)
 		//! Component-wise scalar addition
-		GMTK_VEC2_SCL_OP(+)		
+		GMTK_VEC2_SCL_OP(+)
 		//! Component-wise scalar subtraction
-		GMTK_VEC2_SCL_OP(-)		
+		GMTK_VEC2_SCL_OP(-)
 		//! Component-wise scalar OR
 		GMTK_VEC2_SCL_OP(|)
 		//! Component-wise scalar AND
@@ -193,13 +195,13 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC2_SCL_OP(<<)
 		//! Component-wise scalar shift right
 		GMTK_VEC2_SCL_OP(>>)
-						
+
 		//! Component-wise vector reference multiplication
-		GMTK_VEC2_VEC_ROP(*=)		
+		GMTK_VEC2_VEC_ROP(*=)
 		//! Component-wise vector reference division
-		GMTK_VEC2_VEC_ROP(/=)		
+		GMTK_VEC2_VEC_ROP(/=)
 		//! Component-wise vector reference addition
-		GMTK_VEC2_VEC_ROP(+=)		
+		GMTK_VEC2_VEC_ROP(+=)
 		//! Component-wise vector reference subtraction
 		GMTK_VEC2_VEC_ROP(-=)
 		//! Component-wise vector reference OR
@@ -216,11 +218,11 @@ namespace GMTK_NAMESPACE
 		GMTK_VEC2_VEC_ROP(>>=)
 
 		//! Component-wise scalar reference multiplication
-		GMTK_VEC2_SCL_ROP(*=)	
+		GMTK_VEC2_SCL_ROP(*=)
 		//! Component-wise scalar reference division
-		GMTK_VEC2_SCL_ROP(/=)		
+		GMTK_VEC2_SCL_ROP(/=)
 		//! Component-wise scalar reference addition
-		GMTK_VEC2_SCL_ROP(+=)		
+		GMTK_VEC2_SCL_ROP(+=)
 		//! Component-wise scalar reference subtraction
 		GMTK_VEC2_SCL_ROP(-=)
 		//! Component-wise scalar reference OR
