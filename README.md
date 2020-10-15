@@ -1,10 +1,16 @@
-# Game Math Toolkit (GMTK)
+# DYM Math Library
 
-GMTK is a C++ library that provides efficient and flexible math utility for the purpose of graphics programming, game programming, and fields with similar requirements. The toolkit boasts matrix and vector classes which are templated by value type and by dimension. The entire library is defined in header files, and math code is implemented generically in a manner which allows for efficient runtime calculations. The entire library is free-to-use under the terms of the MIT License.
+DYM (pronounced "dim") is a C++ library that provides efficient and flexible math utility for the purpose of graphics programming, game programming, and fields with similar requirements. The toolkit boasts matrix and vector classes which are templated by value type and by dimension. The entire library is defined in header files, and math code is implemented generically in a manner which allows for efficient runtime calculations. The entire library is free-to-use under the terms of the MIT License.
+
+# How to Use
+
+Simply add the `include/dym` folder to your project's includes, and `#include "dym/dym.h"`.
 
 ### Features
-- [x] Angles
+- [x] Unambiguous Angles
+- [x] Unambiguous Percentages
 - [x] Half-Precision Floating Point Numbers
+  - [ ] Full specification
 - [x] Matrices (Column-Major)
   - [x] Dimension-Templated
   - [x] Type-Templated
@@ -28,14 +34,12 @@ GMTK is a C++ library that provides efficient and flexible math utility for the 
   - [x] Axis-Angle Representation
   - [x] 3D Vector Transformation
   - [x] Matrix Conversion
-- [ ] Physics Utilities
-- [ ] Tensors
 
 ### License
 
-GMTK uses the following version of the MIT License:
+DYM uses the following version of the MIT License:
 
-Copyright (c) 2015-2019 Dan Yeomans
+Copyright (c) 2015-2020 Dan Yeomans
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -48,32 +52,32 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 ``` c++
 #include <iostream>
 
-// change the namespace to suit your project (default is gmtk)
-#define GMTK_NAMESPACE gm
 
 // one header gets the entire library, no hassle!
-#include "gmtk.h"
+// optionally disable custom literals by defining DYM_DISABLE_LITERALS before including
+// optionally disable swizzling by defining DYM_DISABLE_SWIZZLING before including
+#include "path/to/dym/dym.h"
 
 int main()
 {
 	// define a 3d float vector
-	// synonymous with gm::vec3, gm::vec3f, and gm::vec<3>
-	gm::vec<3, float> vecA;
+	// synonymous with dym::vec3, dym::vec3f, and dym::vec<3>
+	dym::vec<3, float> vecA;
 
 	// initialize a 3d float matrix
-	// synonymous with gm::mat3 and gm::mat3f, and gm::mat<3>
-	gm::mat<3, 3, float> matA(1, 0, 1,
+	// synonymous with dym::mat3 and dym::mat3f, and dym::mat<3>
+	dym::mat<3, 3, float> matA(1, 0, 1,
 				2, 4, 0,
 				3, 5, 6);
 
 	// initialize a 3d float matrix as the inverse of matA
-	gm::mat3 matB = gm::inverse(matA);
+	dym::mat3 matB = dym::inverse(matA);
 
 	// initialize a homogeneous transformation matrix (rotation and position)
-	gm::mat4 matH(gm::mat3::rotatex(1.5_rad), gm::vec3(1, 2, 3));
+	dym::mat4 matH(dym::mat3::rotatex(1.5_rad), dym::vec3(1, 2, 3));
 
 	// fast invert the homogeneous transformation matrix
-	gm::mat4 imatH = gm::fastinverse(matH);
+	dym::mat4 imatH = dym::fastinverse(matH);
 
 	// retrieve the first column of matB as a 3d vector and store it in vecA
 	vecA = matB[0];
@@ -82,8 +86,8 @@ int main()
 	float sclA = matA[0][2];
 
 	// define a perspective transformation matrix (openGL)
-	gm::mat4::perspective(
-		90_deg, // y-axis field of view, in degrees (gm::ang)
+	dym::mat4::perspective(
+		90_deg, // y-axis field of view, in degrees (dym::ang)
 		16 / (float)9, // aspect ratio
 		0.01, // near clipping range for z-axis
 		10000 // far clipping range for z-axis
@@ -95,19 +99,19 @@ int main()
 		<< 45_deg << std::endl;
 
 	// constructs a column-major 3d float matrix from rows, using 3d float vectors
-	gm::mat3::fromrows(
-		gm::vec3(0, 1, 2),
-		gm::vec3(3, 4, 5),
-		gm::vec3(4, 5, 6)
+	dym::mat3::fromrows(
+		dym::vec3(0, 1, 2),
+		dym::vec3(3, 4, 5),
+		dym::vec3(4, 5, 6)
 	);
 
 	// pi constant, change to d_pi for double precision
 	// all commonly used constants supported
-	gm::f_pi;
+	dym::f_pi;
 	
 	// vector swizzling
-	gm::vec4 vecS = { 0, 1, 2, 3 };
-	gm::vec3 vecT = vecS.yzx;
+	dym::vec4 vecS = { 0, 1, 2, 3 };
+	dym::vec3 vecT = vecS.yzx;
 	vecT.yzx = vecS.xyz;
 }
 

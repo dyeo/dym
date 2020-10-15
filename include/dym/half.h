@@ -1,5 +1,5 @@
-#ifndef _GMTK_HALF_H_
-#define _GMTK_HALF_H_
+#ifndef _DYM_HALF_H_
+#define _DYM_HALF_H_
 
 //
 
@@ -12,7 +12,7 @@
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	//! A minimal storage class for a 16-bit floating point number, as detailed in IEEE-754: binary16
@@ -135,16 +135,16 @@ namespace GMTK_NAMESPACE
 //! LITERALS //
 ///////////////
 
-#ifndef GMTK_DISABLE_LITERALS
+#ifndef DYM_DISABLE_LITERALS
 
-inline GMTK_NAMESPACE::half operator "" _h(unsigned long long i)
+inline dym::half operator "" _h(unsigned long long i)
 {
-	return GMTK_NAMESPACE::half(static_cast<float>(i));
+	return dym::half(static_cast<float>(i));
 }
 
-inline GMTK_NAMESPACE::half operator "" _h(long double d)
+inline dym::half operator "" _h(long double d)
 {
-	return GMTK_NAMESPACE::half(static_cast<float>(d));
+	return dym::half(static_cast<float>(d));
 }
 
 #endif
@@ -155,4 +155,4 @@ inline GMTK_NAMESPACE::half operator "" _h(long double d)
 
 //
 
-#endif //_GMTK_HALF_H_
+#endif //_DYM_HALF_H_

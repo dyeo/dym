@@ -1,5 +1,5 @@
-#ifndef _GMTK_UTIL_H_
-#define _GMTK_UTIL_H_
+#ifndef _DYM_UTIL_H_
+#define _DYM_UTIL_H_
 
 //
 
@@ -8,185 +8,85 @@
 
 //
 
-//! gmtk namespace
-#ifndef GMTK_NAMESPACE
-#define GMTK_NAMESPACE gmtk
-#endif
-
-#include <cmath>
-#include <cstdlib>
 #include <cassert>
 #include <random>
 #include <ostream>
-
-#include <initializer_list>
 
 //
 
 template<bool> struct static_assert_util;
 template<> struct static_assert_util < true > {};
-#define GMTK_STATIC_ASSERT(cond) static_assert_util<(cond)>()
+#define DYM_STATIC_ASSERT(cond) static_assert_util<(cond)>()
 
 //
 
-#define _GMTK_STATIC_LOOP1(iter, oper) oper ; iter++ ;
-#define _GMTK_STATIC_LOOP2(iter, oper) _GMTK_STATIC_LOOP1(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP3(iter, oper) _GMTK_STATIC_LOOP2(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP4(iter, oper) _GMTK_STATIC_LOOP3(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP5(iter, oper) _GMTK_STATIC_LOOP4(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP6(iter, oper) _GMTK_STATIC_LOOP5(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP7(iter, oper) _GMTK_STATIC_LOOP6(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP8(iter, oper) _GMTK_STATIC_LOOP7(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP9(iter, oper) _GMTK_STATIC_LOOP8(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP10(iter, oper) _GMTK_STATIC_LOOP9(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP11(iter, oper) _GMTK_STATIC_LOOP10(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP12(iter, oper) _GMTK_STATIC_LOOP11(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP13(iter, oper) _GMTK_STATIC_LOOP12(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP14(iter, oper) _GMTK_STATIC_LOOP13(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP15(iter, oper) _GMTK_STATIC_LOOP14(iter, oper) ; oper ; iter++ ;
-#define _GMTK_STATIC_LOOP16(iter, oper) _GMTK_STATIC_LOOP15(iter, oper) ; oper ; iter++ ;
-#define GMTK_STATIC_LOOP(iter, count, oper) { int iter = 0; _GMTK_STATIC_LOOP##count(iter,  oper) }
-
-#define GMTK_STATIC_2D_LOOP(iter1, iter2, count1, count2, oper) \
-		GMTK_STATIC_LOOP(iter1, count1, GMTK_STATIC_LOOP(iter2, count2, oper))
+#define DYM_MIN_OF(a, b) ( a < b ? a : b )
 
 //
 
-#define GMTK_UNROLL_LOOP(iter, count, oper) \
-{ \
-	const int iter = 0;  { oper ; } \
-	if ((count) > 1) { \
-		const int iter = 1;  { oper ; } \
-		if ((count) > 2) { \
-			const int iter = 2;  { oper ; } \
-			if ((count) > 3) { \
-				const int iter = 3;  { oper ; } \
-				if ((count) > 4) { \
-					for (int iter = 4; iter < (count); ++iter) { \
-						oper ; \
-					} \
-				} \
-			} \
-		} \
-	} \
-}
-
-#define GMTK_UNROLL_LONG_LOOP(iter, count, oper) \
-	{ \
-		const int iter = 0; { oper ; } \
-		if((count) > 1) { \
-			const int iter = 1; { oper ; } \
-			if((count) > 2) { \
-				const int iter = 2; { oper ; } \
-				if((count) > 3) { \
-					const int iter = 3; { oper ; } \
-					if((count) > 4) { \
-						const int iter = 4; { oper ; } \
-						if((count) > 5) { \
-							const int iter = 5; { oper ; } \
-							if((count) > 6) { \
-								const int iter = 6; { oper ; } \
-								if((count) > 7) { \
-									const int iter = 7; { oper ; } \
-									if((count) > 8) { \
-										const int iter = 8; { oper ; } \
-										if((count) > 9) { \
-											const int iter = 9; { oper ; } \
-											if((count) > 10) { \
-												const int iter = 10; { oper ; } \
-												if((count) > 11) { \
-													const int iter = 11; { oper ; } \
-													if((count) > 12) { \
-														const int iter = 12; { oper ; } \
-														if((count) > 13) { \
-															const int iter = 13; { oper ; } \
-															if((count) > 14) { \
-																const int iter = 14; { oper ; } \
-																if((count) > 15) { \
-																	const int iter = 15; { oper ; } \
-																	if((count) > 16) { \
-																		for(int iter = 16; iter < (count); ++iter) { \
-																			oper ; \
-																		} \
-																	} \
-																} \
-															} \
-														} \
-													} \
-												} \
-											} \
-										} \
-									} \
-								} \
-							} \
-						} \
-					} \
-				} \
-			} \
-		} \
-	} \
-
-#define GMTK_MIN_OF(a, b) ( a < b ? a : b )
-
-#define GMTK_UNROLL_2D_LOOP(iterVar1, iterVar2, iterNum1, iterNum2, iterOp) \
-		GMTK_UNROLL_LOOP(iterVar1, iterNum1, GMTK_UNROLL_LOOP(iterVar2, iterNum2, iterOp))
-
-#define GMTK_UNROLL_3D_LOOP(iterVar1, iterVar2, iterVar3, iterNum1, iterNum2, iterNum3, iterOp) \
-		GMTK_UNROLL_LOOP(iterVar1, iterNum1, GMTK_UNROLL_LOOP(iterVar2, iterNum2, GMTK_UNROLL_LOOP(iterVar3, iterNum3, iterOp)))
-
-#define GMTK_UNROLL_SQUARE_LOOP(iterVar1, iterVar2, iterNum, iterOp) \
-		GMTK_UNROLL_LOOP(iterVar1, iterNum, GMTK_UNROLL_LOOP(iterVar2, iterNum, iterOp))
-
-#define GMTK_UNROLL_CUBE_LOOP(iterVar1, iterVar2, iterVar3, iterNum, iterOp) \
-		GMTK_UNROLL_LOOP(iterVar1, iterNum, GMTK_UNROLL_LOOP(iterVar2, iterNum, GMTK_UNROLL_LOOP(iterVar3, iterNum, iterOp)))
-
-//
-
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
-	template <typename T>
-	inline T sq(const T& v)
+	inline bool req(const float l, const float r, const float rng = 1e-8f)
 	{
-		return v*v;
+		return std::abs(l - r) < rng;
+	}
+
+	inline bool req(const double l, const double r, const double rng = 1e-8)
+	{
+		return std::abs(l - r) < rng;
+	}
+
+	inline bool req(const long double l, const long double r, const long double rng = 1e-8l)
+	{
+		return std::abs(l - r) < rng;
 	}
 
 	template <typename T>
-	inline T cu(const T& v)
+	static T sq(const T &v)
 	{
-		return v*v*v;
+		return v * v;
 	}
 
 	template <typename T>
-	inline T pow(const T& v, const int& p)
+	static T cu(const T &v)
+	{
+		return v * v * v;
+	}
+
+	template <typename T>
+	static T pow(const T &v, const int &p)
 	{
 		T val = v;
-		GMTK_UNROLL_LOOP(i, p - 1, val *= v);
+		for (std::size_t i = 0; i < p - 1; ++i)
+		{
+			val *= v;
+		}
 		return val;
 	}
 
 	template <typename T>
-	inline constexpr T abs(const T& v)
+	static constexpr T abs(const T &v)
 	{
 		return (v > 0) ? v : -v;
 	}
 
 	template<typename T>
-	inline constexpr T min(const T& l, const T& r)
+	static constexpr T min(const T &l, const T &r)
 	{
 		return (l < r) ? l : r;
 	}
 
 	template <typename T>
-	inline constexpr T max(const T& l, const T& r)
+	static constexpr T max(const T &l, const T &r)
 	{
 		return (l > r) ? l : r;
 	}
 
 	template <typename T>
-	inline constexpr T clamp(const T& v, const T& mVal, const T& MVal)
+	static constexpr T clamp(const T &v, const T &minv, const T &maxv)
 	{
-		return min(max(v, mVal), MVal);
+		return min(max(v, minv), maxv);
 	}
 
 	// the following functions are probably slower than the SSE rsqrtss instruction
@@ -194,43 +94,49 @@ namespace GMTK_NAMESPACE
 	//! variation of the famous fast inverse square root
 	inline float fastinvsqrt(float v)
 	{
-		float vhalf = 0.5f*v;
-		int i = *(int*)&v; //! reinterpret floating point as binary, stored in int
+		float vhalf = 0.5f * v;
+		int i = *(int *)&v; //! reinterpret floating point as binary, stored in int
 		i = 0x5f375a7f - (i >> 1); //! get first best guess for invsqrt
-		v = *(float*)&i; //! convert float binary back to float
-		v = v*(1.5f - vhalf*v*v); //! use newton's approximation to determine better sqrt
+		v = *(float *)&i; //! convert float binary back to float
+		v = v * (1.5f - vhalf * v * v); //! use newton's approximation to determine better sqrt
 		return v;
 	}
 
 	//! inverse square root
 	inline float invsqrt(float v)
 	{
-		float vhalf = 0.5f*v;
-		int i = *(int*)&v; //! reinterpret floating point as binary, stored in int
+		float vhalf = 0.5f * v;
+		int i = *(int *)&v; //! reinterpret floating point as binary, stored in int
 		i = 0x5f375a7f - (i >> 1); //! get first best guess for invsqrt
-		v = *(float*)&i; //! convert float binary back to float
-		v = v*(1.5f - vhalf*v*v); //! use newton's approximation to determine better sqrt
-		v = v*(1.5f - vhalf*v*v); //! do one more approximation to determine better result
+		v = *(float *)&i; //! convert float binary back to float
+		v = v * (1.5f - vhalf * v * v); //! use newton's approximation to determine better sqrt
+		v = v * (1.5f - vhalf * v * v); //! do one more approximation to determine better result
 		return v;
 	}
 
-	template <typename T>
-	inline T lerp(const T src, const T dst, double delta)
+	template <typename T = long double>
+	static T lerp(const T src, const T dst, long double delta)
 	{
-		return (src*(1.0-delta)) + (dst*delta);
+		return (src * (1.0 - delta)) + (dst * delta);
+	}
+	
+	template <typename T = double>
+	static T lerp(const T src, const T dst, double delta)
+	{
+		return (src * (1.0 - delta)) + (dst * delta);
 	}
 
-	template <typename T>
-	inline T lerp(const T src, const T dst, float delta)
+	template <typename T = float>
+	static T lerp(const T src, const T dst, float delta)
 	{
-		return (src*(1.f - delta)) + (dst*delta);
+		return (src * (1.f - delta)) + (dst * delta);
 	}
 
-	static const unsigned int _baset[512] = { 
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 3072, 4096, 5120, 6144, 7168, 8192, 9216, 10240, 11264, 12288, 13312, 14336, 15360, 16384, 17408, 18432, 19456, 20480, 21504, 22528, 23552, 24576, 25600, 26624, 27648, 28672, 29696, 30720, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32769, 32770, 32772, 32776, 32784, 32800, 32832, 32896, 33024, 33280, 33792, 34816, 35840, 36864, 37888, 38912, 39936, 40960, 41984, 43008, 44032, 45056, 46080, 47104, 48128, 49152, 50176, 51200, 52224, 53248, 54272, 55296, 56320, 57344, 58368, 59392, 60416, 61440, 62464, 63488, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512 
+	static const unsigned int _baset[512] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 3072, 4096, 5120, 6144, 7168, 8192, 9216, 10240, 11264, 12288, 13312, 14336, 15360, 16384, 17408, 18432, 19456, 20480, 21504, 22528, 23552, 24576, 25600, 26624, 27648, 28672, 29696, 30720, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 31744, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32769, 32770, 32772, 32776, 32784, 32800, 32832, 32896, 33024, 33280, 33792, 34816, 35840, 36864, 37888, 38912, 39936, 40960, 41984, 43008, 44032, 45056, 46080, 47104, 48128, 49152, 50176, 51200, 52224, 53248, 54272, 55296, 56320, 57344, 58368, 59392, 60416, 61440, 62464, 63488, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512, 64512
 	};
 	static const unsigned short _shiftt[512] = {
-		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 13, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 
+		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 13, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24
 	};
 
 	static const unsigned int _mantissat[2048] = {
@@ -243,12 +149,13 @@ namespace GMTK_NAMESPACE
 		0, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 0, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024, 1024
 	};
 
-	template <typename T> 
-	inline int sgn(T val) {
+	template <typename T>
+	static int sgn(T val)
+	{
 		return (T(0) < val) - (val < T(0));
 	}
 
-	#pragma region GMTK_CONSTANTS
+	#pragma region DYM_CONSTANTS
 
 	//! pi ratio
 	constexpr float f_pi = 3.14159265358979323846264338327950288419f;		constexpr double d_pi = 3.14159265358979323846264338327950288419;
@@ -314,4 +221,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif //_GMTK_UTIL_H_
+#endif //_DYM_UTIL_H_
