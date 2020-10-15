@@ -1,5 +1,5 @@
-#ifndef _GMTK_MAT_H_
-#define _GMTK_MAT_H_
+#ifndef _DYM_MAT_H_
+#define _DYM_MAT_H_
 
 //
 
@@ -21,7 +21,7 @@
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	//! A column-major matrix spanning R rows and C columns
@@ -42,7 +42,7 @@ namespace GMTK_NAMESPACE
 		}
 		constexpr int dim() const
 		{
-			return GMTK_MIN_OF(R, C);
+			return DYM_MIN_OF(R, C);
 		}
 
 		//! Unioned data members
@@ -94,7 +94,7 @@ namespace GMTK_NAMESPACE
 		//! Minor matrix constructor
 		mat(const mat<cm, rm, T> &m)
 		{
-			GMTK_STATIC_ASSERT((rm < R) && (cm < C));
+			DYM_STATIC_ASSERT((rm < R) && (cm < C));
 			for (std::size_t i = 0; i < cm; ++i)
 			{
 				for (std::size_t j = 0; j < rm; ++j)
@@ -523,7 +523,7 @@ namespace GMTK_NAMESPACE
 		static mat<C, R, T> identity()
 		{
 			mat<C, R, T> res(static_cast<T>(0));
-			for (std::size_t i = 0; i < GMTK_MIN_OF(R, C); ++i)
+			for (std::size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
 			{
 				res.data[i][i] = static_cast<T>(1);
 			}
@@ -539,7 +539,7 @@ namespace GMTK_NAMESPACE
 	template <int C, int R, typename T>
 	static std::ostream &operator<<(std::ostream &os, const mat<C, R, T> &v)
 	{
-		#ifdef  GMTK_DISPLAY_ROW_COLUMN
+		#ifdef  DYM_DISPLAY_ROW_COLUMN
 		const mat<C, R, T> &t = transpose(v);
 		for (std::size_t i = 0; i < C; ++i)
 		{
@@ -570,7 +570,7 @@ namespace GMTK_NAMESPACE
 	template <int C1, int C2, int R1, int R2, typename T>
 	static mat<C2, R1, T> operator*(const mat<C1, R1, T> &m, const mat<C2, R2, T> &n)
 	{
-		GMTK_STATIC_ASSERT(C1 == R2); //! no.columns of m and no.rows of n must be equal!!!
+		DYM_STATIC_ASSERT(C1 == R2); //! no.columns of m and no.rows of n must be equal!!!
 		mat<C2, R1, T> res(static_cast<T>(0));
 		for (std::size_t i = 0; i < R1; ++i)
 		{
@@ -703,7 +703,7 @@ namespace GMTK_NAMESPACE
 	static T trace(const mat<C, R, T> &m)
 	{
 		T res = 0;
-		for (std::size_t i = 0; i < GMTK_MIN_OF(R, C); ++i)
+		for (std::size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
 		{
 			res += m.data[i][i];
 		}
@@ -879,4 +879,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif //_GMTK_MAT_H_
+#endif //_DYM_MAT_H_

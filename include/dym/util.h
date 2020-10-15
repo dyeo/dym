@@ -1,5 +1,5 @@
-#ifndef _GMTK_UTIL_H_
-#define _GMTK_UTIL_H_
+#ifndef _DYM_UTIL_H_
+#define _DYM_UTIL_H_
 
 //
 
@@ -8,11 +8,6 @@
 
 //
 
-//! gmtk namespace
-#ifndef GMTK_NAMESPACE
-#define GMTK_NAMESPACE gmtk
-#endif
-
 #include <cassert>
 #include <random>
 
@@ -20,15 +15,15 @@
 
 template<bool> struct static_assert_util;
 template<> struct static_assert_util < true > {};
-#define GMTK_STATIC_ASSERT(cond) static_assert_util<(cond)>()
+#define DYM_STATIC_ASSERT(cond) static_assert_util<(cond)>()
 
 //
 
-#define GMTK_MIN_OF(a, b) ( a < b ? a : b )
+#define DYM_MIN_OF(a, b) ( a < b ? a : b )
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	inline bool req(const float l, const float r, const float rng = 1e-8f)
@@ -159,7 +154,7 @@ namespace GMTK_NAMESPACE
 		return (T(0) < val) - (val < T(0));
 	}
 
-	#pragma region GMTK_CONSTANTS
+	#pragma region DYM_CONSTANTS
 
 	//! pi ratio
 	constexpr float f_pi = 3.14159265358979323846264338327950288419f;		constexpr double d_pi = 3.14159265358979323846264338327950288419;
@@ -225,4 +220,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif //_GMTK_UTIL_H_
+#endif //_DYM_UTIL_H_

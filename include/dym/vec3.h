@@ -1,5 +1,5 @@
-#ifndef _GMTK_VEC3_H_
-#define _GMTK_VEC3_H_
+#ifndef _DYM_VEC3_H_
+#define _DYM_VEC3_H_
 
 //
 
@@ -10,7 +10,7 @@
 
 #include "vec.h"
 
-#ifndef GMTK_DISABLE_SWIZZLING
+#ifndef DYM_DISABLE_SWIZZLING
 #include "swizzle2.h"
 #include "swizzle3.h"
 #include "swizzle4.h"
@@ -18,7 +18,7 @@
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	template <typename T> struct vec <3, T>
@@ -45,7 +45,7 @@ namespace GMTK_NAMESPACE
 			{
 				T s, t, p;
 			};
-			#ifndef GMTK_DISABLE_SWIZZLING
+			#ifndef DYM_DISABLE_SWIZZLING
 			swizzle2 <0, 0, T> xx, rr, ss;
 			swizzle2 <0, 1, T> xy, rg, st;
 			swizzle2 <0, 2, T> xz, rb, sp;
@@ -190,7 +190,7 @@ namespace GMTK_NAMESPACE
 			: x(s0), y(v12.x), z(v12.y)
 		{}
 
-		#ifndef GMTK_DISABLE_SWIZZLING
+		#ifndef DYM_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b, int c>
 		inline vec(const swizzle3 < a, b, c, T > &s)

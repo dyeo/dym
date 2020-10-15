@@ -1,5 +1,5 @@
-#ifndef _GMTK_QUAT_H_
-#define _GMTK_QUAT_H_
+#ifndef _DYM_QUAT_H_
+#define _DYM_QUAT_H_
 
 //
 
@@ -16,11 +16,11 @@
 
 //
 
-#define GMTK_QUAT_SLERP_THRESHOLD 0.99951171875
+#define DYM_QUAT_SLERP_THRESHOLD 0.99951171875
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	//! Quaternion class
@@ -338,7 +338,7 @@ namespace GMTK_NAMESPACE
 	{
 		T dotProduct = dot(l, r);
 
-		if (dotProduct > GMTK_QUAT_SLERP_THRESHOLD) return normalize(l + t * (r - l));
+		if (dotProduct > DYM_QUAT_SLERP_THRESHOLD) return normalize(l + t * (r - l));
 
 		dot = clamp(dot, -1, 1);
 
@@ -364,7 +364,7 @@ namespace GMTK_NAMESPACE
 
 //
 
-#undef GMTK_QUAT_SLERP_THRESHOLD
+#undef DYM_QUAT_SLERP_THRESHOLD
 
 //
 
@@ -372,4 +372,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif//_GMTK_QUAT_H_
+#endif//_DYM_QUAT_H_

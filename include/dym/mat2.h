@@ -1,5 +1,5 @@
-#ifndef _GMTK_MAT2_H_
-#define _GMTK_MAT2_H_
+#ifndef _DYM_MAT2_H_
+#define _DYM_MAT2_H_
 
 //
 
@@ -13,7 +13,7 @@
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	//! A column-major matrix spanning r rows and c columns
@@ -113,7 +113,7 @@ namespace GMTK_NAMESPACE
 		template<int cm, int rm>
 		mat(const mat<cm, rm, T> &m)
 		{
-			GMTK_STATIC_ASSERT((rm < r) && (cm < c));
+			DYM_STATIC_ASSERT((rm < r) && (cm < c));
 			for (std::size_t i = 0; i < cm; ++i)
 			{
 				for (std::size_t j = 0; j < rm; ++j)
@@ -575,4 +575,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif//_GMTK_MAT2_H_
+#endif//_DYM_MAT2_H_

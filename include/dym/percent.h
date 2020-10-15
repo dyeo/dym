@@ -1,5 +1,5 @@
-#ifndef _GMTK_PERCENT_H_
-#define _GMTK_PERCENT_H_
+#ifndef _DYM_PERCENT_H_
+#define _DYM_PERCENT_H_
 
 //
 
@@ -8,7 +8,7 @@
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	template<typename T = float>
@@ -181,26 +181,26 @@ namespace GMTK_NAMESPACE
 //! LITERALS //
 ///////////////
 
-#ifndef GMTK_DISABLE_LITERALS
+#ifndef DYM_DISABLE_LITERALS
 
-inline GMTK_NAMESPACE::perc<> operator "" _per(unsigned long long value)
+inline dym::perc<> operator "" _per(unsigned long long value)
 {
-	return GMTK_NAMESPACE::percent(static_cast<float>(value));
+	return dym::percent(static_cast<float>(value));
 }
 
-inline GMTK_NAMESPACE::perc<> operator "" _per(long double value)
+inline dym::perc<> operator "" _per(long double value)
 {
-	return GMTK_NAMESPACE::percent(static_cast<float>(value));
+	return dym::percent(static_cast<float>(value));
 }
 
-inline GMTK_NAMESPACE::perc<> operator "" _val(unsigned long long value)
+inline dym::perc<> operator "" _val(unsigned long long value)
 {
-	return GMTK_NAMESPACE::value(static_cast<float>(value));
+	return dym::value(static_cast<float>(value));
 }
 
-inline GMTK_NAMESPACE::perc<> operator "" _val(long double value)
+inline dym::perc<> operator "" _val(long double value)
 {
-	return GMTK_NAMESPACE::value(static_cast<float>(value));
+	return dym::value(static_cast<float>(value));
 }
 
 #endif

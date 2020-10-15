@@ -1,5 +1,5 @@
-#ifndef _GMTK_VEC_H_
-#define _GMTK_VEC_H_
+#ifndef _DYM_VEC_H_
+#define _DYM_VEC_H_
 
 //
 
@@ -15,7 +15,7 @@
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	//! A d-length vector of type T
@@ -55,7 +55,7 @@ namespace GMTK_NAMESPACE
 		template<int d2>
 		inline vec(const vec<d2, T>& v)
 		{
-			GMTK_STATIC_ASSERT(d2 >= d);
+			DYM_STATIC_ASSERT(d2 >= d);
 			for(std::size_t i = 0; i < d; ++i) { data[i] = v.data[i]; }
 		}
 
@@ -668,4 +668,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif //_GMTK_VEC
+#endif //_DYM_VEC

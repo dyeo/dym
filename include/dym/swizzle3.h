@@ -1,12 +1,12 @@
-#ifndef _GMTK_SWIZZLE3_H_
-#define _GMTK_SWIZZLE3_H_
+#ifndef _DYM_SWIZZLE3_H_
+#define _DYM_SWIZZLE3_H_
 
 #include "util.h"
 #include "vec.h"
 
 //
 
-namespace GMTK_NAMESPACE
+namespace dym
 {////
 
 	template<int I0, int I1, int I2, typename T>
@@ -859,4 +859,4 @@ namespace GMTK_NAMESPACE
 
 //
 
-#endif //_GMTK_SWIZZLE3_H_
+#endif //_DYM_SWIZZLE3_H_
