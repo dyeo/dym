@@ -469,11 +469,17 @@ namespace GMTK_NAMESPACE
 		{
 			if (d2 < 4)
 			{
-				GMTK_UNROLL_LOOP(i, d2, data[i] = v.data[i]);
+				for (std::size_t i = 0; i < d2; ++i)
+				{
+					data[i] = v.data[i];
+				}
 			}
 			else
 			{
-				GMTK_UNROLL_LOOP(i, 4, data[i] = v.data[i]);
+				for (std::size_t i = 0; i < 4; ++i)
+				{
+					data[i] = v.data[i];
+				}
 			}
 		}
 

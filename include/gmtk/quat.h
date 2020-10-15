@@ -9,32 +9,10 @@
 //
 
 #include "util.h"
-#include <math.h>
+#include "vec3.h"
+#include "mat3.h"
+#include <cmath>
 #include <ostream>
-
-//
-
-// TODO: Remove these
-
-#define GMTK_QUAT_LOOP(oper) GMTK_STATIC_LOOP(i,4,oper)
-
-#define GMTK_QUAT_INIT(a, b, c, d) : w( a ), x( b ), y( c ), z( d ) { }
-
-#define GMTK_QUAT_QUAT_OP(op) \
-	inline Quat<T> operator op(const Quat<T> &q) const \
-	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op q.data[i]); return res; }
-
-#define GMTK_QUAT_SCL_OP(op) \
-	inline Quat<T> operator op (const T& q) const \
-	{ Quat<T> res; GMTK_QUAT_LOOP(res.data[i] = data[i] op q); return res; }
-
-#define GMTK_QUAT_QUAT_ROP(op) \
-	inline Quat<T>& operator op (const Quat<T>& q) \
-	{ GMTK_QUAT_LOOP(data[i] op q.data[i]); return *this; }
-
-#define GMTK_QUAT_SCL_ROP(op) \
-	inline Quat<T>& operator op (const T& q) \
-	{ GMTK_QUAT_LOOP(data[i] op q); return *this; }
 
 //
 
@@ -45,7 +23,7 @@
 namespace GMTK_NAMESPACE
 {////
 
-	//! quaternion class
+	//! Quaternion class
 	template< typename T = float >
 	struct Quat
 	{
@@ -55,9 +33,18 @@ namespace GMTK_NAMESPACE
 
 		union
 		{
-			struct { T data[4]; };
-			struct { T w, x, y, z; };
-			struct { T w, i, j, k; };
+			struct
+			{
+				T data[4];
+			};
+			struct
+			{
+				T w, i, j, k;
+			};
+			struct
+			{
+				T w, x, y, z;
+			};
 		};
 
 		///////////////////
@@ -65,45 +52,54 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! default constructor
-		inline Quat()
-			GMTK_QUAT_INIT(static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0))
+		Quat()
+			: w(static_cast<T>(0)), x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0))
+		{}
 
 		//! initialize quat with one scalar (s) and three complex (i, j, k)
-		inline Quat(const T &s, const T &i, const T &j, const T &k)
-			GMTK_QUAT_INIT(s, i, j, k)
+		Quat(const T &s, const T &i, const T &j, const T &k)
+			: w(s), x(i), y(j), z(k)
+		{}
 
 		//! initialize quat with one scalar (s) and a vec3 of complex (ijk)
-		inline Quat(const T &s, const vec<3, T> &ijk)
-			GMTK_QUAT_INIT(s, ijk.data[0], ijk.data[1], ijk.data[2])
+		Quat(const T &s, const vec<3, T> &ijk)
+			: w(s), x(ijk.data[0]), y(ijk.data[1]), z(ijk.data[2])
+		{}
 
 		//! initialize quat with vec4 of complex(3)scalar(1)
 		//! NOTE: w becomes first element!
-		inline Quat(const vec<4, T> &xyzw)
-			GMTK_QUAT_INIT(xyzw.data[3], xyzw.data[0], xyzw.data[1], xyzw.data[2])
+		Quat(const vec<4, T> &xyzw)
+			: w(xyzw.data[3]), x(xyzw.data[0]), y(xyzw.data[1]), z(xyzw.data[2])
+		{}
 
 		//! Copy constructor
 		template< typename U >
-		inline Quat(const Quat<U> &q)
-			GMTK_QUAT_INIT( static_cast<T>(q.data[0]), static_cast<T>(q.data[1]), static_cast<T>(q.data[2]), static_cast<T>(q.data[3]) ) 
-					
+		Quat(const Quat<U> &q)
+			: w(static_cast<T>(q.data[0])), x(static_cast<T>(q.data[1])), y(static_cast<T>(q.data[2])), z(static_cast<T>(q.data[3]))
+		{}
+
 		//! Array initializer
-		explicit inline Quat(const T* a)
-			GMTK_QUAT_INIT(a[0], a[1], a[2], a[3])
+		explicit Quat(const T *a)
+			: w(a[0]), x(a[1]), y(a[2]), z(a[3])
+		{}
 
 		//! Initializer list constructor
-		inline Quat(std::initializer_list<T> l)
-			GMTK_QUAT_INIT(*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3))
+		Quat(std::initializer_list<T> l)
+			: w(*(l.begin())), x(*(l.begin() + 1)), y(*(l.begin() + 2)), z(*(l.begin() + 3))
+		{}
 
 		///////////////////////
 		//! ACCESS OPERATORS //
 		///////////////////////
 
 		//! returns reference to an element of the given quat, in the order w,x,y,z
-		inline T& operator[](const int i) {
+		T &operator[](const std::size_t i)
+		{
 			return data[i];
 		}
 
-		inline const T& operator[](const int i) const {
+		const T &operator[](const std::size_t i) const
+		{
 			return data[i];
 		}
 
@@ -111,14 +107,21 @@ namespace GMTK_NAMESPACE
 		//! RIGHT-HAND OPERATORS //
 		///////////////////////////
 
-		//!
-		GMTK_QUAT_QUAT_OP(+)
+		//! Quaternion addition
+		Quat<T> operator +(const Quat<T> &q) const
+		{
+			return Quat<T>(w + q.w, x + q.x, y + q.y, z + q.z);
+		}
 
-		//!
-		GMTK_QUAT_QUAT_OP(-)
+		//! Quaternion subtraction
+		Quat<T> operator -(const Quat<T> &q) const
+		{
+			return Quat<T>(w - q.w, x - q.x, y - q.y, z - q.z);
+		}
 
-		//!
-		inline Quat<T> operator*(const Quat &q) {
+		//! Quaternion multiplication
+		Quat<T> operator*(const Quat &q)
+		{
 			Quat<T> res;
 			res.x = x * q.w + y * q.z - z * q.y + w * q.x;
 			res.y = -x * q.z + y * q.w + z * q.x + w * q.y;
@@ -127,84 +130,117 @@ namespace GMTK_NAMESPACE
 			return res;
 		}
 
-		//!
-		inline Quat<T> operator/(const Quat &q) {
+		//! Quaternion division (multiplication by conjugate)
+		Quat<T> operator/(const Quat &q)
+		{
 			Quat<T> res;
 			res = (*this) * conjugate(q);
 			return res;
 		}
-		
-		//!
-		GMTK_QUAT_QUAT_ROP(+=)
 
-		//!
-		GMTK_QUAT_QUAT_ROP(-=)
+		//! Quaternion reference addition
+		Quat<T> &operator += (const Quat<T> &q)
+		{
+			w += q.w; x += q.x; y += q.y; z += q.z; return *this;
+		}
 
-		//!
-		inline vec<3, T> operator*(const vec<3, T> &v) {
+		//! Quaternion reference subtraction
+		Quat<T> &operator -= (const Quat<T> &q)
+		{
+			w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this;
+		}
+
+		//! Quaternion reference multiplication
+		vec<3, T> operator*(const vec<3, T> &v)
+		{
 			Quat<T> vp = (*this) * Quat<T>(0, v.x, v.y, v.z) * conj(*this);
 			return vec<3, T>(vp.x, vp.y, vp.z);
 		}
-		
-		//!
-		inline vec<3, T> operator/(const vec<3, T> &v) {
+
+		//! Quaternion reference division (multiplication by conjugate)
+		vec<3, T> operator/(const vec<3, T> &v)
+		{
 			Quat<T> vp = (*this) * Quat<T>(0, -v.x, -v.y, -v.z) * conj(*this);
 			return vec<3, T>(vp.x, vp.y, vp.z);
 		}
 
-		//!
-		GMTK_QUAT_SCL_OP(+)
+		//! Quaternion scalar addition
+		Quat<T> operator + (const T &v) const
+		{
+			return Quat<T>(w + v, x + v, y + v, z + v);
+		}
 
-		//!
-		GMTK_QUAT_SCL_OP(-)
+		//! Quaternion scalar subtraction
+		Quat<T> operator - (const T &v) const
+		{
+			return Quat<T>(w - v, x - v, y - v, z - v);
+		}
 
-		//!
-		GMTK_QUAT_SCL_OP(*)
+		//!  Quaternion scalar multiplication
+		Quat<T> operator * (const T &v) const
+		{
+			return Quat<T>(w * v, x * v, y * v, z * v);
+		}
 
-		//!
-		GMTK_QUAT_SCL_OP(/)
+		//! Quaternion scalar division
+		Quat<T> operator / (const T &v) const
+		{
+			return Quat<T>(w / v, x / v, y / v, z / v);
+		}
 
-		//!
-		GMTK_QUAT_SCL_ROP(+=)
+		//! Quaternion scalar reference addition
+		Quat<T> &operator += (const T &v)
+		{
+			w += v; x += v; y += v; z += v; return *this;
+		}
 
-		//!
-		GMTK_QUAT_SCL_ROP(-=)
+		//! Quaternion scalar reference subtraction
+		Quat<T> &operator -= (const T &v)
+		{
+			w -= v; x -= v; y -= v; z -= v; return *this;
+		}
 
-		//!
-		GMTK_QUAT_SCL_ROP(*=)
+		//! Quaternion scalar reference multiplication
+		Quat<T> &operator *= (const T &v)
+		{
+			w *= v; x *= v; y *= v; z *= v; return *this;
+		}
 
-		//!
-		GMTK_QUAT_SCL_ROP(/=)
+		//! Quaternion scalar reference division
+		Quat<T> &operator /= (const T &v)
+		{
+			w /= v; x /= v; y /= v; z /= v; return *this;
+		}
 
 		///////////////////////
 		//! TYPE CONVERSIONS //
 		///////////////////////
 
-		//!
-		inline mat<3, 3, T> tomat()
+		//! Returns the quaternion represented as a 3-dimension column-order rotation matrix
+		mat<3, 3, T> tomat()
 		{
 			return mat<3, 3, T>
 			{
-				static_cast<T>(1) - static_cast<T>(2) * (sq(k) + sq(j)), 
-				static_cast<T>(2) * (i * j + k * w),
-				static_cast<T>(2) * (i * k - j * w),
+				static_cast<T>(1) - static_cast<T>(2) * (sq(k) + sq(j)),
+					static_cast<T>(2) *(i *j + k * w),
+					static_cast<T>(2) *(i *k - j * w),
 					//
-				static_cast<T>(2) * (i * j - k * w),
-				static_cast<T>(1) - static_cast<T>(2) * (sq(i) + sq(k)),
-				static_cast<T>(2) * (j * k + i * w),
+					static_cast<T>(2) *(i *j - k * w),
+					static_cast<T>(1) - static_cast<T>(2) * (sq(i) + sq(k)),
+					static_cast<T>(2) *(j *k + i * w),
 					//
-				static_cast<T>(2) * (j * w + i * k),
-				static_cast<T>(2) * (j * k - i * w), 
-				static_cast<T>(1) - static_cast<T>(2) * (sq(j) + sq(i))
+					static_cast<T>(2) *(j *w + i * k),
+					static_cast<T>(2) *(j *k - i * w),
+					static_cast<T>(1) - static_cast<T>(2) * (sq(j) + sq(i))
 			};
 		}
-		
+
 		//////////////////////////
 		//! GENERATOR FUNCTIONS //
 		//////////////////////////
 
-		//! creates a rotation quaternion rotated about an axis according to a specified angle
-		inline static Quat<T> axisangle(const vec<3, T> &axis, const ang<T> &angle)
+		//! Creates a rotation quaternion rotated about an axis according to a specified angle
+		static Quat<T> axisangle(const vec<3, T> &axis, const ang<T> &angle)
 		{
 			float a2 = angle.radians() / 2;
 			float sa2 = sin(a2);
@@ -218,12 +254,12 @@ namespace GMTK_NAMESPACE
 
 		// MISC. STATIC FUNCTIONS
 
-		inline static Quat<T> identity()
+		static Quat<T> identity()
 		{
 			return Quat<T>(1, 0, 0, 0);
 		}
-				
-	}; //! struct quat
+
+	};
 
 	//////////////////////
 	//! MISC. OPERATORS //
@@ -231,7 +267,7 @@ namespace GMTK_NAMESPACE
 
 	//! Quaternion output operator
 	template <typename T>
-	inline std::ostream& operator<<(std::ostream& os, const Quat<T>& q)
+	static std::ostream &operator<<(std::ostream &os, const Quat<T> &q)
 	{
 		os << "< " << std::showpos << q.w << ' ' << q.x << "i " << q.y << "j " << q.z << std::noshowpos << "k >";
 		return os;
@@ -240,88 +276,79 @@ namespace GMTK_NAMESPACE
 	/////////////////////
 	//! FREE FUNCTIONS //
 	/////////////////////
-	
+
 	//! Returns length squared of quaternion
 	template <typename T>
-	inline T lengthsq(const Quat<T>& v)
+	static T lengthsq(const Quat<T> &v)
 	{
-		T res = 0;
-		GMTK_QUAT_LOOP(res += sq(v.data[i]));
-		return res;
+		return sq(v.w) + sq(v.x) + sq(v.y) + sq(v.z);
 	}
 
 	//! Returns length of quaternion, or sqrt(lengthsq)
 	template <typename T>
-	inline T length(const Quat<T>& v)
+	static T length(const Quat<T> &v)
 	{
-		T res = 0;
-		GMTK_QUAT_LOOP(res += sq(v.data[i]));
-		return sqrt(res);
+		return sqrt(sq(v.w) + sq(v.x) + sq(v.y) + sq(v.z));
 	}
 
 	template <typename T>
-	inline T norm(const Quat<T> &q)
+	static T norm(const Quat<T> &q)
 	{
 		return length(q);
 	}
 
 	//! Normalizes quaternion so it is a unit quaternion
 	template <typename T>
-	inline Quat<T> normalize(const Quat<T> &q)
+	static Quat<T> normalize(const Quat<T> &q)
 	{
 		return q / length(q);
 	}
 
 	//! Returns the quaternion conjugate. The "negative" of the quaternion.
 	template <typename T>
-	inline Quat<T> conjugate(const Quat<T> &q)
+	static Quat<T> conjugate(const Quat<T> &q)
 	{
-		Quat<T> res;
-		res.x = -q.x;
-		res.y = -q.y;
-		res.z = -q.z;
-		res.w =  q.w;
-		return res;
+		return Quat<T>(-q.x,-q.y,-q.z,q.w);
 	}
 
 	//! Returns the quaternion conjugate. The "negative" of the quaternion.
 	template <typename T>
-	inline Quat<T> conj(const Quat<T> &q)
+	static Quat<T> conj(const Quat<T> &q)
 	{
 		return conjugate(q);
 	}
 
 	//! Returns the quaternion inverse
 	template <typename T>
-	inline Quat<T> inverse(const Quat<T> &q)
+	static Quat<T> inverse(const Quat<T> &q)
 	{
 		return q / lengthsq(q);
 	}
 
 	//! Calculates the dot or hamiltonian product of two quaternions
 	template <typename T>
-	inline T dot(const Quat<T> &l, const Quat<T> &r)
+	static T dot(const Quat<T> &l, const Quat<T> &r)
 	{
 		return (l.w * r.w) + (l.x * r.x) + (l.y * r.y) + (l.z * r.z);
 	}
 
 	//! Calculates the spherical linear interpolation of two quaternions using a t-value
 	template <typename T>
-	inline Quat<T> slerp(const Quat<T> &l, const Quat<T> &r, const double &t)
+	static Quat<T> slerp(const Quat<T> &l, const Quat<T> &r, const double &t)
 	{
 		T dotProduct = dot(l, r);
 
-		if (dotProduct > GMTK_QUAT_SLERP_THRESHOLD) return normalize(l + t*(r - l));
+		if (dotProduct > GMTK_QUAT_SLERP_THRESHOLD) return normalize(l + t * (r - l));
 
 		dot = clamp(dot, -1, 1);
 
-		double tht0 = acos(dot);
-		double tht = tht0*t;
+		const double tht0 = acos(dot);
+		const double tht = tht0 * t;
 
-		Quaternion v = r - l*dot;
+		Quat<T> v = r - l * dot;
 		v = normalize(v);
 
-		return l*cos(tht) + v*sin(tht);
+		return l * cos(tht) + v * sin(tht);
 	}
 
 	///////////////////////
@@ -336,14 +363,6 @@ namespace GMTK_NAMESPACE
 }////
 
 //
-
-#undef GMTK_QUAT_LOOP
-
-#undef GMTK_QUAT_INIT
-#undef GMTK_QUAT_QUAT_OP
-#undef GMTK_QUAT_SCL_OP
-#undef GMTK_QUAT_QUAT_ROP
-#undef GMTK_QUAT_SCL_ROP
 
 #undef GMTK_QUAT_SLERP_THRESHOLD
 

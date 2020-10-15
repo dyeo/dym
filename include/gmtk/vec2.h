@@ -82,60 +82,66 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! Default constructor
-		inline vec()
+		vec()
 			: x(static_cast<T>(0)), y(static_cast<T>(0))
 		{}
 
 		//! Initialize vec2 with two values
-		inline vec(const T &s0, const T &s1)
+		vec(const T &s0, const T &s1)
 			: x(s0), y(s1)
 		{}
 
 		#ifndef GMTK_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b>
-		inline vec(const swizzle2<a, b, T> &s)
+		vec(const swizzle2<a, b, T> &s)
 			: x(s[a]), y(s[b])
 		{}
 		#endif
 
 		//! Copy constructor
-		inline vec(const vec<2, T> &v)
+		vec(const vec<2, T> &v)
 			: x(v.x), y(v.y)
 		{}
 
 		//! Explicit type-conversion copy constructor
 		template<typename U>
-		explicit inline vec(const vec<2, U> &v)
+		explicit  vec(const vec<2, U> &v)
 			: x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
 		{}
 
 		//! Fill constructor
-		explicit inline vec(const T &s)
+		explicit  vec(const T &s)
 			: x(s), y(s)
 		{}
 
 		//! Array initializer
-		explicit inline vec(const T *a)
+		explicit  vec(const T *a)
 			: x(a[0]), y(a[1])
 		{}
 
 		//! Initializer list constructor
-		inline vec(std::initializer_list<T> l)
+		vec(std::initializer_list<T> l)
 			: x(*(l.begin())), y(*(l.begin() + 1))
 		{}
 
 		//! Copy constructor for differently-sized vector
 		template<int d2>
-		inline vec(const vec<d2, T> &v)
+		vec(const vec<d2, T> &v)
 		{
 			if (d2 < 2)
 			{
-				GMTK_UNROLL_LOOP(i, d2, data[i] = v.data[i]);
+				for (std::size_t i = 0; i < d2; ++i)
+				{
+					data[i] = v.data[i];
+				}
 			}
 			else
 			{
-				GMTK_UNROLL_LOOP(i, 2, data[i] = v.data[i]);
+				for (std::size_t i = 0; i < 2; ++i)
+				{
+					data[i] = v.data[i];
+				}
 			}
 		}
 
@@ -144,13 +150,13 @@ namespace GMTK_NAMESPACE
 		///////////////////////
 
 		//! Vector index operator
-		inline T &operator[](const std::size_t i)
+		T &operator[](const std::size_t i)
 		{
 			return data[i];
 		}
 
 		//! Vector const index operator
-		inline const T &operator[](const std::size_t i) const
+		const T &operator[](const std::size_t i) const
 		{
 			return data[i];
 		}
@@ -160,232 +166,232 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 
 		//! Component-wise unary negation
-		inline vec<2, T> operator - () const
+		vec<2, T> operator - () const
 		{
 			return vec<2, T>(-x, -y);
 		}
 		//! Component-wise unary negation
-		inline vec<2, T> operator ~ () const
+		vec<2, T> operator ~ () const
 		{
 			return vec<2, T>(~x, ~y);
 		}
 		//! Vector assignment
-		inline vec<2, T> &operator = (const vec<2, T> &v)
+		vec<2, T> &operator = (const vec<2, T> &v)
 		{
 			x = v.x; y = v.y; return *this;
 		}
 
 		//! Component-wise vector multiplication
-		inline vec<2, T> operator * (const vec<2, T> &v) const
+		vec<2, T> operator * (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x * v.x, y * v.y);
 		}
 		//! Component-wise vector division
-		inline vec<2, T> operator / (const vec<2, T> &v) const
+		vec<2, T> operator / (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x / v.x, y / v.y);
 		}
 		//! Component-wise vector addition
-		inline vec<2, T> operator + (const vec<2, T> &v) const
+		vec<2, T> operator + (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x + v.x, y + v.y);
 		}
 		//! Component-wise vector subtraction
-		inline vec<2, T> operator - (const vec<2, T> &v) const
+		vec<2, T> operator - (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x - v.x, y - v.y);
 		}
 		//! Component-wise vector OR
-		inline vec<2, T> operator | (const vec<2, T> &v) const
+		vec<2, T> operator | (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x | v.x, y | v.y);
 		}
 		//! Component-wise vector AND
-		inline vec<2, T> operator & (const vec<2, T> &v) const
+		vec<2, T> operator & (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x & v.x, y & v.y);
 		}
 		//! Component-wise vector XOR
-		inline vec<2, T> operator ^ (const vec<2, T> &v) const
+		vec<2, T> operator ^ (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x ^ v.x, y ^ v.y);
 		}
 		//! Component-wise vector modulus
-		inline vec<2, T> operator % (const vec<2, T> &v) const
+		vec<2, T> operator % (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x % v.x, y % v.y);
 		}
 		//! Component-wise vector shift left
-		inline vec<2, T> operator << (const vec<2, T> &v) const
+		vec<2, T> operator << (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x << v.x, y << v.y);
 		}
 		//! Component-wise vector shift right
-		inline vec<2, T> operator >> (const vec<2, T> &v) const
+		vec<2, T> operator >> (const vec<2, T> &v) const
 		{
 			return vec<2, T>(x >> v.x, y >> v.y);
 		}
 
 		//! Component-wise scalar multiplication
-		inline vec<2, T> operator * (const T &v) const
+		vec<2, T> operator * (const T &v) const
 		{
 			return vec<2, T>(x * v, y * v);
 		}
 		//! Component-wise scalar division
-		inline vec<2, T> operator / (const T &v) const
+		vec<2, T> operator / (const T &v) const
 		{
 			return vec<2, T>(x / v, y / v);
 		}
 		//! Component-wise scalar addition
-		inline vec<2, T> operator + (const T &v) const
+		vec<2, T> operator + (const T &v) const
 		{
 			return vec<2, T>(x + v, y + v);
 		}
 		//! Component-wise scalar subtraction
-		inline vec<2, T> operator - (const T &v) const
+		vec<2, T> operator - (const T &v) const
 		{
 			return vec<2, T>(x - v, y - v);
 		}
 		//! Component-wise scalar OR
-		inline vec<2, T> operator | (const T &v) const
+		vec<2, T> operator | (const T &v) const
 		{
 			return vec<2, T>(x | v, y | v);
 		}
 		//! Component-wise scalar AND
-		inline vec<2, T> operator & (const T &v) const
+		vec<2, T> operator & (const T &v) const
 		{
 			return vec<2, T>(x & v, y & v);
 		}
 		//! Component-wise scalar XOR
-		inline vec<2, T> operator ^ (const T &v) const
+		vec<2, T> operator ^ (const T &v) const
 		{
 			return vec<2, T>(x ^ v, y ^ v);
 		}
 		//! Component-wise scalar modulus
-		inline vec<2, T> operator % (const T &v) const
+		vec<2, T> operator % (const T &v) const
 		{
 			return vec<2, T>(x % v, y % v);
 		}
 		//! Component-wise scalar shift left
-		inline vec<2, T> operator << (const T &v) const
+		vec<2, T> operator << (const T &v) const
 		{
 			return vec<2, T>(x << v, y << v);
 		}
 		//! Component-wise scalar shift right
-		inline vec<2, T> operator >> (const T &v) const
+		vec<2, T> operator >> (const T &v) const
 		{
 			return vec<2, T>(x >> v, y >> v);
 		}
 
 		//! Component-wise vector reference multiplication
-		inline vec<2, T> &operator *= (const vec<2, T> &v)
+		vec<2, T> &operator *= (const vec<2, T> &v)
 		{
 			x *= v.x; y *= v.y; return *this;
 		}
 		//! Component-wise vector reference division
-		inline vec<2, T> &operator /= (const vec<2, T> &v)
+		vec<2, T> &operator /= (const vec<2, T> &v)
 		{
 			x /= v.x; y /= v.y; return *this;
 		}
 		//! Component-wise vector reference addition
-		inline vec<2, T> &operator += (const vec<2, T> &v)
+		vec<2, T> &operator += (const vec<2, T> &v)
 		{
 			x += v.x; y += v.y; return *this;
 		}
 		//! Component-wise vector reference subtraction
-		inline vec<2, T> &operator -= (const vec<2, T> &v)
+		vec<2, T> &operator -= (const vec<2, T> &v)
 		{
 			x -= v.x; y -= v.y; return *this;
 		}
 		//! Component-wise vector reference OR
-		inline vec<2, T> &operator |= (const vec<2, T> &v)
+		vec<2, T> &operator |= (const vec<2, T> &v)
 		{
 			x |= v.x; y |= v.y; return *this;
 		}
 		//! Component-wise vector reference AND
-		inline vec<2, T> &operator &= (const vec<2, T> &v)
+		vec<2, T> &operator &= (const vec<2, T> &v)
 		{
 			x &= v.x; y &= v.y; return *this;
 		}
 		//! Component-wise vector reference XOR
-		inline vec<2, T> &operator ^= (const vec<2, T> &v)
+		vec<2, T> &operator ^= (const vec<2, T> &v)
 		{
 			x ^= v.x; y ^= v.y; return *this;
 		}
 		//! Component-wise vector reference modulus
-		inline vec<2, T> &operator %= (const vec<2, T> &v)
+		vec<2, T> &operator %= (const vec<2, T> &v)
 		{
 			x %= v.x; y %= v.y; return *this;
 		}
 		//! Component-wise vector reference shift left
-		inline vec<2, T> &operator <<= (const vec<2, T> &v)
+		vec<2, T> &operator <<= (const vec<2, T> &v)
 		{
 			x <<= v.x; y <<= v.y; return *this;
 		}
 		//! Component-wise vector reference shift right
-		inline vec<2, T> &operator >>= (const vec<2, T> &v)
+		vec<2, T> &operator >>= (const vec<2, T> &v)
 		{
 			x >>= v.x; y >>= v.y; return *this;
 		}
 
 		//! Component-wise scalar reference multiplication
-		inline vec<2, T> &operator *= (const T &v)
+		vec<2, T> &operator *= (const T &v)
 		{
 			x *= v; y *= v; return *this;
 		}
 		//! Component-wise scalar reference division
-		inline vec<2, T> &operator /= (const T &v)
+		vec<2, T> &operator /= (const T &v)
 		{
 			x /= v; y /= v; return *this;
 		}
 		//! Component-wise scalar reference addition
-		inline vec<2, T> &operator += (const T &v)
+		vec<2, T> &operator += (const T &v)
 		{
 			x += v; y += v; return *this;
 		}
 		//! Component-wise scalar reference subtraction
-		inline vec<2, T> &operator -= (const T &v)
+		vec<2, T> &operator -= (const T &v)
 		{
 			x -= v; y -= v; return *this;
 		}
 		//! Component-wise scalar reference OR
-		inline vec<2, T> &operator |= (const T &v)
+		vec<2, T> &operator |= (const T &v)
 		{
 			x |= v; y |= v; return *this;
 		}
 		//! Component-wise scalar reference AND
-		inline vec<2, T> &operator &= (const T &v)
+		vec<2, T> &operator &= (const T &v)
 		{
 			x &= v; y &= v; return *this;
 		}
 		//! Component-wise scalar reference XOR
-		inline vec<2, T> &operator ^= (const T &v)
+		vec<2, T> &operator ^= (const T &v)
 		{
 			x ^= v; y ^= v; return *this;
 		}
 		//! Component-wise scalar reference modulus
-		inline vec<2, T> &operator %= (const T &v)
+		vec<2, T> &operator %= (const T &v)
 		{
 			x %= v; y %= v; return *this;
 		}
 		//! Component-wise scalar reference shift left
-		inline vec<2, T> &operator <<= (const T &v)
+		vec<2, T> &operator <<= (const T &v)
 		{
 			x <<= v; y <<= v; return *this;
 		}
 		//! Component-wise scalar reference shift right
-		inline vec<2, T> &operator >>= (const T &v)
+		vec<2, T> &operator >>= (const T &v)
 		{
 			x >>= v; y >>= v; return *this;
 		}
 
 		//! Component-wise equality comparison
-		inline bool operator == (const vec<2, T> &v) const
+		bool operator == (const vec<2, T> &v) const
 		{
 			return x == v.x && y == v.y;
 		}
 		//! Component-wise inequality comparison
-		inline bool operator != (const vec<2, T> &v) const
+		bool operator != (const vec<2, T> &v) const
 		{
 			return x != v.x || y != v.y;
 		}
@@ -395,49 +401,49 @@ namespace GMTK_NAMESPACE
 		//////////////////////////
 
 		//! NaN vector (NaN, NaN)
-		static inline constexpr vec<2, T> nan()
+		static constexpr vec<2, T> nan()
 		{
 			return vec<2, T>(NAN, NAN);
 		}
 
 		//! Infinity vector (inf, inf)
-		static inline constexpr vec<2, T> inf()
+		static constexpr vec<2, T> inf()
 		{
 			return vec<2, T>(INFINITY, INFINITY);
 		}
 
 		//! Zero vector (0,0)
-		static inline constexpr vec<2, T> zero()
+		static constexpr vec<2, T> zero()
 		{
 			return vec<2, T>(0, 0);
 		}
 
 		//! One vector (1,1)
-		static inline constexpr vec<2, T> one()
+		static constexpr vec<2, T> one()
 		{
 			return vec<2, T>(1, 1);
 		}
 
 		//! Up vector (0,1)
-		static inline constexpr vec<2, T> up()
+		static constexpr vec<2, T> up()
 		{
 			return vec<2, T>(0, 1);
 		}
 
 		//! Down vector (0,-1)
-		static inline constexpr vec<2, T> down()
+		static constexpr vec<2, T> down()
 		{
 			return vec<2, T>(0, -1);
 		}
 
 		//! Right vector (1,0)
-		static inline constexpr vec<2, T> right()
+		static constexpr vec<2, T> right()
 		{
 			return vec<2, T>(1, 0);
 		}
 
 		//! Left vector (-1,0)
-		static inline constexpr vec<2, T> left()
+		static constexpr vec<2, T> left()
 		{
 			return vec<2, T>(-1, 0);
 		}
@@ -464,7 +470,7 @@ namespace GMTK_NAMESPACE
 	//////////////////////
 
 	template <typename T = float>
-	inline std::ostream &operator<<(std::ostream &os, const vec<2, T> &v)
+	static std::ostream &operator<<(std::ostream &os, const vec<2, T> &v)
 	{
 		os << "| " << v.x << ' ' << v.y << " |";
 		return os;
@@ -472,7 +478,7 @@ namespace GMTK_NAMESPACE
 
 	//! Scalar-Vector multiplication
 	template <typename T = float>
-	inline vec<2, T> operator*(const T &l, const vec<2, T> &r)
+	static vec<2, T> operator*(const T &l, const vec<2, T> &r)
 	{
 		return vec<2, T>(l * r.x, l * r.y);
 	}
@@ -483,78 +489,78 @@ namespace GMTK_NAMESPACE
 	/////////////////////
 
 	//! Calculates the dot or scalar product of two vectors
-	template < typename T = float>
-	inline T dot(const vec<2, T> &l, const vec<2, T> &r)
+	template <typename T = float>
+	static T dot(const vec<2, T> &l, const vec<2, T> &r)
 	{
 		return (l.x * r.x) + (l.y * r.y);
 	}
 
 	//! Returns length squared of vector
 	template <typename T = float>
-	inline T lengthsq(const vec<2, T> &v)
+	static T lengthsq(const vec<2, T> &v)
 	{
 		return sq(v.x) + sq(v.y);
 	}
 
 	//! Returns length of vector, or sqrt(lengthsq)
 	template <typename T = float>
-	inline T length(const vec<2, T> &v)
+	static T length(const vec<2, T> &v)
 	{
 		return sqrt(sq(v.x) + sq(v.y));
 	}
 
 	//! Returns a component-wise minimum of two vectors
 	template <typename T = float>
-	inline vec<2, T> min(const vec<2, T> &l, const vec<2, T> &r)
+	static vec<2, T> min(const vec<2, T> &l, const vec<2, T> &r)
 	{
 		return vec<2, T>(min(l.x, r.x), min(l.y, r.y));
 	}
 
 	//! Returns a component-wise maximum of a vector and a scalar
 	template <typename T = float>
-	inline vec<2, T> min(const vec<2, T> &l, const T &r)
+	static vec<2, T> min(const vec<2, T> &l, const T &r)
 	{
 		return vec<2, T>(min(l.x, r), min(l.y, r));
 	}
 
 	//! Returns a component-wise minimum of two vectors
 	template <typename T = float>
-	inline vec<2, T> max(const vec<2, T> &l, const vec<2, T> &r)
+	static vec<2, T> max(const vec<2, T> &l, const vec<2, T> &r)
 	{
 		return vec<2, T>(max(l.x, r.x), max(l.y, r.y));
 	}
 
 	//! Returns a component-wise maximum of a vector and a scalar
 	template <typename T = float>
-	inline vec<2, T> max(const vec<2, T> &l, const T &r)
+	static vec<2, T> max(const vec<2, T> &l, const T &r)
 	{
 		return vec<2, T>(max(l.x, r), max(l.y, r));
 	}
 
 	//! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
 	template<typename T = float>
-	inline vec<3, T> affine(const vec<2, T> &v)
+	static vec<3, T> affine(const vec<2, T> &v)
 	{
 		return vec<3, T>(v.x, v.y, static_cast<T>(1));
 	}
 
 	//! Returns whether vector is NaN
 	template<typename T = float>
-	inline bool isnan(const vec<2, T> &v)
+	static bool isnan(const vec<2, T> &v)
 	{
 		return std::isnan(v.x) || std::isnan(v.y);
 	}
 
 	//! Returns whether vector is inf
 	template<typename T = float>
-	inline bool isinf(const vec<2, T> &v)
+	static bool isinf(const vec<2, T> &v)
 	{
 		return std::isinf(v.x) || std::isinf(v.y);
 	}
 
 	//! Relative equality (for floating-point vectors)
 	template<typename T = float>
-	inline bool req(const vec<2, T> &l, const vec<2, T> &r, T rng = 1e-8)
+	static bool req(const vec<2, T> &l, const vec<2, T> &r, T rng = 1e-8)
 	{
 		return req(l.x, r.x, rng) && req(l.y, r.y, rng);
 	}
