@@ -175,7 +175,7 @@ namespace GMTK_NAMESPACE
 	
 	inline std::ostream& operator<<(std::ostream& os, const ang<> &a)
 	{
-		os << (a.degrees()) << "deg";
+		os << a.degrees() << "deg";
 		return os;
 	}
 

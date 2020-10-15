@@ -4,6 +4,7 @@
 //
 
 #include "util.h"
+#include <ostream>
 
 //
 
