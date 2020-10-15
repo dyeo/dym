@@ -5,6 +5,8 @@
 
 #include "util.h"
 
+#include <ostream>
+
 //
 
 #define DEG2RAD 0.0174532925199432957692369076848861271344
@@ -173,7 +175,7 @@ namespace GMTK_NAMESPACE
 	
 	inline std::ostream& operator<<(std::ostream& os, const ang<> &a)
 	{
-		os << a.degrees() << "deg";
+		os << (a.degrees()) << "deg";
 		return os;
 	}
 

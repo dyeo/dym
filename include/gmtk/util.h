@@ -13,12 +13,9 @@
 #define GMTK_NAMESPACE gmtk
 #endif
 
-#include <cmath>
-#include <cstdlib>
 #include <cassert>
 #include <random>
-
-#include <initializer_list>
+#include <limits>
 
 //
 
@@ -144,6 +141,21 @@ template<> struct static_assert_util < true > {};
 namespace GMTK_NAMESPACE
 {////
 
+	inline bool req(const float l, const float r, const float rng = 1e-8f)
+	{
+		return std::abs(l - r) < rng;
+	}
+
+	inline bool req(const double l, const double r, const double rng = 1e-8)
+	{
+		return std::abs(l - r) < rng;
+	}
+
+	inline bool req(const long double l, const long double r, const long double rng = 1e-8)
+	{
+		return std::abs(l - r) < rng;
+	}
+	
 	template <typename T>
 	inline T sq(const T& v)
 	{

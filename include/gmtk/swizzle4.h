@@ -1,8 +1,10 @@
 #ifndef _GMTK_SWIZZLE4_H_
 #define _GMTK_SWIZZLE4_H_
 
-#include "../util.h"
+#include "util.h"
 #include "vec.h"
+
+// TODO: Remove these
 
 #define GMTK_SWZ4_UOP(op)																					\
 	vec<4, T> operator op () const																			\
@@ -212,12 +214,12 @@ namespace GMTK_NAMESPACE
 	GMTK_SWZ4_BROP(/=)
 	GMTK_SWZ4_BROP(+=)
 	GMTK_SWZ4_BROP(-=)
-	GMTK_SWZ4_BROP( |= )
-    GMTK_SWZ4_BROP( &= )
-    GMTK_SWZ4_BROP( ^= )
-    GMTK_SWZ4_BROP( %= )
-    GMTK_SWZ4_BROP( <<= )
-    GMTK_SWZ4_BROP( >>= )
+	GMTK_SWZ4_BROP(|=)
+    GMTK_SWZ4_BROP(&=)
+    GMTK_SWZ4_BROP(^=)
+    GMTK_SWZ4_BROP(%=)
+    GMTK_SWZ4_BROP(<<=)
+    GMTK_SWZ4_BROP(>>=)
 
 }////
 

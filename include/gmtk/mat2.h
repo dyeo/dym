@@ -9,9 +9,11 @@
 //
 
 #include "mat.h"
-#include "..\angle.h"
+#include "angle.h"
 
 //
+
+// TODO: Remove these
 
 #define GMTK_MAT2_LOOP(oper) GMTK_STATIC_LOOP(i, 4, oper)
 

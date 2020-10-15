@@ -8,7 +8,7 @@
 
 //
 
-#include "..\util.h"
+#include "util.h"
 #include "vec.h"
 #include "vec2.h"
 #include "vec3.h"
@@ -16,10 +16,12 @@
 
 //
 
-#include <math.h>
+#include <cmath>
 #include <ostream>
 
 //
+
+// TODO: Remove these
 
 #define GMTK_MAT_IDENT_LOOP(oper) GMTK_UNROLL_LOOP(i, GMTK_MIN_OF(r, c), oper)
 

@@ -1,8 +1,10 @@
 #ifndef _GMTK_SWIZZLE3_H_
 #define _GMTK_SWIZZLE3_H_
 
-#include "../util.h"
+#include "util.h"
 #include "vec.h"
+
+// TODO: Remove these
 
 #define GMTK_SWZ3_UOP(op)																				\
 	vec<3, T>operator op () const																		\

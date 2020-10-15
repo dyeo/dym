@@ -12,11 +12,15 @@
 
 //
 
+// TODO: Remove these
+
 #define GMTK_MAT3_LOOP(oper) GMTK_STATIC_LOOP(i, 9, oper)
 
 #define GMTK_MAT3_LOOP_2D(oper) GMTK_STATIC_2D_LOOP(i, j, 3, 3, oper)
 
 //
+
+// TODO: Remove these
 
 #define GMTK_MAT3_INIT(a,b,c,d,e,f,g,h,i) : arr { a, b, c, d, e, f, g, h, i } { }
 

@@ -8,11 +8,13 @@
 
 //
 
-#include "..\util.h"
+#include "util.h"
 #include <math.h>
 #include <ostream>
 
 //
+
+// TODO: Remove these
 
 #define GMTK_QUAT_LOOP(oper) GMTK_STATIC_LOOP(i,4,oper)
 
