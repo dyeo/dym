@@ -482,13 +482,13 @@ namespace GMTK_NAMESPACE
 		///////////////////////
 
 		//! Vector index operator
-		inline T &operator[](const int i)
+		inline T &operator[](const std::size_t i)
 		{
 			return data[i];
 		}
 
 		//! Vector const index operator
-		inline const T &operator[](const int i) const
+		inline const T &operator[](const std::size_t i) const
 		{
 			return data[i];
 		}
