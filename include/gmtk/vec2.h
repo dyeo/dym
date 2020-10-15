@@ -563,13 +563,6 @@ namespace GMTK_NAMESPACE
 
 //
 
-#undef GMTK_VEC2_LOOP
-
-#undef GMTK_SWZ2_BOP
-#undef GMTK_SWZ2_BROP
-
-//
-
 #pragma warning(pop)
 
 //

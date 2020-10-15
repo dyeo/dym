@@ -694,11 +694,6 @@ namespace GMTK_NAMESPACE
 
 //
 
-#undef GMTK_SWZ3_BOP
-#undef GMTK_SWZ3_BROP
-
-//
-
 #pragma warning(pop)
 
 //
