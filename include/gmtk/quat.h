@@ -25,7 +25,7 @@ namespace GMTK_NAMESPACE
 
 	//! Quaternion class
 	template< typename T = float >
-	struct Quat
+	struct quat
 	{
 		///////////////////
 		//! DATA MEMBERS //
@@ -52,47 +52,47 @@ namespace GMTK_NAMESPACE
 		///////////////////
 
 		//! default constructor
-		Quat()
-			: w(static_cast<T>(0)), x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0))
+		quat()
+			: w(static_cast<T>(0)), i(static_cast<T>(0)), j(static_cast<T>(0)), k(static_cast<T>(0))
 		{}
 
 		//! initialize quat with one scalar (s) and three complex (i, j, k)
-		Quat(const T &s, const T &i, const T &j, const T &k)
-			: w(s), x(i), y(j), z(k)
+		quat(const T &s, const T &i, const T &j, const T &k)
+			: w(s), i(i), j(j), k(k)
 		{}
 
 		//! initialize quat with one scalar (s) and a vec3 of complex (ijk)
-		Quat(const T &s, const vec<3, T> &ijk)
-			: w(s), x(ijk.data[0]), y(ijk.data[1]), z(ijk.data[2])
+		quat(const T &s, const vec<3, T> &ijk)
+			: w(s), i(ijk.data[0]), j(ijk.data[1]), k(ijk.data[2])
 		{}
 
 		//! initialize quat with vec4 of complex(3)scalar(1)
 		//! NOTE: w becomes first element!
-		Quat(const vec<4, T> &xyzw)
-			: w(xyzw.data[3]), x(xyzw.data[0]), y(xyzw.data[1]), z(xyzw.data[2])
+		quat(const vec<4, T> &xyzw)
+			: w(xyzw.data[3]), i(xyzw.data[0]), j(xyzw.data[1]), k(xyzw.data[2])
 		{}
 
 		//! Copy constructor
 		template< typename U >
-		Quat(const Quat<U> &q)
-			: w(static_cast<T>(q.data[0])), x(static_cast<T>(q.data[1])), y(static_cast<T>(q.data[2])), z(static_cast<T>(q.data[3]))
+		quat(const quat<U> &q)
+			: w(static_cast<T>(q.data[0])), i(static_cast<T>(q.data[1])), j(static_cast<T>(q.data[2])), k(static_cast<T>(q.data[3]))
 		{}
 
 		//! Array initializer
-		explicit Quat(const T *a)
-			: w(a[0]), x(a[1]), y(a[2]), z(a[3])
+		explicit quat(const T *a)
+			: w(a[0]), i(a[1]), j(a[2]), k(a[3])
 		{}
 
 		//! Initializer list constructor
-		Quat(std::initializer_list<T> l)
-			: w(*(l.begin())), x(*(l.begin() + 1)), y(*(l.begin() + 2)), z(*(l.begin() + 3))
+		quat(std::initializer_list<T> l)
+			: w(*(l.begin())), i(*(l.begin() + 1)), j(*(l.begin() + 2)), k(*(l.begin() + 3))
 		{}
 
 		///////////////////////
 		//! ACCESS OPERATORS //
 		///////////////////////
 
-		//! returns reference to an element of the given quat, in the order w,x,y,z
+		//! returns reference to an element of the given quat, in the order w,i,j,k
 		T &operator[](const std::size_t i)
 		{
 			return data[i];
@@ -108,108 +108,108 @@ namespace GMTK_NAMESPACE
 		///////////////////////////
 
 		//! Quaternion addition
-		Quat<T> operator +(const Quat<T> &q) const
+		quat<T> operator +(const quat<T> &q) const
 		{
-			return Quat<T>(w + q.w, x + q.x, y + q.y, z + q.z);
+			return quat<T>(w + q.w, i + q.i, j + q.j, k + q.k);
 		}
 
 		//! Quaternion subtraction
-		Quat<T> operator -(const Quat<T> &q) const
+		quat<T> operator -(const quat<T> &q) const
 		{
-			return Quat<T>(w - q.w, x - q.x, y - q.y, z - q.z);
+			return quat<T>(w - q.w, i - q.i, j - q.j, k - q.k);
 		}
 
 		//! Quaternion multiplication
-		Quat<T> operator*(const Quat &q)
+		quat<T> operator*(const quat &q)
 		{
-			Quat<T> res;
-			res.x = x * q.w + y * q.z - z * q.y + w * q.x;
-			res.y = -x * q.z + y * q.w + z * q.x + w * q.y;
-			res.z = x * q.y - y * q.x + z * q.w + w * q.z;
-			res.w = -x * q.x - y * q.y - z * q.z + w * q.w;
+			quat<T> res;
+			res.i = i * q.w + j * q.k - k * q.j + w * q.i;
+			res.j = -i * q.k + j * q.w + k * q.i + w * q.j;
+			res.k = i * q.j - j * q.i + k * q.w + w * q.k;
+			res.w = -i * q.i - j * q.j - k * q.k + w * q.w;
 			return res;
 		}
 
 		//! Quaternion division (multiplication by conjugate)
-		Quat<T> operator/(const Quat &q)
+		quat<T> operator/(const quat &q)
 		{
-			Quat<T> res;
+			quat<T> res;
 			res = (*this) * conjugate(q);
 			return res;
 		}
 
 		//! Quaternion reference addition
-		Quat<T> &operator += (const Quat<T> &q)
+		quat<T> &operator += (const quat<T> &q)
 		{
-			w += q.w; x += q.x; y += q.y; z += q.z; return *this;
+			w += q.w; i += q.i; j += q.j; k += q.k; return *this;
 		}
 
 		//! Quaternion reference subtraction
-		Quat<T> &operator -= (const Quat<T> &q)
+		quat<T> &operator -= (const quat<T> &q)
 		{
-			w -= q.w; x -= q.x; y -= q.y; z -= q.z; return *this;
+			w -= q.w; i -= q.i; j -= q.j; k -= q.k; return *this;
 		}
 
 		//! Quaternion reference multiplication
 		vec<3, T> operator*(const vec<3, T> &v)
 		{
-			Quat<T> vp = (*this) * Quat<T>(0, v.x, v.y, v.z) * conj(*this);
-			return vec<3, T>(vp.x, vp.y, vp.z);
+			quat<T> vp = (*this) * quat<T>(0, v.i, v.j, v.k) * conj(*this);
+			return vec<3, T>(vp.i, vp.j, vp.k);
 		}
 
 		//! Quaternion reference division (multiplication by conjugate)
 		vec<3, T> operator/(const vec<3, T> &v)
 		{
-			Quat<T> vp = (*this) * Quat<T>(0, -v.x, -v.y, -v.z) * conj(*this);
-			return vec<3, T>(vp.x, vp.y, vp.z);
+			quat<T> vp = (*this) * quat<T>(0, -v.i, -v.j, -v.k) * conj(*this);
+			return vec<3, T>(vp.i, vp.j, vp.k);
 		}
 
 		//! Quaternion scalar addition
-		Quat<T> operator + (const T &v) const
+		quat<T> operator + (const T &v) const
 		{
-			return Quat<T>(w + v, x + v, y + v, z + v);
+			return quat<T>(w + v, i + v, j + v, k + v);
 		}
 
 		//! Quaternion scalar subtraction
-		Quat<T> operator - (const T &v) const
+		quat<T> operator - (const T &v) const
 		{
-			return Quat<T>(w - v, x - v, y - v, z - v);
+			return quat<T>(w - v, i - v, j - v, k - v);
 		}
 
 		//!  Quaternion scalar multiplication
-		Quat<T> operator * (const T &v) const
+		quat<T> operator * (const T &v) const
 		{
-			return Quat<T>(w * v, x * v, y * v, z * v);
+			return quat<T>(w * v, i * v, j * v, k * v);
 		}
 
 		//! Quaternion scalar division
-		Quat<T> operator / (const T &v) const
+		quat<T> operator / (const T &v) const
 		{
-			return Quat<T>(w / v, x / v, y / v, z / v);
+			return quat<T>(w / v, i / v, j / v, k / v);
 		}
 
 		//! Quaternion scalar reference addition
-		Quat<T> &operator += (const T &v)
+		quat<T> &operator += (const T &v)
 		{
-			w += v; x += v; y += v; z += v; return *this;
+			w += v; i += v; j += v; k += v; return *this;
 		}
 
 		//! Quaternion scalar reference subtraction
-		Quat<T> &operator -= (const T &v)
+		quat<T> &operator -= (const T &v)
 		{
-			w -= v; x -= v; y -= v; z -= v; return *this;
+			w -= v; i -= v; j -= v; k -= v; return *this;
 		}
 
 		//! Quaternion scalar reference multiplication
-		Quat<T> &operator *= (const T &v)
+		quat<T> &operator *= (const T &v)
 		{
-			w *= v; x *= v; y *= v; z *= v; return *this;
+			w *= v; i *= v; j *= v; k *= v; return *this;
 		}
 
 		//! Quaternion scalar reference division
-		Quat<T> &operator /= (const T &v)
+		quat<T> &operator /= (const T &v)
 		{
-			w /= v; x /= v; y /= v; z /= v; return *this;
+			w /= v; i /= v; j /= v; k /= v; return *this;
 		}
 
 		///////////////////////
@@ -240,23 +240,23 @@ namespace GMTK_NAMESPACE
 		//////////////////////////
 
 		//! Creates a rotation quaternion rotated about an axis according to a specified angle
-		static Quat<T> axisangle(const vec<3, T> &axis, const ang<T> &angle)
+		static quat<T> axisangle(const vec<3, T> &axis, const ang<T> &angle)
 		{
 			float a2 = angle.radians() / 2;
 			float sa2 = sin(a2);
-			Quat<T> q;
+			quat<T> q;
 			q.w = cos(a2);
-			q.x = axis.x * sa2;
-			q.y = axis.y * sa2;
-			q.z = axis.z * sa2;
+			q.i = axis.i * sa2;
+			q.j = axis.j * sa2;
+			q.k = axis.k * sa2;
 			return q;
 		}
 
 		// MISC. STATIC FUNCTIONS
 
-		static Quat<T> identity()
+		static quat<T> identity()
 		{
-			return Quat<T>(1, 0, 0, 0);
+			return quat<T>(1, 0, 0, 0);
 		}
 
 	};
@@ -266,10 +266,10 @@ namespace GMTK_NAMESPACE
 	//////////////////////
 
 	//! Quaternion output operator
-	template <typename T>
-	static std::ostream &operator<<(std::ostream &os, const Quat<T> &q)
+	template <typename T = float>
+	static std::ostream &operator<<(std::ostream &os, const quat<T> &q)
 	{
-		os << "< " << std::showpos << q.w << ' ' << q.x << "i " << q.y << "j " << q.z << std::noshowpos << "k >";
+		os << "< " << std::showpos << q.w << ' ' << q.i << "i " << q.j << "j " << q.k << std::noshowpos << "k >";
 		return os;
 	}
 
@@ -278,63 +278,63 @@ namespace GMTK_NAMESPACE
 	/////////////////////
 
 	//! Returns length squared of quaternion
-	template <typename T>
-	static T lengthsq(const Quat<T> &v)
+	template <typename T = float>
+	static T lengthsq(const quat<T> &v)
 	{
-		return sq(v.w) + sq(v.x) + sq(v.y) + sq(v.z);
+		return sq(v.w) + sq(v.i) + sq(v.j) + sq(v.k);
 	}
 
 	//! Returns length of quaternion, or sqrt(lengthsq)
-	template <typename T>
-	static T length(const Quat<T> &v)
+	template <typename T = float>
+	static T length(const quat<T> &v)
 	{
-		return sqrt(sq(v.w) + sq(v.x) + sq(v.y) + sq(v.z));
+		return sqrt(sq(v.w) + sq(v.i) + sq(v.j) + sq(v.k));
 	}
 
-	template <typename T>
-	static T norm(const Quat<T> &q)
+	template <typename T = float>
+	static T norm(const quat<T> &q)
 	{
 		return length(q);
 	}
 
 	//! Normalizes quaternion so it is a unit quaternion
-	template <typename T>
-	static Quat<T> normalize(const Quat<T> &q)
+	template <typename T = float>
+	static quat<T> normalize(const quat<T> &q)
 	{
 		return q / length(q);
 	}
 
 	//! Returns the quaternion conjugate. The "negative" of the quaternion.
-	template <typename T>
-	static Quat<T> conjugate(const Quat<T> &q)
+	template <typename T = float>
+	static quat<T> conjugate(const quat<T> &q)
 	{
-		return Quat<T>(-q.x,-q.y,-q.z,q.w);
+		return quat<T>(-q.i, -q.j, -q.k, q.w);
 	}
 
 	//! Returns the quaternion conjugate. The "negative" of the quaternion.
-	template <typename T>
-	static Quat<T> conj(const Quat<T> &q)
+	template <typename T = float>
+	static quat<T> conj(const quat<T> &q)
 	{
 		return conjugate(q);
 	}
 
 	//! Returns the quaternion inverse
-	template <typename T>
-	static Quat<T> inverse(const Quat<T> &q)
+	template <typename T = float>
+	static quat<T> inverse(const quat<T> &q)
 	{
 		return q / lengthsq(q);
 	}
 
 	//! Calculates the dot or hamiltonian product of two quaternions
-	template <typename T>
-	static T dot(const Quat<T> &l, const Quat<T> &r)
+	template <typename T = float>
+	static T dot(const quat<T> &l, const quat<T> &r)
 	{
-		return (l.w * r.w) + (l.x * r.x) + (l.y * r.y) + (l.z * r.z);
+		return (l.w * r.w) + (l.i * r.i) + (l.j * r.j) + (l.k * r.k);
 	}
 
 	//! Calculates the spherical linear interpolation of two quaternions using a t-value
-	template <typename T>
-	static Quat<T> slerp(const Quat<T> &l, const Quat<T> &r, const double &t)
+	template <typename T = float>
+	static quat<T> slerp(const quat<T> &l, const quat<T> &r, const double &t)
 	{
 		T dotProduct = dot(l, r);
 
@@ -345,7 +345,7 @@ namespace GMTK_NAMESPACE
 		const double tht0 = acos(dot);
 		const double tht = tht0 * t;
 
-		Quat<T> v = r - l * dot;
+		quat<T> v = r - l * dot;
 		v = normalize(v);
 
 		return l * cos(tht) + v * sin(tht);
@@ -355,10 +355,10 @@ namespace GMTK_NAMESPACE
 	//! TYPE DEFINITIONS //
 	///////////////////////
 
-	typedef Quat<float> quat, quatf;
-	typedef Quat<double> quatd;
-	typedef Quat<int> quati;
-	typedef Quat<unsigned> quatui;
+	typedef quat<float> quatf;
+	typedef quat<double> quatd;
+	typedef quat<int> quati;
+	typedef quat<unsigned> quatui;
 
 }////
 
