@@ -662,6 +662,21 @@ namespace dym
 
 	}; //! struct mat
 
+	template <typename T>
+	static mat<3, 3, T> operator*(const mat<3, 3, T> &m, const mat<3, 3, T> &n)
+	{
+		return mat<3, 3, T>
+			(m.arr[0] * n.arr[0] + m.arr[3] * n.arr[1] + m.arr[6] * n.arr[2],
+				m.arr[1] * n.arr[0] + m.arr[4] * n.arr[1] + m.arr[7] * n.arr[2],
+				m.arr[2] * n.arr[0] + m.arr[5] * n.arr[1] + m.arr[8] * n.arr[2],
+				m.arr[0] * n.arr[3] + m.arr[3] * n.arr[4] + m.arr[6] * n.arr[5],
+				m.arr[1] * n.arr[3] + m.arr[4] * n.arr[4] + m.arr[7] * n.arr[5],
+				m.arr[2] * n.arr[3] + m.arr[5] * n.arr[4] + m.arr[8] * n.arr[5],
+				m.arr[0] * n.arr[6] + m.arr[3] * n.arr[7] + m.arr[6] * n.arr[8],
+				m.arr[1] * n.arr[6] + m.arr[4] * n.arr[7] + m.arr[7] * n.arr[8],
+				m.arr[2] * n.arr[6] + m.arr[5] * n.arr[7] + m.arr[8] * n.arr[8]);
+	}
+	
 	//! Matrix determinant
 	template<typename T>
 	static T det(const mat<3, 3, T> &m)

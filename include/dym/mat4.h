@@ -925,6 +925,28 @@ namespace dym
 
 	}; //! struct mat
 
+	template <typename T>
+	static mat<4, 4, T> operator*(const mat<4, 4, T> &m, const mat<4, 4, T> &n)
+	{
+		return mat<4, 4, T>
+			(m.arr[0] * n.arr[0] + m.arr[4] * n.arr[1] + m.arr[8] * n.arr[2] + m.arr[12] * n.arr[3],
+				m.arr[1] * n.arr[0] + m.arr[5] * n.arr[1] + m.arr[9] * n.arr[2] + m.arr[13] * n.arr[3],
+				m.arr[2] * n.arr[0] + m.arr[6] * n.arr[1] + m.arr[10] * n.arr[2] + m.arr[14] * n.arr[3],
+				m.arr[3] * n.arr[0] + m.arr[7] * n.arr[1] + m.arr[11] * n.arr[2] + m.arr[15] * n.arr[3],
+				m.arr[0] * n.arr[4] + m.arr[4] * n.arr[5] + m.arr[8] * n.arr[6] + m.arr[12] * n.arr[7],
+				m.arr[1] * n.arr[4] + m.arr[5] * n.arr[5] + m.arr[9] * n.arr[6] + m.arr[13] * n.arr[7],
+				m.arr[2] * n.arr[4] + m.arr[6] * n.arr[5] + m.arr[10] * n.arr[6] + m.arr[14] * n.arr[7],
+				m.arr[3] * n.arr[4] + m.arr[7] * n.arr[5] + m.arr[11] * n.arr[6] + m.arr[15] * n.arr[7],
+				m.arr[0] * n.arr[8] + m.arr[4] * n.arr[9] + m.arr[8] * n.arr[10] + m.arr[12] * n.arr[11],
+				m.arr[1] * n.arr[8] + m.arr[5] * n.arr[9] + m.arr[9] * n.arr[10] + m.arr[13] * n.arr[11],
+				m.arr[2] * n.arr[8] + m.arr[6] * n.arr[9] + m.arr[10] * n.arr[10] + m.arr[14] * n.arr[11],
+				m.arr[3] * n.arr[8] + m.arr[7] * n.arr[9] + m.arr[11] * n.arr[10] + m.arr[15] * n.arr[11],
+				m.arr[0] * n.arr[12] + m.arr[4] * n.arr[13] + m.arr[8] * n.arr[14] + m.arr[12] * n.arr[15],
+				m.arr[1] * n.arr[12] + m.arr[5] * n.arr[13] + m.arr[9] * n.arr[14] + m.arr[13] * n.arr[15],
+				m.arr[2] * n.arr[12] + m.arr[6] * n.arr[13] + m.arr[10] * n.arr[14] + m.arr[14] * n.arr[15],
+				m.arr[3] * n.arr[12] + m.arr[7] * n.arr[13] + m.arr[11] * n.arr[14] + m.arr[15] * n.arr[15]);
+	}
+	
 	//! Matrix determinant
 	template<typename T>
 	static T det(const mat<4, 4, T> &m)
