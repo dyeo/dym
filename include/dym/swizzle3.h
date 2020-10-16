@@ -14,6 +14,9 @@ namespace dym
 	{
 	public:
 
+		swizzle3() = default;
+		~swizzle3() = default;
+		
 		static constexpr bool is_writable = (I0 != I1 && I0 != I2 && I1 != I2);
 
 		typedef typename std::conditional<is_writable, swizzle3<I0, I1, I2, T>, struct duplicate_components_swizzle>::type writable_type;
