@@ -129,7 +129,7 @@ namespace dym
 
 		//! Copy constructor for differently-sized vector
 		template<int d2>
-		constexpr vec(const vec<d2, T> &v)
+		vec(const vec<d2, T> &v)
 		{
 			if (d2 < 2)
 			{

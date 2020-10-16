@@ -542,11 +542,11 @@ namespace dym
 	template <typename T>
 	static mat<2, 2, T> operator*(const mat<2, 2, T> &m, const mat<2, 2, T> &n)
 	{
-		return mat<2,2,T>
-		(m.arr[0] * n.arr[0] + m.arr[2] * n.arr[1], m.arr[1] * n.arr[0] + m.arr[3] * n.arr[1],
-			m.arr[0] * n.arr[2] + m.arr[2] * n.arr[3], m.arr[1] * n.arr[2] + m.arr[3] * n.arr[3]);
+		return mat<2, 2, T>
+			(m.arr[0] * n.arr[0] + m.arr[2] * n.arr[1], m.arr[1] * n.arr[0] + m.arr[3] * n.arr[1],
+				m.arr[0] * n.arr[2] + m.arr[2] * n.arr[3], m.arr[1] * n.arr[2] + m.arr[3] * n.arr[3]);
 	}
-	
+
 	//! Matrix determinant
 	template<typename T>
 	static T det(const mat<2, 2, T> &m)

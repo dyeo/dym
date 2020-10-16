@@ -946,7 +946,7 @@ namespace dym
 				m.arr[2] * n.arr[12] + m.arr[6] * n.arr[13] + m.arr[10] * n.arr[14] + m.arr[14] * n.arr[15],
 				m.arr[3] * n.arr[12] + m.arr[7] * n.arr[13] + m.arr[11] * n.arr[14] + m.arr[15] * n.arr[15]);
 	}
-	
+
 	//! Matrix determinant
 	template<typename T>
 	static T det(const mat<4, 4, T> &m)

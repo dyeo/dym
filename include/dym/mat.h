@@ -92,7 +92,7 @@ namespace dym
 				arr[i] = v.arr[i];
 			}
 		}
-		
+
 		//! Minor matrix constructor
 		template<int C1, int R1>
 		constexpr mat(const mat<C1, R1, T> &m)
@@ -538,7 +538,7 @@ namespace dym
 		static constexpr mat<C, R, T> zero()
 		{
 			mat<C, R, T> res;
-			for (std::size_t i = 0; i < C*R; ++i)
+			for (std::size_t i = 0; i < C * R; ++i)
 			{
 				res[i] = static_cast<T>(0);
 			}
@@ -549,13 +549,13 @@ namespace dym
 		static constexpr mat<C, R, T> one()
 		{
 			mat<C, R, T> res;
-			for (std::size_t i = 0; i < C*R; ++i)
+			for (std::size_t i = 0; i < C * R; ++i)
 			{
 				res[i] = static_cast<T>(1);
 			}
 			return res;
 		}
-		
+
 	}; //! struct mat
 
 	//////////////////////
@@ -846,7 +846,7 @@ namespace dym
 		res[C][R] = static_cast<T>(1);
 		return res;
 	}
-	
+
 	template <int D, typename T>
 	static mat<D, D, T> cofactor(const mat<D, D, T> &m)
 	{
