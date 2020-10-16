@@ -8,13 +8,15 @@
 
 //
 
+#include <cmath>
 #include <cassert>
 #include <random>
 
 //
 
 template<bool> struct static_assert_util;
-template<> struct static_assert_util < true > {};
+template<> struct static_assert_util < true >
+{};
 #define DYM_STATIC_ASSERT(cond) static_assert_util<(cond)>()
 
 //
@@ -159,12 +161,12 @@ namespace dym
 		return std::abs(l - r) < rng;
 	}
 
-	inline bool req(const double l, const double r, const double rng = 1e-8)
+	inline bool req(const double l, const double r, const double rng = f_small)
 	{
 		return std::abs(l - r) < rng;
 	}
 
-	inline bool req(const long double l, const long double r, const long double rng = 1e-8l)
+	inline bool req(const long double l, const long double r, const long double rng = ld_small)
 	{
 		return std::abs(l - r) < rng;
 	}
@@ -246,7 +248,7 @@ namespace dym
 	{
 		return (src * (1.0 - delta)) + (dst * delta);
 	}
-	
+
 	template <typename T = double>
 	static T lerp(const T &src, const T &dst, const double delta)
 	{
