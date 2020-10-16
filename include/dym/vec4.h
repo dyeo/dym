@@ -390,84 +390,84 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		inline vec()
+		constexpr vec()
 			: x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0)), w(static_cast<T>(0))
 		{}
 
 		~vec() = default;
 
 		//! Initialize vec4 with four scalar values
-		inline vec(const T &s0, const T &s1, const T &s2, const T &s3)
+		constexpr vec(const T &s0, const T &s1, const T &s2, const T &s3)
 			: x(s0), y(s1), z(s2), w(s3)
 		{}
 
 		//! Initialize vec4 with two vec2s
-		inline vec(const vec<2, T> &v01, const vec<2, T> &v23)
+		constexpr vec(const vec<2, T> &v01, const vec<2, T> &v23)
 			: x(v01.x), y(v01.y), z(v23.x), w(v23.y)
 		{}
 
 		//! Initialize vec4 with a vec2 and two scalar values
-		inline vec(const vec<2, T> &v01, const T &s2, const T &s3)
+		constexpr vec(const vec<2, T> &v01, const T &s2, const T &s3)
 			: x(v01.x), y(v01.y), z(s2), w(s3)
 		{}
 
 		//! Initialize vec4 with a scalar value, a vec2, and another scalar value
-		inline vec(const T &s0, const vec<2, T> &v12, const T &s3)
+		constexpr vec(const T &s0, const vec<2, T> &v12, const T &s3)
 			: x(s0), y(v12.x), z(v12.y), w(s3)
 		{}
 
 		//! Initialize vec4 with two scalar values and a vec2
-		inline vec(const T &s0, const T &s1, const vec<2, T> &v23)
+		constexpr vec(const T &s0, const T &s1, const vec<2, T> &v23)
 			: x(s0), y(s1), z(v23.x), w(v23.y)
 		{}
 
 		//! Initialize vec4 with a vec3 and a scalar value
-		inline vec(const vec<3, T> &v012, const T &s3)
+		constexpr vec(const vec<3, T> &v012, const T &s3)
 			: x(v012.x), y(v012.y), z(v012.z), w(s3)
 		{}
 
 		//! Initialize vec4 with a scalar value and a vec3
-		inline vec(const T &s0, const vec<3, T> &v123)
+		constexpr vec(const T &s0, const vec<3, T> &v123)
 			: x(s0), y(v123.x), z(v123.y), w(v123.z)
 		{}
 
 		#ifndef DYM_DISABLE_SWIZZLING
 		//! Swizzle4 constructor
 		template<int a, int b, int c, int d>
-		inline vec(const swizzle4 <a, b, c, d, T> &s)
+		constexpr vec(const swizzle4 <a, b, c, d, T> &s)
 			: x(s[a]), y(s[b]), z(s[c]), w(s[d])
 		{}
 		#endif
 
 		//! Copy constructor
-		inline vec(const vec<4, T> &v)
+		constexpr vec(const vec<4, T> &v)
 			: x(v.x), y(v.y), z(v.z), w(v.w)
 		{}
 
 		//! Explicit type-conversion copy constructor
 		template<typename U>
-		explicit inline vec(const vec<4, U> &v)
+		explicit constexpr vec(const vec<4, U> &v)
 			: x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z)), w(static_cast<T>(v.w))
 		{}
 
 		//! Fill constructor
-		explicit inline vec(const T &s)
+		explicit constexpr vec(const T &s)
 			: x(s), y(s), z(s), w(s)
 		{}
 
 		//! Array initializer
-		explicit inline vec(const T *a)
+		explicit constexpr vec(const T *a)
 			: x(a[0]), y(a[1]), z(a[2]), w(a[3])
 		{}
 
 		//! Initializer list constructor
-		inline vec(std::initializer_list<T> l)
+		constexpr vec(std::initializer_list<T> l)
 			: x(*(l.begin())), y(*(l.begin() + 1)), z(*(l.begin() + 2)), w(*(l.begin() + 3))
 		{}
 
 		//! Copy constructor for differently-sized vector
 		template<int d2>
-		inline vec(const vec<d2, T> &v)
+		constexpr vec(const vec<d2, T> &v)
 		{
 			if (d2 < 4)
 			{

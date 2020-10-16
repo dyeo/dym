@@ -171,64 +171,64 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		inline vec()
+		constexpr vec()
 			: x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0))
 		{}
 
 		~vec() = default;
 
 		//! Initialize vec3 with three scalar values
-		inline vec(const T &s0, const T &s1, const T &s2)
+		constexpr vec(const T &s0, const T &s1, const T &s2)
 			: x(s0), y(s1), z(s2)
 		{}
 
 		//! Initialize vec3 with a vec2 and a scalar value
-		inline vec(const vec<2, T> &v01, const T &s2)
+		constexpr vec(const vec<2, T> &v01, const T &s2)
 			: x(v01.x), y(v01.y), z(s2)
 		{}
 
 		//! Initialize vec3 with a scalar value and a vec2
-		inline vec(const T &s0, const vec<2, T> &v12)
+		constexpr vec(const T &s0, const vec<2, T> &v12)
 			: x(s0), y(v12.x), z(v12.y)
 		{}
 
 		#ifndef DYM_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b, int c>
-		inline vec(const swizzle3 < a, b, c, T > &s)
+		constexpr vec(const swizzle3 < a, b, c, T > &s)
 			: x(s[a]), y(s[b]), z(s[c])
 		{}
 		#endif
 
 		//! Copy constructor
-		inline vec(const vec<3, T> &v)
+		constexpr vec(const vec<3, T> &v)
 			: x(v.x), y(v.y), z(v.z)
 		{}
 
 		//! Explicit type-conversion copy constructor
 		template<typename U>
-		explicit inline vec(const vec<3, U> &v)
+		explicit constexpr vec(const vec<3, U> &v)
 			: x(static_cast<T>(v.x)), y(static_cast<T>(v.y)), z(static_cast<T>(v.z))
 		{}
 
 		//! Fill constructor
-		explicit inline vec(const T &s)
+		explicit constexpr vec(const T &s)
 			: x(s), y(s), z(s)
 		{}
 
 		//! Array initializer
-		explicit inline vec(const T *a)
+		explicit constexpr vec(const T *a)
 			: x(a[0]), y(a[1]), z(a[2])
 		{}
 
 		//! Initializer list constructor
-		inline vec(std::initializer_list<T> l)
+		constexpr vec(std::initializer_list<T> l)
 			: x(*(l.begin())), y(*(l.begin() + 1)), z(*(l.begin() + 2))
 		{}
 
 		//! Copy constructor for differently-sized vector
 		template<int d2>
-		inline vec(const vec<d2, T> &v)
+		constexpr vec(const vec<d2, T> &v)
 		{
 			if (d2 < 3)
 			{

@@ -63,7 +63,7 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		mat()
+		constexpr mat()
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -76,7 +76,7 @@ namespace dym
 		//! Initializer list constructor
 		//! Columns span left-to-right in initialization, and rows span top-to-bottom
 		//! This is because matrices are stored column-major
-		mat(std::initializer_list<T> list)
+		constexpr mat(std::initializer_list<T> list)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -85,16 +85,17 @@ namespace dym
 		}
 
 		//! Copy constructor
-		mat(const mat<C, R, T> &v)
+		constexpr mat(const mat<C, R, T> &v)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = v.arr[i];
 			}
 		}
-		template<int cm, int rm>
+		
 		//! Minor matrix constructor
-		mat(const mat<cm, rm, T> &m)
+		template<int cm, int rm>
+		constexpr mat(const mat<cm, rm, T> &m)
 		{
 			DYM_STATIC_ASSERT((rm < R) && (cm < C));
 			for (std::size_t i = 0; i < cm; ++i)
@@ -107,7 +108,8 @@ namespace dym
 		}
 
 		//! Explicit type-conversion copy constructor
-		template<typename U> explicit mat(const mat<C, R, U> &v)
+		template<typename U>
+		explicit constexpr mat(const mat<C, R, U> &v)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -116,7 +118,7 @@ namespace dym
 		}
 
 		//! Fill constructor
-		explicit mat(const T &s)
+		explicit constexpr mat(const T &s)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -125,7 +127,7 @@ namespace dym
 		}
 
 		//! Array initializer
-		explicit mat(const T *a)
+		explicit constexpr mat(const T *a)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -522,7 +524,7 @@ namespace dym
 		}
 
 		//! Matrix identity
-		static mat<C, R, T> identity()
+		static constexpr mat<C, R, T> identity()
 		{
 			mat<C, R, T> res(static_cast<T>(0));
 			for (std::size_t i = 0; i < DYM_MIN_OF(R, C); ++i)

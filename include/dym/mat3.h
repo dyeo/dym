@@ -55,7 +55,7 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		mat()
+		constexpr mat()
 			: arr{ static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1) }
 		{}
 
@@ -64,56 +64,56 @@ namespace dym
 		//! Initializer list constructor
 		//! Columns span left-to-right in initialization, and rows span top-to-bottom
 		//! This is because matrices are stored column-major
-		mat(std::initializer_list<T> l)
+		constexpr mat(std::initializer_list<T> l)
 			: arr{ *(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3), *(l.begin() + 4), *(l.begin() + 5), *(l.begin() + 6), *(l.begin() + 7), *(l.begin() + 8) }
 		{}
 
 		//! Copy constructor
-		mat(const mat<3, 3, T> &v)
+		constexpr mat(const mat<3, 3, T> &v)
 			: arr{ v.arr[0], v.arr[1], v.arr[2], v.arr[3], v.arr[4], v.arr[5], v.arr[6], v.arr[7], v.arr[8] }
 		{}
 
 		//! Explicit type-conversion copy constructor
 		template<typename U>
-		explicit mat(const mat<3, 3, U> &v)
+		explicit constexpr mat(const mat<3, 3, U> &v)
 			: arr{ static_cast<T>(v.arr[0]), static_cast<T>(v.arr[1]), static_cast<T>(v.arr[2]), static_cast<T>(v.arr[3]), static_cast<T>(v.arr[4]), static_cast<T>(v.arr[5]), static_cast<T>(v.arr[6]), static_cast<T>(v.arr[7]), static_cast<T>(v.arr[8]) }
 		{}
 
 		//! Fill constructor
-		explicit mat(const T &s)
+		explicit constexpr mat(const T &s)
 			: arr{ s, s, s, s, s, s, s, s, s }
 		{}
 
 		//! Array initializer
-		explicit mat(const T *a)
+		explicit constexpr mat(const T *a)
 			: arr{ a[0], a[1], a[2], a[3], a[4], a[5], a[6], a[7], a[8] }
 		{}
 
 		//! Value constructor
-		mat(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8)
+		constexpr mat(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8)
 			: arr{ s0, s1, s2, s3, s4, s5, s6, s7, s8 }
 		{}
 
 		//! Explicit type-conversionm value constructor
 		template<typename U>
-		explicit mat(const U &s0, const U &s1, const U &s2, const U &s3, const U &s4, const U &s5, const U &s6, const U &s7, const U &s8)
+		explicit constexpr mat(const U &s0, const U &s1, const U &s2, const U &s3, const U &s4, const U &s5, const U &s6, const U &s7, const U &s8)
 			: arr{ static_cast<T>(s0), static_cast<T>(s1), static_cast<T>(s2), static_cast<T>(s3), static_cast<T>(s4), static_cast<T>(s5), static_cast<T>(s6), static_cast<T>(s7), static_cast<T>(s8) }
 		{}
 
 		//! Inserts a 2x2 matrix into the top-left portion of a 3x3 identity matrix
 		//! ident adjusts the identity value
-		mat(const mat<2, 2, T> &m, const T &ident = static_cast<T>(1))
+		constexpr mat(const mat<2, 2, T> &m, const T &ident = static_cast<T>(1))
 			: arr{ m.arr[0], m.arr[1], 0, m.arr[2], m.arr[3], 0, 0, 0, ident }
 		{}
 
 		//! Constructs a 3x3 matrix using the top-left portion of a 4x4 matrix
-		mat(const mat<4, 4, T> &m)
+		constexpr mat(const mat<4, 4, T> &m)
 			: arr{ m.arr[0], m.arr[1], m.arr[2], m.arr[4], m.arr[5], m.arr[6], m.arr[8], m.arr[9], m.arr[10] }
 		{}
 
 		//! Minor matrix constructor
 		template<int cm, int rm>
-		mat(const mat<cm, rm, T> &m)
+		constexpr mat(const mat<cm, rm, T> &m)
 		{
 			DYM_STATIC_ASSERT((rm < r) && (cm < c));
 			for (std::size_t i = 0; i < cm; ++i)

@@ -82,54 +82,54 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		vec()
+		constexpr vec()
 			: x(static_cast<T>(0)), y(static_cast<T>(0))
 		{}
 
 		~vec() = default;
 
 		//! Initialize vec2 with two values
-		vec(const T &s0, const T &s1)
+		constexpr vec(const T &s0, const T &s1)
 			: x(s0), y(s1)
 		{}
 
 		#ifndef DYM_DISABLE_SWIZZLING
 		//! Swizzle constructor
 		template<int a, int b>
-		vec(const swizzle2<a, b, T> &s)
+		constexpr vec(const swizzle2<a, b, T> &s)
 			: x(s[a]), y(s[b])
 		{}
 		#endif
 
 		//! Copy constructor
-		vec(const vec<2, T> &v)
+		constexpr vec(const vec<2, T> &v)
 			: x(v.x), y(v.y)
 		{}
 
 		//! Explicit type-conversion copy constructor
 		template<typename U>
-		explicit  vec(const vec<2, U> &v)
+		explicit constexpr vec(const vec<2, U> &v)
 			: x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
 		{}
 
 		//! Fill constructor
-		explicit  vec(const T &s)
+		explicit constexpr vec(const T &s)
 			: x(s), y(s)
 		{}
 
 		//! Array initializer
-		explicit  vec(const T *a)
+		explicit constexpr vec(const T *a)
 			: x(a[0]), y(a[1])
 		{}
 
 		//! Initializer list constructor
-		vec(std::initializer_list<T> l)
+		constexpr vec(std::initializer_list<T> l)
 			: x(*(l.begin())), y(*(l.begin() + 1))
 		{}
 
 		//! Copy constructor for differently-sized vector
 		template<int d2>
-		vec(const vec<d2, T> &v)
+		constexpr vec(const vec<d2, T> &v)
 		{
 			if (d2 < 2)
 			{

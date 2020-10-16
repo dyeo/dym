@@ -34,7 +34,7 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		vec()
+		constexpr vec()
 		{
 			for(std::size_t i = 0; i < d; ++i) { data[i] = static_cast<T>(0); }
 		}
@@ -42,20 +42,20 @@ namespace dym
 		~vec() = default;
 		
 		//! Initializer list constructor
-		vec(std::initializer_list<T> list)
+		constexpr vec(std::initializer_list<T> list)
 		{
 			for(std::size_t i = 0; i < d; ++i) { data[i] = *(list.begin() + i); }
 		}
 
 		//! Copy constructor
-		vec(const vec<d, T>& v)
+		constexpr vec(const vec<d, T>& v)
 		{
 			for(std::size_t i = 0; i < d; ++i) { data[i] = v.data[i]; }
 		}
 
 		//! Copy constructor for arbitrarily larger vector
 		template<int d2>
-		vec(const vec<d2, T>& v)
+		constexpr vec(const vec<d2, T>& v)
 		{
 			DYM_STATIC_ASSERT(d2 >= d);
 			for(std::size_t i = 0; i < d; ++i) { data[i] = v.data[i]; }
@@ -63,19 +63,19 @@ namespace dym
 
 		//! Explicit type-conversion copy constructor
 		template<typename U>
-		explicit vec(const vec<d, U>& v)
+		explicit constexpr vec(const vec<d, U>& v)
 		{
 			for(std::size_t i = 0; i < d; ++i) { data[i] = static_cast<T>(v[i]); }
 		}
 
 		//! Fill constructor
-		explicit vec(const T& s)
+		explicit constexpr vec(const T& s)
 		{
 			for(std::size_t i = 0; i < d; ++i) { data[i] = s; }
 		}
 
 		//! Array initializer
-		explicit vec(const T* a)
+		explicit constexpr vec(const T* a)
 		{
 			for(std::size_t i = 0; i < d; ++i) { data[i] = a[i]; }
 		}
