@@ -534,6 +534,28 @@ namespace dym
 			return res;
 		}
 
+		//! Zero matrix
+		static constexpr mat<C, R, T> zero()
+		{
+			mat<C, R, T> res;
+			for (std::size_t i = 0; i < C*R; ++i)
+			{
+				res[i] = static_cast<T>(0);
+			}
+			return res;
+		}
+
+		//! Unit matrix
+		static constexpr mat<C, R, T> one()
+		{
+			mat<C, R, T> res;
+			for (std::size_t i = 0; i < C*R; ++i)
+			{
+				res[i] = static_cast<T>(1);
+			}
+			return res;
+		}
+		
 	}; //! struct mat
 
 	//////////////////////

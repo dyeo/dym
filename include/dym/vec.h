@@ -400,6 +400,28 @@ namespace dym
 			return r;
 		}
 
+		//! Zero vector
+		static constexpr vec<D, T> zero()
+		{
+			vec<D, T> res;
+			for(std::size_t i=0; i<D; ++i)
+			{
+				res[i] = static_cast<T>(0);
+			}
+			return res;
+		}
+
+		//! Unit vector
+		static constexpr vec<D, T> one()
+		{
+			vec<D, T> res;
+			for (std::size_t i = 0; i < D; ++i)
+			{
+				res[i] = static_cast<T>(1);
+			}
+			return res;
+		}
+
 	}; //! struct vec
 
 	//////////////////////
