@@ -26,6 +26,8 @@ namespace dym
 			hdat = f2s(0.0f);
 		}
 
+		~half() = default;
+
 		half(const float& f) {
 			hdat = f2s(f);
 		}

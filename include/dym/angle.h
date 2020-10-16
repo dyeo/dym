@@ -40,6 +40,8 @@ namespace dym
 			_rads = static_cast<T>(0);
 		}
 
+		~ang() = default;
+
 		//! Copy constructor
 		ang(const ang<T> &a)
 		{

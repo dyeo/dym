@@ -36,6 +36,8 @@ namespace dym
 			_val = static_cast<T>(0);
 		}
 
+		~perc() = default;
+		
 		//! Copy constructor
 		perc(const perc<T> &a)
 		{

@@ -56,6 +56,8 @@ namespace dym
 			: w(static_cast<T>(0)), i(static_cast<T>(0)), j(static_cast<T>(0)), k(static_cast<T>(0))
 		{}
 
+		~quat() = default;
+
 		//! initialize quat with one scalar (s) and three complex (i, j, k)
 		quat(const T &s, const T &i, const T &j, const T &k)
 			: w(s), i(i), j(j), k(k)
