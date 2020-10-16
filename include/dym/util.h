@@ -26,7 +26,135 @@ template<> struct static_assert_util < true > {};
 namespace dym
 {////
 
-	inline bool req(const float l, const float r, const float rng = 1e-8f)
+	#pragma region DYM_CONSTANTS
+
+	//! pi
+	constexpr float f_pi = 3.14159265358979323846264338327950288419f;
+	//! pi
+	constexpr double d_pi = 3.14159265358979323846264338327950288419;
+
+	//! 2 * pi
+	constexpr float f_2pi = 6.28318530717958647692528676655900576839f;
+	//! 2 * pi
+	constexpr double d_2pi = 6.28318530717958647692528676655900576839;
+
+	//! tau (same as 2pi)
+	constexpr float f_tau = f_2pi;
+	//! tau (same as 2pi)
+	constexpr double d_tau = d_2pi;
+
+	//! 1 / pi
+	constexpr float f_invpi = 0.318309886183790671537767526745028724069f;
+	//! 1 / pi
+	constexpr double d_invpi = 0.318309886183790671537767526745028724069;
+
+	//! 2 / pi
+	constexpr float f_2invpi = 0.636619772367581343075535053490057448138f;
+	//! 2 / pi
+	constexpr double d_2invpi = 0.636619772367581343075535053490057448138;
+
+	//! pi / 2
+	constexpr float f_pi_2 = 1.57079632679489661923132169163975144210f;
+	//! pi / 2
+	constexpr double d_pi_2 = 1.57079632679489661923132169163975144210;
+
+	//! pi / 4
+	constexpr float f_pi_4 = 0.785398163397448309615660845819875721049f;
+	//! pi / 4
+	constexpr double d_pi_4 = 0.785398163397448309615660845819875721049;
+
+	//! log2(pi)
+	constexpr float f_log2pi = 1.65149612947231879804327929510800733502f;
+	//! log2(pi)
+	constexpr double d_log2pi = 1.65149612947231879804327929510800733502;
+
+	//! sqrt(pi)
+	constexpr float f_sqrtpi = 1.77245385090551602729816748334114518280f;
+	//! sqrt(pi)
+	constexpr double d_sqrtpi = 1.77245385090551602729816748334114518280;
+
+	//! 2*sqrt(pi)
+	constexpr float f_2sqrtpi = 3.54490770181103205459633496668229036560f;
+	//! 2*sqrt(pi)
+	constexpr double d_2sqrtpi = 3.54490770181103205459633496668229036560;
+
+	//! euler's number
+	constexpr float f_e = 2.71828182845904523536028747135266249776f;
+	//! euler's number
+	constexpr double d_e = 2.71828182845904523536028747135266249776;
+
+	//! log2(e)
+	constexpr float f_log2e = 1.44269504088896340735992468100189213743f;
+	//! log2(e)
+	constexpr double d_log2e = 1.44269504088896340735992468100189213743;
+
+	//! log10(e)
+	constexpr float f_log10e = 0.434294481903251827651128918916605082294f;
+	//! log10(e)
+	constexpr double d_log10e = 0.434294481903251827651128918916605082294;
+
+	//! ln(2)
+	constexpr float f_ln2 = 0.693147180559945309417232121458176568076f;
+	//! ln(2)
+	constexpr double d_ln2 = 0.693147180559945309417232121458176568076;
+
+	//! ln(10)
+	constexpr float f_ln10 = 2.30258509299404568401799145468436420760f;
+	//! ln(10)
+	constexpr double d_ln10 = 2.30258509299404568401799145468436420760;
+
+	//! sqrt(2)
+	constexpr float f_sqrt2 = 1.41421356237309504880168872420969807857f;
+	//! sqrt(2)
+	constexpr double d_sqrt2 = 1.41421356237309504880168872420969807857;
+
+	//! sqrt(3)
+	constexpr float f_sqrt3 = 1.73205080756887729352744634150587236694f;
+	//! sqrt(3)
+	constexpr double d_sqrt3 = 1.73205080756887729352744634150587236694;
+
+	//! phi (golden ratio)
+	constexpr float f_phi = 1.61803398874989484820458683436563811772f;
+	//! phi (golden ratio)
+	constexpr double d_phi = 1.61803398874989484820458683436563811772;
+
+	//! catalan's constant
+	constexpr float f_catalan = 0.91596559417721901505460351493238411077f;
+	//! catalan's constant
+	constexpr double d_catalan = 0.91596559417721901505460351493238411077;
+
+	//! euler-mascheroni constant
+	constexpr float f_egamma = 0.57721566490153286060651209008240243104f;
+	//! euler-mascheroni constant
+	constexpr double d_egamma = 0.57721566490153286060651209008240243104;
+	
+	//! apery's constant
+	constexpr float f_apery = 1.20205690315959428539973816151144999076f;
+	//! apery's constant
+	constexpr double d_apery = 1.20205690315959428539973816151144999076;
+
+	//! gaisher's constant
+	constexpr float f_gaisher = 1.28242712910062263687534256886979172776f;
+	//! gaisher's constant
+	constexpr double d_gaisher = 1.28242712910062263687534256886979172776;
+	
+	//! epsilon; smallest value v such that 1.0 + v != 1.0
+	constexpr float f_epsilon = FLT_EPSILON;
+	//! epsilon; smallest value v such that 1.0 + v != 1.0
+	constexpr double d_epsilon = DBL_EPSILON;
+	//! epsilon; smallest value v such that 1.0 + v != 1.0
+	constexpr long double ld_epsilon = LDBL_EPSILON;
+
+	//! small value; default value in relative equals checks
+	constexpr float f_small = 1e-8f;
+	//! small value; default value in relative equals checks
+	constexpr double d_small = 1e-8;
+	//! small value; default value in relative equals checks
+	constexpr long double ld_small = 1e-8l;
+
+	#pragma endregion
+
+	inline bool req(const float l, const float r, const float rng = f_small)
 	{
 		return std::abs(l - r) < rng;
 	}
@@ -153,64 +281,6 @@ namespace dym
 	{
 		return (T(0) < val) - (val < T(0));
 	}
-
-	#pragma region DYM_CONSTANTS
-
-	//! pi ratio
-	constexpr float f_pi = 3.14159265358979323846264338327950288419f;		constexpr double d_pi = 3.14159265358979323846264338327950288419;
-
-	//! 2pi ratio
-	constexpr float f_2pi = 6.28318530717958647692528676655900576839f;		constexpr double d_2pi = 6.28318530717958647692528676655900576839;
-
-	//! tau (same as 2pi)
-	constexpr float f_tau = f_2pi;											constexpr double d_tau = d_2pi;
-
-	//! 1 / pi
-	constexpr float f_1_pi = 0.318309886183790671537767526745028724069f;	constexpr double d_1_pi = 0.318309886183790671537767526745028724069;
-
-	//! 2 / pi
-	constexpr float f_2_pi = 0.636619772367581343075535053490057448138f;	constexpr double d_2_pi = 0.636619772367581343075535053490057448138;
-
-	//! pi / 2
-	constexpr float f_pi_2 = 1.57079632679489661923132169163975144210f;		constexpr double d_pi_2 = 1.57079632679489661923132169163975144210;
-
-	//! pi / 4
-	constexpr float f_pi_4 = 0.785398163397448309615660845819875721049f;	constexpr double d_pi_4 = 0.785398163397448309615660845819875721049;
-
-	//! log2(pi)
-	constexpr float f_log2pi = 1.65149612947231879804327929510800733502f;	constexpr double d_log2pi = 1.65149612947231879804327929510800733502;
-
-	//! sqrt(pi)
-	constexpr float f_sqrtpi = 1.77245385090551602729816748334114518280f;	constexpr double d_sqrtpi = 1.77245385090551602729816748334114518280;
-
-	//! 2*sqrt(pi)
-	constexpr float f_2sqrtpi = 3.54490770181103205459633496668229036560f;	constexpr double d_2sqrtpi = 3.54490770181103205459633496668229036560;
-
-	//! euler's number
-	constexpr float f_e = 2.71828182845904523536028747135266249776f;		constexpr double d_e = 2.71828182845904523536028747135266249776;
-
-	//! log2(e)
-	constexpr float f_log2e = 1.44269504088896340735992468100189213743f;	constexpr double d_log2e = 1.44269504088896340735992468100189213743;
-
-	//! log10(e)
-	constexpr float f_log10e = 0.434294481903251827651128918916605082294f;	constexpr double d_log10e = 0.434294481903251827651128918916605082294;
-
-	//! ln(2)
-	constexpr float f_ln2 = 0.693147180559945309417232121458176568076f;		constexpr double d_ln2 = 0.693147180559945309417232121458176568076;
-
-	//! ln(10)
-	constexpr float f_ln10 = 2.30258509299404568401799145468436420760f;		constexpr double d_ln10 = 2.30258509299404568401799145468436420760;
-
-	//! sqrt(2)
-	constexpr float f_sqrt2 = 1.41421356237309504880168872420969807857f;	constexpr double d_sqrt2 = 1.41421356237309504880168872420969807857;
-
-	//! sqrt(3)
-	constexpr float f_sqrt3 = 1.73205080756887729352744634150587236694f;	constexpr double d_sqrt3 = 1.73205080756887729352744634150587236694;
-
-	//! epsilon; smallest value v such that 1 + v != 1
-	constexpr float f_epsilon = FLT_EPSILON;								constexpr double d_epsilon = DBL_EPSILON;
-
-	#pragma endregion
 
 }////
 
