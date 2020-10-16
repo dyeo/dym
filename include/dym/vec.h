@@ -39,6 +39,8 @@ namespace dym
 			for(std::size_t i = 0; i < d; ++i) { data[i] = static_cast<T>(0); }
 		}
 
+		~vec() = default;
+		
 		//! Initializer list constructor
 		vec(std::initializer_list<T> list)
 		{

@@ -175,6 +175,8 @@ namespace dym
 			: x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0))
 		{}
 
+		~vec() = default;
+
 		//! Initialize vec3 with three scalar values
 		inline vec(const T &s0, const T &s1, const T &s2)
 			: x(s0), y(s1), z(s2)

@@ -71,6 +71,8 @@ namespace dym
 			}
 		}
 
+		~mat() = default;
+
 		//! Initializer list constructor
 		//! Columns span left-to-right in initialization, and rows span top-to-bottom
 		//! This is because matrices are stored column-major

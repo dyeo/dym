@@ -86,6 +86,8 @@ namespace dym
 			: x(static_cast<T>(0)), y(static_cast<T>(0))
 		{}
 
+		~vec() = default;
+
 		//! Initialize vec2 with two values
 		vec(const T &s0, const T &s1)
 			: x(s0), y(s1)

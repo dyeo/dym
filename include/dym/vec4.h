@@ -394,6 +394,8 @@ namespace dym
 			: x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0)), w(static_cast<T>(0))
 		{}
 
+		~vec() = default;
+
 		//! Initialize vec4 with four scalar values
 		inline vec(const T &s0, const T &s1, const T &s2, const T &s3)
 			: x(s0), y(s1), z(s2), w(s3)
