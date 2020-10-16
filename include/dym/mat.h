@@ -565,7 +565,7 @@ namespace dym
 	template <int C, int R, typename T>
 	static std::ostream &operator<<(std::ostream &os, const mat<C, R, T> &v)
 	{
-		#ifdef  DYM_DISPLAY_ROW_COLUMN
+		#ifdef DYM_OUTPUT_ROW_MAJOR
 		const mat<C, R, T> &t = transpose(v);
 		for (std::size_t i = 0; i < C; ++i)
 		{
