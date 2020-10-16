@@ -54,7 +54,7 @@ namespace dym
 	}
 
 	template <typename T>
-	static T pow(const T &v, const int &p)
+	static T pow(const T &v, const int p)
 	{
 		T val = v;
 		for (std::size_t i = 0; i < p - 1; ++i)
@@ -114,19 +114,19 @@ namespace dym
 	}
 
 	template <typename T = long double>
-	static T lerp(const T src, const T dst, long double delta)
+	static T lerp(const T &src, const T &dst, const long double delta)
 	{
 		return (src * (1.0 - delta)) + (dst * delta);
 	}
 	
 	template <typename T = double>
-	static T lerp(const T src, const T dst, double delta)
+	static T lerp(const T &src, const T &dst, const double delta)
 	{
 		return (src * (1.0 - delta)) + (dst * delta);
 	}
 
 	template <typename T = float>
-	static T lerp(const T src, const T dst, float delta)
+	static T lerp(const T &src, const T &dst, const float delta)
 	{
 		return (src * (1.f - delta)) + (dst * delta);
 	}
