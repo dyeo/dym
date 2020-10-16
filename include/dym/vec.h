@@ -684,6 +684,13 @@ namespace dym
 		return r;
 	}
 
+	//! Component-wise saturation (clamp01)
+	template<int D, typename T = float>
+	static vec<D, T> saturate(const vec<D, T> &v)
+	{
+		return max(vec<D, T>::zero(), min(v, vec<D, T>::one()));
+	}
+
 }////
 
 //

@@ -882,6 +882,13 @@ namespace dym
 		return adjoint(m) / det(m);
 	}
 
+	//! Component-wise saturation (clamp01)
+	template<int C, int R, typename T = float>
+	static mat<C, R, T> saturate(const mat<C, R, T> &m)
+	{
+		return max(mat<C, R, T>::zero(), min(m, mat<C, R, T>::one()));
+	}
+
 }////
 
 //

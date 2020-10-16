@@ -215,7 +215,13 @@ namespace dym
 	template <typename T>
 	static constexpr T clamp(const T &v, const T &minv, const T &maxv)
 	{
-		return min(max(v, minv), maxv);
+		return max(minv, min(v, maxv));
+	}
+
+	template <typename T>
+	static constexpr T saturate(const T &v)
+	{
+		return max(0, min(v, 1));
 	}
 
 	// the following functions are probably slower than the SSE rsqrtss instruction
