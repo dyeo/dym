@@ -3,7 +3,6 @@
 
 //
 
-#include "util.h"
 #include <ostream>
 
 //
@@ -16,22 +15,11 @@ namespace dym
 	{////
 
 		///////////////////
-		//! DATA MEMBERS //
-		///////////////////
-
-		enum PercentUnits
-		{
-			Value = 0,
-			Percent = 1
-		};
-
-
-		///////////////////
 		//! CONSTRUCTORS //
 		///////////////////
 
 		//! Default constructor
-		perc()
+		constexpr perc()
 		{
 			_val = static_cast<T>(0);
 		}
@@ -39,56 +27,46 @@ namespace dym
 		~perc() = default;
 		
 		//! Copy constructor
-		perc(const perc<T> &a)
+		constexpr perc(const perc<T> &a)
 		{
 			_val = a._val;
 		}
 
 		//! Type conversion copy constructor
 		template<typename U>
-		perc(const perc<U> &a)
+		constexpr perc(const perc<U> &a)
 		{
 			_val = static_cast<T>(a._val);
 		}
 
-		//! Selectable constructor
-		perc(T amount, PercentUnits units)
-		{
-			switch (units)
-			{
-				case Value:
-				_val = amount;
-				break;
-				case Percent:
-				_val = amount * static_cast<T>(0.01f);
-				break;
-			}
-		};
+		//! Value constructor
+		constexpr perc(const T &val) : _val(val)
+		{}
 
 		///////////////////////////
 		//! RIGHT-HAND OPERATORS //
 		///////////////////////////
 
 		//! Unary negative percentage
-		perc<T> operator-()
+		perc<T> operator-() const
 		{
 			return perc<T>(-_val);
 		}
 
 		//! Percent addition
-		perc<T> operator+(const perc<T> &a)
+		perc<T> operator+(const perc<T> &a) const
 		{
 			return perc<T>(_val + a._val);
 		}
 
 		//! Percent subtraction
-		perc<T> operator-(const perc<T> &a)
+		perc<T> operator-(const perc<T> &a) const
 		{
 			return perc<T>(_val - a._val);
 		}
 
 		//! Percent multiplication
-		perc<T> operator*(const T &s)
+		perc<T> operator*(const T &s) const
 		{
 			return perc<T>(_val * s);
 		}
@@ -133,7 +111,7 @@ namespace dym
 
 		T percent() const
 		{
-			return _val * static_cast<T>(100.0f);
+			return _val * static_cast<T>(100);
 		}
 
 		T value() const
@@ -143,10 +121,6 @@ namespace dym
 
 	private:
 
-		//! Private inline constructor.
-		perc(const T &v) : _val(v)
-		{}
-
 		T _val = 0;
 
 	};////
@@ -155,16 +129,18 @@ namespace dym
 	//! GENERATOR FUNCTIONS //
 	//////////////////////////
 
-	//! Creates an percentage from a value (0..1)
-	inline perc<> value(float val)
+	//! Creates an percentage from a value [0..1]
+	template <typename  T = float>
+	static perc<T> value(const T &val)
 	{
-		return perc<float>(val, perc<float>::Value);
+		return perc<T>(val);
 	}
 
-	//! Creates an percentage from a percentage (0..100)
-	inline perc<> percent(float per)
+	//! Creates an percentage from a percentage [0..100]
+	template <typename  T = float>
+	static perc<T> percent(const T &per)
 	{
-		return perc<float>(per, perc<float>::Percent);
+		return perc<T>(per / static_cast<T>(100));
 	}
 
 	///////////////////////
@@ -195,24 +171,24 @@ namespace dym
 
 #ifndef DYM_DISABLE_LITERALS
 
-inline dym::perc<> operator "" _per(unsigned long long value)
+inline dym::perc<float> operator "" _per(unsigned long long value)
+{
+	return dym::percent<float>(static_cast<float>(value));
+}
+
+inline dym::perc<float> operator "" _per(long double value)
 {
 	return dym::percent(static_cast<float>(value));
 }
 
-inline dym::perc<> operator "" _per(long double value)
+inline dym::perc<float> operator "" _val(unsigned long long value)
 {
-	return dym::percent(static_cast<float>(value));
+	return dym::value<float>(static_cast<float>(value));
 }
 
-inline dym::perc<> operator "" _val(unsigned long long value)
+inline dym::perc<float> operator "" _val(long double value)
 {
-	return dym::value(static_cast<float>(value));
-}
-
-inline dym::perc<> operator "" _val(long double value)
-{
-	return dym::value(static_cast<float>(value));
+	return dym::value<float>(static_cast<float>(value));
 }
 
 #endif

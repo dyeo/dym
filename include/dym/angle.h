@@ -3,8 +3,6 @@
 
 //
 
-#include "util.h"
-
 #include <ostream>
 
 //
@@ -19,23 +17,13 @@ namespace dym
 	struct ang
 	{////
 
-		///////////////////
-		//! DATA MEMBERS //
-		///////////////////
-
-		enum AngleUnits
-		{
-			Radians = 0,
-			Degrees = 1
-		};
-
 
 		///////////////////
 		//! CONSTRUCTORS //
 		///////////////////
 
 		//! Default constructor
-		ang()
+		constexpr ang()
 		{
 			_rads = static_cast<T>(0);
 		}
@@ -43,62 +31,52 @@ namespace dym
 		~ang() = default;
 
 		//! Copy constructor
-		ang(const ang<T> &a)
+		constexpr ang(const ang<T> &a)
 		{
 			_rads = a._rads;
 		}
 
 		//! Type conversion copy constructor
 		template<typename U>
-		ang(const ang<U> &a)
+		constexpr ang(const ang<U> &a)
 		{
 			_rads = static_cast<T>(a._rads);
 		}
 
-		//! Selectable constructor
-		ang(T amount, AngleUnits units)
-		{
-			switch (units)
-			{
-				case Radians:
-				_rads = amount;
-				break;
-				case Degrees:
-				_rads = amount * static_cast<T>(DEG2RAD);
-				break;
-			}
-		};
+		//! Radian constructor
+		constexpr ang(const T &rads) : _rads(rads)
+		{}
 
 		///////////////////////////
 		//! RIGHT-HAND OPERATORS //
 		///////////////////////////
 
 		//! Unary negative angle
-		ang<T> operator-()
+		ang<T> operator-() const
 		{
 			return ang<T>(-_rads);
 		}
 
 		//! Angle addition
-		ang<T> operator+(const ang<T> &a)
+		ang<T> operator+(const ang<T> &a) const
 		{
 			return ang<T>(_rads + a._rads);
 		}
 
 		//! Angle subtraction
-		ang<T> operator-(const ang<T> &a)
+		ang<T> operator-(const ang<T> &a) const
 		{
 			return ang<T>(_rads - a._rads);
 		}
 
 		//! Angle multiplication
-		ang<T> operator*(const T &s)
+		ang<T> operator*(const T &s) const
 		{
 			return ang<T>(_rads * s);
 		}
 
 		//! Angle division
-		ang<T> operator/(const T &s)
+		ang<T> operator/(const T &s) const
 		{
 			return ang<T>(_rads - s);
 		}
@@ -148,9 +126,6 @@ namespace dym
 	private:
 
 		//! Private constructor.
-		ang(const T &v) : _rads(v)
-		{}
-
 		T _rads = 0;
 
 	};////
@@ -161,16 +136,16 @@ namespace dym
 
 	//! Creates an angle in degrees
 	template<typename T = float>
-	static ang<T> degrees(const T &deg)
+	static constexpr ang<T> degrees(const T &deg)
 	{
-		return ang<float>(deg, ang<T>::Degrees);
+		return ang<float>(deg * DEG2RAD);
 	}
-
+	
 	//! Creates an angle in radians
 	template<typename T = float>
-	static ang<> radians(const float &rad)
+	static constexpr ang<> radians(const T &rad)
 	{
-		return ang<float>(rad, ang<T>::Radians);
+		return ang<float>(rad);
 	}
 
 	///////////////////////
@@ -202,24 +177,24 @@ namespace dym
 
 #ifndef DYM_DISABLE_LITERALS
 
-inline dym::ang<> operator "" _deg(unsigned long long value)
+static constexpr dym::ang<float> operator "" _deg(unsigned long long value)
 {
-	return dym::degrees(static_cast<float>(value));
+	return dym::degrees<float>(static_cast<float>(value));
 }
 
-inline dym::ang<> operator "" _deg(long double value)
+static constexpr dym::ang<float> operator "" _deg(long double value)
 {
-	return dym::degrees(static_cast<float>(value));
+	return dym::degrees<float>(static_cast<float>(value));
 }
 
-inline dym::ang<> operator "" _rad(unsigned long long value)
+static constexpr dym::ang<float> operator "" _rad(unsigned long long value)
 {
-	return dym::radians(static_cast<float>(value));
+	return dym::radians<float>(static_cast<float>(value));
 }
 
-inline dym::ang<> operator "" _rad(long double value)
+static constexpr dym::ang<float> operator "" _rad(long double value)
 {
-	return dym::radians(static_cast<float>(value));
+	return dym::radians<float>(static_cast<float>(value));
 }
 
 #endif
