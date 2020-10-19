@@ -7,9 +7,6 @@
 
 //
 
-#define DEG2RAD 0.0174532925199432957692369076848861271344
-#define RAD2DEG 57.2957795130823208767981548141051703324
-
 namespace dym
 {////
 
@@ -115,7 +112,7 @@ namespace dym
 
 		T degrees() const
 		{
-			return _rads * static_cast<T>(RAD2DEG);
+			return _rads * rad2deg_v<T>;
 		}
 
 		T radians() const
@@ -138,7 +135,7 @@ namespace dym
 	template<typename T = float>
 	static constexpr ang<T> degrees(const T &deg)
 	{
-		return ang<float>(deg * DEG2RAD);
+		return ang<float>(deg * deg2rad_v<T>);
 	}
 	
 	//! Creates an angle in radians

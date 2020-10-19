@@ -869,7 +869,7 @@ namespace dym
 
 	//! Relative equality (for floating-point vectors)
 	template<int D, typename T = float>
-	static bool req(const vec<D, T> &a, const vec<D, T> &b, T rng = ld_small)
+	static bool req(const vec<D, T> &a, const vec<D, T> &b, T rng = small_v<T>)
 	{
 		bool r = true;
 		for (std::size_t i = 0; i < D; ++i)
