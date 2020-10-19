@@ -160,15 +160,17 @@ namespace dym
 	//////////////////////////
 
 	//! Creates an angle in degrees
-	ang<> degrees(float deg)
+	template<typename T = float>
+	static ang<T> degrees(const T &deg)
 	{
-		return ang<float>(deg, ang<float>::Degrees);
+		return ang<float>(deg, ang<T>::Degrees);
 	}
 
 	//! Creates an angle in radians
-	ang<> radians(float rad)
+	template<typename T = float>
+	static ang<> radians(const float &rad)
 	{
-		return ang<float>(rad, ang<float>::Radians);
+		return ang<float>(rad, ang<T>::Radians);
 	}
 
 	///////////////////////
@@ -185,7 +187,8 @@ namespace dym
 	//! MISC. OPERATORS //
 	//////////////////////
 
-	std::ostream &operator<<(std::ostream &os, const ang<> &a)
+	template<typename T = float>
+	static std::ostream &operator<<(std::ostream &os, const ang<T> &a)
 	{
 		os << a.degrees() << "deg";
 		return os;
