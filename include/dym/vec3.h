@@ -251,13 +251,13 @@ namespace dym
 		///////////////////////
 
 		//! Vector index operator
-		inline T &operator[](const std::size_t i)
+		T &operator[](const std::size_t i)
 		{
 			return data[i];
 		}
 
 		//! Vector const index operator
-		inline const T &operator[](const std::size_t i) const
+		const T &operator[](const std::size_t i) const
 		{
 			return data[i];
 		}
@@ -267,252 +267,252 @@ namespace dym
 		///////////////////////////
 
 		//! Component-wise unary negation
-		inline vec<3, T> operator - () const
+		vec<3, T> operator - () const
 		{
 			return vec<3, T>(-x, -y, -z);
 		}
 		//! Component-wise unary negation
-		inline vec<3, T> operator ~ () const
+		vec<3, T> operator ~ () const
 		{
 			return vec<3, T>(~x, ~y, ~z);
 		}
 		//! Vector assignment
-		inline vec<3, T> &operator = (const vec<3, T> &v)
+		vec<3, T> &operator = (const vec<3, T> &v)
 		{
 			x = v.x; y = v.y; z = v.z; return *this;
 		}
 
 		//! Component-wise vector multiplication
-		inline vec<3, T> operator * (const vec<3, T> &v) const
+		vec<3, T> operator * (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x * v.x, y * v.y, z * v.z);
 		}
 		//! Component-wise vector division
-		inline vec<3, T> operator / (const vec<3, T> &v) const
+		vec<3, T> operator / (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x / v.x, y / v.y, z / v.z);
 		}
 		//! Component-wise vector addition
-		inline vec<3, T> operator + (const vec<3, T> &v) const
+		vec<3, T> operator + (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x + v.x, y + v.y, z + v.z);
 		}
 		//! Component-wise vector subtraction
-		inline vec<3, T> operator - (const vec<3, T> &v) const
+		vec<3, T> operator - (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x - v.x, y - v.y, z - v.z);
 		}
 		//! Component-wise vector OR
-		inline vec<3, T> operator | (const vec<3, T> &v) const
+		vec<3, T> operator | (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x | v.x, y | v.y, z | v.z);
 		}
 		//! Component-wise vector AND
-		inline vec<3, T> operator & (const vec<3, T> &v) const
+		vec<3, T> operator & (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x & v.x, y & v.y, z & v.z);
 		}
 		//! Component-wise vector XOR
-		inline vec<3, T> operator ^ (const vec<3, T> &v) const
+		vec<3, T> operator ^ (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x ^ v.x, y ^ v.y, z ^ v.z);
 		}
 		//! Component-wise vector modulus
-		inline vec<3, T> operator % (const vec<3, T> &v) const
+		vec<3, T> operator % (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x % v.x, y % v.y, z % v.z);
 		}
 		//! Component-wise vector shift left
-		inline vec<3, T> operator << (const vec<3, T> &v) const
+		vec<3, T> operator << (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x << v.x, y << v.y, z << v.z);
 		}
 		//! Component-wise vector shift right
-		inline vec<3, T> operator >> (const vec<3, T> &v) const
+		vec<3, T> operator >> (const vec<3, T> &v) const
 		{
 			return vec<3, T>(x >> v.x, y >> v.y, z >> v.z);
 		}
 
 		//! Component-wise scalar multiplication
-		inline vec<3, T> operator * (const T &v) const
+		vec<3, T> operator * (const T &v) const
 		{
 			return vec<3, T>(x * v, y * v, z * v);
 		}
 		//! Component-wise scalar division
-		inline vec<3, T> operator / (const T &v) const
+		vec<3, T> operator / (const T &v) const
 		{
 			return vec<3, T>(x / v, y / v, z / v);
 		}
 		//! Component-wise scalar addition
-		inline vec<3, T> operator + (const T &v) const
+		vec<3, T> operator + (const T &v) const
 		{
 			return vec<3, T>(x + v, y + v, z + v);
 		}
 		//! Component-wise scalar subtraction
-		inline vec<3, T> operator - (const T &v) const
+		vec<3, T> operator - (const T &v) const
 		{
 			return vec<3, T>(x - v, y - v, z - v);
 		}
 		//! Component-wise scalar OR
-		inline vec<3, T> operator | (const T &v) const
+		vec<3, T> operator | (const T &v) const
 		{
 			return vec<3, T>(x | v, y | v, z | v);
 		}
 		//! Component-wise scalar AND
-		inline vec<3, T> operator & (const T &v) const
+		vec<3, T> operator & (const T &v) const
 		{
 			return vec<3, T>(x & v, y & v, z & v);
 		}
 		//! Component-wise scalar XOR
-		inline vec<3, T> operator ^ (const T &v) const
+		vec<3, T> operator ^ (const T &v) const
 		{
 			return vec<3, T>(x ^ v, y ^ v, z ^ v);
 		}
 		//! Component-wise scalar modulus
-		inline vec<3, T> operator % (const T &v) const
+		vec<3, T> operator % (const T &v) const
 		{
 			return vec<3, T>(x % v, y % v, z % v);
 		}
 		//! Component-wise scalar shift left
-		inline vec<3, T> operator << (const T &v) const
+		vec<3, T> operator << (const T &v) const
 		{
 			return vec<3, T>(x << v, y << v, z << v);
 		}
 		//! Component-wise scalar shift right
-		inline vec<3, T> operator >> (const T &v) const
+		vec<3, T> operator >> (const T &v) const
 		{
 			return vec<3, T>(x >> v, y >> v, z >> v);
 		}
 
 		//! Component-wise vector reference multiplication
-		inline vec<3, T> &operator *= (const vec<3, T> &v)
+		vec<3, T> &operator *= (const vec<3, T> &v)
 		{
 			x *= v.x; y *= v.y; z *= v.z; return *this;
 		}
 		//! Component-wise vector reference division
-		inline vec<3, T> &operator /= (const vec<3, T> &v)
+		vec<3, T> &operator /= (const vec<3, T> &v)
 		{
 			x /= v.x; y /= v.y; z /= v.z; return *this;
 		}
 		//! Component-wise vector reference addition
-		inline vec<3, T> &operator += (const vec<3, T> &v)
+		vec<3, T> &operator += (const vec<3, T> &v)
 		{
 			x += v.x; y += v.y; z += v.z; return *this;
 		}
 		//! Component-wise vector reference subtraction
-		inline vec<3, T> &operator -= (const vec<3, T> &v)
+		vec<3, T> &operator -= (const vec<3, T> &v)
 		{
 			x -= v.x; y -= v.y; z -= v.z; return *this;
 		}
 		//! Component-wise vector reference OR
-		inline vec<3, T> &operator |= (const vec<3, T> &v)
+		vec<3, T> &operator |= (const vec<3, T> &v)
 		{
 			x |= v.x; y |= v.y; z |= v.z; return *this;
 		}
 		//! Component-wise vector reference AND
-		inline vec<3, T> &operator &= (const vec<3, T> &v)
+		vec<3, T> &operator &= (const vec<3, T> &v)
 		{
 			x &= v.x; y &= v.y; z &= v.z; return *this;
 		}
 		//! Component-wise vector reference XOR
-		inline vec<3, T> &operator ^= (const vec<3, T> &v)
+		vec<3, T> &operator ^= (const vec<3, T> &v)
 		{
 			x ^= v.x; y ^= v.y; z ^= v.z; return *this;
 		}
 		//! Component-wise vector reference modulus
-		inline vec<3, T> &operator %= (const vec<3, T> &v)
+		vec<3, T> &operator %= (const vec<3, T> &v)
 		{
 			x %= v.x; y %= v.y; z %= v.z; return *this;
 		}
 		//! Component-wise vector reference shift left
-		inline vec<3, T> &operator <<= (const vec<3, T> &v)
+		vec<3, T> &operator <<= (const vec<3, T> &v)
 		{
 			x <<= v.x; y <<= v.y; z <<= v.z; return *this;
 		}
 		//! Component-wise vector reference shift right
-		inline vec<3, T> &operator >>= (const vec<3, T> &v)
+		vec<3, T> &operator >>= (const vec<3, T> &v)
 		{
 			x >>= v.x; y >>= v.y; z >>= v.z; return *this;
 		}
 
 		//! Component-wise scalar reference multiplication
-		inline vec<3, T> &operator *= (const T &v)
+		vec<3, T> &operator *= (const T &v)
 		{
 			x *= v; y *= v; z *= v; return *this;
 		}
 		//! Component-wise scalar reference division
-		inline vec<3, T> &operator /= (const T &v)
+		vec<3, T> &operator /= (const T &v)
 		{
 			x /= v; y /= v; z /= v; return *this;
 		}
 		//! Component-wise scalar reference addition
-		inline vec<3, T> &operator += (const T &v)
+		vec<3, T> &operator += (const T &v)
 		{
 			x += v; y += v; z += v; return *this;
 		}
 		//! Component-wise scalar reference subtraction
-		inline vec<3, T> &operator -= (const T &v)
+		vec<3, T> &operator -= (const T &v)
 		{
 			x -= v; y -= v; z -= v; return *this;
 		}
 		//! Component-wise scalar reference OR
-		inline vec<3, T> &operator |= (const T &v)
+		vec<3, T> &operator |= (const T &v)
 		{
 			x |= v; y |= v; z |= v; return *this;
 		}
 		//! Component-wise scalar reference AND
-		inline vec<3, T> &operator &= (const T &v)
+		vec<3, T> &operator &= (const T &v)
 		{
 			x &= v; y &= v; z &= v; return *this;
 		}
 		//! Component-wise scalar reference XOR
-		inline vec<3, T> &operator ^= (const T &v)
+		vec<3, T> &operator ^= (const T &v)
 		{
 			x ^= v; y ^= v; z ^= v; return *this;
 		}
 		//! Component-wise scalar reference modulus
-		inline vec<3, T> &operator %= (const T &v)
+		vec<3, T> &operator %= (const T &v)
 		{
 			x %= v; y %= v; z %= v; return *this;
 		}
 		//! Component-wise scalar reference shift left
-		inline vec<3, T> &operator <<= (const T &v)
+		vec<3, T> &operator <<= (const T &v)
 		{
 			x <<= v; y <<= v; z <<= v; return *this;
 		}
 		//! Component-wise scalar reference shift right
-		inline vec<3, T> &operator >>= (const T &v)
+		vec<3, T> &operator >>= (const T &v)
 		{
 			x >>= v; y >>= v; z >>= v; return *this;
 		}
 
 		//! Component-wise equality comparison
-		inline bool operator == (const vec<3, T> &v) const
+		bool operator == (const vec<3, T> &v) const
 		{
 			return x == v.x && y == v.y && z == v.z;
 		}
 		//! Component-wise inequality comparison
-		inline bool operator != (const vec<3, T> &v) const
+		bool operator != (const vec<3, T> &v) const
 		{
 			return x != v.x && y != v.y && z != v.z;
 		}
 		//! Component-wise less-than comparison
-		inline bool operator < (const vec<3, T> &v) const
+		bool operator < (const vec<3, T> &v) const
 		{
 			return x < v.x &&y < v.y &&z < v.z;
 		}
 		//! Component-wise greater-than comparison
-		inline bool operator > (const vec<3, T> &v) const
+		bool operator > (const vec<3, T> &v) const
 		{
 			return x > v.x && y > v.y && z > v.z;
 		}
 		//! Component-wise less-than-equals comparison
-		inline bool operator <= (const vec<3, T> &v) const
+		bool operator <= (const vec<3, T> &v) const
 		{
 			return x <= v.x && y <= v.y && z <= v.z;
 		}
 		//! Component-wise greater-than-equals comparison
-		inline bool operator >= (const vec<3, T> &v) const
+		bool operator >= (const vec<3, T> &v) const
 		{
 			return x >= v.x && y >= v.y && z >= v.z;
 		}
@@ -522,61 +522,61 @@ namespace dym
 		//////////////////////////
 
 		//! NaN vector (NaN, NaN, NaN)
-		static inline constexpr vec<3, T> nan()
+		static constexpr vec<3, T> nan()
 		{
 			return vec<3, T>(NAN, NAN, NAN);
 		}
 
 		//! Infinity vector (inf, inf, inf)
-		static inline constexpr vec<3, T> inf()
+		static constexpr vec<3, T> inf()
 		{
 			return vec<3, T>(INFINITY, INFINITY, INFINITY);
 		}
 
 		//! Zero vector (0,0,0)
-		static inline constexpr vec<3, T> zero()
+		static constexpr vec<3, T> zero()
 		{
 			return vec<3, T>(0, 0, 0);
 		}
 
 		//! One vector (1,1,1)
-		static inline constexpr vec<3, T> one()
+		static constexpr vec<3, T> one()
 		{
 			return vec<3, T>(1, 1, 1);
 		}
 
 		//! Up vector (0,1,0)
-		static inline constexpr vec<3, T> up()
+		static constexpr vec<3, T> up()
 		{
 			return vec<3, T>(0, 1, 0);
 		}
 
 		//! Down vector (0,-1,0)
-		static inline constexpr vec<3, T> down()
+		static constexpr vec<3, T> down()
 		{
 			return vec<3, T>(0, -1, 0);
 		}
 
 		//! Right vector (1,0,0)
-		static inline constexpr vec<3, T> right()
+		static constexpr vec<3, T> right()
 		{
 			return vec<3, T>(1, 0, 0);
 		}
 
 		//! Left vector (-1,0,0)
-		static inline constexpr vec<3, T> left()
+		static constexpr vec<3, T> left()
 		{
 			return vec<3, T>(-1, 0, 0);
 		}
 
 		//! Forward vector (0,0,1)
-		static inline constexpr vec<3, T> forward()
+		static constexpr vec<3, T> forward()
 		{
 			return vec<3, T>(0, 0, 1);
 		}
 
 		//! Back vector (0,0,-1)
-		static inline constexpr vec<3, T> back()
+		static constexpr vec<3, T> back()
 		{
 			return vec<3, T>(0, 0, -1);
 		}
@@ -603,7 +603,7 @@ namespace dym
 	//////////////////////
 
 	template <typename T = float>
-	inline std::ostream &operator<<(std::ostream &os, const vec<3, T> &v)
+	static std::ostream &operator<<(std::ostream &os, const vec<3, T> &v)
 	{
 		os << "| " << v.x << ' ' << v.y << ' ' << v.z << " |";
 		return os;
@@ -611,7 +611,7 @@ namespace dym
 
 	//! Scalar-Vector multiplication
 	template <typename T = float>
-	inline vec<3, T> operator*(const T &l, const vec<3, T> &r)
+	static vec<3, T> operator*(const T &l, const vec<3, T> &r)
 	{
 		return vec<3, T>(l * r.x, l * r.y, l & r.z);
 	}
@@ -623,77 +623,77 @@ namespace dym
 
 	//! Calculates the dot or scalar product of two vectors
 	template < typename T = float>
-	inline T dot(const vec<3, T> &l, const vec<3, T> &r)
+	static T dot(const vec<3, T> &l, const vec<3, T> &r)
 	{
 		return (l.x * r.x) + (l.y * r.y) + (l.z * r.z);
 	}
 
 	//! Returns length squared of vector
 	template <typename T = float>
-	inline T lengthsq(const vec<3, T> &v)
+	static T lengthsq(const vec<3, T> &v)
 	{
 		return sq(v.x) + sq(v.y) + sq(v.z);
 	}
 
 	//! Returns length of vector, or sqrt(lengthsq)
 	template <typename T = float>
-	inline T length(const vec<3, T> &v)
+	static T length(const vec<3, T> &v)
 	{
 		return sqrt(sq(v.x) + sq(v.y) + sq(v.z));
 	}
 
 	//! Returns a component-wise minimum of two vectors
 	template < typename T = float>
-	inline vec<3, T> min(const vec<3, T> &l, const vec<3, T> &r)
+	static vec<3, T> min(const vec<3, T> &l, const vec<3, T> &r)
 	{
 		return vec<3, T>(min(l.x, r.x), min(l.y, r.y), min(l.z, r.z));
 	}
 
 	//! Returns a component-wise maximum of a vector and a scalar
 	template < typename T = float>
-	inline vec<3, T> min(const vec<3, T> &l, const T &r)
+	static vec<3, T> min(const vec<3, T> &l, const T &r)
 	{
 		return vec<3, T>(min(l.x, r), min(l.y, r), min(l.z, r));
 	}
 
 	//! Returns a component-wise minimum of two vectors
 	template <typename T = float>
-	inline vec<3, T> max(const vec<3, T> &l, const vec<3, T> &r)
+	static vec<3, T> max(const vec<3, T> &l, const vec<3, T> &r)
 	{
 		return vec<3, T>(max(l.x, r.x), max(l.y, r.y), max(l.z, r.z));
 	}
 
 	//! Returns a component-wise maximum of a vector and a scalar
 	template <typename T = float>
-	inline vec<3, T> max(const vec<3, T> &l, const T &r)
+	static vec<3, T> max(const vec<3, T> &l, const T &r)
 	{
 		return vec<3, T>(max(l.x, r), max(l.y, r), max(l.z, r));
 	}
 
 	//! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
 	template<typename T = float>
-	inline vec<4, T> affine(const vec<3, T> &v)
+	static vec<4, T> affine(const vec<3, T> &v)
 	{
 		return vec<4, T>(v.x, v.y, v.z, static_cast<T>(1));
 	}
 
 	//! Returns whether vector is NaN
 	template<typename T = float>
-	inline bool isnan(const vec<3, T> &v)
+	static bool isnan(const vec<3, T> &v)
 	{
 		return std::isnan(v.x) || std::isnan(v.y) || std::isnan(v.z);
 	}
 
 	//! Returns whether vector is inf
 	template<typename T = float>
-	inline bool isinf(const vec<3, T> &v)
+	static bool isinf(const vec<3, T> &v)
 	{
 		return std::isinf(v.x) || std::isinf(v.y) || std::isinf(v.z);
 	}
 
 	//! Relative equality (for floating-point vectors)
 	template<typename T = float>
-	inline bool req(const vec<3, T> &l, const vec<3, T> &r, T rng = 1e-8)
+	static bool req(const vec<3, T> &l, const vec<3, T> &r, T rng = 1e-8)
 	{
 		return req(l.x, r.x, rng) && req(l.y, r.y, rng) && req(l.z, r.z, rng);
 	}
