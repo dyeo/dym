@@ -63,7 +63,7 @@ namespace dym
 		///////////////////
 
 		//! Default constructor
-		mat()
+		constexpr mat()
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -71,10 +71,12 @@ namespace dym
 			}
 		}
 
+		~mat() = default;
+
 		//! Initializer list constructor
 		//! Columns span left-to-right in initialization, and rows span top-to-bottom
 		//! This is because matrices are stored column-major
-		mat(std::initializer_list<T> list)
+		constexpr mat(std::initializer_list<T> list)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -83,21 +85,22 @@ namespace dym
 		}
 
 		//! Copy constructor
-		mat(const mat<C, R, T> &v)
+		constexpr mat(const mat<C, R, T> &v)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = v.arr[i];
 			}
 		}
-		template<int cm, int rm>
+
 		//! Minor matrix constructor
-		mat(const mat<cm, rm, T> &m)
+		template<int C1, int R1>
+		constexpr mat(const mat<C1, R1, T> &m)
 		{
-			DYM_STATIC_ASSERT((rm < R) && (cm < C));
-			for (std::size_t i = 0; i < cm; ++i)
+			DYM_STATIC_ASSERT((R1 < R) && (C1 < C));
+			for (std::size_t i = 0; i < C1; ++i)
 			{
-				for (std::size_t j = 0; j < rm; ++j)
+				for (std::size_t j = 0; j < R1; ++j)
 				{
 					data[i][j] = m.data[i][j];
 				}
@@ -105,7 +108,8 @@ namespace dym
 		}
 
 		//! Explicit type-conversion copy constructor
-		template<typename U> explicit mat(const mat<C, R, U> &v)
+		template<typename U>
+		explicit constexpr mat(const mat<C, R, U> &v)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -114,7 +118,7 @@ namespace dym
 		}
 
 		//! Fill constructor
-		explicit mat(const T &s)
+		explicit constexpr mat(const T &s)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -123,7 +127,7 @@ namespace dym
 		}
 
 		//! Array initializer
-		explicit mat(const T *a)
+		explicit constexpr mat(const T *a)
 		{
 			for (std::size_t i = 0; i < R * C; ++i)
 			{
@@ -520,12 +524,34 @@ namespace dym
 		}
 
 		//! Matrix identity
-		static mat<C, R, T> identity()
+		static constexpr mat<C, R, T> identity()
 		{
 			mat<C, R, T> res(static_cast<T>(0));
 			for (std::size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
 			{
 				res.data[i][i] = static_cast<T>(1);
+			}
+			return res;
+		}
+
+		//! Zero matrix
+		static constexpr mat<C, R, T> zero()
+		{
+			mat<C, R, T> res;
+			for (std::size_t i = 0; i < C * R; ++i)
+			{
+				res[i] = static_cast<T>(0);
+			}
+			return res;
+		}
+
+		//! Unit matrix
+		static constexpr mat<C, R, T> one()
+		{
+			mat<C, R, T> res;
+			for (std::size_t i = 0; i < C * R; ++i)
+			{
+				res[i] = static_cast<T>(1);
 			}
 			return res;
 		}
@@ -539,7 +565,7 @@ namespace dym
 	template <int C, int R, typename T>
 	static std::ostream &operator<<(std::ostream &os, const mat<C, R, T> &v)
 	{
-		#ifdef  DYM_DISPLAY_ROW_COLUMN
+		#ifdef DYM_OUTPUT_ROW_MAJOR
 		const mat<C, R, T> &t = transpose(v);
 		for (std::size_t i = 0; i < C; ++i)
 		{
@@ -567,7 +593,7 @@ namespace dym
 	//! Accepts a R1 x C1 matrix and a R2 x C2 matrix where C1 and R2 are equal
 	//! Returns a R1 x C2 matrix that is the product of the two original matrices
 	//! Is not commutative
-	template <int C1, int C2, int R1, int R2, typename T>
+	template <int C1, int R1, int C2, int R2, typename T>
 	static mat<C2, R1, T> operator*(const mat<C1, R1, T> &m, const mat<C2, R2, T> &n)
 	{
 		DYM_STATIC_ASSERT(C1 == R2); //! no.columns of m and no.rows of n must be equal!!!
@@ -671,7 +697,7 @@ namespace dym
 	}
 
 	//! Matrix-scalar multiplication (odd-typed)
-	template <typename U, int C, int R, typename T>
+	template <int C, int R, typename T, typename U>
 	static mat<C, R, T> operator*(const U &v, const mat<C, R, T> &m)
 	{
 		mat<C, R, T> res;
@@ -736,81 +762,65 @@ namespace dym
 	}
 
 	//! Calculates the determinant of a matrix
-	template <int d, typename T>
-	static T det(const mat<d, d, T> &m)
+	template <int D, typename T>
+	static T det(const mat<D, D, T> &m)
 	{
-		return _dethelper<T>(static_cast<T *>(m.arr), d);
-	}
-
-	template <typename T>
-	static T _dethelper(T *A, const int d)
-	{
-		if (d == 1) return A[0];
+		if (D == 1) return m[0];
 
 		T res = 0;
 
-		T *L = new T[sq(d)];
-		T *U = new T[sq(d)];
+		mat<D, D, T> l, u;
 
-		_ludecomphelper(A, L, U, d);
+		ludecompose(m, l, u, D);
 
 		T ls = 1, us = 1;
 
-		for (int s = 0; s < d; ++s)
+		for (std::size_t s = 0; s < D; ++s)
 		{
-			ls *= L[s * d + s];
-			us *= U[s * d + s];
+			ls *= l[s * D + s];
+			us *= u[s * D + s];
 		}
 		res = ls * us;
-
-		delete[] L;
-		delete[] U;
 
 		return res;
 	}
 
-	template <typename T>
-	static void _ludecomphelper(const T *A, T *L, T *U, const int d)
+	//! Decomposes a matrix into lower and upper traingular cofactor matrices
+	template <int D, typename T>
+	static void ludecompose(const mat<D, D, T> &m, mat<D, D, T> &l, mat<D, D, T> &u)
 	{
 		int i, j, k;
 		T sum = 0;
 
-		for (i = 0; i < d; i++)
+		for (i = 0; i < D; i++)
 		{
-			U[i * d + i] = 1;
+			u[i * D + i] = 1;
 		}
-		for (j = 0; j < d; j++)
+		for (j = 0; j < D; j++)
 		{
-			for (i = j; i < d; i++)
+			for (i = j; i < D; i++)
 			{
 				sum = 0;
 				for (k = 0; k < j; k++)
 				{
-					sum = sum + L[i * d + k] * U[k * d + j];
+					sum = sum + l[i * D + k] * u[k * D + j];
 				}
-				L[i * d + j] = A[i * d + j] - sum;
+				l[i * D + j] = m[i * D + j] - sum;
 			}
-			for (i = j; i < d; i++)
+			for (i = j; i < D; i++)
 			{
 				sum = 0;
 				for (k = 0; k < j; k++)
 				{
-					sum = sum + L[j * d + k] * U[k * d + i];
+					sum = sum + l[j * D + k] * u[k * D + i];
 				}
-				if (L[j * d + j] == 0)
+				if (l[j * D + j] == 0)
 				{
 					return;
 				}
-				U[j * d + i] = (A[j * d + i] - sum) / L[j * d + j];
+				u[j * D + i] = (m[j * D + i] - sum) / l[j * D + j];
 			}
 		}
-	}
-
-	//! Decomposes a matrix into lower and upper traingular cofactor matrices
-	template <int d, typename T>
-	static void ludecompose(const mat<d, d, T> &m, mat<d, d, T> &l, mat<d, d, T> &u)
-	{
-		_ludecomphelper(m.arr, l.arr, u.arr, d);
 	}
 
 	//! Flips the matrix along its diagonal (rows become columns, columns become rows)
@@ -836,13 +846,14 @@ namespace dym
 		res[C][R] = static_cast<T>(1);
 		return res;
 	}
-	template <int d, typename T>
-	static mat<d, d, T> cofactor(const mat<d, d, T> &m)
+
+	template <int D, typename T>
+	static mat<D, D, T> cofactor(const mat<D, D, T> &m)
 	{
-		mat<d, d, T> res(static_cast<T>(0));
-		for (std::size_t j = 0; j < d; ++j)
+		mat<D, D, T> res(static_cast<T>(0));
+		for (std::size_t j = 0; j < D; ++j)
 		{
-			for (std::size_t i = 0; i < d; ++i)
+			for (std::size_t i = 0; i < D; ++i)
 			{
 				res[i][j] = pow(-1, (i + 1) + (j + 1)) * det(minor(m, j, i));
 			}
@@ -851,24 +862,31 @@ namespace dym
 	}
 
 	//! Returns true if the matrix has no inverse, false otherwise
-	template <int d, typename T>
-	static bool issingular(const mat<d, d, T> &m)
+	template <int D, typename T>
+	static bool issingular(const mat<D, D, T> &m)
 	{
 		return det(m) == static_cast<T>(0);
 	}
 
 	//! Returns an adjoint of matrix m
-	template <int d, typename T>
-	static mat<d, d, T> adjoint(const mat<d, d, T> &m)
+	template <int D, typename T>
+	static mat<D, D, T> adjoint(const mat<D, D, T> &m)
 	{
 		return transpose(cofactor(m));
 	}
 
 	//! Inverts the matrix, such that m * inverse(m) = the identity
-	template<int d, typename T>
-	static mat<d, d, T> inverse(const mat<d, d, T> &m)
+	template<int D, typename T>
+	static mat<D, D, T> inverse(const mat<D, D, T> &m)
 	{
 		return adjoint(m) / det(m);
+	}
+
+	//! Component-wise saturation (clamp01)
+	template<int C, int R, typename T = float>
+	static mat<C, R, T> saturate(const mat<C, R, T> &m)
+	{
+		return max(mat<C, R, T>::zero(), min(m, mat<C, R, T>::one()));
 	}
 
 }////
