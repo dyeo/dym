@@ -27,8 +27,8 @@ namespace dym
 	template <typename T> static constexpr T catalan_v = static_cast<T>(0.9159655941772190150546035149323841107741l);
 	template <typename T> static constexpr T apery_v = static_cast<T>(1.202056903159594285399738161511449990765l);
 	template <typename T> static constexpr T glaisher_v = static_cast<T>(1.282427129100622636875342568869791727768l);
-	template <typename T> static constexpr T deg2rad_v = static_cast<T>(57.29577951308232087679815481410517033241l);
-	template <typename T> static constexpr T rad2deg_v = static_cast<T>(0.01745329251994329576923690768488612713443l);
+	template <typename T> static constexpr T deg2rad_v = static_cast<T>(0.01745329251994329576923690768488612713443l);
+	template <typename T> static constexpr T rad2deg_v = static_cast<T>(57.29577951308232087679815481410517033241l);
 	template <typename T> static constexpr T small_v = static_cast<T>(1e-8l);
 	template <typename T> static constexpr T epsilon_v = std::numeric_limits<T>::epsilon();
 
