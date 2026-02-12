@@ -15,4 +15,4 @@
 #include "mat4.h"
 #include "quat.h"
 
-#endif//_DYM_DYM_H_
+#endif //_DYM_DYM_H_
