@@ -1,5 +1,6 @@
 ## GMTK-Specific Ignores
 
+*.exe
 ./main.cpp
 
 ## Ignore Visual Studio temporary files, build results, and
@@ -198,3 +199,7 @@ ModelManifest.xml
 /main.cpp
 *.opendb
 *.db
+
+# Visual Studio code
+.vscode/
+*.code-workspace
