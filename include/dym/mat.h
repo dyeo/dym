@@ -589,6 +589,73 @@ namespace dym
 	//! MATRIX&MATRIX MULTIPLICATION //
 	///////////////////////////////////
 
+	template <size_t N, typename T>
+	static mat<N, N, T> strassen(const mat<N, N, T> &m, const mat<N, N, T> &n)
+	{
+	    if (N == 1)
+		{
+	        return mat<1, 1, T> C;
+	        C(0, 0) = A(0, 0) * B(0, 0);
+	        return C;
+	    }
+	
+	    // Split A and B into submatrices
+	    mat<N/2, N/2, T> A11, A12, A21, A22;
+	    mat<N/2, N/2, T> B11, B12, B21, B22;
+	    split(A, A11, A12, A21, A22);
+	    split(B, B11, B12, B21, B22);
+	
+	    // Compute the 7 products using Strassen's algorithm
+	    mat<N/2, N/2, T> P1 = strassen(A11 + A22, B11 + B22);
+	    mat<N/2, N/2, T> P2 = strassen(A11 + A22, B11);
+	    mat<N/2, N/2, T> P3 = strassen(A11, B12 - B22);
+	    mat<N/2, N/2, T> P4 = strassen(A11, B21 - B11);
+	    mat<N/2, N/2, T> P5 = strassen(A11 + A12, B22);
+	    mat<N/2, N/2, T> P6 = strassen(A21 - A11, B11 + B12);
+	    mat<N/2, N/2, T> P7 = strassen(A12 - A22, B21 + B22);
+	
+	    // Compute the submatrices of the result matrix
+	    mat<N/2, N/2, T> C11 = P1 + P4 - P5 + P7;
+	    mat<N/2, N/2, T> C12 = P3 + P5;
+	    mat<N/2, N/2, T> C21 = P2 + P4;
+	    mat<N/2, N/2, T> C22 = P1 - P2 + P3 + P6;
+	
+	    // Combine the submatrices into the result matrix
+	    mat<N, N, T> C;
+	    join(C11, C12, C21, C22, C);
+	    return C;
+	}
+
+	template <size_t N, typename T>
+	static void split(const mat<N, N, T>& M, mat<N/2, N/2, T>& M11, mat<N/2, N/2, T>& M12, mat<N/2, N/2, T>& M21, mat<N/2, N/2, T>& M22)
+	{
+	    for (size_t i = 0; i < N/2; ++i)
+		{
+	        for (size_t j = 0; j < N/2; ++j)
+			{
+	            M11(i, j) = M(i, j);
+		        M12(i, j) = M(i, j + N/2);
+		        M21(i, j) = M(i + N/2, j);
+		        M22(i, j) = M(i + N/2, j + N/2);
+		    }
+		}
+	}
+
+	template <size_t N, typename T>
+	static void join(const mat<N/2, N/2, T>& M11, const mat<N/2, N/2, T>& M12, const mat<N/2, N/2, T>& M21, const mat<N/2, N/2, T>& M22, mat<N, N, T>& M)
+	{
+		for (size_t i = 0; i < N/2; ++i)
+		{
+			for (size_t j = 0; j < N/2; ++j)
+			{
+				M(i, j) = M11(i, j);
+				M(i, j + N/2) = M12(i, j);
+				M(i + N/2, j) = M21(i, j);
+				M(i + N/2, j + N/2) = M22(i, j);
+			}
+		}
+	}
+
 	//! Matrix product
 	//! Accepts a R1 x C1 matrix and a R2 x C2 matrix where C1 and R2 are equal
 	//! Returns a R1 x C2 matrix that is the product of the two original matrices
