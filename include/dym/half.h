@@ -22,17 +22,17 @@ namespace dym
 		//! CONSTRUCTORS //
 		///////////////////
 
-		constexpr half()
-			:hdat(f2s(0.0f))
+		half()
+			:hdat(0u)
 		{}
 
 		~half() = default;
 
-		constexpr half(const float &f)
+		half(const float &f)
 			:hdat(f2s(f))
 		{}
 
-		constexpr half(const double &d)
+		half(const double &d)
 			: hdat(f2s(static_cast<float>(d)))
 		{}
 

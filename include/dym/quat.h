@@ -39,11 +39,12 @@ namespace dym
 			};
 			struct
 			{
-				T w, i, j, k;
-			};
-			struct
-			{
-				T w, x, y, z;
+				T w;
+				union
+				{
+					struct { T i, j, k; };
+					struct { T x, y, z; };
+				};
 			};
 		};
 
@@ -95,12 +96,12 @@ namespace dym
 		///////////////////////
 
 		//! returns reference to an element of the given quat, in the order w,i,j,k
-		T &operator[](const std::size_t i)
+		T &operator[](const size_t i)
 		{
 			return data[i];
 		}
 
-		const T &operator[](const std::size_t i) const
+		const T &operator[](const size_t i) const
 		{
 			return data[i];
 		}
@@ -342,12 +343,12 @@ namespace dym
 
 		if (dotProduct > DYM_QUAT_SLERP_THRESHOLD) return normalize(l + t * (r - l));
 
-		dot = clamp(dot, -1, 1);
+		dotProduct = clamp(dotProduct, -1, 1);
 
-		const double tht0 = acos(dot);
+		const double tht0 = acos(dotProduct);
 		const double tht = tht0 * t;
 
-		quat<T> v = r - l * dot;
+		quat<T> v = r - l * dotProduct;
 		v = normalize(v);
 
 		return l * cos(tht) + v * sin(tht);

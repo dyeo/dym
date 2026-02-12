@@ -65,7 +65,7 @@ namespace dym
 		//! Default constructor
 		constexpr mat()
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = static_cast<T>(0);
 			}
@@ -78,7 +78,7 @@ namespace dym
 		//! This is because matrices are stored column-major
 		constexpr mat(std::initializer_list<T> list)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = *(list.begin() + i);
 			}
@@ -87,7 +87,7 @@ namespace dym
 		//! Copy constructor
 		constexpr mat(const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = v.arr[i];
 			}
@@ -98,9 +98,9 @@ namespace dym
 		constexpr mat(const mat<C1, R1, T> &m)
 		{
 			DYM_STATIC_ASSERT((R1 < R) && (C1 < C));
-			for (std::size_t i = 0; i < C1; ++i)
+			for (size_t i = 0; i < C1; ++i)
 			{
-				for (std::size_t j = 0; j < R1; ++j)
+				for (size_t j = 0; j < R1; ++j)
 				{
 					data[i][j] = m.data[i][j];
 				}
@@ -111,7 +111,7 @@ namespace dym
 		template<typename U>
 		explicit constexpr mat(const mat<C, R, U> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = static_cast<T>(v.arr[i]);
 			}
@@ -120,7 +120,7 @@ namespace dym
 		//! Fill constructor
 		explicit constexpr mat(const T &s)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = s;
 			}
@@ -129,7 +129,7 @@ namespace dym
 		//! Array initializer
 		explicit constexpr mat(const T *a)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = a[i];
 			}
@@ -170,7 +170,7 @@ namespace dym
 		//! Component-wise unary negation
 		mat<C, R, T> operator - () const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = -arr[i];
 			}
@@ -179,7 +179,7 @@ namespace dym
 		//! Component-wise unary negation
 		mat<C, R, T> operator ~ () const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = ~arr[i];
 			}
@@ -188,7 +188,7 @@ namespace dym
 		//! Vector assignment
 		mat<C, R, T> &operator = (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] = v.arr[i];
 			}
@@ -198,7 +198,7 @@ namespace dym
 		//! Component-wise matrix addition
 		mat<C, R, T> operator + (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] + v.arr[i];
 			}
@@ -207,7 +207,7 @@ namespace dym
 		//! Component-wise matrix subtraction
 		mat<C, R, T> operator - (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] - v.arr[i];
 			}
@@ -216,7 +216,7 @@ namespace dym
 		//! Component-wise matrix OR
 		mat<C, R, T> operator | (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] | v.arr[i];
 			}
@@ -225,7 +225,7 @@ namespace dym
 		//! Component-wise matrix AND
 		mat<C, R, T> operator & (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] & v.arr[i];
 			}
@@ -234,7 +234,7 @@ namespace dym
 		//! Component-wise matrix XOR
 		mat<C, R, T> operator ^ (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] ^ v.arr[i];
 			}
@@ -243,7 +243,7 @@ namespace dym
 		//! Component-wise matrix modulus
 		mat<C, R, T> operator % (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] % v.arr[i];
 			}
@@ -252,7 +252,7 @@ namespace dym
 		//! Component-wise matrix shift left
 		mat<C, R, T> operator << (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] << v.arr[i];
 			}
@@ -261,7 +261,7 @@ namespace dym
 		//! Component-wise matrix shift right
 		mat<C, R, T> operator >> (const mat<C, R, T> &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] >> v.arr[i];
 			}
@@ -271,7 +271,7 @@ namespace dym
 		//! Component-wise scalar multiplication
 		mat<C, R, T> operator * (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] * v;
 			}
@@ -280,7 +280,7 @@ namespace dym
 		//! Component-wise scalar division
 		mat<C, R, T> operator / (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] / v;
 			}
@@ -289,7 +289,7 @@ namespace dym
 		//! Component-wise scalar addition
 		mat<C, R, T> operator + (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] + v;
 			}
@@ -298,7 +298,7 @@ namespace dym
 		//! Component-wise scalar subtraction
 		mat<C, R, T> operator - (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] - v;
 			}
@@ -307,7 +307,7 @@ namespace dym
 		//! Component-wise scalar OR
 		mat<C, R, T> operator | (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] | v;
 			}
@@ -316,7 +316,7 @@ namespace dym
 		//! Component-wise scalar AND
 		mat<C, R, T> operator & (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] & v;
 			}
@@ -325,7 +325,7 @@ namespace dym
 		//! Component-wise scalar XOR
 		mat<C, R, T> operator ^ (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] ^ v;
 			}
@@ -334,7 +334,7 @@ namespace dym
 		//! Component-wise scalar modulus
 		mat<C, R, T> operator % (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] % v;
 			}
@@ -343,7 +343,7 @@ namespace dym
 		//! Component-wise scalar shift left
 		mat<C, R, T> operator << (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] << v;
 			}
@@ -352,7 +352,7 @@ namespace dym
 		//! Component-wise scalar shift right
 		mat<C, R, T> operator >> (const T &v) const
 		{
-			mat<C, R, T> res; for (std::size_t i = 0; i < R * C; ++i)
+			mat<C, R, T> res; for (size_t i = 0; i < R * C; ++i)
 			{
 				res.arr[i] = arr[i] >> v;
 			}
@@ -362,7 +362,7 @@ namespace dym
 		//! Component-wise matrix reference addition
 		mat<C, R, T> &operator += (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] += v.arr[i];
 			}
@@ -371,7 +371,7 @@ namespace dym
 		//! Component-wise matrix reference subtraction
 		mat<C, R, T> &operator -= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] -= v.arr[i];
 			}
@@ -380,7 +380,7 @@ namespace dym
 		//! Component-wise matrix reference OR
 		mat<C, R, T> &operator |= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] |= v.arr[i];
 			}
@@ -389,7 +389,7 @@ namespace dym
 		//! Component-wise matrix reference AND
 		mat<C, R, T> &operator &= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] &= v.arr[i];
 			}
@@ -398,7 +398,7 @@ namespace dym
 		//! Component-wise matrix reference XOR
 		mat<C, R, T> &operator ^= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] ^= v.arr[i];
 			}
@@ -407,7 +407,7 @@ namespace dym
 		//! Component-wise matrix reference modulus
 		mat<C, R, T> &operator %= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] %= v.arr[i];
 			}
@@ -416,7 +416,7 @@ namespace dym
 		//! Component-wise matrix reference shift left
 		mat<C, R, T> &operator <<= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] <<= v.arr[i];
 			}
@@ -425,7 +425,7 @@ namespace dym
 		//! Component-wise matrix reference shift right
 		mat<C, R, T> &operator >>= (const mat<C, R, T> &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] >>= v.arr[i];
 			}
@@ -435,7 +435,7 @@ namespace dym
 		//! Component-wise scalar reference multiplication
 		mat<C, R, T> &operator *= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] *= v;
 			}
@@ -444,7 +444,7 @@ namespace dym
 		//! Component-wise scalar reference division
 		mat<C, R, T> &operator /= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] /= v;
 			}
@@ -453,7 +453,7 @@ namespace dym
 		//! Component-wise scalar reference addition
 		mat<C, R, T> &operator += (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] += v;
 			}
@@ -462,7 +462,7 @@ namespace dym
 		//! Component-wise scalar reference subtraction
 		mat<C, R, T> &operator -= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] -= v;
 			}
@@ -471,7 +471,7 @@ namespace dym
 		//! Component-wise scalar reference OR
 		mat<C, R, T> &operator |= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] |= v;
 			}
@@ -480,7 +480,7 @@ namespace dym
 		//! Component-wise scalar reference AND
 		mat<C, R, T> &operator &= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] &= v;
 			}
@@ -489,7 +489,7 @@ namespace dym
 		//! Component-wise scalar reference XOR
 		mat<C, R, T> &operator ^= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] ^= v;
 			}
@@ -498,7 +498,7 @@ namespace dym
 		//! Component-wise scalar reference modulus
 		mat<C, R, T> &operator %= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] %= v;
 			}
@@ -507,7 +507,7 @@ namespace dym
 		//! Component-wise scalar reference shift left
 		mat<C, R, T> &operator <<= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] <<= v;
 			}
@@ -516,7 +516,7 @@ namespace dym
 		//! Component-wise scalar reference shift right
 		mat<C, R, T> &operator >>= (const T &v)
 		{
-			for (std::size_t i = 0; i < R * C; ++i)
+			for (size_t i = 0; i < R * C; ++i)
 			{
 				arr[i] >>= v;
 			}
@@ -527,7 +527,7 @@ namespace dym
 		static constexpr mat<C, R, T> identity()
 		{
 			mat<C, R, T> res(static_cast<T>(0));
-			for (std::size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
+			for (size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
 			{
 				res.data[i][i] = static_cast<T>(1);
 			}
@@ -538,7 +538,7 @@ namespace dym
 		static constexpr mat<C, R, T> zero()
 		{
 			mat<C, R, T> res;
-			for (std::size_t i = 0; i < C * R; ++i)
+			for (size_t i = 0; i < C * R; ++i)
 			{
 				res[i] = static_cast<T>(0);
 			}
@@ -549,7 +549,7 @@ namespace dym
 		static constexpr mat<C, R, T> one()
 		{
 			mat<C, R, T> res;
-			for (std::size_t i = 0; i < C * R; ++i)
+			for (size_t i = 0; i < C * R; ++i)
 			{
 				res[i] = static_cast<T>(1);
 			}
@@ -567,17 +567,17 @@ namespace dym
 	{
 		#ifdef DYM_OUTPUT_ROW_MAJOR
 		const mat<C, R, T> &t = transpose(v);
-		for (std::size_t i = 0; i < C; ++i)
+		for (size_t i = 0; i < C; ++i)
 		{
 			os << "| ";
-			for (std::size_t j = 0; j < R; ++j)
+			for (size_t j = 0; j < R; ++j)
 			{
 				os << t[i][j] << ' ';
 			}
 			os << "|\n";
 		};
 		#else
-		for (std::size_t i = 0; i < C; ++i)
+		for (size_t i = 0; i < C; ++i)
 		{
 			os << v.data[i]; (i < C - 1) ? os << '\n' : os << ' ';
 		}
@@ -590,37 +590,33 @@ namespace dym
 	///////////////////////////////////
 
 	template <size_t N, typename T>
-	static mat<N, N, T> strassen(const mat<N, N, T> &m, const mat<N, N, T> &n)
+	static mat<N, N, T> strassen(const mat<N, N, T> &l, const mat<N, N, T> &r)
 	{
 	    if (N == 1)
 		{
-	        return mat<1, 1, T> C;
-	        C(0, 0) = A(0, 0) * B(0, 0);
-	        return C;
+	        mat<1, 1, T> r;
+	        r[0][0] = l[0][0] * r[0][0];
+	        return r;
 	    }
 	
-	    // Split A and B into submatrices
-	    mat<N/2, N/2, T> A11, A12, A21, A22;
-	    mat<N/2, N/2, T> B11, B12, B21, B22;
-	    split(A, A11, A12, A21, A22);
-	    split(B, B11, B12, B21, B22);
+	    mat<N/2, N/2, T> l11, l12, l21, l22;
+	    mat<N/2, N/2, T> r11, r12, r21, r22;
+	    split(l, l11, l12, l21, l22);
+	    split(r, r11, r12, r21, r22);
 	
-	    // Compute the 7 products using Strassen's algorithm
-	    mat<N/2, N/2, T> P1 = strassen(A11 + A22, B11 + B22);
-	    mat<N/2, N/2, T> P2 = strassen(A11 + A22, B11);
-	    mat<N/2, N/2, T> P3 = strassen(A11, B12 - B22);
-	    mat<N/2, N/2, T> P4 = strassen(A11, B21 - B11);
-	    mat<N/2, N/2, T> P5 = strassen(A11 + A12, B22);
-	    mat<N/2, N/2, T> P6 = strassen(A21 - A11, B11 + B12);
-	    mat<N/2, N/2, T> P7 = strassen(A12 - A22, B21 + B22);
+	    mat<N/2, N/2, T> P1 = strassen(l11 + l22, r11 + r22);
+	    mat<N/2, N/2, T> P2 = strassen(l11 + l22, r11);
+	    mat<N/2, N/2, T> P3 = strassen(l11, r12 - r22);
+	    mat<N/2, N/2, T> P4 = strassen(l11, r21 - r11);
+	    mat<N/2, N/2, T> P5 = strassen(l11 + l12, r22);
+	    mat<N/2, N/2, T> P6 = strassen(l21 - l11, r11 + r12);
+	    mat<N/2, N/2, T> P7 = strassen(l12 - l22, r21 + r22);
 	
-	    // Compute the submatrices of the result matrix
 	    mat<N/2, N/2, T> C11 = P1 + P4 - P5 + P7;
 	    mat<N/2, N/2, T> C12 = P3 + P5;
 	    mat<N/2, N/2, T> C21 = P2 + P4;
 	    mat<N/2, N/2, T> C22 = P1 - P2 + P3 + P6;
 	
-	    // Combine the submatrices into the result matrix
 	    mat<N, N, T> C;
 	    join(C11, C12, C21, C22, C);
 	    return C;
@@ -665,11 +661,11 @@ namespace dym
 	{
 		DYM_STATIC_ASSERT(C1 == R2); //! no.columns of m and no.rows of n must be equal!!!
 		mat<C2, R1, T> res(static_cast<T>(0));
-		for (std::size_t i = 0; i < R1; ++i)
+		for (size_t i = 0; i < R1; ++i)
 		{
-			for (std::size_t j = 0; j < C2; ++j)
+			for (size_t j = 0; j < C2; ++j)
 			{
-				for (std::size_t k = 0; k < R2; ++k)
+				for (size_t k = 0; k < R2; ++k)
 				{
 					res[j][i] += m.data[k][i] * n.data[j][k];
 				}
@@ -685,11 +681,11 @@ namespace dym
 	static mat<C, R, T> &operator*=(mat<C, R, T> &m, const mat<C, R, T> &n)
 	{
 		mat<C, R, T> res(static_cast<T>(0));
-		for (std::size_t i = 0; i < R; ++i)
+		for (size_t i = 0; i < R; ++i)
 		{
-			for (std::size_t j = 0; j < C; ++j)
+			for (size_t j = 0; j < C; ++j)
 			{
-				for (std::size_t k = 0; k < R; ++k)
+				for (size_t k = 0; k < R; ++k)
 				{
 					res[j][i] += m.data[k][i] * n.data[j][k];
 				}
@@ -707,9 +703,9 @@ namespace dym
 	static vec<R, T> operator*(const mat<C, R, T> &m, const vec<R, T> &v)
 	{
 		vec<R, T> res(static_cast<T>(0));
-		for (std::size_t i = 0; i < R; ++i)
+		for (size_t i = 0; i < R; ++i)
 		{
-			for (std::size_t j = 0; j < C; ++j)
+			for (size_t j = 0; j < C; ++j)
 			{
 				res.data[i] += m.data[j][i] * v.data[j];
 			}
@@ -722,9 +718,9 @@ namespace dym
 	static vec<C, T> operator*(const vec<C, T> &v, const mat<C, R, T> &m)
 	{
 		vec<C, T> res(static_cast<T>(0));
-		for (std::size_t i = 0; i < C; ++i)
+		for (size_t i = 0; i < C; ++i)
 		{
-			for (std::size_t j = 0; j < R; ++j)
+			for (size_t j = 0; j < R; ++j)
 			{
 				res.data[i] += m.data[i][j] * v.data[j];
 			}
@@ -737,9 +733,9 @@ namespace dym
 	static vec<C, T> &operator*=(vec<C, T> &v, const mat<C, R, T> &m)
 	{
 		vec<C, T> res(static_cast<T>(0));
-		for (std::size_t i = 0; i < C; ++i)
+		for (size_t i = 0; i < C; ++i)
 		{
-			for (std::size_t j = 0; j < R; ++j)
+			for (size_t j = 0; j < R; ++j)
 			{
 				res.data[i] += m.data[i][j] * v.data[j];
 			}
@@ -756,7 +752,7 @@ namespace dym
 	static mat<C, R, T> operator*(const T &v, const mat<C, R, T> &m)
 	{
 		mat<C, R, T> res;
-		for (std::size_t i = 0; i < R * C; ++i)
+		for (size_t i = 0; i < R * C; ++i)
 		{
 			res.arr[i] = v * m.arr[i];
 		}
@@ -768,7 +764,7 @@ namespace dym
 	static mat<C, R, T> operator*(const U &v, const mat<C, R, T> &m)
 	{
 		mat<C, R, T> res;
-		for (std::size_t i = 0; i < R * C; ++i)
+		for (size_t i = 0; i < R * C; ++i)
 		{
 			res.arr[i] = static_cast<T>(v) * m.arr[i];
 		}
@@ -784,7 +780,7 @@ namespace dym
 	static mat<C, R, T> mult(const mat<C, R, T> &m, const mat<C, R, T> &n)
 	{
 		mat<C, R, T> res;
-		for (std::size_t i = 0; i < R * C; ++i)
+		for (size_t i = 0; i < R * C; ++i)
 		{
 			res.arr[i] = m.arr[i] * n.arr[i];
 		}
@@ -796,7 +792,7 @@ namespace dym
 	static T trace(const mat<C, R, T> &m)
 	{
 		T res = 0;
-		for (std::size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
+		for (size_t i = 0; i < DYM_MIN_OF(R, C); ++i)
 		{
 			res += m.data[i][i];
 		}
@@ -812,11 +808,11 @@ namespace dym
 		int mini = 0;
 		int minj = 0;
 
-		for (std::size_t i = 0; i < R; ++i)
+		for (size_t i = 0; i < R; ++i)
 		{
 			if (i != rx)
 			{
-				minj = 0; for (std::size_t j = 0; j < C; ++j)
+				minj = 0; for (size_t j = 0; j < C; ++j)
 				{
 					if (j != cx)
 					{
@@ -842,7 +838,7 @@ namespace dym
 
 		T ls = 1, us = 1;
 
-		for (std::size_t s = 0; s < D; ++s)
+		for (size_t s = 0; s < D; ++s)
 		{
 			ls *= l[s * D + s];
 			us *= u[s * D + s];
@@ -895,9 +891,9 @@ namespace dym
 	static mat<R, C, T> transpose(const mat<C, R, T> &m)
 	{
 		mat<R, C, T> res(static_cast<T>(0));
-		for (std::size_t i = 0; i < C; ++i)
+		for (size_t i = 0; i < C; ++i)
 		{
-			for (std::size_t j = 0; j < R; ++j)
+			for (size_t j = 0; j < R; ++j)
 			{
 				res[j][i] = m[i][j];
 			}
@@ -918,9 +914,9 @@ namespace dym
 	static mat<D, D, T> cofactor(const mat<D, D, T> &m)
 	{
 		mat<D, D, T> res(static_cast<T>(0));
-		for (std::size_t j = 0; j < D; ++j)
+		for (size_t j = 0; j < D; ++j)
 		{
-			for (std::size_t i = 0; i < D; ++i)
+			for (size_t i = 0; i < D; ++i)
 			{
 				res[i][j] = pow(-1, (i + 1) + (j + 1)) * det(minor(m, j, i));
 			}

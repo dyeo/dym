@@ -20,12 +20,12 @@ namespace dym
 		static constexpr bool is_writable = (I0 != I1 && I0 != I2 && I0 != I3 && I1 != I2 && I1 != I3 && I2 != I3);
 		typedef typename std::conditional<is_writable, swizzle4<I0, I1, I2, I3, T>, struct duplicate_components_swizzle>::type writable_type;
 		
-		T &operator[](const std::size_t i)
+		T &operator[](const size_t i)
 		{
 			return static_cast<T *const>(this)[i];
 		}
 
-		const T &operator[](const std::size_t i) const
+		const T &operator[](const size_t i) const
 		{
 			return static_cast<T *const>(this)[i];
 		}

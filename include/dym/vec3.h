@@ -232,14 +232,14 @@ namespace dym
 		{
 			if (d2 < 3)
 			{
-				for (std::size_t i = 0; i < d2; ++i)
+				for (size_t i = 0; i < d2; ++i)
 				{
 					data[i] = v.data[i];
 				}
 			}
 			else
 			{
-				for (std::size_t i = 0; i < 3; ++i)
+				for (size_t i = 0; i < 3; ++i)
 				{
 					data[i] = v.data[i];
 				}
@@ -251,13 +251,13 @@ namespace dym
 		///////////////////////
 
 		//! Vector index operator
-		T &operator[](const std::size_t i)
+		T &operator[](const size_t i)
 		{
 			return data[i];
 		}
 
 		//! Vector const index operator
-		const T &operator[](const std::size_t i) const
+		const T &operator[](const size_t i) const
 		{
 			return data[i];
 		}

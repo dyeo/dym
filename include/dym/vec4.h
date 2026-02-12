@@ -471,14 +471,14 @@ namespace dym
 		{
 			if (d2 < 4)
 			{
-				for (std::size_t i = 0; i < d2; ++i)
+				for (size_t i = 0; i < d2; ++i)
 				{
 					data[i] = v.data[i];
 				}
 			}
 			else
 			{
-				for (std::size_t i = 0; i < 4; ++i)
+				for (size_t i = 0; i < 4; ++i)
 				{
 					data[i] = v.data[i];
 				}
@@ -490,13 +490,13 @@ namespace dym
 		///////////////////////
 
 		//! Vector index operator
-		T &operator[](const std::size_t i)
+		T &operator[](const size_t i)
 		{
 			return data[i];
 		}
 
 		//! Vector const index operator
-		const T &operator[](const std::size_t i) const
+		const T &operator[](const size_t i) const
 		{
 			return data[i];
 		}
@@ -911,7 +911,7 @@ namespace dym
 
 	//! Relative equality (for floating-point vectors)
 	template<typename T = float>
-	static bool req(const vec<4, T> &a, const vec<4, T> &b, const T &rng = small_v<T>)
+	static bool req(const vec<4, T> &l, const vec<4, T> &r, const T &rng = small_v<T>)
 	{
 		return req(l.x, r.x, rng) && req(l.y, r.y, rng) && req(l.z, r.z, rng) && req(l.w, r.w, rng);
 	}

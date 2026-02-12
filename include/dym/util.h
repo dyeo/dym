@@ -53,7 +53,7 @@ namespace dym
 	static T pow(const T &v, const int p)
 	{
 		T val = v;
-		for (std::size_t i = 0; i < p - 1; ++i)
+		for (size_t i = 0; i < p - 1; ++i)
 		{
 			val *= v;
 		}

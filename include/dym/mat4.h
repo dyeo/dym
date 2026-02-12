@@ -127,10 +127,10 @@ namespace dym
 		template<int cm, int rm>
 		constexpr mat(const mat<cm, rm, T> &m)
 		{
-			DYM_STATIC_ASSERT((rm < r) && (cm < c));
-			for (std::size_t i = 0; i < cm; ++i)
+			DYM_STATIC_ASSERT((rm < rows()) && (cm < cols()));
+			for (size_t i = 0; i < cm; ++i)
 			{
-				for (std::size_t j = 0; j < rm; ++j)
+				for (size_t j = 0; j < rm; ++j)
 				{
 					data[i][j] = m.data[i][j];
 				}
@@ -991,7 +991,7 @@ namespace dym
 		vec3 translation(m.translation());
 		rotation = transpose(rotation);
 		translation = -rotation * translation;
-		return mat4(rotation, translation);
+		return mat<4, 4, T>(rotation, translation);
 	}
 
 	///////////////////////

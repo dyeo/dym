@@ -115,10 +115,10 @@ namespace dym
 		template<int cm, int rm>
 		constexpr mat(const mat<cm, rm, T> &m)
 		{
-			DYM_STATIC_ASSERT((rm < r) && (cm < c));
-			for (std::size_t i = 0; i < cm; ++i)
+			DYM_STATIC_ASSERT((rm < rows()) && (cm < cols()));
+			for (size_t i = 0; i < cm; ++i)
 			{
-				for (std::size_t j = 0; j < rm; ++j)
+				for (size_t j = 0; j < rm; ++j)
 				{
 					data[i][j] = m.data[i][j];
 				}
@@ -130,38 +130,38 @@ namespace dym
 		///////////////////////
 
 		//! Column function - returns column as vector of T
-		vec<3, T> col(const std::size_t i) const
+		vec<3, T> col(const size_t i) const
 		{
 			return data[i];
 		}
 
 		//! Row function - returns row as vector of T
-		vec<3, T> row(const std::size_t i) const
+		vec<3, T> row(const size_t i) const
 		{
 			vec<3, T> v = vec<3, T>(arr[i], arr[i + 3], arr[i + 6]);
 			return v;
 		}
 
 		//! Matrix index operator - returns column
-		vec<3, T> &operator[](const std::size_t i)
+		vec<3, T> &operator[](const size_t i)
 		{
 			return data[i];
 		}
 
 		//! Matrix const index operator - returns column
-		const vec<3, T> &operator[](const std::size_t i) const
+		const vec<3, T> &operator[](const size_t i) const
 		{
 			return data[i];
 		}
 
 		//! Matrix linear array index operator - returns element 
-		T &operator()(const std::size_t i)
+		T &operator()(const size_t i)
 		{
 			return arr[i];
 		}
 
 		//! Matrix linear array const index operator - returns element
-		const T &operator()(const std::size_t i) const
+		const T &operator()(const size_t i) const
 		{
 			return arr[i];
 		}

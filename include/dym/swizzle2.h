@@ -21,12 +21,12 @@ namespace dym
 
 		typedef typename std::conditional<is_writable, swizzle2<I0, I1, T>, struct duplicate_components_swizzle>::type writable_type;
 
-		T &operator[](const std::size_t i)
+		T &operator[](const size_t i)
 		{
 			return static_cast<T *const>(this)[i];
 		}
 
-		const T &operator[](const std::size_t i) const
+		const T &operator[](const size_t i) const
 		{
 			return static_cast<T *const>(this)[i];
 		}
