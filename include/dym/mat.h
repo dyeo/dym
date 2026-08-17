@@ -596,7 +596,7 @@ namespace dym
     {
       for (dim_t j = 0; j < C; ++j)
       {
-        res.data[i] += m.data[j][i] * v.data[j];
+        res[i] += m.data[j][i] * v[j];
       }
     }
     return res;
@@ -611,7 +611,7 @@ namespace dym
     {
       for (dim_t j = 0; j < R; ++j)
       {
-        res.data[i] += m.data[i][j] * v.data[j];
+        res[i] += m.data[i][j] * v[j];
       }
     }
     return res;
@@ -626,7 +626,7 @@ namespace dym
     {
       for (dim_t j = 0; j < R; ++j)
       {
-        res.data[i] += m.data[i][j] * v.data[j];
+        res[i] += m.data[i][j] * v[j];
       }
     }
     return v = res;

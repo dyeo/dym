@@ -11,12 +11,13 @@
 //
 
 #include "vec.h"
+#include <cstddef>
+#include <type_traits>
 
 #ifndef DYM_DISABLE_SWIZZLING
 #include "swizzle2.h"
 #include "swizzle3.h"
 #include "swizzle4.h"
-#include <cstddef>
 #endif
 
 //
@@ -243,21 +244,20 @@ namespace dym
     template <dim_t d2>
     constexpr vec(const vec<d2, T> &v)
     {
-      if (d2 < 3)
+      if constexpr (d2 > 0)
       {
-        for (dim_t i = 0; i < d2; ++i)
-        {
-          data[i] = v.data[i];
-        }
+        x = v[0];
       }
-      else
+      if constexpr (d2 > 1)
       {
-        for (dim_t i = 0; i < 3; ++i)
-        {
-          data[i] = v.data[i];
-        }
+        y = v[1];
+      }
+      if constexpr (d2 > 2)
+      {
+        z = v[2];
       }
     }
+
 
     ///////////////////////
     //! ACCESS OPERATORS //
@@ -266,12 +266,24 @@ namespace dym
     //! Vector index operator
     constexpr T &operator[](const std::size_t i)
     {
+      if (std::is_constant_evaluated())
+      {
+        if (i == 0) return x;
+        if (i == 1) return y;
+        if (i == 2) return z;
+      }
       return data[i];
     }
 
     //! Vector const index operator
     constexpr const T &operator[](const std::size_t i) const
     {
+      if (std::is_constant_evaluated())
+      {
+        if (i == 0) return x;
+        if (i == 1) return y;
+        if (i == 2) return z;
+      }
       return data[i];
     }
 

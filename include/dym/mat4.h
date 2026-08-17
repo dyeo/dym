@@ -114,7 +114,7 @@ namespace dym
 
     //! Creates a homogeneous transformation matrix out of a rotation matrix and a displacement vector
     constexpr mat(const mat<3, 3, T> &r, const vec<3, T> &d)
-        : arr{r.arr[0], r.arr[1], r.arr[2], 0, r.arr[3], r.arr[4], r.arr[5], 0, r.arr[6], r.arr[7], r.arr[8], 0, d.data[0], d.data[1], d.data[2], T{1}}
+        : arr{r.arr[0], r.arr[1], r.arr[2], 0, r.arr[3], r.arr[4], r.arr[5], 0, r.arr[6], r.arr[7], r.arr[8], 0, d[0], d[1], d[2], T{1}}
     {
     }
 

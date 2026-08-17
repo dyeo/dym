@@ -451,7 +451,7 @@ namespace dym
     os << "| ";
     for (dim_t i = 0; i < D; ++i)
     {
-      os << v.data[i] << ' ';
+      os << v[i] << ' ';
     }
     os << "|";
     return os;
@@ -464,7 +464,7 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = l * r[i];
+      res[i] = l * r[i];
     }
     return res;
   }
@@ -514,7 +514,7 @@ namespace dym
   template <class T = float>
   static constexpr T cross(const vec<2, T> &l, const vec<2, T> &r)
   {
-    return (l.data[0] * r.data[1]) - (l.data[0] * r.data[1]);
+    return (l[0] * r[1]) - (l[0] * r[1]);
   }
 
   //! Calculates the cross product of two vectors
@@ -522,9 +522,9 @@ namespace dym
   static constexpr vec<3, T> cross(const vec<3, T> &l, const vec<3, T> &r)
   {
     return vec<3, T>{
-        (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]),
-        (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]),
-        (l.data[0] * r.data[1]) - (l.data[1] * r.data[0])};
+        (l[1] * r[2]) - (l[2] * r[1]),
+        (l[2] * r[0]) - (l[0] * r[2]),
+        (l[0] * r[1]) - (l[1] * r[0])};
   }
 
   //! Calculates the cross product of two vectors
@@ -532,9 +532,9 @@ namespace dym
   static constexpr vec<4, T> cross(const vec<4, T> &l, const vec<4, T> &r)
   {
     return vec<4, T>{
-        (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]),
-        (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]),
-        (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]),
+        (l[1] * r[2]) - (l[2] * r[1]),
+        (l[2] * r[0]) - (l[0] * r[2]),
+        (l[0] * r[1]) - (l[1] * r[0]),
         T{0}};
   }
 
@@ -545,7 +545,7 @@ namespace dym
     T res = 0;
     for (dim_t i = 0; i < D; ++i)
     {
-      res += sq(v.data[i]);
+      res += sq(v[i]);
     }
     return res;
   }
@@ -557,7 +557,7 @@ namespace dym
     T res = 0;
     for (dim_t i = 0; i < D; ++i)
     {
-      res += sq(v.data[i]);
+      res += sq(v[i]);
     }
     return sqrt(res);
   }
@@ -583,7 +583,7 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = min((l[i], r[i]));
+      res[i] = min((l[i], r[i]));
     }
     return res;
   }
@@ -595,7 +595,7 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = min((l[i], r));
+      res[i] = min((l[i], r));
     }
     return res;
   }
@@ -607,7 +607,7 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = max(l[i], r[i]);
+      res[i] = max(l[i], r[i]);
     }
     return res;
   }
@@ -619,7 +619,7 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = max(l[i], r);
+      res[i] = max(l[i], r);
     }
     return res;
   }
@@ -693,7 +693,7 @@ namespace dym
   template <class T = float>
   static constexpr vec<4, T> point(const vec<3, T> &xyz)
   {
-    return vec<4, T>{xyz.data[0], xyz.data[1], xyz.data[2], T{1}};
+    return vec<4, T>{xyz[0], xyz[1], xyz[2], T{1}};
   }
 
   //! Point vector constructor (x,y,z,1)

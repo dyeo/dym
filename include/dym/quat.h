@@ -19,6 +19,7 @@
 #include <cmath>
 #include <ostream>
 #include <cstddef>
+#include <type_traits>
 
 //
 
@@ -81,21 +82,21 @@ namespace dym
 
     //! initialize quat with one scalar (s) and a vec3 of complex (ijk)
     constexpr quat(const T &s, const vec<3, T> &ijk)
-        : w(s), i(ijk.data[0]), j(ijk.data[1]), k(ijk.data[2])
+        : w(s), i(ijk[0]), j(ijk[1]), k(ijk[2])
     {
     }
 
     //! initialize quat with vec4 of complex(3)scalar(1)
     //! NOTE: w becomes first element!
     constexpr quat(const vec<4, T> &xyzw)
-        : w(xyzw.data[3]), i(xyzw.data[0]), j(xyzw.data[1]), k(xyzw.data[2])
+        : w(xyzw[3]), i(xyzw[0]), j(xyzw[1]), k(xyzw[2])
     {
     }
 
     //! Copy constructor
     template <class U>
     constexpr quat(const quat<U> &q)
-        : w(static_cast<T>(q.data[0])), i(static_cast<T>(q.data[1])), j(static_cast<T>(q.data[2])), k(static_cast<T>(q.data[3]))
+        : w(static_cast<T>(q.w)), i(static_cast<T>(q.i)), j(static_cast<T>(q.j)), k(static_cast<T>(q.k))
     {
     }
 
@@ -110,14 +111,28 @@ namespace dym
     ///////////////////////
 
     //! returns reference to an element of the given quat, in the order w,i,j,k
-    constexpr T &operator[](const std::size_t i)
+    constexpr T &operator[](const std::size_t index)
     {
-      return data[i];
+      if (std::is_constant_evaluated())
+      {
+        if (index == 0) return w;
+        if (index == 1) return i;
+        if (index == 2) return j;
+        if (index == 3) return k;
+      }
+      return data[index];
     }
 
-    constexpr const T &operator[](const std::size_t i) const
+    constexpr const T &operator[](const std::size_t index) const
     {
-      return data[i];
+      if (std::is_constant_evaluated())
+      {
+        if (index == 0) return w;
+        if (index == 1) return i;
+        if (index == 2) return j;
+        if (index == 3) return k;
+      }
+      return data[index];
     }
 
     ///////////////////////////
