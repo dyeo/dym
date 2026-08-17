@@ -1,54 +1,49 @@
-#ifndef _DYM_MAT2_H_
-#define _DYM_MAT2_H_
+#ifndef DYM_MAT2_H_INCLUDED
+#define DYM_MAT2_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
 #include "mat.h"
 #include "angle.h"
+#include <initializer_list>
+#include <cstddef>
 
 //
 
 namespace dym
 { ////
 
-  //! A column-major matrix spanning r rows and c columns
+  //! A specialized 2x2 square matrix
   template <class T>
   struct mat<2, 2, T>
   {
+    using type = T;
+    static constexpr dim_t cols = 2;
+    static constexpr dim_t rows = 2;
+    static constexpr dim_t dim = 2;
+    static constexpr dim_t size = 4;
+
     ///////////////////
     //! DATA MEMBERS //
     ///////////////////
-
-    constexpr int rows() const
-    {
-      return 2;
-    }
-
-    constexpr int cols() const
-    {
-      return 2;
-    }
-
-    constexpr int dim() const
-    {
-      return 2;
-    }
 
     //! Unioned data members
     union
     {
       struct
       {
-        vec<2, T> data[2];
+        vec<cols, T> data[rows];
       };
       struct
       {
-        T arr[4];
+        T arr[size];
       };
     };
 
@@ -58,7 +53,7 @@ namespace dym
 
     //! Default constructor
     constexpr mat()
-      : arr{static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)}
+      : arr{T{1}, T{0}, T{0}, T{1}}
     {
     }
 
@@ -123,13 +118,13 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <dim_t cm, dim_t rm>
-    constexpr mat(const mat<cm, rm, T> &m)
+    template <dim_t C1, dim_t R1>
+    constexpr mat(const mat<C1, R1, T> &m)
     {
-      DYM_STATIC_ASSERT((rm < rows()) && (cm < cols()));
-      for (dim_t i = 0; i < cm; ++i)
+      static_assert((C1 < cols) && (R1 < rows), "Minor matrix must be smaller than original matrix");
+      for (dim_t i = 0; i < C1; ++i)
       {
-        for (dim_t j = 0; j < rm; ++j)
+        for (dim_t j = 0; j < R1; ++j)
         {
           data[i][j] = m.data[i][j];
         }
@@ -141,38 +136,38 @@ namespace dym
     ///////////////////////
 
     //! Column function - returns column as vector of T
-    vec<2, T> col(const size_t i)
+    vec<2, T> col(const std::size_t i)
     {
       return data[i];
     }
 
     //! Row function - returns row as vector of T
-    vec<2, T> row(const size_t i)
+    vec<2, T> row(const std::size_t i)
     {
       vec<2, T> v = vec<2, T>(arr[i], arr[i + 2]);
       return v;
     }
 
     //! Matrix index operator - returns column
-    vec<2, T> &operator[](const size_t i)
+    constexpr vec<2, T> &operator[](const std::size_t i)
     {
       return data[i];
     }
 
     //! Matrix const index operator - returns column
-    const vec<2, T> &operator[](const size_t i) const
+    constexpr const vec<2, T> &operator[](const std::size_t i) const
     {
       return data[i];
     }
 
     //! Matrix linear array index operator - returns element
-    T &operator()(const size_t i)
+    constexpr T &operator()(const std::size_t i)
     {
       return arr[i];
     }
 
     //! Matrix linear array const index operator - returns element
-    const T &operator()(const size_t i) const
+    constexpr const T &operator()(const std::size_t i) const
     {
       return arr[i];
     }
@@ -182,17 +177,17 @@ namespace dym
     ////////////////
 
     //! Component-wise unary negation
-    mat<2, 2, T> operator-() const
+    constexpr mat<2, 2, T> operator-() const
     {
       return mat<2, 2, T>(-arr[0], -arr[1], -arr[2], -arr[3]);
     }
     //! Component-wise unary negation
-    mat<2, 2, T> operator~() const
+    constexpr mat<2, 2, T> operator~() const
     {
       return mat<2, 2, T>(~arr[0], ~arr[1], ~arr[2], ~arr[3]);
     }
     //! Vector assignment
-    mat<2, 2, T> &operator=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator=(const mat<2, 2, T> &m)
     {
       arr[0] = m.arr[0];
       arr[1] = m.arr[1];
@@ -202,99 +197,99 @@ namespace dym
     }
 
     //! Component-wise matrix addition
-    mat<2, 2, T> operator+(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator+(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] + m.arr[0], arr[1] + m.arr[1], arr[2] + m.arr[2], arr[3] + m.arr[3]);
     }
     //! Component-wise matrix subtraction
-    mat<2, 2, T> operator-(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator-(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] - m.arr[0], arr[1] - m.arr[1], arr[2] - m.arr[2], arr[3] - m.arr[3]);
     }
     //! Component-wise matrix OR
-    mat<2, 2, T> operator|(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator|(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] | m.arr[0], arr[1] | m.arr[1], arr[2] | m.arr[2], arr[3] | m.arr[3]);
     }
     //! Component-wise matrix AND
-    mat<2, 2, T> operator&(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator&(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] & m.arr[0], arr[1] & m.arr[1], arr[2] & m.arr[2], arr[3] & m.arr[3]);
     }
     //! Component-wise matrix XOR
-    mat<2, 2, T> operator^(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator^(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] ^ m.arr[0], arr[1] ^ m.arr[1], arr[2] ^ m.arr[2], arr[3] ^ m.arr[3]);
     }
     //! Component-wise matrix modulus
-    mat<2, 2, T> operator%(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator%(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] % m.arr[0], arr[1] % m.arr[1], arr[2] % m.arr[2], arr[3] % m.arr[3]);
     }
     //! Component-wise matrix shift left
-    mat<2, 2, T> operator<<(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator<<(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] << m.arr[0], arr[1] << m.arr[1], arr[2] << m.arr[2], arr[3] << m.arr[3]);
     }
     //! Component-wise matrix shift right
-    mat<2, 2, T> operator>>(const mat<2, 2, T> &m) const
+    constexpr mat<2, 2, T> operator>>(const mat<2, 2, T> &m) const
     {
       return mat<2, 2, T>(arr[0] >> m.arr[0], arr[1] >> m.arr[1], arr[2] >> m.arr[2], arr[3] >> m.arr[3]);
     }
 
     //! Component-wise scalar multiplication
-    mat<2, 2, T> operator*(const T &v) const
+    constexpr mat<2, 2, T> operator*(const T &v) const
     {
       return mat<2, 2, T>(arr[0] * v, arr[1] * v, arr[2] * v, arr[3] * v);
     }
     //! Component-wise scalar division
-    mat<2, 2, T> operator/(const T &v) const
+    constexpr mat<2, 2, T> operator/(const T &v) const
     {
       return mat<2, 2, T>(arr[0] / v, arr[1] / v, arr[2] / v, arr[3] / v);
     }
     //! Component-wise scalar addition
-    mat<2, 2, T> operator+(const T &v) const
+    constexpr mat<2, 2, T> operator+(const T &v) const
     {
       return mat<2, 2, T>(arr[0] + v, arr[1] + v, arr[2] + v, arr[3] + v);
     }
     //! Component-wise scalar subtraction
-    mat<2, 2, T> operator-(const T &v) const
+    constexpr mat<2, 2, T> operator-(const T &v) const
     {
       return mat<2, 2, T>(arr[0] - v, arr[1] - v, arr[2] - v, arr[3] - v);
     }
     //! Component-wise scalar OR
-    mat<2, 2, T> operator|(const T &v) const
+    constexpr mat<2, 2, T> operator|(const T &v) const
     {
       return mat<2, 2, T>(arr[0] | v, arr[1] | v, arr[2] | v, arr[3] | v);
     }
     //! Component-wise scalar AND
-    mat<2, 2, T> operator&(const T &v) const
+    constexpr mat<2, 2, T> operator&(const T &v) const
     {
       return mat<2, 2, T>(arr[0] & v, arr[1] & v, arr[2] & v, arr[3] & v);
     }
     //! Component-wise scalar XOR
-    mat<2, 2, T> operator^(const T &v) const
+    constexpr mat<2, 2, T> operator^(const T &v) const
     {
       return mat<2, 2, T>(arr[0] ^ v, arr[1] ^ v, arr[2] ^ v, arr[3] ^ v);
     }
     //! Component-wise scalar modulus
-    mat<2, 2, T> operator%(const T &v) const
+    constexpr mat<2, 2, T> operator%(const T &v) const
     {
       return mat<2, 2, T>(arr[0] % v, arr[1] % v, arr[2] % v, arr[3] % v);
     }
     //! Component-wise scalar shift left
-    mat<2, 2, T> operator<<(const T &v) const
+    constexpr mat<2, 2, T> operator<<(const T &v) const
     {
       return mat<2, 2, T>(arr[0] << v, arr[1] << v, arr[2] << v, arr[3] << v);
     }
     //! Component-wise scalar shift right
-    mat<2, 2, T> operator>>(const T &v) const
+    constexpr mat<2, 2, T> operator>>(const T &v) const
     {
       return mat<2, 2, T>(arr[0] >> v, arr[1] >> v, arr[2] >> v, arr[3] >> v);
     }
 
     //! Component-wise matrix reference addition
-    mat<2, 2, T> &operator+=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator+=(const mat<2, 2, T> &m)
     {
       arr[0] += m.arr[0];
       arr[1] += m.arr[1];
@@ -303,7 +298,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference subtraction
-    mat<2, 2, T> &operator-=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator-=(const mat<2, 2, T> &m)
     {
       arr[0] -= m.arr[0];
       arr[1] -= m.arr[1];
@@ -312,7 +307,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference OR
-    mat<2, 2, T> &operator|=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator|=(const mat<2, 2, T> &m)
     {
       arr[0] |= m.arr[0];
       arr[1] |= m.arr[1];
@@ -321,7 +316,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference AND
-    mat<2, 2, T> &operator&=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator&=(const mat<2, 2, T> &m)
     {
       arr[0] &= m.arr[0];
       arr[1] &= m.arr[1];
@@ -330,7 +325,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference XOR
-    mat<2, 2, T> &operator^=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator^=(const mat<2, 2, T> &m)
     {
       arr[0] ^= m.arr[0];
       arr[1] ^= m.arr[1];
@@ -339,7 +334,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference modulus
-    mat<2, 2, T> &operator%=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator%=(const mat<2, 2, T> &m)
     {
       arr[0] %= m.arr[0];
       arr[1] %= m.arr[1];
@@ -348,7 +343,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference shift left
-    mat<2, 2, T> &operator<<=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator<<=(const mat<2, 2, T> &m)
     {
       arr[0] <<= m.arr[0];
       arr[1] <<= m.arr[1];
@@ -357,7 +352,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference shift right
-    mat<2, 2, T> &operator>>=(const mat<2, 2, T> &m)
+    constexpr mat<2, 2, T> &operator>>=(const mat<2, 2, T> &m)
     {
       arr[0] >>= m.arr[0];
       arr[1] >>= m.arr[1];
@@ -367,7 +362,7 @@ namespace dym
     }
 
     //! Component-wise scalar reference multiplication
-    mat<2, 2, T> &operator*=(const T &v)
+    constexpr mat<2, 2, T> &operator*=(const T &v)
     {
       arr[0] *= v;
       arr[1] *= v;
@@ -376,7 +371,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference division
-    mat<2, 2, T> &operator/=(const T &v)
+    constexpr mat<2, 2, T> &operator/=(const T &v)
     {
       arr[0] /= v;
       arr[1] /= v;
@@ -385,7 +380,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference addition
-    mat<2, 2, T> &operator+=(const T &v)
+    constexpr mat<2, 2, T> &operator+=(const T &v)
     {
       arr[0] += v;
       arr[1] += v;
@@ -394,7 +389,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference subtraction
-    mat<2, 2, T> &operator-=(const T &v)
+    constexpr mat<2, 2, T> &operator-=(const T &v)
     {
       arr[0] -= v;
       arr[1] -= v;
@@ -403,7 +398,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference OR
-    mat<2, 2, T> &operator|=(const T &v)
+    constexpr mat<2, 2, T> &operator|=(const T &v)
     {
       arr[0] |= v;
       arr[1] |= v;
@@ -412,7 +407,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference AND
-    mat<2, 2, T> &operator&=(const T &v)
+    constexpr mat<2, 2, T> &operator&=(const T &v)
     {
       arr[0] &= v;
       arr[1] &= v;
@@ -421,7 +416,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference XOR
-    mat<2, 2, T> &operator^=(const T &v)
+    constexpr mat<2, 2, T> &operator^=(const T &v)
     {
       arr[0] ^= v;
       arr[1] ^= v;
@@ -430,7 +425,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference modulus
-    mat<2, 2, T> &operator%=(const T &v)
+    constexpr mat<2, 2, T> &operator%=(const T &v)
     {
       arr[0] %= v;
       arr[1] %= v;
@@ -439,7 +434,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference shift left
-    mat<2, 2, T> &operator<<=(const T &v)
+    constexpr mat<2, 2, T> &operator<<=(const T &v)
     {
       arr[0] <<= v;
       arr[1] <<= v;
@@ -448,7 +443,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference shift right
-    mat<2, 2, T> &operator>>=(const T &v)
+    constexpr mat<2, 2, T> &operator>>=(const T &v)
     {
       arr[0] >>= v;
       arr[1] >>= v;
@@ -571,24 +566,27 @@ namespace dym
   ///////////////////////
   //! TYPE DEFINITIONS //
   ///////////////////////
-
-  typedef mat<2, 2, float> mat2, mat2f;
-  typedef mat<2, 2, double> mat2d;
-  typedef mat<2, 2, unsigned char> mat2uc;
-  typedef mat<2, 2, char> mat2c;
-  typedef mat<2, 2, unsigned short> mat2us;
-  typedef mat<2, 2, short> mat2s;
-  typedef mat<2, 2, unsigned int> mat2ui;
-  typedef mat<2, 2, int> mat2i;
-  typedef mat<2, 2, unsigned long> mat2ul;
-  typedef mat<2, 2, long> mat2l;
+  using mat2 = mat<2, 2, float>;
+  using mat2f = mat2;
+  using mat2d = mat<2, 2, double>;
+  using mat2uc = mat<2, 2, unsigned char>;
+  using mat2c = mat<2, 2, char>;
+  using mat2us = mat<2, 2, unsigned short>;
+  using mat2s = mat<2, 2, short>;
+  using mat2ui = mat<2, 2, unsigned int>;
+  using mat2i = mat<2, 2, int>;
+  using mat2ul = mat<2, 2, unsigned long>;
+  using mat2l = mat<2, 2, long>;
 
 } ////
 
 //
 
+
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 
-#endif //_DYM_MAT2_H_
+#endif //DYM_MAT2_H_INCLUDED

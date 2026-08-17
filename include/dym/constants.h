@@ -1,5 +1,5 @@
-#ifndef _DYM_CONSTANTS_H_
-#define _DYM_CONSTANTS_H_
+#ifndef DYM_CONSTANTS_H_INCLUDED
+#define DYM_CONSTANTS_H_INCLUDED
 
 #include <limits>
 

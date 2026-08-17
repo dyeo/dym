@@ -1,8 +1,9 @@
-#ifndef _DYM_ANGLE_H_
-#define _DYM_ANGLE_H_
+#ifndef DYM_ANGLE_H_INCLUDED
+#define DYM_ANGLE_H_INCLUDED
 
 //
 
+#include "constants.h"
 #include <ostream>
 
 //
@@ -21,7 +22,7 @@ namespace dym
     //! Default constructor
     constexpr ang()
     {
-      _rads = static_cast<T>(0);
+      _rads = T{0};
     }
 
     ~ang() = default;
@@ -49,58 +50,58 @@ namespace dym
     ///////////////////////////
 
     //! Unary negative angle
-    ang<T> operator-() const
+    constexpr ang<T> operator-() const
     {
       return ang<T>(-_rads);
     }
 
     //! Angle addition
-    ang<T> operator+(const ang<T> &a) const
+    constexpr ang<T> operator+(const ang<T> &a) const
     {
       return ang<T>(_rads + a._rads);
     }
 
     //! Angle subtraction
-    ang<T> operator-(const ang<T> &a) const
+    constexpr ang<T> operator-(const ang<T> &a) const
     {
       return ang<T>(_rads - a._rads);
     }
 
     //! Angle multiplication
-    ang<T> operator*(const T &s) const
+    constexpr ang<T> operator*(const T &s) const
     {
       return ang<T>(_rads * s);
     }
 
     //! Angle division
-    ang<T> operator/(const T &s) const
+    constexpr ang<T> operator/(const T &s) const
     {
       return ang<T>(_rads / s);
     }
 
     //! Angle reference addition
-    ang<T> &operator+=(const ang<T> &a)
+    constexpr ang<T> &operator+=(const ang<T> &a)
     {
       _rads += a._rads;
       return *this;
     }
 
     //! Angle reference subtraction
-    ang<T> &operator-=(const ang<T> &a)
+    constexpr ang<T> &operator-=(const ang<T> &a)
     {
       _rads -= a._rads;
       return *this;
     }
 
     //! Angle reference multiplication
-    ang<T> &operator*=(const T &s)
+    constexpr ang<T> &operator*=(const T &s)
     {
       _rads *= s;
       return *this;
     }
 
     //! Angle reference division
-    ang<T> &operator/=(const T &s)
+    constexpr ang<T> &operator/=(const T &s)
     {
       _rads /= s;
       return *this;
@@ -110,12 +111,12 @@ namespace dym
     //! ACCESS FUNCTIONS //
     ///////////////////////
 
-    T degrees() const
+    constexpr T degrees() const
     {
       return _rads * rad2deg_v<T>;
     }
 
-    T radians() const
+    constexpr T radians() const
     {
       return _rads;
     }
@@ -148,11 +149,11 @@ namespace dym
   //! TYPE DEFINITIONS //
   ///////////////////////
 
-  typedef ang<float> angf;
+  using angf = ang<float>;
 
-  typedef ang<double> angd;
+  using angd = ang<double>;
 
-  typedef ang<int> angi;
+  using angi = ang<int>;
 
   //////////////////////
   //! MISC. OPERATORS //

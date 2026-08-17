@@ -1,10 +1,12 @@
-#ifndef _DYM_VEC3_H_
-#define _DYM_VEC3_H_
+#ifndef DYM_VEC3_H_INCLUDED
+#define DYM_VEC3_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
@@ -14,6 +16,8 @@
 #include "swizzle2.h"
 #include "swizzle3.h"
 #include "swizzle4.h"
+#include <initializer_list>
+#include <cstddef>
 #endif
 
 //
@@ -24,6 +28,10 @@ namespace dym
   template <class T>
   struct vec<3, T>
   {
+    using type = T;
+    static constexpr dim_t dim = 3;
+    static constexpr dim_t size = 3;
+
     ///////////////////
     //! DATA MEMBERS //
     ///////////////////
@@ -32,7 +40,7 @@ namespace dym
     {
       struct
       {
-        T data[3];
+        T data[size];
       };
       struct
       {
@@ -173,7 +181,7 @@ namespace dym
 
     //! Default constructor
     constexpr vec()
-        : x(static_cast<T>(0)), y(static_cast<T>(0)), z(static_cast<T>(0))
+        : x(T{0}), y(T{0}), z(T{0})
     {
     }
 
@@ -262,13 +270,13 @@ namespace dym
     ///////////////////////
 
     //! Vector index operator
-    T &operator[](const size_t i)
+    constexpr T &operator[](const std::size_t i)
     {
       return data[i];
     }
 
     //! Vector const index operator
-    const T &operator[](const size_t i) const
+    constexpr const T &operator[](const std::size_t i) const
     {
       return data[i];
     }
@@ -278,17 +286,17 @@ namespace dym
     ///////////////////////////
 
     //! Component-wise unary negation
-    vec<3, T> operator-() const
+    constexpr vec<3, T> operator-() const
     {
       return vec<3, T>(-x, -y, -z);
     }
     //! Component-wise unary negation
-    vec<3, T> operator~() const
+    constexpr vec<3, T> operator~() const
     {
       return vec<3, T>(~x, ~y, ~z);
     }
     //! Vector assignment
-    vec<3, T> &operator=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator=(const vec<3, T> &v)
     {
       x = v.x;
       y = v.y;
@@ -297,109 +305,109 @@ namespace dym
     }
 
     //! Component-wise vector multiplication
-    vec<3, T> operator*(const vec<3, T> &v) const
+    constexpr vec<3, T> operator*(const vec<3, T> &v) const
     {
       return vec<3, T>(x * v.x, y * v.y, z * v.z);
     }
     //! Component-wise vector division
-    vec<3, T> operator/(const vec<3, T> &v) const
+    constexpr vec<3, T> operator/(const vec<3, T> &v) const
     {
       return vec<3, T>(x / v.x, y / v.y, z / v.z);
     }
     //! Component-wise vector addition
-    vec<3, T> operator+(const vec<3, T> &v) const
+    constexpr vec<3, T> operator+(const vec<3, T> &v) const
     {
       return vec<3, T>(x + v.x, y + v.y, z + v.z);
     }
     //! Component-wise vector subtraction
-    vec<3, T> operator-(const vec<3, T> &v) const
+    constexpr vec<3, T> operator-(const vec<3, T> &v) const
     {
       return vec<3, T>(x - v.x, y - v.y, z - v.z);
     }
     //! Component-wise vector OR
-    vec<3, T> operator|(const vec<3, T> &v) const
+    constexpr vec<3, T> operator|(const vec<3, T> &v) const
     {
       return vec<3, T>(x | v.x, y | v.y, z | v.z);
     }
     //! Component-wise vector AND
-    vec<3, T> operator&(const vec<3, T> &v) const
+    constexpr vec<3, T> operator&(const vec<3, T> &v) const
     {
       return vec<3, T>(x & v.x, y & v.y, z & v.z);
     }
     //! Component-wise vector XOR
-    vec<3, T> operator^(const vec<3, T> &v) const
+    constexpr vec<3, T> operator^(const vec<3, T> &v) const
     {
       return vec<3, T>(x ^ v.x, y ^ v.y, z ^ v.z);
     }
     //! Component-wise vector modulus
-    vec<3, T> operator%(const vec<3, T> &v) const
+    constexpr vec<3, T> operator%(const vec<3, T> &v) const
     {
       return vec<3, T>(x % v.x, y % v.y, z % v.z);
     }
     //! Component-wise vector shift left
-    vec<3, T> operator<<(const vec<3, T> &v) const
+    constexpr vec<3, T> operator<<(const vec<3, T> &v) const
     {
       return vec<3, T>(x << v.x, y << v.y, z << v.z);
     }
     //! Component-wise vector shift right
-    vec<3, T> operator>>(const vec<3, T> &v) const
+    constexpr vec<3, T> operator>>(const vec<3, T> &v) const
     {
       return vec<3, T>(x >> v.x, y >> v.y, z >> v.z);
     }
 
     //! Component-wise scalar multiplication
-    vec<3, T> operator*(const T &v) const
+    constexpr vec<3, T> operator*(const T &v) const
     {
       return vec<3, T>(x * v, y * v, z * v);
     }
     //! Component-wise scalar division
-    vec<3, T> operator/(const T &v) const
+    constexpr vec<3, T> operator/(const T &v) const
     {
       return vec<3, T>(x / v, y / v, z / v);
     }
     //! Component-wise scalar addition
-    vec<3, T> operator+(const T &v) const
+    constexpr vec<3, T> operator+(const T &v) const
     {
       return vec<3, T>(x + v, y + v, z + v);
     }
     //! Component-wise scalar subtraction
-    vec<3, T> operator-(const T &v) const
+    constexpr vec<3, T> operator-(const T &v) const
     {
       return vec<3, T>(x - v, y - v, z - v);
     }
     //! Component-wise scalar OR
-    vec<3, T> operator|(const T &v) const
+    constexpr vec<3, T> operator|(const T &v) const
     {
       return vec<3, T>(x | v, y | v, z | v);
     }
     //! Component-wise scalar AND
-    vec<3, T> operator&(const T &v) const
+    constexpr vec<3, T> operator&(const T &v) const
     {
       return vec<3, T>(x & v, y & v, z & v);
     }
     //! Component-wise scalar XOR
-    vec<3, T> operator^(const T &v) const
+    constexpr vec<3, T> operator^(const T &v) const
     {
       return vec<3, T>(x ^ v, y ^ v, z ^ v);
     }
     //! Component-wise scalar modulus
-    vec<3, T> operator%(const T &v) const
+    constexpr vec<3, T> operator%(const T &v) const
     {
       return vec<3, T>(x % v, y % v, z % v);
     }
     //! Component-wise scalar shift left
-    vec<3, T> operator<<(const T &v) const
+    constexpr vec<3, T> operator<<(const T &v) const
     {
       return vec<3, T>(x << v, y << v, z << v);
     }
     //! Component-wise scalar shift right
-    vec<3, T> operator>>(const T &v) const
+    constexpr vec<3, T> operator>>(const T &v) const
     {
       return vec<3, T>(x >> v, y >> v, z >> v);
     }
 
     //! Component-wise vector reference multiplication
-    vec<3, T> &operator*=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator*=(const vec<3, T> &v)
     {
       x *= v.x;
       y *= v.y;
@@ -407,7 +415,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference division
-    vec<3, T> &operator/=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator/=(const vec<3, T> &v)
     {
       x /= v.x;
       y /= v.y;
@@ -415,7 +423,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference addition
-    vec<3, T> &operator+=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator+=(const vec<3, T> &v)
     {
       x += v.x;
       y += v.y;
@@ -423,7 +431,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference subtraction
-    vec<3, T> &operator-=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator-=(const vec<3, T> &v)
     {
       x -= v.x;
       y -= v.y;
@@ -431,7 +439,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference OR
-    vec<3, T> &operator|=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator|=(const vec<3, T> &v)
     {
       x |= v.x;
       y |= v.y;
@@ -439,7 +447,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference AND
-    vec<3, T> &operator&=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator&=(const vec<3, T> &v)
     {
       x &= v.x;
       y &= v.y;
@@ -447,7 +455,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference XOR
-    vec<3, T> &operator^=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator^=(const vec<3, T> &v)
     {
       x ^= v.x;
       y ^= v.y;
@@ -455,7 +463,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference modulus
-    vec<3, T> &operator%=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator%=(const vec<3, T> &v)
     {
       x %= v.x;
       y %= v.y;
@@ -463,7 +471,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference shift left
-    vec<3, T> &operator<<=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator<<=(const vec<3, T> &v)
     {
       x <<= v.x;
       y <<= v.y;
@@ -471,7 +479,7 @@ namespace dym
       return *this;
     }
     //! Component-wise vector reference shift right
-    vec<3, T> &operator>>=(const vec<3, T> &v)
+    constexpr vec<3, T> &operator>>=(const vec<3, T> &v)
     {
       x >>= v.x;
       y >>= v.y;
@@ -480,7 +488,7 @@ namespace dym
     }
 
     //! Component-wise scalar reference multiplication
-    vec<3, T> &operator*=(const T &v)
+    constexpr vec<3, T> &operator*=(const T &v)
     {
       x *= v;
       y *= v;
@@ -488,7 +496,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference division
-    vec<3, T> &operator/=(const T &v)
+    constexpr vec<3, T> &operator/=(const T &v)
     {
       x /= v;
       y /= v;
@@ -496,7 +504,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference addition
-    vec<3, T> &operator+=(const T &v)
+    constexpr vec<3, T> &operator+=(const T &v)
     {
       x += v;
       y += v;
@@ -504,7 +512,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference subtraction
-    vec<3, T> &operator-=(const T &v)
+    constexpr vec<3, T> &operator-=(const T &v)
     {
       x -= v;
       y -= v;
@@ -512,7 +520,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference OR
-    vec<3, T> &operator|=(const T &v)
+    constexpr vec<3, T> &operator|=(const T &v)
     {
       x |= v;
       y |= v;
@@ -520,7 +528,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference AND
-    vec<3, T> &operator&=(const T &v)
+    constexpr vec<3, T> &operator&=(const T &v)
     {
       x &= v;
       y &= v;
@@ -528,7 +536,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference XOR
-    vec<3, T> &operator^=(const T &v)
+    constexpr vec<3, T> &operator^=(const T &v)
     {
       x ^= v;
       y ^= v;
@@ -536,7 +544,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference modulus
-    vec<3, T> &operator%=(const T &v)
+    constexpr vec<3, T> &operator%=(const T &v)
     {
       x %= v;
       y %= v;
@@ -544,7 +552,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference shift left
-    vec<3, T> &operator<<=(const T &v)
+    constexpr vec<3, T> &operator<<=(const T &v)
     {
       x <<= v;
       y <<= v;
@@ -552,7 +560,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference shift right
-    vec<3, T> &operator>>=(const T &v)
+    constexpr vec<3, T> &operator>>=(const T &v)
     {
       x >>= v;
       y >>= v;
@@ -561,32 +569,32 @@ namespace dym
     }
 
     //! Component-wise equality comparison
-    bool operator==(const vec<3, T> &v) const
+    constexpr bool operator==(const vec<3, T> &v) const
     {
       return x == v.x && y == v.y && z == v.z;
     }
     //! Component-wise inequality comparison
-    bool operator!=(const vec<3, T> &v) const
+    constexpr bool operator!=(const vec<3, T> &v) const
     {
       return x != v.x && y != v.y && z != v.z;
     }
     //! Component-wise less-than comparison
-    bool operator<(const vec<3, T> &v) const
+    constexpr bool operator<(const vec<3, T> &v) const
     {
       return x < v.x && y < v.y && z < v.z;
     }
     //! Component-wise greater-than comparison
-    bool operator>(const vec<3, T> &v) const
+    constexpr bool operator>(const vec<3, T> &v) const
     {
       return x > v.x && y > v.y && z > v.z;
     }
     //! Component-wise less-than-equals comparison
-    bool operator<=(const vec<3, T> &v) const
+    constexpr bool operator<=(const vec<3, T> &v) const
     {
       return x <= v.x && y <= v.y && z <= v.z;
     }
     //! Component-wise greater-than-equals comparison
-    bool operator>=(const vec<3, T> &v) const
+    constexpr bool operator>=(const vec<3, T> &v) const
     {
       return x >= v.x && y >= v.y && z >= v.z;
     }
@@ -660,17 +668,17 @@ namespace dym
   ///////////////////////
   //! TYPE DEFINITIONS //
   ///////////////////////
-
-  typedef vec<3, float> vec3, vec3f;
-  typedef vec<3, double> vec3d;
-  typedef vec<3, unsigned char> vec3uc;
-  typedef vec<3, char> vec3c;
-  typedef vec<3, unsigned short> vec3us;
-  typedef vec<3, short> vec3s;
-  typedef vec<3, unsigned int> vec3ui;
-  typedef vec<3, int> vec3i;
-  typedef vec<3, unsigned long> vec3ul;
-  typedef vec<3, long> vec3l;
+  using vec3 = vec<3, float>;
+  using vec3f = vec3;
+  using vec3d = vec<3, double>;
+  using vec3uc = vec<3, unsigned char>;
+  using vec3c = vec<3, char>;
+  using vec3us = vec<3, unsigned short>;
+  using vec3s = vec<3, short>;
+  using vec3ui = vec<3, unsigned int>;
+  using vec3i = vec<3, int>;
+  using vec3ul = vec<3, unsigned long>;
+  using vec3l = vec<3, long>;
 
   //////////////////////
   //! MISC. OPERATORS //
@@ -747,7 +755,7 @@ namespace dym
   template <class T = float>
   static vec<4, T> affine(const vec<3, T> &v)
   {
-    return vec<4, T>(v.x, v.y, v.z, static_cast<T>(1));
+    return vec<4, T>(v.x, v.y, v.z, T{1});
   }
 
   //! Returns whether vector is NaN
@@ -775,7 +783,9 @@ namespace dym
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 

@@ -1,10 +1,12 @@
-#ifndef _DYM_VEC2_H_
-#define _DYM_VEC2_H_
+#ifndef DYM_VEC2_H_INCLUDED
+#define DYM_VEC2_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
@@ -14,6 +16,8 @@
 #include "swizzle2.h"
 #include "swizzle3.h"
 #include "swizzle4.h"
+#include <initializer_list>
+#include <cstddef>
 #endif
 
 //
@@ -24,6 +28,10 @@ namespace dym
   template <class T>
   struct vec<2, T>
   {
+    using type = T;
+    static constexpr dim_t dim = 2;
+    static constexpr dim_t size = 2;
+
     ///////////////////
     //! DATA MEMBERS //
     ///////////////////
@@ -32,7 +40,7 @@ namespace dym
     {
       struct
       {
-        T data[2];
+        T data[size];
       };
       struct
       {
@@ -84,7 +92,7 @@ namespace dym
 
     //! Default constructor
     constexpr vec()
-      : x(static_cast<T>(0)), y(static_cast<T>(0))
+      : x(T{0}), y(T{0})
     {
     }
 
@@ -161,13 +169,13 @@ namespace dym
     ///////////////////////
 
     //! Vector index operator
-    T &operator[](const size_t i)
+    constexpr T &operator[](const std::size_t i)
     {
       return data[i];
     }
 
     //! Vector const index operator
-    const T &operator[](const size_t i) const
+    constexpr const T &operator[](const std::size_t i) const
     {
       return data[i];
     }
@@ -177,17 +185,17 @@ namespace dym
     ///////////////////////////
 
     //! Component-wise unary negation
-    vec<2, T> operator-() const
+    constexpr vec<2, T> operator-() const
     {
       return vec<2, T>(-x, -y);
     }
     //! Component-wise unary negation
-    vec<2, T> operator~() const
+    constexpr vec<2, T> operator~() const
     {
       return vec<2, T>(~x, ~y);
     }
     //! Vector assignment
-    vec<2, T> &operator=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator=(const vec<2, T> &v)
     {
       x = v.x;
       y = v.y;
@@ -195,172 +203,172 @@ namespace dym
     }
 
     //! Component-wise vector multiplication
-    vec<2, T> operator*(const vec<2, T> &v) const
+    constexpr vec<2, T> operator*(const vec<2, T> &v) const
     {
       return vec<2, T>(x * v.x, y * v.y);
     }
     //! Component-wise vector division
-    vec<2, T> operator/(const vec<2, T> &v) const
+    constexpr vec<2, T> operator/(const vec<2, T> &v) const
     {
       return vec<2, T>(x / v.x, y / v.y);
     }
     //! Component-wise vector addition
-    vec<2, T> operator+(const vec<2, T> &v) const
+    constexpr vec<2, T> operator+(const vec<2, T> &v) const
     {
       return vec<2, T>(x + v.x, y + v.y);
     }
     //! Component-wise vector subtraction
-    vec<2, T> operator-(const vec<2, T> &v) const
+    constexpr vec<2, T> operator-(const vec<2, T> &v) const
     {
       return vec<2, T>(x - v.x, y - v.y);
     }
     //! Component-wise vector OR
-    vec<2, T> operator|(const vec<2, T> &v) const
+    constexpr vec<2, T> operator|(const vec<2, T> &v) const
     {
       return vec<2, T>(x | v.x, y | v.y);
     }
     //! Component-wise vector AND
-    vec<2, T> operator&(const vec<2, T> &v) const
+    constexpr vec<2, T> operator&(const vec<2, T> &v) const
     {
       return vec<2, T>(x & v.x, y & v.y);
     }
     //! Component-wise vector XOR
-    vec<2, T> operator^(const vec<2, T> &v) const
+    constexpr vec<2, T> operator^(const vec<2, T> &v) const
     {
       return vec<2, T>(x ^ v.x, y ^ v.y);
     }
     //! Component-wise vector modulus
-    vec<2, T> operator%(const vec<2, T> &v) const
+    constexpr vec<2, T> operator%(const vec<2, T> &v) const
     {
       return vec<2, T>(x % v.x, y % v.y);
     }
     //! Component-wise vector shift left
-    vec<2, T> operator<<(const vec<2, T> &v) const
+    constexpr vec<2, T> operator<<(const vec<2, T> &v) const
     {
       return vec<2, T>(x << v.x, y << v.y);
     }
     //! Component-wise vector shift right
-    vec<2, T> operator>>(const vec<2, T> &v) const
+    constexpr vec<2, T> operator>>(const vec<2, T> &v) const
     {
       return vec<2, T>(x >> v.x, y >> v.y);
     }
 
     //! Component-wise scalar multiplication
-    vec<2, T> operator*(const T &v) const
+    constexpr vec<2, T> operator*(const T &v) const
     {
       return vec<2, T>(x * v, y * v);
     }
     //! Component-wise scalar division
-    vec<2, T> operator/(const T &v) const
+    constexpr vec<2, T> operator/(const T &v) const
     {
       return vec<2, T>(x / v, y / v);
     }
     //! Component-wise scalar addition
-    vec<2, T> operator+(const T &v) const
+    constexpr vec<2, T> operator+(const T &v) const
     {
       return vec<2, T>(x + v, y + v);
     }
     //! Component-wise scalar subtraction
-    vec<2, T> operator-(const T &v) const
+    constexpr vec<2, T> operator-(const T &v) const
     {
       return vec<2, T>(x - v, y - v);
     }
     //! Component-wise scalar OR
-    vec<2, T> operator|(const T &v) const
+    constexpr vec<2, T> operator|(const T &v) const
     {
       return vec<2, T>(x | v, y | v);
     }
     //! Component-wise scalar AND
-    vec<2, T> operator&(const T &v) const
+    constexpr vec<2, T> operator&(const T &v) const
     {
       return vec<2, T>(x & v, y & v);
     }
     //! Component-wise scalar XOR
-    vec<2, T> operator^(const T &v) const
+    constexpr vec<2, T> operator^(const T &v) const
     {
       return vec<2, T>(x ^ v, y ^ v);
     }
     //! Component-wise scalar modulus
-    vec<2, T> operator%(const T &v) const
+    constexpr vec<2, T> operator%(const T &v) const
     {
       return vec<2, T>(x % v, y % v);
     }
     //! Component-wise scalar shift left
-    vec<2, T> operator<<(const T &v) const
+    constexpr vec<2, T> operator<<(const T &v) const
     {
       return vec<2, T>(x << v, y << v);
     }
     //! Component-wise scalar shift right
-    vec<2, T> operator>>(const T &v) const
+    constexpr vec<2, T> operator>>(const T &v) const
     {
       return vec<2, T>(x >> v, y >> v);
     }
 
     //! Component-wise vector reference multiplication
-    vec<2, T> &operator*=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator*=(const vec<2, T> &v)
     {
       x *= v.x;
       y *= v.y;
       return *this;
     }
     //! Component-wise vector reference division
-    vec<2, T> &operator/=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator/=(const vec<2, T> &v)
     {
       x /= v.x;
       y /= v.y;
       return *this;
     }
     //! Component-wise vector reference addition
-    vec<2, T> &operator+=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator+=(const vec<2, T> &v)
     {
       x += v.x;
       y += v.y;
       return *this;
     }
     //! Component-wise vector reference subtraction
-    vec<2, T> &operator-=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator-=(const vec<2, T> &v)
     {
       x -= v.x;
       y -= v.y;
       return *this;
     }
     //! Component-wise vector reference OR
-    vec<2, T> &operator|=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator|=(const vec<2, T> &v)
     {
       x |= v.x;
       y |= v.y;
       return *this;
     }
     //! Component-wise vector reference AND
-    vec<2, T> &operator&=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator&=(const vec<2, T> &v)
     {
       x &= v.x;
       y &= v.y;
       return *this;
     }
     //! Component-wise vector reference XOR
-    vec<2, T> &operator^=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator^=(const vec<2, T> &v)
     {
       x ^= v.x;
       y ^= v.y;
       return *this;
     }
     //! Component-wise vector reference modulus
-    vec<2, T> &operator%=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator%=(const vec<2, T> &v)
     {
       x %= v.x;
       y %= v.y;
       return *this;
     }
     //! Component-wise vector reference shift left
-    vec<2, T> &operator<<=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator<<=(const vec<2, T> &v)
     {
       x <<= v.x;
       y <<= v.y;
       return *this;
     }
     //! Component-wise vector reference shift right
-    vec<2, T> &operator>>=(const vec<2, T> &v)
+    constexpr vec<2, T> &operator>>=(const vec<2, T> &v)
     {
       x >>= v.x;
       y >>= v.y;
@@ -368,70 +376,70 @@ namespace dym
     }
 
     //! Component-wise scalar reference multiplication
-    vec<2, T> &operator*=(const T &v)
+    constexpr vec<2, T> &operator*=(const T &v)
     {
       x *= v;
       y *= v;
       return *this;
     }
     //! Component-wise scalar reference division
-    vec<2, T> &operator/=(const T &v)
+    constexpr vec<2, T> &operator/=(const T &v)
     {
       x /= v;
       y /= v;
       return *this;
     }
     //! Component-wise scalar reference addition
-    vec<2, T> &operator+=(const T &v)
+    constexpr vec<2, T> &operator+=(const T &v)
     {
       x += v;
       y += v;
       return *this;
     }
     //! Component-wise scalar reference subtraction
-    vec<2, T> &operator-=(const T &v)
+    constexpr vec<2, T> &operator-=(const T &v)
     {
       x -= v;
       y -= v;
       return *this;
     }
     //! Component-wise scalar reference OR
-    vec<2, T> &operator|=(const T &v)
+    constexpr vec<2, T> &operator|=(const T &v)
     {
       x |= v;
       y |= v;
       return *this;
     }
     //! Component-wise scalar reference AND
-    vec<2, T> &operator&=(const T &v)
+    constexpr vec<2, T> &operator&=(const T &v)
     {
       x &= v;
       y &= v;
       return *this;
     }
     //! Component-wise scalar reference XOR
-    vec<2, T> &operator^=(const T &v)
+    constexpr vec<2, T> &operator^=(const T &v)
     {
       x ^= v;
       y ^= v;
       return *this;
     }
     //! Component-wise scalar reference modulus
-    vec<2, T> &operator%=(const T &v)
+    constexpr vec<2, T> &operator%=(const T &v)
     {
       x %= v;
       y %= v;
       return *this;
     }
     //! Component-wise scalar reference shift left
-    vec<2, T> &operator<<=(const T &v)
+    constexpr vec<2, T> &operator<<=(const T &v)
     {
       x <<= v;
       y <<= v;
       return *this;
     }
     //! Component-wise scalar reference shift right
-    vec<2, T> &operator>>=(const T &v)
+    constexpr vec<2, T> &operator>>=(const T &v)
     {
       x >>= v;
       y >>= v;
@@ -439,12 +447,12 @@ namespace dym
     }
 
     //! Component-wise equality comparison
-    bool operator==(const vec<2, T> &v) const
+    constexpr bool operator==(const vec<2, T> &v) const
     {
       return x == v.x && y == v.y;
     }
     //! Component-wise inequality comparison
-    bool operator!=(const vec<2, T> &v) const
+    constexpr bool operator!=(const vec<2, T> &v) const
     {
       return x != v.x || y != v.y;
     }
@@ -506,17 +514,17 @@ namespace dym
   ///////////////////////
   //! TYPE DEFINITIONS //
   ///////////////////////
-
-  typedef vec<2, float> vec2, vec2f;
-  typedef vec<2, double> vec2d;
-  typedef vec<2, unsigned char> vec2uc;
-  typedef vec<2, char> vec2c;
-  typedef vec<2, unsigned short> vec2us;
-  typedef vec<2, short> vec2s;
-  typedef vec<2, unsigned int> vec2ui;
-  typedef vec<2, int> vec2i;
-  typedef vec<2, unsigned long> vec2ul;
-  typedef vec<2, long> vec2l;
+  using vec2 = vec<2, float>;
+  using vec2f = vec2;
+  using vec2d = vec<2, double>;
+  using vec2uc = vec<2, unsigned char>;
+  using vec2c = vec<2, char>;
+  using vec2us = vec<2, unsigned short>;
+  using vec2s = vec<2, short>;
+  using vec2ui = vec<2, unsigned int>;
+  using vec2i = vec<2, int>;
+  using vec2ul = vec<2, unsigned long>;
+  using vec2l = vec<2, long>;
 
   //////////////////////
   //! MISC. OPERATORS //
@@ -593,7 +601,7 @@ namespace dym
   template <class T = float>
   static vec<3, T> affine(const vec<2, T> &v)
   {
-    return vec<3, T>(v.x, v.y, static_cast<T>(1));
+    return vec<3, T>(v.x, v.y, T{1});
   }
 
   //! Returns whether vector is NaN
@@ -621,7 +629,9 @@ namespace dym
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 

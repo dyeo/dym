@@ -1,10 +1,12 @@
-#ifndef _DYM_VEC_H_
-#define _DYM_VEC_H_
+#ifndef DYM_VEC_H_INCLUDED
+#define DYM_VEC_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
@@ -12,6 +14,7 @@
 #include "angle.h"
 #include <cmath>
 #include <ostream>
+#include <initializer_list>
 
 //
 
@@ -22,12 +25,16 @@ namespace dym
   template <dim_t D, class T = float>
   struct vec
   {
+    using type = T;
+    static constexpr dim_t dim = D;
+    static constexpr dim_t size = D;
+
     ///////////////////
     //! DATA MEMBERS //
     ///////////////////
 
     //! Array containing vector data
-    T data[D];
+    T data[size];
 
     ///////////////////
     //! CONSTRUCTORS //
@@ -36,9 +43,9 @@ namespace dym
     //! Default constructor
     constexpr vec()
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
-        data[i] = static_cast<T>(0);
+        data[i] = type{0};
       }
     }
 
@@ -47,7 +54,7 @@ namespace dym
     //! Initializer list constructor
     constexpr vec(std::initializer_list<T> list)
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = *(list.begin() + i);
       }
@@ -56,7 +63,7 @@ namespace dym
     //! Copy constructor
     constexpr vec(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = v.data[i];
       }
@@ -66,8 +73,8 @@ namespace dym
     template <dim_t D1>
     constexpr vec(const vec<D1, T> &v)
     {
-      DYM_STATIC_ASSERT(D1 >= D);
-      for (dim_t i = 0; i < D; ++i)
+      static_assert(D1 >= size, "Input vector must be larger than constructed vector");
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = v.data[i];
       }
@@ -77,7 +84,7 @@ namespace dym
     template <class U>
     explicit constexpr vec(const vec<D, U> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = static_cast<T>(v[i]);
       }
@@ -86,7 +93,7 @@ namespace dym
     //! Fill constructor
     explicit constexpr vec(const T &s)
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = s;
       }
@@ -95,7 +102,7 @@ namespace dym
     //! Array initializer
     explicit constexpr vec(const T *a)
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = a[i];
       }
@@ -106,13 +113,13 @@ namespace dym
     ///////////////////////
 
     //! Vector index operator
-    T &operator[](const int i)
+    constexpr T &operator[](const int i)
     {
       return data[i];
     }
 
     //! Vector const index operator
-    const T &operator[](const int i) const
+    constexpr const T &operator[](const int i) const
     {
       return data[i];
     }
@@ -122,29 +129,19 @@ namespace dym
     ///////////////////////////
 
     //! Component-wise unary negation
-    vec<D, T> operator-() const
+    constexpr vec<D, T> operator-() const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = -data[i];
-      }
-      return res;
+      return unary_transform([](const auto &value) { return -value; });
     }
     //! Component-wise unary negation
-    vec<D, T> operator~() const
+    constexpr vec<D, T> operator~() const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = ~data[i];
-      }
-      return res;
+      return unary_transform([](const auto &value) { return ~value; });
     }
     //! Vector assignment
-    vec<D, T> &operator=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         data[i] = v.data[i];
       }
@@ -152,404 +149,224 @@ namespace dym
     }
 
     //! Component-wise vector multiplication
-    vec<D, T> operator*(const vec<D, T> &v) const
+    constexpr vec<D, T> operator*(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] * v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left * right; });
     }
     //! Component-wise vector division
-    vec<D, T> operator/(const vec<D, T> &v) const
+    constexpr vec<D, T> operator/(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] / v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left / right; });
     }
     //! Component-wise vector addition
-    vec<D, T> operator+(const vec<D, T> &v) const
+    constexpr vec<D, T> operator+(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] + v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left + right; });
     }
     //! Component-wise vector subtraction
-    vec<D, T> operator-(const vec<D, T> &v) const
+    constexpr vec<D, T> operator-(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] - v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left - right; });
     }
     //! Component-wise vector OR
-    vec<D, T> operator|(const vec<D, T> &v) const
+    constexpr vec<D, T> operator|(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] | v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left | right; });
     }
     //! Component-wise vector AND
-    vec<D, T> operator&(const vec<D, T> &v) const
+    constexpr vec<D, T> operator&(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] & v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left & right; });
     }
     //! Component-wise vector XOR
-    vec<D, T> operator^(const vec<D, T> &v) const
+    constexpr vec<D, T> operator^(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] ^ v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left ^ right; });
     }
     //! Component-wise vector modulus
-    vec<D, T> operator%(const vec<D, T> &v) const
+    constexpr vec<D, T> operator%(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] % v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left % right; });
     }
     //! Component-wise vector shift left
-    vec<D, T> operator<<(const vec<D, T> &v) const
+    constexpr vec<D, T> operator<<(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] << v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left << right; });
     }
     //! Component-wise vector shift right
-    vec<D, T> operator>>(const vec<D, T> &v) const
+    constexpr vec<D, T> operator>>(const vec<D, T> &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] >> v.data[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left >> right; });
     }
 
     //! Component-wise scalar multiplication
-    vec<D, T> operator*(const T &v) const
+    constexpr vec<D, T> operator*(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] * v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left * right; });
     }
     //! Component-wise scalar division
-    vec<D, T> operator/(const T &v) const
+    constexpr vec<D, T> operator/(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] / v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left / right; });
     }
     //! Component-wise scalar addition
-    vec<D, T> operator+(const T &v) const
+    constexpr vec<D, T> operator+(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] + v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left + right; });
     }
     //! Component-wise scalar subtraction
-    vec<D, T> operator-(const T &v) const
+    constexpr vec<D, T> operator-(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] - v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left - right; });
     }
     //! Component-wise scalar OR
-    vec<D, T> operator|(const T &v) const
+    constexpr vec<D, T> operator|(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] | v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left | right; });
     }
     //! Component-wise scalar AND
-    vec<D, T> operator&(const T &v) const
+    constexpr vec<D, T> operator&(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] & v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left & right; });
     }
     //! Component-wise scalar XOR
-    vec<D, T> operator^(const T &v) const
+    constexpr vec<D, T> operator^(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] ^ v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left ^ right; });
     }
     //! Component-wise scalar modulus
-    vec<D, T> operator%(const T &v) const
+    constexpr vec<D, T> operator%(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] % v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left % right; });
     }
     //! Component-wise scalar shift left
-    vec<D, T> operator<<(const T &v) const
+    constexpr vec<D, T> operator<<(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] << v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left << right; });
     }
     //! Component-wise scalar shift right
-    vec<D, T> operator>>(const T &v) const
+    constexpr vec<D, T> operator>>(const T &v) const
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
-      {
-        res.data[i] = data[i] >> v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left >> right; });
     }
 
     //! Component-wise vector reference multiplication
-    vec<D, T> &operator*=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator*=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] *= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left *= right; });
     }
     //! Component-wise vector reference division
-    vec<D, T> &operator/=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator/=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] /= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left /= right; });
     }
     //! Component-wise vector reference addition
-    vec<D, T> &operator+=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator+=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] += v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left += right; });
     }
     //! Component-wise vector reference subtraction
-    vec<D, T> &operator-=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator-=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] -= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left -= right; });
     }
     //! Component-wise vector reference OR
-    vec<D, T> &operator|=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator|=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] |= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left |= right; });
     }
     //! Component-wise vector reference AND
-    vec<D, T> &operator&=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator&=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] &= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left &= right; });
     }
     //! Component-wise vector reference XOR
-    vec<D, T> &operator^=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator^=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] ^= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left ^= right; });
     }
     //! Component-wise vector reference modulus
-    vec<D, T> &operator%=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator%=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] %= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left %= right; });
     }
     //! Component-wise vector reference shift left
-    vec<D, T> &operator<<=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator<<=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] <<= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left <<= right; });
     }
     //! Component-wise vector reference shift right
-    vec<D, T> &operator>>=(const vec<D, T> &v)
+    constexpr vec<D, T> &operator>>=(const vec<D, T> &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] >>= v.data[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left >>= right; });
     }
 
     //! Component-wise scalar reference multiplication
-    vec<D, T> &operator*=(const T &v)
+    constexpr vec<D, T> &operator*=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] *= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left *= right; });
     }
     //! Component-wise scalar reference division
-    vec<D, T> &operator/=(const T &v)
+    constexpr vec<D, T> &operator/=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] /= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left /= right; });
     }
     //! Component-wise scalar reference addition
-    vec<D, T> &operator+=(const T &v)
+    constexpr vec<D, T> &operator+=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] += v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left += right; });
     }
     //! Component-wise scalar reference subtraction
-    vec<D, T> &operator-=(const T &v)
+    constexpr vec<D, T> &operator-=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] -= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left -= right; });
     }
     //! Component-wise scalar reference OR
-    vec<D, T> &operator|=(const T &v)
+    constexpr vec<D, T> &operator|=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] |= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left |= right; });
     }
     //! Component-wise scalar reference AND
-    vec<D, T> &operator&=(const T &v)
+    constexpr vec<D, T> &operator&=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] &= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left &= right; });
     }
     //! Component-wise scalar reference XOR
-    vec<D, T> &operator^=(const T &v)
+    constexpr vec<D, T> &operator^=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] ^= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left ^= right; });
     }
     //! Component-wise scalar reference modulus
-    vec<D, T> &operator%=(const T &v)
+    constexpr vec<D, T> &operator%=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] %= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left %= right; });
     }
     //! Component-wise scalar reference shift left
-    vec<D, T> &operator<<=(const T &v)
+    constexpr vec<D, T> &operator<<=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] <<= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left <<= right; });
     }
     //! Component-wise scalar reference shift right
-    vec<D, T> &operator>>=(const T &v)
+    constexpr vec<D, T> &operator>>=(const T &v)
     {
-      for (dim_t i = 0; i < D; ++i)
-      {
-        data[i] >>= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left >>= right; });
     }
 
     //! Component-wise equality comparison
-    bool operator==(const vec<D, T> &v) const
+    constexpr bool operator==(const vec<D, T> &v) const
     {
       bool r = true;
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         r &= data[i] == v.data[i];
       }
       return r;
     }
     //! Component-wise inequality comparison
-    bool operator!=(const vec<D, T> &v) const
+    constexpr bool operator!=(const vec<D, T> &v) const
     {
       bool r = true;
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         r |= data[i] != v.data[i];
       }
@@ -560,9 +377,9 @@ namespace dym
     static constexpr vec<D, T> zero()
     {
       vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
-        res[i] = static_cast<T>(0);
+        res[i] = T{0};
       }
       return res;
     }
@@ -571,11 +388,66 @@ namespace dym
     static constexpr vec<D, T> one()
     {
       vec<D, T> res;
-      for (dim_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
-        res[i] = static_cast<T>(1);
+        res[i] = T{1};
       }
       return res;
+    }
+
+
+  private:
+    template <class F>
+    constexpr vec<D, T> unary_transform(F operation) const
+    {
+      vec<D, T> res;
+      for (dim_t i = 0; i < size; ++i)
+      {
+        res.data[i] = operation(data[i]);
+      }
+      return res;
+    }
+
+    template <class F>
+    constexpr vec<D, T> binary_transform(const vec<D, T> &v, F operation) const
+    {
+      vec<D, T> res;
+      for (dim_t i = 0; i < size; ++i)
+      {
+        res.data[i] = operation(data[i], v.data[i]);
+      }
+      return res;
+    }
+
+    template <class F>
+    constexpr vec<D, T> scalar_transform(const T &v, F operation) const
+    {
+      vec<D, T> res;
+      for (dim_t i = 0; i < size; ++i)
+      {
+        res.data[i] = operation(data[i], v);
+      }
+      return res;
+    }
+
+    template <class F>
+    constexpr vec<D, T> &binary_assign(const vec<D, T> &v, F operation)
+    {
+      for (dim_t i = 0; i < size; ++i)
+      {
+        operation(data[i], v.data[i]);
+      }
+      return *this;
+    }
+
+    template <class F>
+    constexpr vec<D, T> &scalar_assign(const T &v, F operation)
+    {
+      for (dim_t i = 0; i < size; ++i)
+      {
+        operation(data[i], v);
+      }
+      return *this;
     }
 
   }; //! struct vec
@@ -598,7 +470,7 @@ namespace dym
 
   //! Scalar-Vector multiplication
   template <dim_t D, class T = float>
-  static vec<D, T> operator*(const T &l, const vec<D, T> &r)
+  static constexpr vec<D, T> operator*(const T &l, const vec<D, T> &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
@@ -614,7 +486,7 @@ namespace dym
 
   //! Calculates the dot or scalar product of two vectors
   template <dim_t D, class T = float>
-  static T dot(const vec<D, T> &l, const vec<D, T> &r)
+  static constexpr T dot(const vec<D, T> &l, const vec<D, T> &r)
   {
     T res = 0;
     for (dim_t i = 0; i < D; ++i)
@@ -651,14 +523,14 @@ namespace dym
 
   //! Calculates the cross product of two vectors
   template <class T = float>
-  static T cross(const vec<2, T> &l, const vec<2, T> &r)
+  static constexpr T cross(const vec<2, T> &l, const vec<2, T> &r)
   {
     return (l.data[0] * r.data[1]) - (l.data[0] * r.data[1]);
   }
 
   //! Calculates the cross product of two vectors
   template <class T = float>
-  static vec<3, T> cross(const vec<3, T> &l, const vec<3, T> &r)
+  static constexpr vec<3, T> cross(const vec<3, T> &l, const vec<3, T> &r)
   {
     vec<3, T> res;
     res.data[0] = (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]);
@@ -669,19 +541,19 @@ namespace dym
 
   //! Calculates the cross product of two vectors
   template <class T = float>
-  static vec<4, T> cross(const vec<4, T> &l, const vec<4, T> &r)
+  static constexpr vec<4, T> cross(const vec<4, T> &l, const vec<4, T> &r)
   {
     vec<4, T> res;
     res.data[0] = (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]);
     res.data[1] = (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]);
     res.data[2] = (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]);
-    res.data[3] = static_cast<T>(0);
+    res.data[3] = T{0};
     return res;
   }
 
   //! Returns length squared of vector
   template <dim_t D, class T = float>
-  static T lengthsq(const vec<D, T> &v)
+  static constexpr T lengthsq(const vec<D, T> &v)
   {
     T res = 0;
     for (dim_t i = 0; i < D; ++i)
@@ -719,7 +591,7 @@ namespace dym
 
   //! Returns a component-wise minimum of two vectors
   template <dim_t D, class T = float>
-  static vec<D, T> min(const vec<D, T> &l, const vec<D, T> &r)
+  static constexpr vec<D, T> min(const vec<D, T> &l, const vec<D, T> &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
@@ -731,7 +603,7 @@ namespace dym
 
   //! Returns a component-wise maximum of a vector and a scalar
   template <dim_t D, class T = float>
-  static vec<D, T> min(const vec<D, T> &l, const T &r)
+  static constexpr vec<D, T> min(const vec<D, T> &l, const T &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
@@ -743,7 +615,7 @@ namespace dym
 
   //! Returns a component-wise minimum of two vectors
   template <dim_t D, class T = float>
-  static vec<D, T> max(const vec<D, T> &l, const vec<D, T> &r)
+  static constexpr vec<D, T> max(const vec<D, T> &l, const vec<D, T> &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
@@ -755,7 +627,7 @@ namespace dym
 
   //! Returns a component-wise maximum of a vector and a scalar
   template <dim_t D, class T = float>
-  static vec<D, T> max(const vec<D, T> &l, const T &r)
+  static constexpr vec<D, T> max(const vec<D, T> &l, const T &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
@@ -767,14 +639,14 @@ namespace dym
 
   //! Clamps the value of a vector between a min and max vector
   template <dim_t D, class T = float>
-  static vec<D, T> clamp(const vec<D, T> &v, const vec<D, T> &minV, const vec<D, T> &maxV)
+  static constexpr vec<D, T> clamp(const vec<D, T> &v, const vec<D, T> &minV, const vec<D, T> &maxV)
   {
     return min(max(v, minV), maxV);
   }
 
   //! Clamps the value of a vector between a min and max scalar
   template <dim_t D, class T = float>
-  static vec<D, T> clamp(const vec<D, T> &v, const T &minV, const T &maxV)
+  static constexpr vec<D, T> clamp(const vec<D, T> &v, const T &minV, const T &maxV)
   {
     return min(max(v, minV), maxV);
   }
@@ -788,14 +660,14 @@ namespace dym
 
   //! Computes the distance squared between two vectors
   template <dim_t D, class T = float>
-  static T distancesq(const vec<D, T> &l, const vec<D, T> &r)
+  static constexpr T distancesq(const vec<D, T> &l, const vec<D, T> &r)
   {
     return lengthsq(l - r);
   }
 
   //! Faces a normal forward according to the dot product of nRef and i
   template <dim_t D, class T = float>
-  static vec<D, T> faceforward(const vec<D, T> &n, const vec<D, T> &i, const vec<D, T> &nRef)
+  static constexpr vec<D, T> faceforward(const vec<D, T> &n, const vec<D, T> &i, const vec<D, T> &nRef)
   {
     return (dot(nRef, i) < 0) ? n : -n;
   }
@@ -819,29 +691,29 @@ namespace dym
 
   //! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
   template <dim_t D, class T = float>
-  static vec<D + 1, T> affine(const vec<D, T> &v)
+  static constexpr vec<D + 1, T> affine(const vec<D, T> &v)
   {
     vec<D + 1, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
       res[i] = v[i];
     }
-    res[D] = static_cast<T>(1);
+    res[D] = T{1};
     return res;
   }
 
   //! Point vector constructor (xyz,1)
   template <class T = float>
-  static vec<4, T> point(const vec<3, T> &xyz)
+  static constexpr vec<4, T> point(const vec<3, T> &xyz)
   {
-    return vec<4, T>(xyz.data[0], xyz.data[1], xyz.data[2], static_cast<T>(1));
+    return vec<4, T>(xyz.data[0], xyz.data[1], xyz.data[2], T{1});
   }
 
   //! Point vector constructor (x,y,z,1)
   template <class T = float>
-  static vec<4, T> point(const T &x, const T &y, const T &z)
+  static constexpr vec<4, T> point(const T &x, const T &y, const T &z)
   {
-    return vec<4, T>(x, y, z, static_cast<T>(1));
+    return vec<4, T>(x, y, z, T{1});
   }
 
   //! Returns whether vector is NaN
@@ -882,7 +754,7 @@ namespace dym
 
   //! Component-wise saturation (clamp01)
   template <dim_t D, class T = float>
-  static vec<D, T> saturate(const vec<D, T> &v)
+  static constexpr vec<D, T> saturate(const vec<D, T> &v)
   {
     return max(vec<D, T>::zero(), min(v, vec<D, T>::one()));
   }
@@ -891,7 +763,9 @@ namespace dym
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 

@@ -1,53 +1,48 @@
-#ifndef _DYM_MAT3_H_
-#define _DYM_MAT3_H_
+#ifndef DYM_MAT3_H_INCLUDED
+#define DYM_MAT3_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
 #include "mat.h"
+#include <initializer_list>
+#include <cstddef>
 
 //
 
 namespace dym
 { ////
 
-  //! A column-major matrix spanning r rows and c columns
+  //! A specialized 3x3 square matrix
   template <class T>
   struct mat<3, 3, T>
   {
+    using type = T;
+    static constexpr dim_t cols = 3;
+    static constexpr dim_t rows = 3;
+    static constexpr dim_t dim = 3;
+    static constexpr dim_t size = 9;
+
     ///////////////////
     //! DATA MEMBERS //
     ///////////////////
-
-    constexpr int rows() const
-    {
-      return 3;
-    }
-
-    constexpr int cols() const
-    {
-      return 3;
-    }
-
-    constexpr int dim() const
-    {
-      return 3;
-    }
 
     //! Unioned data members
     union
     {
       struct
       {
-        vec<3, T> data[3];
+        vec<cols, T> data[rows];
       };
       struct
       {
-        T arr[9];
+        T arr[size];
       };
     };
 
@@ -57,7 +52,7 @@ namespace dym
 
     //! Default constructor
     constexpr mat()
-        : arr{static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1), static_cast<T>(0), static_cast<T>(0), static_cast<T>(0), static_cast<T>(1)}
+        : arr{T{1}, T{0}, T{0}, T{0}, T{1}, T{0}, T{0}, T{0}, T{1}}
     {
     }
 
@@ -111,7 +106,7 @@ namespace dym
 
     //! Inserts a 2x2 matrix into the top-left portion of a 3x3 identity matrix
     //! ident adjusts the identity value
-    constexpr mat(const mat<2, 2, T> &m, const T &ident = static_cast<T>(1))
+    constexpr mat(const mat<2, 2, T> &m, const T &ident = T{1})
         : arr{m.arr[0], m.arr[1], 0, m.arr[2], m.arr[3], 0, 0, 0, ident}
     {
     }
@@ -123,13 +118,13 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <dim_t cm, dim_t rm>
-    constexpr mat(const mat<cm, rm, T> &m)
+    template <dim_t C1, dim_t R1>
+    constexpr mat(const mat<C1, R1, T> &m)
     {
-      DYM_STATIC_ASSERT((rm < rows()) && (cm < cols()));
-      for (dim_t i = 0; i < cm; ++i)
+      static_assert((C1 < cols) && (R1 < rows), "Minor matrix must be smaller than original matrix");
+      for (dim_t i = 0; i < C1; ++i)
       {
-        for (dim_t j = 0; j < rm; ++j)
+        for (dim_t j = 0; j < R1; ++j)
         {
           data[i][j] = m.data[i][j];
         }
@@ -141,38 +136,38 @@ namespace dym
     ///////////////////////
 
     //! Column function - returns column as vector of T
-    vec<3, T> col(const size_t i) const
+    vec<3, T> col(const std::size_t i) const
     {
       return data[i];
     }
 
     //! Row function - returns row as vector of T
-    vec<3, T> row(const size_t i) const
+    vec<3, T> row(const std::size_t i) const
     {
       vec<3, T> v = vec<3, T>(arr[i], arr[i + 3], arr[i + 6]);
       return v;
     }
 
     //! Matrix index operator - returns column
-    vec<3, T> &operator[](const size_t i)
+    constexpr vec<3, T> &operator[](const std::size_t i)
     {
       return data[i];
     }
 
     //! Matrix const index operator - returns column
-    const vec<3, T> &operator[](const size_t i) const
+    constexpr const vec<3, T> &operator[](const std::size_t i) const
     {
       return data[i];
     }
 
     //! Matrix linear array index operator - returns element
-    T &operator()(const size_t i)
+    constexpr T &operator()(const std::size_t i)
     {
       return arr[i];
     }
 
     //! Matrix linear array const index operator - returns element
-    const T &operator()(const size_t i) const
+    constexpr const T &operator()(const std::size_t i) const
     {
       return arr[i];
     }
@@ -182,17 +177,17 @@ namespace dym
     ////////////////
 
     //! Component-wise unary negation
-    mat<3, 3, T> operator-() const
+    constexpr mat<3, 3, T> operator-() const
     {
       return mat<3, 3, T>(-arr[0], -arr[1], -arr[2], -arr[3], -arr[4], -arr[5], -arr[6], -arr[7], -arr[8]);
     }
     //! Component-wise unary negation
-    mat<3, 3, T> operator~() const
+    constexpr mat<3, 3, T> operator~() const
     {
       return mat<3, 3, T>(~arr[0], ~arr[1], ~arr[2], ~arr[3], ~arr[4], ~arr[5], ~arr[6], ~arr[7], ~arr[8]);
     }
     //! Vector assignment
-    mat<3, 3, T> &operator=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator=(const mat<3, 3, T> &m)
     {
       arr[0] = m.arr[0];
       arr[1] = m.arr[1];
@@ -207,99 +202,99 @@ namespace dym
     }
 
     //! Component-wise matrix addition
-    mat<3, 3, T> operator+(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator+(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] + m.arr[0], arr[1] + m.arr[1], arr[2] + m.arr[2], arr[3] + m.arr[3], arr[4] + m.arr[4], arr[5] + m.arr[5], arr[6] + m.arr[6], arr[7] + m.arr[7], arr[8] + m.arr[8]);
     }
     //! Component-wise matrix subtraction
-    mat<3, 3, T> operator-(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator-(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] - m.arr[0], arr[1] - m.arr[1], arr[2] - m.arr[2], arr[3] - m.arr[3], arr[4] - m.arr[4], arr[5] - m.arr[5], arr[6] - m.arr[6], arr[7] - m.arr[7], arr[8] - m.arr[8]);
     }
     //! Component-wise matrix OR
-    mat<3, 3, T> operator|(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator|(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] | m.arr[0], arr[1] | m.arr[1], arr[2] | m.arr[2], arr[3] | m.arr[3], arr[4] | m.arr[4], arr[5] | m.arr[5], arr[6] | m.arr[6], arr[7] | m.arr[7], arr[8] | m.arr[8]);
     }
     //! Component-wise matrix AND
-    mat<3, 3, T> operator&(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator&(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] & m.arr[0], arr[1] & m.arr[1], arr[2] & m.arr[2], arr[3] & m.arr[3], arr[4] & m.arr[4], arr[5] & m.arr[5], arr[6] & m.arr[6], arr[7] & m.arr[7], arr[8] & m.arr[8]);
     }
     //! Component-wise matrix XOR
-    mat<3, 3, T> operator^(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator^(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] ^ m.arr[0], arr[1] ^ m.arr[1], arr[2] ^ m.arr[2], arr[3] ^ m.arr[3], arr[4] ^ m.arr[4], arr[5] ^ m.arr[5], arr[6] ^ m.arr[6], arr[7] ^ m.arr[7], arr[8] ^ m.arr[8]);
     }
     //! Component-wise matrix modulus
-    mat<3, 3, T> operator%(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator%(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] % m.arr[0], arr[1] % m.arr[1], arr[2] % m.arr[2], arr[3] % m.arr[3], arr[4] % m.arr[4], arr[5] % m.arr[5], arr[6] % m.arr[6], arr[7] % m.arr[7], arr[8] % m.arr[8]);
     }
     //! Component-wise matrix shift left
-    mat<3, 3, T> operator<<(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator<<(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] << m.arr[0], arr[1] << m.arr[1], arr[2] << m.arr[2], arr[3] << m.arr[3], arr[4] << m.arr[4], arr[5] << m.arr[5], arr[6] << m.arr[6], arr[7] << m.arr[7], arr[8] << m.arr[8]);
     }
     //! Component-wise matrix shift right
-    mat<3, 3, T> operator>>(const mat<3, 3, T> &m) const
+    constexpr mat<3, 3, T> operator>>(const mat<3, 3, T> &m) const
     {
       return mat<3, 3, T>(arr[0] >> m.arr[0], arr[1] >> m.arr[1], arr[2] >> m.arr[2], arr[3] >> m.arr[3], arr[4] >> m.arr[4], arr[5] >> m.arr[5], arr[6] >> m.arr[6], arr[7] >> m.arr[7], arr[8] >> m.arr[8]);
     }
 
     //! Component-wise scalar multiplication
-    mat<3, 3, T> operator*(const T &v) const
+    constexpr mat<3, 3, T> operator*(const T &v) const
     {
       return mat<3, 3, T>(arr[0] * v, arr[1] * v, arr[2] * v, arr[3] * v, arr[4] * v, arr[5] * v, arr[6] * v, arr[7] * v, arr[8] * v);
     }
     //! Component-wise scalar division
-    mat<3, 3, T> operator/(const T &v) const
+    constexpr mat<3, 3, T> operator/(const T &v) const
     {
       return mat<3, 3, T>(arr[0] / v, arr[1] / v, arr[2] / v, arr[3] / v, arr[4] / v, arr[5] / v, arr[6] / v, arr[7] / v, arr[8] / v);
     }
     //! Component-wise scalar addition
-    mat<3, 3, T> operator+(const T &v) const
+    constexpr mat<3, 3, T> operator+(const T &v) const
     {
       return mat<3, 3, T>(arr[0] + v, arr[1] + v, arr[2] + v, arr[3] + v, arr[4] + v, arr[5] + v, arr[6] + v, arr[7] + v, arr[8] + v);
     }
     //! Component-wise scalar subtraction
-    mat<3, 3, T> operator-(const T &v) const
+    constexpr mat<3, 3, T> operator-(const T &v) const
     {
       return mat<3, 3, T>(arr[0] - v, arr[1] - v, arr[2] - v, arr[3] - v, arr[4] - v, arr[5] - v, arr[6] - v, arr[7] - v, arr[8] - v);
     }
     //! Component-wise scalar OR
-    mat<3, 3, T> operator|(const T &v) const
+    constexpr mat<3, 3, T> operator|(const T &v) const
     {
       return mat<3, 3, T>(arr[0] | v, arr[1] | v, arr[2] | v, arr[3] | v, arr[4] | v, arr[5] | v, arr[6] | v, arr[7] | v, arr[8] | v);
     }
     //! Component-wise scalar AND
-    mat<3, 3, T> operator&(const T &v) const
+    constexpr mat<3, 3, T> operator&(const T &v) const
     {
       return mat<3, 3, T>(arr[0] & v, arr[1] & v, arr[2] & v, arr[3] & v, arr[4] & v, arr[5] & v, arr[6] & v, arr[7] & v, arr[8] & v);
     }
     //! Component-wise scalar XOR
-    mat<3, 3, T> operator^(const T &v) const
+    constexpr mat<3, 3, T> operator^(const T &v) const
     {
       return mat<3, 3, T>(arr[0] ^ v, arr[1] ^ v, arr[2] ^ v, arr[3] ^ v, arr[4] ^ v, arr[5] ^ v, arr[6] ^ v, arr[7] ^ v, arr[8] ^ v);
     }
     //! Component-wise scalar modulus
-    mat<3, 3, T> operator%(const T &v) const
+    constexpr mat<3, 3, T> operator%(const T &v) const
     {
       return mat<3, 3, T>(arr[0] % v, arr[1] % v, arr[2] % v, arr[3] % v, arr[4] % v, arr[5] % v, arr[6] % v, arr[7] % v, arr[8] % v);
     }
     //! Component-wise scalar shift left
-    mat<3, 3, T> operator<<(const T &v) const
+    constexpr mat<3, 3, T> operator<<(const T &v) const
     {
       return mat<3, 3, T>(arr[0] << v, arr[1] << v, arr[2] << v, arr[3] << v, arr[4] << v, arr[5] << v, arr[6] << v, arr[7] << v, arr[8] << v);
     }
     //! Component-wise scalar shift right
-    mat<3, 3, T> operator>>(const T &v) const
+    constexpr mat<3, 3, T> operator>>(const T &v) const
     {
       return mat<3, 3, T>(arr[0] >> v, arr[1] >> v, arr[2] >> v, arr[3] >> v, arr[4] >> v, arr[5] >> v, arr[6] >> v, arr[7] >> v, arr[8] >> v);
     }
 
     //! Component-wise matrix reference addition
-    mat<3, 3, T> &operator+=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator+=(const mat<3, 3, T> &m)
     {
       arr[0] += m.arr[0];
       arr[1] += m.arr[1];
@@ -313,7 +308,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference subtraction
-    mat<3, 3, T> &operator-=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator-=(const mat<3, 3, T> &m)
     {
       arr[0] -= m.arr[0];
       arr[1] -= m.arr[1];
@@ -327,7 +322,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference OR
-    mat<3, 3, T> &operator|=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator|=(const mat<3, 3, T> &m)
     {
       arr[0] |= m.arr[0];
       arr[1] |= m.arr[1];
@@ -341,7 +336,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference AND
-    mat<3, 3, T> &operator&=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator&=(const mat<3, 3, T> &m)
     {
       arr[0] &= m.arr[0];
       arr[1] &= m.arr[1];
@@ -355,7 +350,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference XOR
-    mat<3, 3, T> &operator^=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator^=(const mat<3, 3, T> &m)
     {
       arr[0] ^= m.arr[0];
       arr[1] ^= m.arr[1];
@@ -369,7 +364,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference modulus
-    mat<3, 3, T> &operator%=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator%=(const mat<3, 3, T> &m)
     {
       arr[0] %= m.arr[0];
       arr[1] %= m.arr[1];
@@ -383,7 +378,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference shift left
-    mat<3, 3, T> &operator<<=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator<<=(const mat<3, 3, T> &m)
     {
       arr[0] <<= m.arr[0];
       arr[1] <<= m.arr[1];
@@ -397,7 +392,7 @@ namespace dym
       return *this;
     }
     //! Component-wise matrix reference shift right
-    mat<3, 3, T> &operator>>=(const mat<3, 3, T> &m)
+    constexpr mat<3, 3, T> &operator>>=(const mat<3, 3, T> &m)
     {
       arr[0] >>= m.arr[0];
       arr[1] >>= m.arr[1];
@@ -412,7 +407,7 @@ namespace dym
     }
 
     //! Component-wise scalar reference multiplication
-    mat<3, 3, T> &operator*=(const T &v)
+    constexpr mat<3, 3, T> &operator*=(const T &v)
     {
       arr[0] *= v;
       arr[1] *= v;
@@ -426,7 +421,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference division
-    mat<3, 3, T> &operator/=(const T &v)
+    constexpr mat<3, 3, T> &operator/=(const T &v)
     {
       arr[0] /= v;
       arr[1] /= v;
@@ -440,7 +435,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference addition
-    mat<3, 3, T> &operator+=(const T &v)
+    constexpr mat<3, 3, T> &operator+=(const T &v)
     {
       arr[0] += v;
       arr[1] += v;
@@ -454,7 +449,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference subtraction
-    mat<3, 3, T> &operator-=(const T &v)
+    constexpr mat<3, 3, T> &operator-=(const T &v)
     {
       arr[0] -= v;
       arr[1] -= v;
@@ -468,7 +463,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference OR
-    mat<3, 3, T> &operator|=(const T &v)
+    constexpr mat<3, 3, T> &operator|=(const T &v)
     {
       arr[0] |= v;
       arr[1] |= v;
@@ -482,7 +477,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference AND
-    mat<3, 3, T> &operator&=(const T &v)
+    constexpr mat<3, 3, T> &operator&=(const T &v)
     {
       arr[0] &= v;
       arr[1] &= v;
@@ -496,7 +491,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference XOR
-    mat<3, 3, T> &operator^=(const T &v)
+    constexpr mat<3, 3, T> &operator^=(const T &v)
     {
       arr[0] ^= v;
       arr[1] ^= v;
@@ -510,7 +505,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference modulus
-    mat<3, 3, T> &operator%=(const T &v)
+    constexpr mat<3, 3, T> &operator%=(const T &v)
     {
       arr[0] %= v;
       arr[1] %= v;
@@ -524,7 +519,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference shift left
-    mat<3, 3, T> &operator<<=(const T &v)
+    constexpr mat<3, 3, T> &operator<<=(const T &v)
     {
       arr[0] <<= v;
       arr[1] <<= v;
@@ -538,7 +533,7 @@ namespace dym
       return *this;
     }
     //! Component-wise scalar reference shift right
-    mat<3, 3, T> &operator>>=(const T &v)
+    constexpr mat<3, 3, T> &operator>>=(const T &v)
     {
       arr[0] >>= v;
       arr[1] >>= v;
@@ -697,24 +692,26 @@ namespace dym
   ///////////////////////
   //! TYPE DEFINITIONS //
   ///////////////////////
-
-  typedef mat<3, 3, float> mat3, mat3f;
-  typedef mat<3, 3, double> mat3d;
-  typedef mat<3, 3, unsigned char> mat3uc;
-  typedef mat<3, 3, char> mat3c;
-  typedef mat<3, 3, unsigned short> mat3us;
-  typedef mat<3, 3, short> mat3s;
-  typedef mat<3, 3, unsigned int> mat3ui;
-  typedef mat<3, 3, int> mat3i;
-  typedef mat<3, 3, unsigned long> mat3ul;
-  typedef mat<3, 3, long> mat3l;
+  using mat3 = mat<3, 3, float>;
+  using mat3f = mat3;
+  using mat3d = mat<3, 3, double>;
+  using mat3uc = mat<3, 3, unsigned char>;
+  using mat3c = mat<3, 3, char>;
+  using mat3us = mat<3, 3, unsigned short>;
+  using mat3s = mat<3, 3, short>;
+  using mat3ui = mat<3, 3, unsigned int>;
+  using mat3i = mat<3, 3, int>;
+  using mat3ul = mat<3, 3, unsigned long>;
+  using mat3l = mat<3, 3, long>;
 
 } ////
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 
-#endif //_DYM_MAT3_H_
+#endif //DYM_MAT3_H_INCLUDED

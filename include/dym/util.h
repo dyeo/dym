@@ -1,10 +1,12 @@
-#ifndef _DYM_UTIL_H_
-#define _DYM_UTIL_H_
+#ifndef DYM_UTIL_H_INCLUDED
+#define DYM_UTIL_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127; disable : 4244)
+#endif
 
 //
 
@@ -14,16 +16,10 @@
 #include <cassert>
 #include <random>
 #include <ostream>
-
-//
-
-template <bool>
-struct static_assert_util;
-template <>
-struct static_assert_util<true>
-{
-};
-#define DYM_STATIC_ASSERT(cond) static_assert_util<(cond)>()
+#include <concepts>
+#include <type_traits>
+#include <bit>
+#include <cstdint>
 
 //
 
@@ -33,28 +29,34 @@ struct static_assert_util<true>
 
 namespace dym
 { ////
+
+  //! Represents the dimensionality of vectors and matrices
   using dim_t = int;
 
+  //! Relative equality for floats
   template <class T>
   static bool req(const T &l, const T &r, const T &tol = small_v<T>)
   {
     return std::abs(l - r) <= tol;
   }
 
+  //! Square
   template <class T>
-  static T sq(const T &v)
+  static constexpr T sq(const T &v)
   {
     return v * v;
   }
 
+  //! Cubic
   template <class T>
-  static T cu(const T &v)
+  static constexpr T cu(const T &v)
   {
     return v * v * v;
   }
 
+  //! Generic power
   template <class T>
-  static T pow(const T &v, const dim_t p)
+  static constexpr T pow(const T &v, const dim_t p)
   {
     T val = v;
     for (dim_t i = 0; i < p - 1; ++i)
@@ -64,91 +66,97 @@ namespace dym
     return val;
   }
 
+  //! Absolute value
   template <class T>
   static constexpr T abs(const T &v)
   {
     return (v > 0) ? v : -v;
   }
 
+  //! Min
   template <class T>
   static constexpr T min(const T &l, const T &r)
   {
     return (l < r) ? l : r;
   }
 
+  //! Max
   template <class T>
   static constexpr T max(const T &l, const T &r)
   {
     return (l > r) ? l : r;
   }
 
+  //! Clamp
   template <class T>
   static constexpr T clamp(const T &v, const T &minv, const T &maxv)
   {
     return max(minv, min(v, maxv));
   }
 
+  //! Clamp between 0 and 1
   template <class T>
   static constexpr T saturate(const T &v)
   {
     return max(0, min(v, 1));
   }
 
-  // the following functions are probably slower than the SSE rsqrtss instruction
-
-  //! variation of the famous fast inverse square root
+  
+  //! Variation of the famous fast inverse square root
+  //! Probably slower than the SSE rsqrtss instruction
   inline float fastinvsqrt(float v)
   {
     float vhalf = 0.5f * v;
-    int i = *(int *)&v;             //! reinterpret floating point as binary, stored in int
-    i = 0x5f375a7f - (i >> 1);      //! get first best guess for invsqrt
-    v = *(float *)&i;               //! convert float binary back to float
+    auto i = std::bit_cast<std::uint32_t>(v); //! reinterpret floating point as binary
+    i = 0x5f375a7fu - (i >> 1);          //! get first best guess for invsqrt
+    v = std::bit_cast<float>(i);         //! convert float binary back to float
     v = v * (1.5f - vhalf * v * v); //! use newton's approximation to determine better sqrt
     return v;
   }
 
-  //! inverse square root
+  //! Slightly less fast variation of the famous fast inverse square root
+  //! Probably slower than the SSE rsqrtss instruction
   inline float invsqrt(float v)
   {
     float vhalf = 0.5f * v;
-    int i = *(int *)&v;             //! reinterpret floating point as binary, stored in int
-    i = 0x5f375a7f - (i >> 1);      //! get first best guess for invsqrt
-    v = *(float *)&i;               //! convert float binary back to float
+    auto i = std::bit_cast<std::uint32_t>(v); //! reinterpret floating point as binary
+    i = 0x5f375a7fu - (i >> 1);          //! get first best guess for invsqrt
+    v = std::bit_cast<float>(i);         //! convert float binary back to float
     v = v * (1.5f - vhalf * v * v); //! use newton's approximation to determine better sqrt
     v = v * (1.5f - vhalf * v * v); //! do one more approximation to determine better result
     return v;
   }
 
-  template <class T = long double>
-  static T lerp(const T &src, const T &dst, const long double delta)
+  //! Linear interpolation
+  template <class T, class D = float>
+  static constexpr T lerp(const T& a, const T& b, D dv)
   {
-    return (src * (1.0l - delta)) + (dst * delta);
+    static_assert(std::is_floating_point_v<D>, "dv must be a floating-point type");
+    return (a * (D{1} - dv)) + (b * dv);
   }
-
-  template <class T = double>
-  static T lerp(const T &src, const T &dst, const double delta)
+  
+  //! Inverse linear interpolation
+  template <class T, class D = float>
+  static constexpr T invlerp(const T& a, const T& b, D dv)
   {
-    return (src * (1.0 - delta)) + (dst * delta);
+    static_assert(std::is_floating_point_v<D>, "dv must be a floating-point type");
+    return (dv - a) / (b - a);
   }
 
   template <class T = float>
-  static T lerp(const T &src, const T &dst, const float delta)
+  static constexpr int sgn(T val)
   {
-    return (src * (1.f - delta)) + (dst * delta);
-  }
-
-  template <class T = float>
-  static int sgn(T val)
-  {
-    return (T(0) < val) - (val < T(0));
+    return (T{0} < val) - (val < T{0});
   }
 
 } ////
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 
-#endif //_DYM_UTIL_H_
+#endif //DYM_UTIL_H_INCLUDED

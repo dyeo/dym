@@ -1,5 +1,5 @@
-#ifndef _DYM_PERCENT_H_
-#define _DYM_PERCENT_H_
+#ifndef DYM_PERCENT_H_INCLUDED
+#define DYM_PERCENT_H_INCLUDED
 
 //
 
@@ -21,7 +21,7 @@ namespace dym
     //! Default constructor
     constexpr perc()
     {
-      _val = static_cast<T>(0);
+      _val = T{0};
     }
 
     ~perc() = default;
@@ -49,58 +49,58 @@ namespace dym
     ///////////////////////////
 
     //! Unary negative percentage
-    perc<T> operator-() const
+    constexpr perc<T> operator-() const
     {
       return perc<T>(-_val);
     }
 
     //! Percent addition
-    perc<T> operator+(const perc<T> &a) const
+    constexpr perc<T> operator+(const perc<T> &a) const
     {
       return perc<T>(_val + a._val);
     }
 
     //! Percent subtraction
-    perc<T> operator-(const perc<T> &a) const
+    constexpr perc<T> operator-(const perc<T> &a) const
     {
       return perc<T>(_val - a._val);
     }
 
     //! Percent multiplication
-    perc<T> operator*(const T &s) const
+    constexpr perc<T> operator*(const T &s) const
     {
       return perc<T>(_val * s);
     }
 
     //! Percent division
-    perc<T> operator/(const T &s)
+    constexpr perc<T> operator/(const T &s)
     {
       return perc<T>(_val / s);
     }
 
     //! Percent reference addition
-    perc<T> &operator+=(const perc<T> &a)
+    constexpr perc<T> &operator+=(const perc<T> &a)
     {
       _val += a._val;
       return *this;
     }
 
     //! Percent reference subtraction
-    perc<T> &operator-=(const perc<T> &a)
+    constexpr perc<T> &operator-=(const perc<T> &a)
     {
       _val -= a._val;
       return *this;
     }
 
     //! Percent reference multiplication
-    perc<T> &operator*=(const T &s)
+    constexpr perc<T> &operator*=(const T &s)
     {
       _val *= s;
       return *this;
     }
 
     //! Percent reference division
-    perc<T> &operator/=(const T &s)
+    constexpr perc<T> &operator/=(const T &s)
     {
       _val /= s;
       return *this;
@@ -110,12 +110,12 @@ namespace dym
     //! ACCESS FUNCTIONS //
     ///////////////////////
 
-    T percent() const
+    constexpr T percent() const
     {
       return _val * static_cast<T>(100);
     }
 
-    T value() const
+    constexpr T value() const
     {
       return _val;
     }
@@ -147,11 +147,11 @@ namespace dym
   //! TYPE DEFINITIONS //
   ///////////////////////
 
-  typedef perc<float> percf;
+  using percf = perc<float>;
 
-  typedef perc<double> percd;
+  using percd = perc<double>;
 
-  typedef perc<int> perci;
+  using perci = perc<int>;
 
   //////////////////////
   //! MISC. OPERATORS //

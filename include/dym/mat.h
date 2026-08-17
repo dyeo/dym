@@ -1,10 +1,12 @@
-#ifndef _DYM_MAT_H_
-#define _DYM_MAT_H_
+#ifndef DYM_MAT_H_INCLUDED
+#define DYM_MAT_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
@@ -18,43 +20,37 @@
 
 #include <cmath>
 #include <ostream>
+#include <initializer_list>
 
 //
 
 namespace dym
 { ////
 
-  //! A column-major matrix spanning R rows and C columns
+  //! A column-major matrix spanning C columns and R rows
   template <dim_t C, dim_t R = C, class T = float>
   struct mat
   {
+    using type = T;
+    static constexpr dim_t cols = C;
+    static constexpr dim_t rows = R;
+    static constexpr dim_t dim = (C < R ? C : R);
+    static constexpr dim_t size = C * R;
+
     ///////////////////
     //! DATA MEMBERS //
     ///////////////////
-
-    constexpr int rows() const
-    {
-      return R;
-    }
-    constexpr int cols() const
-    {
-      return C;
-    }
-    constexpr int dim() const
-    {
-      return DYM_MIN_OF(R, C);
-    }
 
     //! Unioned data members
     union
     {
       struct
       {
-        vec<R, T> data[C];
+        vec<cols, T> data[rows];
       };
       struct
       {
-        T arr[(C * R)];
+        T arr[size];
       };
     };
 
@@ -65,9 +61,9 @@ namespace dym
     //! Default constructor
     constexpr mat()
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
-        arr[i] = static_cast<T>(0);
+        arr[i] = T{0};
       }
     }
 
@@ -78,7 +74,7 @@ namespace dym
     //! This is because matrices are stored column-major
     constexpr mat(std::initializer_list<T> list)
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         arr[i] = *(list.begin() + i);
       }
@@ -87,7 +83,7 @@ namespace dym
     //! Copy constructor
     constexpr mat(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         arr[i] = v.arr[i];
       }
@@ -97,7 +93,7 @@ namespace dym
     template <dim_t C1, dim_t R1>
     constexpr mat(const mat<C1, R1, T> &m)
     {
-      DYM_STATIC_ASSERT((R1 < R) && (C1 < C));
+      static_assert((C1 < cols) && (R1 < rows), "Minor matrix must be smaller than original matrix");
       for (dim_t i = 0; i < C1; ++i)
       {
         for (dim_t j = 0; j < R1; ++j)
@@ -111,7 +107,7 @@ namespace dym
     template <class U>
     explicit constexpr mat(const mat<C, R, U> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         arr[i] = static_cast<T>(v.arr[i]);
       }
@@ -120,7 +116,7 @@ namespace dym
     //! Fill constructor
     explicit constexpr mat(const T &s)
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         arr[i] = s;
       }
@@ -129,7 +125,7 @@ namespace dym
     //! Array initializer
     explicit constexpr mat(const T *a)
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         arr[i] = a[i];
       }
@@ -140,25 +136,25 @@ namespace dym
     ///////////////////////
 
     //! Matrix index operator - returns column
-    vec<R, T> &operator[](const int i)
+    constexpr vec<R, T> &operator[](const int i)
     {
       return data[i];
     }
 
     //! Matrix const index operator - returns column
-    const vec<R, T> &operator[](const int i) const
+    constexpr const vec<R, T> &operator[](const int i) const
     {
       return data[i];
     }
 
     //! Matrix linear array index operator - returns element
-    T &operator()(const int i)
+    constexpr T &operator()(const int i)
     {
       return arr[i];
     }
 
     //! Matrix linear array const index operator - returns element
-    const T &operator()(const int i) const
+    constexpr const T &operator()(const int i) const
     {
       return arr[i];
     }
@@ -168,29 +164,19 @@ namespace dym
     ///////////////////////////
 
     //! Component-wise unary negation
-    mat<C, R, T> operator-() const
+    constexpr mat<C, R, T> operator-() const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = -arr[i];
-      }
-      return res;
+      return unary_transform([](const auto &value) { return -value; });
     }
     //! Component-wise unary negation
-    mat<C, R, T> operator~() const
+    constexpr mat<C, R, T> operator~() const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = ~arr[i];
-      }
-      return res;
+      return unary_transform([](const auto &value) { return ~value; });
     }
     //! Vector assignment
-    mat<C, R, T> &operator=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
         arr[i] = v.arr[i];
       }
@@ -198,358 +184,196 @@ namespace dym
     }
 
     //! Component-wise matrix addition
-    mat<C, R, T> operator+(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator+(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] + v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left + right; });
     }
     //! Component-wise matrix subtraction
-    mat<C, R, T> operator-(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator-(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] - v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left - right; });
     }
     //! Component-wise matrix OR
-    mat<C, R, T> operator|(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator|(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] | v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left | right; });
     }
     //! Component-wise matrix AND
-    mat<C, R, T> operator&(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator&(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] & v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left & right; });
     }
     //! Component-wise matrix XOR
-    mat<C, R, T> operator^(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator^(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] ^ v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left ^ right; });
     }
     //! Component-wise matrix modulus
-    mat<C, R, T> operator%(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator%(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] % v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left % right; });
     }
     //! Component-wise matrix shift left
-    mat<C, R, T> operator<<(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator<<(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] << v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left << right; });
     }
     //! Component-wise matrix shift right
-    mat<C, R, T> operator>>(const mat<C, R, T> &v) const
+    constexpr mat<C, R, T> operator>>(const mat<C, R, T> &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] >> v.arr[i];
-      }
-      return res;
+      return binary_transform(v, [](const auto &left, const auto &right) { return left >> right; });
     }
 
     //! Component-wise scalar multiplication
-    mat<C, R, T> operator*(const T &v) const
+    constexpr mat<C, R, T> operator*(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] * v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left * right; });
     }
     //! Component-wise scalar division
-    mat<C, R, T> operator/(const T &v) const
+    constexpr mat<C, R, T> operator/(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] / v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left / right; });
     }
     //! Component-wise scalar addition
-    mat<C, R, T> operator+(const T &v) const
+    constexpr mat<C, R, T> operator+(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] + v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left + right; });
     }
     //! Component-wise scalar subtraction
-    mat<C, R, T> operator-(const T &v) const
+    constexpr mat<C, R, T> operator-(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] - v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left - right; });
     }
     //! Component-wise scalar OR
-    mat<C, R, T> operator|(const T &v) const
+    constexpr mat<C, R, T> operator|(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] | v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left | right; });
     }
     //! Component-wise scalar AND
-    mat<C, R, T> operator&(const T &v) const
+    constexpr mat<C, R, T> operator&(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] & v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left & right; });
     }
     //! Component-wise scalar XOR
-    mat<C, R, T> operator^(const T &v) const
+    constexpr mat<C, R, T> operator^(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] ^ v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left ^ right; });
     }
     //! Component-wise scalar modulus
-    mat<C, R, T> operator%(const T &v) const
+    constexpr mat<C, R, T> operator%(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] % v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left % right; });
     }
     //! Component-wise scalar shift left
-    mat<C, R, T> operator<<(const T &v) const
+    constexpr mat<C, R, T> operator<<(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] << v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left << right; });
     }
     //! Component-wise scalar shift right
-    mat<C, R, T> operator>>(const T &v) const
+    constexpr mat<C, R, T> operator>>(const T &v) const
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        res.arr[i] = arr[i] >> v;
-      }
-      return res;
+      return scalar_transform(v, [](const auto &left, const auto &right) { return left >> right; });
     }
 
     //! Component-wise matrix reference addition
-    mat<C, R, T> &operator+=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator+=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] += v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left += right; });
     }
     //! Component-wise matrix reference subtraction
-    mat<C, R, T> &operator-=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator-=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] -= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left -= right; });
     }
     //! Component-wise matrix reference OR
-    mat<C, R, T> &operator|=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator|=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] |= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left |= right; });
     }
     //! Component-wise matrix reference AND
-    mat<C, R, T> &operator&=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator&=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] &= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left &= right; });
     }
     //! Component-wise matrix reference XOR
-    mat<C, R, T> &operator^=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator^=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] ^= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left ^= right; });
     }
     //! Component-wise matrix reference modulus
-    mat<C, R, T> &operator%=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator%=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] %= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left %= right; });
     }
     //! Component-wise matrix reference shift left
-    mat<C, R, T> &operator<<=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator<<=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] <<= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left <<= right; });
     }
     //! Component-wise matrix reference shift right
-    mat<C, R, T> &operator>>=(const mat<C, R, T> &v)
+    constexpr mat<C, R, T> &operator>>=(const mat<C, R, T> &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] >>= v.arr[i];
-      }
-      return *this;
+      return binary_assign(v, [](auto &left, const auto &right) { left >>= right; });
     }
 
     //! Component-wise scalar reference multiplication
-    mat<C, R, T> &operator*=(const T &v)
+    constexpr mat<C, R, T> &operator*=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] *= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left *= right; });
     }
     //! Component-wise scalar reference division
-    mat<C, R, T> &operator/=(const T &v)
+    constexpr mat<C, R, T> &operator/=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] /= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left /= right; });
     }
     //! Component-wise scalar reference addition
-    mat<C, R, T> &operator+=(const T &v)
+    constexpr mat<C, R, T> &operator+=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] += v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left += right; });
     }
     //! Component-wise scalar reference subtraction
-    mat<C, R, T> &operator-=(const T &v)
+    constexpr mat<C, R, T> &operator-=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] -= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left -= right; });
     }
     //! Component-wise scalar reference OR
-    mat<C, R, T> &operator|=(const T &v)
+    constexpr mat<C, R, T> &operator|=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] |= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left |= right; });
     }
     //! Component-wise scalar reference AND
-    mat<C, R, T> &operator&=(const T &v)
+    constexpr mat<C, R, T> &operator&=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] &= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left &= right; });
     }
     //! Component-wise scalar reference XOR
-    mat<C, R, T> &operator^=(const T &v)
+    constexpr mat<C, R, T> &operator^=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] ^= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left ^= right; });
     }
     //! Component-wise scalar reference modulus
-    mat<C, R, T> &operator%=(const T &v)
+    constexpr mat<C, R, T> &operator%=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] %= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left %= right; });
     }
     //! Component-wise scalar reference shift left
-    mat<C, R, T> &operator<<=(const T &v)
+    constexpr mat<C, R, T> &operator<<=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] <<= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left <<= right; });
     }
     //! Component-wise scalar reference shift right
-    mat<C, R, T> &operator>>=(const T &v)
+    constexpr mat<C, R, T> &operator>>=(const T &v)
     {
-      for (dim_t i = 0; i < R * C; ++i)
-      {
-        arr[i] >>= v;
-      }
-      return *this;
+      return scalar_assign(v, [](auto &left, const auto &right) { left >>= right; });
     }
 
     //! Matrix identity
     static constexpr mat<C, R, T> identity()
     {
-      mat<C, R, T> res(static_cast<T>(0));
-      for (dim_t i = 0; i < DYM_MIN_OF(R, C); ++i)
+      mat<C, R, T> res(T{0});
+      for (dim_t i = 0; i < (R < C ? R : C); ++i)
       {
-        res.data[i][i] = static_cast<T>(1);
+        res.data[i][i] = T{1};
       }
       return res;
     }
@@ -558,9 +382,9 @@ namespace dym
     static constexpr mat<C, R, T> zero()
     {
       mat<C, R, T> res;
-      for (dim_t i = 0; i < C * R; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
-        res[i] = static_cast<T>(0);
+        res[i] = T{0};
       }
       return res;
     }
@@ -569,11 +393,66 @@ namespace dym
     static constexpr mat<C, R, T> one()
     {
       mat<C, R, T> res;
-      for (dim_t i = 0; i < C * R; ++i)
+      for (dim_t i = 0; i < size; ++i)
       {
-        res[i] = static_cast<T>(1);
+        res[i] = T{1};
       }
       return res;
+    }
+
+  private:
+
+    template <class F>
+    constexpr mat<C, R, T> unary_transform(F operation) const
+    {
+      mat<C, R, T> res;
+      for (dim_t i = 0; i < size; ++i)
+      {
+        res.arr[i] = operation(arr[i]);
+      }
+      return res;
+    }
+
+    template <class F>
+    constexpr mat<C, R, T> binary_transform(const mat<C, R, T> &v, F operation) const
+    {
+      mat<C, R, T> res;
+      for (dim_t i = 0; i < size; ++i)
+      {
+        res.arr[i] = operation(arr[i], v.arr[i]);
+      }
+      return res;
+    }
+
+    template <class F>
+    constexpr mat<C, R, T> scalar_transform(const T &v, F operation) const
+    {
+      mat<C, R, T> res;
+      for (dim_t i = 0; i < size; ++i)
+      {
+        res.arr[i] = operation(arr[i], v);
+      }
+      return res;
+    }
+
+    template <class F>
+    constexpr mat<C, R, T> &binary_assign(const mat<C, R, T> &v, F operation)
+    {
+      for (dim_t i = 0; i < size; ++i)
+      {
+        operation(arr[i], v.arr[i]);
+      }
+      return *this;
+    }
+
+    template <class F>
+    constexpr mat<C, R, T> &scalar_assign(const T &v, F operation)
+    {
+      for (dim_t i = 0; i < size; ++i)
+      {
+        operation(arr[i], v);
+      }
+      return *this;
     }
 
   }; //! struct mat
@@ -678,10 +557,10 @@ namespace dym
   //! Returns a R1 x C2 matrix that is the product of the two original matrices
   //! Is not commutative
   template <dim_t C1, dim_t R1, dim_t C2, dim_t R2, class T>
-  static mat<C2, R1, T> operator*(const mat<C1, R1, T> &m, const mat<C2, R2, T> &n)
+  static constexpr mat<C2, R1, T> operator*(const mat<C1, R1, T> &m, const mat<C2, R2, T> &n)
   {
-    DYM_STATIC_ASSERT(C1 == R2); //! no.columns of m and no.rows of n must be equal!!!
-    mat<C2, R1, T> res(static_cast<T>(0));
+    static_assert(C1 == R2, "Number of columns in m must equal number of rows in n");
+    mat<C2, R1, T> res(T{0});
     for (dim_t i = 0; i < R1; ++i)
     {
       for (dim_t j = 0; j < C2; ++j)
@@ -699,9 +578,9 @@ namespace dym
   //! Accepts two matrices where cols and rows are equal
   //! Is not commutative
   template <dim_t C, dim_t R, class T>
-  static mat<C, R, T> &operator*=(mat<C, R, T> &m, const mat<C, R, T> &n)
+  static constexpr mat<C, R, T> &operator*=(mat<C, R, T> &m, const mat<C, R, T> &n)
   {
-    mat<C, R, T> res(static_cast<T>(0));
+    mat<C, R, T> res(T{0});
     for (dim_t i = 0; i < R; ++i)
     {
       for (dim_t j = 0; j < C; ++j)
@@ -721,9 +600,9 @@ namespace dym
 
   //! Matrix-vector multiplication: column vector (matrix row)
   template <dim_t C, dim_t R, class T>
-  static vec<R, T> operator*(const mat<C, R, T> &m, const vec<R, T> &v)
+  static constexpr vec<R, T> operator*(const mat<C, R, T> &m, const vec<R, T> &v)
   {
-    vec<R, T> res(static_cast<T>(0));
+    vec<R, T> res(T{0});
     for (dim_t i = 0; i < R; ++i)
     {
       for (dim_t j = 0; j < C; ++j)
@@ -736,9 +615,9 @@ namespace dym
 
   //! Matrix-vector multiplication: row vector (matrix column)
   template <dim_t C, dim_t R, class T>
-  static vec<C, T> operator*(const vec<C, T> &v, const mat<C, R, T> &m)
+  static constexpr vec<C, T> operator*(const vec<C, T> &v, const mat<C, R, T> &m)
   {
-    vec<C, T> res(static_cast<T>(0));
+    vec<C, T> res(T{0});
     for (dim_t i = 0; i < C; ++i)
     {
       for (dim_t j = 0; j < R; ++j)
@@ -751,9 +630,9 @@ namespace dym
 
   //! Matrix-vector multiplication: row vector (matrix column, reference)
   template <dim_t C, dim_t R, class T>
-  static vec<C, T> &operator*=(vec<C, T> &v, const mat<C, R, T> &m)
+  static constexpr vec<C, T> &operator*=(vec<C, T> &v, const mat<C, R, T> &m)
   {
-    vec<C, T> res(static_cast<T>(0));
+    vec<C, T> res(T{0});
     for (dim_t i = 0; i < C; ++i)
     {
       for (dim_t j = 0; j < R; ++j)
@@ -770,10 +649,10 @@ namespace dym
 
   //! Matrix-scalar multiplication
   template <dim_t C, dim_t R, class T>
-  static mat<C, R, T> operator*(const T &v, const mat<C, R, T> &m)
+  static constexpr mat<C, R, T> operator*(const T &v, const mat<C, R, T> &m)
   {
     mat<C, R, T> res;
-    for (dim_t i = 0; i < R * C; ++i)
+    for (dim_t i = 0; i < C * R; ++i)
     {
       res.arr[i] = v * m.arr[i];
     }
@@ -785,7 +664,7 @@ namespace dym
   static mat<C, R, T> operator*(const U &v, const mat<C, R, T> &m)
   {
     mat<C, R, T> res;
-    for (dim_t i = 0; i < R * C; ++i)
+    for (dim_t i = 0; i < C * R; ++i)
     {
       res.arr[i] = static_cast<T>(v) * m.arr[i];
     }
@@ -798,10 +677,10 @@ namespace dym
 
   //! Component-wise matrix multiplication
   template <dim_t C, dim_t R, class T>
-  static mat<C, R, T> mult(const mat<C, R, T> &m, const mat<C, R, T> &n)
+  static constexpr mat<C, R, T> mult(const mat<C, R, T> &m, const mat<C, R, T> &n)
   {
     mat<C, R, T> res;
-    for (dim_t i = 0; i < R * C; ++i)
+    for (dim_t i = 0; i < C * R; ++i)
     {
       res.arr[i] = m.arr[i] * n.arr[i];
     }
@@ -810,10 +689,10 @@ namespace dym
 
   //! Returns sum of the matrix diagonal
   template <dim_t C, dim_t R, class T>
-  static T trace(const mat<C, R, T> &m)
+  static constexpr T trace(const mat<C, R, T> &m)
   {
     T res = 0;
-    for (dim_t i = 0; i < DYM_MIN_OF(R, C); ++i)
+    for (dim_t i = 0; i < (C < R ? C : R); ++i)
     {
       res += m.data[i][i];
     }
@@ -822,9 +701,9 @@ namespace dym
 
   //! Returns minor matrix of the current matrix, "crossing out" the specified row and column
   template <dim_t C, dim_t R, class T>
-  static mat<C - 1, R - 1, T> minor(const mat<C, R, T> &m, int rx, int cx)
+  static constexpr mat<C - 1, R - 1, T> minor(const mat<C, R, T> &m, int rx, int cx)
   {
-    mat<C - 1, R - 1, T> res(static_cast<T>(0));
+    mat<C - 1, R - 1, T> res(T{0});
 
     int mini = 0;
     int minj = 0;
@@ -861,7 +740,7 @@ namespace dym
     int sign = ludecompose(m, l, u);
 
     if (sign == 0)
-      return static_cast<T>(0);
+      return T{0};
 
     T res = static_cast<T>(sign);
 
@@ -899,7 +778,7 @@ namespace dym
       }
 
       // Singular matrix
-      if (maxval == static_cast<T>(0))
+      if (maxval == T{0})
         return 0;
 
       // Swap rows k and pivot
@@ -942,9 +821,9 @@ namespace dym
 
   //! Flips the matrix along its diagonal (rows become columns, columns become rows)
   template <dim_t R, dim_t C, class T>
-  static mat<R, C, T> transpose(const mat<C, R, T> &m)
+  static constexpr mat<R, C, T> transpose(const mat<C, R, T> &m)
   {
-    mat<R, C, T> res(static_cast<T>(0));
+    mat<R, C, T> res(T{0});
     for (dim_t i = 0; i < C; ++i)
     {
       for (dim_t j = 0; j < R; ++j)
@@ -957,17 +836,17 @@ namespace dym
 
   //! Generates a matrix one dimension larger that is a composition of the target matrix and an identity matrix
   template <dim_t R, dim_t C, class T>
-  static mat<C + 1, R + 1, T> affine(const mat<C, R, T> &m)
+  static constexpr mat<C + 1, R + 1, T> affine(const mat<C, R, T> &m)
   {
     mat<C + 1, R + 1, T> res = m;
-    res[C][R] = static_cast<T>(1);
+    res[C][R] = T{1};
     return res;
   }
 
   template <dim_t D, class T>
-  static mat<D, D, T> cofactor(const mat<D, D, T> &m)
+  static constexpr mat<D, D, T> cofactor(const mat<D, D, T> &m)
   {
-    mat<D, D, T> res(static_cast<T>(0));
+    mat<D, D, T> res(T{0});
     for (dim_t j = 0; j < D; ++j)
     {
       for (dim_t i = 0; i < D; ++i)
@@ -980,28 +859,28 @@ namespace dym
 
   //! Returns true if the matrix has no inverse, false otherwise
   template <dim_t D, class T>
-  static bool issingular(const mat<D, D, T> &m)
+  static constexpr bool issingular(const mat<D, D, T> &m)
   {
-    return det(m) == static_cast<T>(0);
+    return det(m) == T{0};
   }
 
   //! Returns an adjoint of matrix m
   template <dim_t D, class T>
-  static mat<D, D, T> adjoint(const mat<D, D, T> &m)
+  static constexpr mat<D, D, T> adjoint(const mat<D, D, T> &m)
   {
     return transpose(cofactor(m));
   }
 
   //! Inverts the matrix, such that m * inverse(m) = the identity
   template <dim_t D, class T>
-  static mat<D, D, T> inverse(const mat<D, D, T> &m)
+  static constexpr mat<D, D, T> inverse(const mat<D, D, T> &m)
   {
     return adjoint(m) / det(m);
   }
 
   //! Component-wise saturation (clamp01)
   template <dim_t C, dim_t R, class T = float>
-  static mat<C, R, T> saturate(const mat<C, R, T> &m)
+  static constexpr mat<C, R, T> saturate(const mat<C, R, T> &m)
   {
     return max(mat<C, R, T>::zero(), min(m, mat<C, R, T>::one()));
   }
@@ -1010,8 +889,10 @@ namespace dym
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 
-#endif //_DYM_MAT_H_
+#endif //DYM_MAT_H_INCLUDED

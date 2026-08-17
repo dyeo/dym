@@ -1,5 +1,5 @@
-#ifndef _DYM_DYM_H_
-#define _DYM_DYM_H_
+#ifndef DYM_DYM_H_INCLUDED
+#define DYM_DYM_H_INCLUDED
 
 #include "util.h"
 #include "angle.h"
@@ -15,4 +15,4 @@
 #include "mat4.h"
 #include "quat.h"
 
-#endif //_DYM_DYM_H_
+#endif //DYM_DYM_H_INCLUDED

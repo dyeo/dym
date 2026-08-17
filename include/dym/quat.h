@@ -1,10 +1,12 @@
-#ifndef _DYM_QUAT_H_
-#define _DYM_QUAT_H_
+#ifndef DYM_QUAT_H_INCLUDED
+#define DYM_QUAT_H_INCLUDED
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4456; disable : 4127)
+#endif
 
 //
 
@@ -13,15 +15,18 @@
 #include "mat3.h"
 #include <cmath>
 #include <ostream>
-
-//
-
-#define DYM_QUAT_SLERP_THRESHOLD 0.99951171875
+#include <initializer_list>
+#include <cstddef>
 
 //
 
 namespace dym
 { ////
+
+  namespace detail
+  {
+    inline constexpr double quat_slerp_threshold = 0.99951171875;
+  }
 
   //! Quaternion class
   template <class T = float>
@@ -59,47 +64,47 @@ namespace dym
     ///////////////////
 
     //! default constructor
-    quat()
-        : w(static_cast<T>(0)), i(static_cast<T>(0)), j(static_cast<T>(0)), k(static_cast<T>(0))
+    constexpr quat()
+        : w(T{0}), i(T{0}), j(T{0}), k(T{0})
     {
     }
 
     ~quat() = default;
 
     //! initialize quat with one scalar (s) and three complex (i, j, k)
-    quat(const T &s, const T &i, const T &j, const T &k)
+    constexpr quat(const T &s, const T &i, const T &j, const T &k)
         : w(s), i(i), j(j), k(k)
     {
     }
 
     //! initialize quat with one scalar (s) and a vec3 of complex (ijk)
-    quat(const T &s, const vec<3, T> &ijk)
+    constexpr quat(const T &s, const vec<3, T> &ijk)
         : w(s), i(ijk.data[0]), j(ijk.data[1]), k(ijk.data[2])
     {
     }
 
     //! initialize quat with vec4 of complex(3)scalar(1)
     //! NOTE: w becomes first element!
-    quat(const vec<4, T> &xyzw)
+    constexpr quat(const vec<4, T> &xyzw)
         : w(xyzw.data[3]), i(xyzw.data[0]), j(xyzw.data[1]), k(xyzw.data[2])
     {
     }
 
     //! Copy constructor
     template <class U>
-    quat(const quat<U> &q)
+    constexpr quat(const quat<U> &q)
         : w(static_cast<T>(q.data[0])), i(static_cast<T>(q.data[1])), j(static_cast<T>(q.data[2])), k(static_cast<T>(q.data[3]))
     {
     }
 
     //! Array initializer
-    explicit quat(const T *a)
+    constexpr explicit quat(const T *a)
         : w(a[0]), i(a[1]), j(a[2]), k(a[3])
     {
     }
 
     //! Initializer list constructor
-    quat(std::initializer_list<T> l)
+    constexpr quat(std::initializer_list<T> l)
         : w(*(l.begin())), i(*(l.begin() + 1)), j(*(l.begin() + 2)), k(*(l.begin() + 3))
     {
     }
@@ -109,12 +114,12 @@ namespace dym
     ///////////////////////
 
     //! returns reference to an element of the given quat, in the order w,i,j,k
-    T &operator[](const size_t i)
+    constexpr T &operator[](const std::size_t i)
     {
       return data[i];
     }
 
-    const T &operator[](const size_t i) const
+    constexpr const T &operator[](const std::size_t i) const
     {
       return data[i];
     }
@@ -124,19 +129,19 @@ namespace dym
     ///////////////////////////
 
     //! Quaternion addition
-    quat<T> operator+(const quat<T> &q) const
+    constexpr quat<T> operator+(const quat<T> &q) const
     {
       return quat<T>(w + q.w, i + q.i, j + q.j, k + q.k);
     }
 
     //! Quaternion subtraction
-    quat<T> operator-(const quat<T> &q) const
+    constexpr quat<T> operator-(const quat<T> &q) const
     {
       return quat<T>(w - q.w, i - q.i, j - q.j, k - q.k);
     }
 
     //! Quaternion multiplication
-    quat<T> operator*(const quat &q)
+    constexpr quat<T> operator*(const quat &q)
     {
       quat<T> res;
       res.i = i * q.w + j * q.k - k * q.j + w * q.i;
@@ -147,7 +152,7 @@ namespace dym
     }
 
     //! Quaternion division (multiplication by conjugate)
-    quat<T> operator/(const quat &q)
+    constexpr quat<T> operator/(const quat &q)
     {
       quat<T> res;
       res = (*this) * conjugate(q);
@@ -155,7 +160,7 @@ namespace dym
     }
 
     //! Quaternion reference addition
-    quat<T> &operator+=(const quat<T> &q)
+    constexpr quat<T> &operator+=(const quat<T> &q)
     {
       w += q.w;
       i += q.i;
@@ -165,7 +170,7 @@ namespace dym
     }
 
     //! Quaternion reference subtraction
-    quat<T> &operator-=(const quat<T> &q)
+    constexpr quat<T> &operator-=(const quat<T> &q)
     {
       w -= q.w;
       i -= q.i;
@@ -175,45 +180,45 @@ namespace dym
     }
 
     //! Quaternion reference multiplication
-    vec<3, T> operator*(const vec<3, T> &v)
+    constexpr vec<3, T> operator*(const vec<3, T> &v)
     {
       quat<T> vp = (*this) * quat<T>(0, v.i, v.j, v.k) * conj(*this);
       return vec<3, T>(vp.i, vp.j, vp.k);
     }
 
     //! Quaternion reference division (multiplication by conjugate)
-    vec<3, T> operator/(const vec<3, T> &v)
+    constexpr vec<3, T> operator/(const vec<3, T> &v)
     {
       quat<T> vp = (*this) * quat<T>(0, -v.i, -v.j, -v.k) * conj(*this);
       return vec<3, T>(vp.i, vp.j, vp.k);
     }
 
     //! Quaternion scalar addition
-    quat<T> operator+(const T &v) const
+    constexpr quat<T> operator+(const T &v) const
     {
       return quat<T>(w + v, i + v, j + v, k + v);
     }
 
     //! Quaternion scalar subtraction
-    quat<T> operator-(const T &v) const
+    constexpr quat<T> operator-(const T &v) const
     {
       return quat<T>(w - v, i - v, j - v, k - v);
     }
 
     //!  Quaternion scalar multiplication
-    quat<T> operator*(const T &v) const
+    constexpr quat<T> operator*(const T &v) const
     {
       return quat<T>(w * v, i * v, j * v, k * v);
     }
 
     //! Quaternion scalar division
-    quat<T> operator/(const T &v) const
+    constexpr quat<T> operator/(const T &v) const
     {
       return quat<T>(w / v, i / v, j / v, k / v);
     }
 
     //! Quaternion scalar reference addition
-    quat<T> &operator+=(const T &v)
+    constexpr quat<T> &operator+=(const T &v)
     {
       w += v;
       i += v;
@@ -223,7 +228,7 @@ namespace dym
     }
 
     //! Quaternion scalar reference subtraction
-    quat<T> &operator-=(const T &v)
+    constexpr quat<T> &operator-=(const T &v)
     {
       w -= v;
       i -= v;
@@ -233,7 +238,7 @@ namespace dym
     }
 
     //! Quaternion scalar reference multiplication
-    quat<T> &operator*=(const T &v)
+    constexpr quat<T> &operator*=(const T &v)
     {
       w *= v;
       i *= v;
@@ -243,7 +248,7 @@ namespace dym
     }
 
     //! Quaternion scalar reference division
-    quat<T> &operator/=(const T &v)
+    constexpr quat<T> &operator/=(const T &v)
     {
       w /= v;
       i /= v;
@@ -257,20 +262,20 @@ namespace dym
     ///////////////////////
 
     //! Returns the quaternion represented as a 3-dimension column-order rotation matrix
-    mat<3, 3, T> tomat()
+    constexpr mat<3, 3, T> tomat()
     {
       return mat<3, 3, T>{
-          static_cast<T>(1) - static_cast<T>(2) * (sq(k) + sq(j)),
+          T{1} - static_cast<T>(2) * (sq(k) + sq(j)),
           static_cast<T>(2) * (i * j + k * w),
           static_cast<T>(2) * (i * k - j * w),
           //
           static_cast<T>(2) * (i * j - k * w),
-          static_cast<T>(1) - static_cast<T>(2) * (sq(i) + sq(k)),
+          T{1} - static_cast<T>(2) * (sq(i) + sq(k)),
           static_cast<T>(2) * (j * k + i * w),
           //
           static_cast<T>(2) * (j * w + i * k),
           static_cast<T>(2) * (j * k - i * w),
-          static_cast<T>(1) - static_cast<T>(2) * (sq(j) + sq(i))};
+          T{1} - static_cast<T>(2) * (sq(j) + sq(i))};
     }
 
     //////////////////////////
@@ -292,7 +297,7 @@ namespace dym
 
     // MISC. STATIC FUNCTIONS
 
-    static quat<T> identity()
+    constexpr static quat<T> identity()
     {
       return quat<T>(1, 0, 0, 0);
     }
@@ -316,7 +321,7 @@ namespace dym
 
   //! Returns length squared of quaternion
   template <class T = float>
-  static T lengthsq(const quat<T> &v)
+  static constexpr T lengthsq(const quat<T> &v)
   {
     return sq(v.w) + sq(v.i) + sq(v.j) + sq(v.k);
   }
@@ -343,14 +348,14 @@ namespace dym
 
   //! Returns the quaternion conjugate. The "negative" of the quaternion.
   template <class T = float>
-  static quat<T> conjugate(const quat<T> &q)
+  static constexpr quat<T> conjugate(const quat<T> &q)
   {
     return quat<T>(-q.i, -q.j, -q.k, q.w);
   }
 
   //! Returns the quaternion conjugate. The "negative" of the quaternion.
   template <class T = float>
-  static quat<T> conj(const quat<T> &q)
+  static constexpr quat<T> conj(const quat<T> &q)
   {
     return conjugate(q);
   }
@@ -364,7 +369,7 @@ namespace dym
 
   //! Calculates the dot or hamiltonian product of two quaternions
   template <class T = float>
-  static T dot(const quat<T> &l, const quat<T> &r)
+  static constexpr T dot(const quat<T> &l, const quat<T> &r)
   {
     return (l.w * r.w) + (l.i * r.i) + (l.j * r.j) + (l.k * r.k);
   }
@@ -375,7 +380,7 @@ namespace dym
   {
     T dotProduct = dot(l, r);
 
-    if (dotProduct > DYM_QUAT_SLERP_THRESHOLD)
+    if (dotProduct > detail::quat_slerp_threshold)
       return normalize(l + t * (r - l));
 
     dotProduct = clamp(dotProduct, -1, 1);
@@ -393,21 +398,22 @@ namespace dym
   //! TYPE DEFINITIONS //
   ///////////////////////
 
-  typedef quat<float> quatf;
-  typedef quat<double> quatd;
-  typedef quat<int> quati;
-  typedef quat<unsigned> quatui;
+  using quatf = quat<float>;
+  using quatd = quat<double>;
+  using quati = quat<int>;
+  using quatui = quat<unsigned>;
 
 } ////
 
 //
 
-#undef DYM_QUAT_SLERP_THRESHOLD
 
 //
 
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 //
 
-#endif //_DYM_QUAT_H_
+#endif //DYM_QUAT_H_INCLUDED

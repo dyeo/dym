@@ -1,13 +1,17 @@
-#ifndef _DYM_SWIZZLE3_H_
-#define _DYM_SWIZZLE3_H_
+#ifndef DYM_SWIZZLE3_H_INCLUDED
+#define DYM_SWIZZLE3_H_INCLUDED
 
 #include "util.h"
 #include "vec.h"
+#include <cstddef>
+#include <type_traits>
 
 //
 
 namespace dym
 { ////
+
+  struct duplicate_components_swizzle;
 
   template <dim_t I0, dim_t I1, dim_t I2, class T>
   class swizzle3
@@ -18,14 +22,14 @@ namespace dym
 
     static constexpr bool is_writable = (I0 != I1 && I0 != I2 && I1 != I2);
 
-    typedef class std::conditional<is_writable, swizzle3<I0, I1, I2, T>, struct duplicate_components_swizzle>::type writable_type;
+    using writable_type = std::conditional_t<is_writable, swizzle3<I0, I1, I2, T>, duplicate_components_swizzle>;
 
-    T &operator[](const size_t i)
+    T &operator[](const std::size_t i)
     {
       return raw_data()[i];
     }
 
-    const T &operator[](const size_t i) const
+    const T &operator[](const std::size_t i) const
     {
       return raw_data()[i];
     }
@@ -861,4 +865,4 @@ namespace dym
 
 //
 
-#endif //_DYM_SWIZZLE3_H_
+#endif //DYM_SWIZZLE3_H_INCLUDED
