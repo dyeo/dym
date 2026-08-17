@@ -24,7 +24,7 @@ namespace dym
 { ////
 
   //! Quaternion class
-  template <typename T = float>
+  template <class T = float>
   struct quat
   {
     ///////////////////
@@ -86,7 +86,7 @@ namespace dym
     }
 
     //! Copy constructor
-    template <typename U>
+    template <class U>
     quat(const quat<U> &q)
         : w(static_cast<T>(q.data[0])), i(static_cast<T>(q.data[1])), j(static_cast<T>(q.data[2])), k(static_cast<T>(q.data[3]))
     {
@@ -303,7 +303,7 @@ namespace dym
   //////////////////////
 
   //! Quaternion output operator
-  template <typename T = float>
+  template <class T = float>
   static std::ostream &operator<<(std::ostream &os, const quat<T> &q)
   {
     os << "< " << std::showpos << q.w << ' ' << q.i << "i " << q.j << "j " << q.k << std::noshowpos << "k >";
@@ -315,62 +315,62 @@ namespace dym
   /////////////////////
 
   //! Returns length squared of quaternion
-  template <typename T = float>
+  template <class T = float>
   static T lengthsq(const quat<T> &v)
   {
     return sq(v.w) + sq(v.i) + sq(v.j) + sq(v.k);
   }
 
   //! Returns length of quaternion, or sqrt(lengthsq)
-  template <typename T = float>
+  template <class T = float>
   static T length(const quat<T> &v)
   {
     return sqrt(sq(v.w) + sq(v.i) + sq(v.j) + sq(v.k));
   }
 
-  template <typename T = float>
+  template <class T = float>
   static T norm(const quat<T> &q)
   {
     return length(q);
   }
 
   //! Normalizes quaternion so it is a unit quaternion
-  template <typename T = float>
+  template <class T = float>
   static quat<T> normalize(const quat<T> &q)
   {
     return q / length(q);
   }
 
   //! Returns the quaternion conjugate. The "negative" of the quaternion.
-  template <typename T = float>
+  template <class T = float>
   static quat<T> conjugate(const quat<T> &q)
   {
     return quat<T>(-q.i, -q.j, -q.k, q.w);
   }
 
   //! Returns the quaternion conjugate. The "negative" of the quaternion.
-  template <typename T = float>
+  template <class T = float>
   static quat<T> conj(const quat<T> &q)
   {
     return conjugate(q);
   }
 
   //! Returns the quaternion inverse
-  template <typename T = float>
+  template <class T = float>
   static quat<T> inverse(const quat<T> &q)
   {
     return q / lengthsq(q);
   }
 
   //! Calculates the dot or hamiltonian product of two quaternions
-  template <typename T = float>
+  template <class T = float>
   static T dot(const quat<T> &l, const quat<T> &r)
   {
     return (l.w * r.w) + (l.i * r.i) + (l.j * r.j) + (l.k * r.k);
   }
 
   //! Calculates the spherical linear interpolation of two quaternions using a t-value
-  template <typename T = float>
+  template <class T = float>
   static quat<T> slerp(const quat<T> &l, const quat<T> &r, const double &t)
   {
     T dotProduct = dot(l, r);

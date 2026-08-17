@@ -10,7 +10,7 @@
 namespace dym
 { ////
 
-  template <typename T = float>
+  template <class T = float>
   struct perc
   { ////
 
@@ -33,7 +33,7 @@ namespace dym
     }
 
     //! Type conversion copy constructor
-    template <typename U>
+    template <class U>
     constexpr perc(const perc<U> &a)
     {
       _val = static_cast<T>(a._val);
@@ -130,14 +130,14 @@ namespace dym
   //////////////////////////
 
   //! Creates an percentage from a value [0..1]
-  template <typename T = float>
+  template <class T = float>
   constexpr static perc<T> value(const T &val)
   {
     return perc<T>(val);
   }
 
   //! Creates an percentage from a percentage [0..100]
-  template <typename T = float>
+  template <class T = float>
   constexpr static perc<T> percent(const T &per)
   {
     return perc<T>(per / static_cast<T>(100));

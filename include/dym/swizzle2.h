@@ -9,7 +9,7 @@
 namespace dym
 { ////
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   class swizzle2
   {
   public:
@@ -18,7 +18,7 @@ namespace dym
 
     static constexpr bool is_writable = (I0 != I1);
 
-    typedef typename std::conditional<is_writable, swizzle2<I0, I1, T>, struct duplicate_components_swizzle>::type writable_type;
+    typedef class std::conditional<is_writable, swizzle2<I0, I1, T>, struct duplicate_components_swizzle>::type writable_type;
 
     T &operator[](const size_t i)
     {
@@ -48,7 +48,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -77,7 +77,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] * s[I0], raw_data()[I1] * s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator*(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] * s[J0], raw_data()[I1] * s[J1]);
@@ -98,7 +98,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] / s[I0], raw_data()[I1] / s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator/(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] / s[J0], raw_data()[I1] / s[J1]);
@@ -119,7 +119,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] + s[I0], raw_data()[I1] + s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator+(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] + s[J0], raw_data()[I1] + s[J1]);
@@ -140,7 +140,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] - s[I0], raw_data()[I1] - s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator-(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] - s[J0], raw_data()[I1] - s[J1]);
@@ -161,7 +161,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] | s[I0], raw_data()[I1] | s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator|(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] | s[J0], raw_data()[I1] | s[J1]);
@@ -182,7 +182,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] & s[I0], raw_data()[I1] & s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator&(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] & s[J0], raw_data()[I1] & s[J1]);
@@ -203,7 +203,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] ^ s[I0], raw_data()[I1] ^ s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator^(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] ^ s[J0], raw_data()[I1] ^ s[J1]);
@@ -224,7 +224,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] % s[I0], raw_data()[I1] % s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator%(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] % s[J0], raw_data()[I1] % s[J1]);
@@ -245,7 +245,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] << s[I0], raw_data()[I1] << s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator<<(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] << s[J0], raw_data()[I1] << s[J1]);
@@ -266,7 +266,7 @@ namespace dym
       return vec<2, T>(raw_data()[I0] >> s[I0], raw_data()[I1] >> s[I1]);
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     vec<2, T> operator>>(const swizzle2<J0, J1, T> &s) const
     {
       return vec<2, T>(raw_data()[I0] >> s[J0], raw_data()[I1] >> s[J1]);
@@ -291,7 +291,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator*=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -324,7 +324,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator/=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -357,7 +357,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator+=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -390,7 +390,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator-=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -423,7 +423,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator|=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -456,7 +456,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator&=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -489,7 +489,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator^=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -522,7 +522,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator%=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -555,7 +555,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator<<=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -588,7 +588,7 @@ namespace dym
       return *this;
     }
 
-    template <int J0, int J1>
+    template <dim_t J0, dim_t J1>
     writable_type &operator>>=(const swizzle2<J0, J1, T> &s)
     {
       const T va2 = s[J0];
@@ -629,7 +629,7 @@ namespace dym
   //! OUTPUT OPERATOR //
   //////////////////////
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   std::ostream &operator<<(std::ostream &os, const swizzle2<I0, I1, T> &s)
   {
     os << vec<2, T>(s[I0], s[I1]);
@@ -640,67 +640,67 @@ namespace dym
   //! BINARY OPERATORS //
   ///////////////////////
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator*(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x * s[I0], v.y * s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator/(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x / s[I0], v.y / s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator+(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x + s[I0], v.y + s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator-(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x - s[I0], v.y - s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator|(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x | s[I0], v.y | s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator&(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x & s[I0], v.y & s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator^(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x ^ s[I0], v.y ^ s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator%(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x % s[I0], v.y % s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator<<(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x << s[I0], v.y << s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> operator>>(const vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     return vec<2, T>(v.x >> s[I0], v.y >> s[I1]);
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator*=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x *= s[I0];
@@ -708,7 +708,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator/=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x /= s[I0];
@@ -716,7 +716,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator+=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x += s[I0];
@@ -724,7 +724,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator-=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x -= s[I0];
@@ -732,7 +732,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator|=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x |= s[I0];
@@ -740,7 +740,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator&=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x &= s[I0];
@@ -748,7 +748,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator^=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x ^= s[I0];
@@ -756,7 +756,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator%=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x %= s[I0];
@@ -764,7 +764,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator<<=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x <<= s[I0];
@@ -772,7 +772,7 @@ namespace dym
     return v;
   }
 
-  template <int I0, int I1, typename T>
+  template <dim_t I0, dim_t I1, class T>
   static vec<2, T> &operator>>=(vec<2, T> &v, const swizzle2<I0, I1, T> &s)
   {
     v.x >>= s[I0];

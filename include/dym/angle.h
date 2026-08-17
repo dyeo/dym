@@ -10,7 +10,7 @@
 namespace dym
 { ////
 
-  template <typename T = float>
+  template <class T = float>
   struct ang
   { ////
 
@@ -33,7 +33,7 @@ namespace dym
     }
 
     //! Type conversion copy constructor
-    template <typename U>
+    template <class U>
     constexpr ang(const ang<U> &a)
     {
       _rads = static_cast<T>(a._rads);
@@ -131,14 +131,14 @@ namespace dym
   //////////////////////////
 
   //! Creates an angle in degrees
-  template <typename T = float>
+  template <class T = float>
   static constexpr ang<T> degrees(const T &deg)
   {
     return ang<float>(deg * deg2rad_v<T>);
   }
 
   //! Creates an angle in radians
-  template <typename T = float>
+  template <class T = float>
   static constexpr ang<> radians(const T &rad)
   {
     return ang<float>(rad);
@@ -158,7 +158,7 @@ namespace dym
   //! MISC. OPERATORS //
   //////////////////////
 
-  template <typename T = float>
+  template <class T = float>
   static std::ostream &operator<<(std::ostream &os, const ang<T> &a)
   {
     os << a.degrees() << "deg";

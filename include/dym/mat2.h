@@ -17,7 +17,7 @@ namespace dym
 { ////
 
   //! A column-major matrix spanning r rows and c columns
-  template <typename T>
+  template <class T>
   struct mat<2, 2, T>
   {
     ///////////////////
@@ -79,7 +79,7 @@ namespace dym
     }
 
     //! Explicit type-conversion copy constructor
-    template <typename U>
+    template <class U>
     explicit constexpr mat(const mat<2, 2, U> &v)
       : arr{static_cast<T>(v.arr[0]), static_cast<T>(v.arr[1]), static_cast<T>(v.arr[2]), static_cast<T>(v.arr[3])}
     {
@@ -104,7 +104,7 @@ namespace dym
     }
 
     //! Explicit type-conversionm value constructor
-    template <typename U>
+    template <class U>
     explicit constexpr mat(const U &s0, const U &s1, const U &s2, const U &s3)
       : arr{static_cast<T>(s0), static_cast<T>(s1), static_cast<T>(s2), static_cast<T>(s3)}
     {
@@ -123,13 +123,13 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <int cm, int rm>
+    template <dim_t cm, dim_t rm>
     constexpr mat(const mat<cm, rm, T> &m)
     {
       DYM_STATIC_ASSERT((rm < rows()) && (cm < cols()));
-      for (size_t i = 0; i < cm; ++i)
+      for (dim_t i = 0; i < cm; ++i)
       {
-        for (size_t j = 0; j < rm; ++j)
+        for (dim_t j = 0; j < rm; ++j)
         {
           data[i][j] = m.data[i][j];
         }
@@ -547,7 +547,7 @@ namespace dym
 
   }; //! struct mat
 
-  template <typename T>
+  template <class T>
   static mat<2, 2, T> operator*(const mat<2, 2, T> &m, const mat<2, 2, T> &n)
   {
     return mat<2, 2, T>(m.arr[0] * n.arr[0] + m.arr[2] * n.arr[1], m.arr[1] * n.arr[0] + m.arr[3] * n.arr[1],
@@ -555,14 +555,14 @@ namespace dym
   }
 
   //! Matrix determinant
-  template <typename T>
+  template <class T>
   static T det(const mat<2, 2, T> &m)
   {
     return (m.arr[0] * m.arr[3]) - (m.arr[1] * m.arr[2]);
   }
 
   //! Inverts the matrix, such that m * inverse(m) = the identity
-  template <typename T>
+  template <class T>
   static mat<2, 2, T> inverse(const mat<2, 2, T> &m)
   {
     return mat<2, 2, T>(m.arr[3], -m.arr[1], -m.arr[2], m.arr[0]) / det(m);

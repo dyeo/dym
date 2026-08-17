@@ -33,61 +33,62 @@ struct static_assert_util<true>
 
 namespace dym
 { ////
+  using dim_t = int;
 
-  template <typename T>
+  template <class T>
   static bool req(const T &l, const T &r, const T &tol = small_v<T>)
   {
     return std::abs(l - r) <= tol;
   }
 
-  template <typename T>
+  template <class T>
   static T sq(const T &v)
   {
     return v * v;
   }
 
-  template <typename T>
+  template <class T>
   static T cu(const T &v)
   {
     return v * v * v;
   }
 
-  template <typename T>
-  static T pow(const T &v, const int p)
+  template <class T>
+  static T pow(const T &v, const dim_t p)
   {
     T val = v;
-    for (size_t i = 0; i < p - 1; ++i)
+    for (dim_t i = 0; i < p - 1; ++i)
     {
       val *= v;
     }
     return val;
   }
 
-  template <typename T>
+  template <class T>
   static constexpr T abs(const T &v)
   {
     return (v > 0) ? v : -v;
   }
 
-  template <typename T>
+  template <class T>
   static constexpr T min(const T &l, const T &r)
   {
     return (l < r) ? l : r;
   }
 
-  template <typename T>
+  template <class T>
   static constexpr T max(const T &l, const T &r)
   {
     return (l > r) ? l : r;
   }
 
-  template <typename T>
+  template <class T>
   static constexpr T clamp(const T &v, const T &minv, const T &maxv)
   {
     return max(minv, min(v, maxv));
   }
 
-  template <typename T>
+  template <class T>
   static constexpr T saturate(const T &v)
   {
     return max(0, min(v, 1));
@@ -118,25 +119,25 @@ namespace dym
     return v;
   }
 
-  template <typename T = long double>
+  template <class T = long double>
   static T lerp(const T &src, const T &dst, const long double delta)
   {
     return (src * (1.0 - delta)) + (dst * delta);
   }
 
-  template <typename T = double>
+  template <class T = double>
   static T lerp(const T &src, const T &dst, const double delta)
   {
     return (src * (1.0 - delta)) + (dst * delta);
   }
 
-  template <typename T = float>
+  template <class T = float>
   static T lerp(const T &src, const T &dst, const float delta)
   {
     return (src * (1.f - delta)) + (dst * delta);
   }
 
-  template <typename T = float>
+  template <class T = float>
   static int sgn(T val)
   {
     return (T(0) < val) - (val < T(0));

@@ -21,7 +21,7 @@
 namespace dym
 { ////
 
-  template <typename T>
+  template <class T>
   struct vec<2, T>
   {
     ///////////////////
@@ -98,7 +98,7 @@ namespace dym
 
 #ifndef DYM_DISABLE_SWIZZLING
     //! Swizzle constructor
-    template <int a, int b>
+    template <dim_t a, dim_t b>
     constexpr vec(const swizzle2<a, b, T> &s)
       : x(s[a]), y(s[b])
     {
@@ -112,7 +112,7 @@ namespace dym
     }
 
     //! Explicit type-conversion copy constructor
-    template <typename U>
+    template <class U>
     explicit constexpr vec(const vec<2, U> &v)
       : x(static_cast<T>(v.x)), y(static_cast<T>(v.y))
     {
@@ -137,19 +137,19 @@ namespace dym
     }
 
     //! Copy constructor for differently-sized vector
-    template <int d2>
+    template <dim_t d2>
     vec(const vec<d2, T> &v)
     {
       if (d2 < 2)
       {
-        for (size_t i = 0; i < d2; ++i)
+        for (dim_t i = 0; i < d2; ++i)
         {
           data[i] = v.data[i];
         }
       }
       else
       {
-        for (size_t i = 0; i < 2; ++i)
+        for (dim_t i = 0; i < 2; ++i)
         {
           data[i] = v.data[i];
         }
@@ -522,7 +522,7 @@ namespace dym
   //! MISC. OPERATORS //
   //////////////////////
 
-  template <typename T = float>
+  template <class T = float>
   static std::ostream &operator<<(std::ostream &os, const vec<2, T> &v)
   {
     os << "| " << v.x << ' ' << v.y << " |";
@@ -530,7 +530,7 @@ namespace dym
   }
 
   //! Scalar-Vector multiplication
-  template <typename T = float>
+  template <class T = float>
   static vec<2, T> operator*(const T &l, const vec<2, T> &r)
   {
     return vec<2, T>(l * r.x, l * r.y);
@@ -541,77 +541,77 @@ namespace dym
   /////////////////////
 
   //! Calculates the dot or scalar product of two vectors
-  template <typename T = float>
+  template <class T = float>
   static T dot(const vec<2, T> &l, const vec<2, T> &r)
   {
     return (l.x * r.x) + (l.y * r.y);
   }
 
   //! Returns length squared of vector
-  template <typename T = float>
+  template <class T = float>
   static T lengthsq(const vec<2, T> &v)
   {
     return sq(v.x) + sq(v.y);
   }
 
   //! Returns length of vector, or sqrt(lengthsq)
-  template <typename T = float>
+  template <class T = float>
   static T length(const vec<2, T> &v)
   {
     return sqrt(sq(v.x) + sq(v.y));
   }
 
   //! Returns a component-wise minimum of two vectors
-  template <typename T = float>
+  template <class T = float>
   static vec<2, T> min(const vec<2, T> &l, const vec<2, T> &r)
   {
     return vec<2, T>(min(l.x, r.x), min(l.y, r.y));
   }
 
   //! Returns a component-wise maximum of a vector and a scalar
-  template <typename T = float>
+  template <class T = float>
   static vec<2, T> min(const vec<2, T> &l, const T &r)
   {
     return vec<2, T>(min(l.x, r), min(l.y, r));
   }
 
   //! Returns a component-wise minimum of two vectors
-  template <typename T = float>
+  template <class T = float>
   static vec<2, T> max(const vec<2, T> &l, const vec<2, T> &r)
   {
     return vec<2, T>(max(l.x, r.x), max(l.y, r.y));
   }
 
   //! Returns a component-wise maximum of a vector and a scalar
-  template <typename T = float>
+  template <class T = float>
   static vec<2, T> max(const vec<2, T> &l, const T &r)
   {
     return vec<2, T>(max(l.x, r), max(l.y, r));
   }
 
   //! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
-  template <typename T = float>
+  template <class T = float>
   static vec<3, T> affine(const vec<2, T> &v)
   {
     return vec<3, T>(v.x, v.y, static_cast<T>(1));
   }
 
   //! Returns whether vector is NaN
-  template <typename T = float>
+  template <class T = float>
   static bool isnan(const vec<2, T> &v)
   {
     return std::isnan(v.x) || std::isnan(v.y);
   }
 
   //! Returns whether vector is inf
-  template <typename T = float>
+  template <class T = float>
   static bool isinf(const vec<2, T> &v)
   {
     return std::isinf(v.x) || std::isinf(v.y);
   }
 
   //! Relative equality (for floating-point vectors)
-  template <typename T = float>
+  template <class T = float>
   static bool req(const vec<2, T> &l, const vec<2, T> &r, const T &tol = small_v<T>)
   {
     return req(l.x, r.x, tol) && req(l.y, r.y, tol);

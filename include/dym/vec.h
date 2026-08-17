@@ -19,7 +19,7 @@ namespace dym
 { ////
 
   //! A d-length vector of type T
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   struct vec
   {
     ///////////////////
@@ -36,7 +36,7 @@ namespace dym
     //! Default constructor
     constexpr vec()
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = static_cast<T>(0);
       }
@@ -47,7 +47,7 @@ namespace dym
     //! Initializer list constructor
     constexpr vec(std::initializer_list<T> list)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = *(list.begin() + i);
       }
@@ -56,28 +56,28 @@ namespace dym
     //! Copy constructor
     constexpr vec(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = v.data[i];
       }
     }
 
     //! Copy constructor for arbitrarily larger vector
-    template <int D1>
+    template <dim_t D1>
     constexpr vec(const vec<D1, T> &v)
     {
       DYM_STATIC_ASSERT(D1 >= D);
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = v.data[i];
       }
     }
 
     //! Explicit type-conversion copy constructor
-    template <typename U>
+    template <class U>
     explicit constexpr vec(const vec<D, U> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = static_cast<T>(v[i]);
       }
@@ -86,7 +86,7 @@ namespace dym
     //! Fill constructor
     explicit constexpr vec(const T &s)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = s;
       }
@@ -95,7 +95,7 @@ namespace dym
     //! Array initializer
     explicit constexpr vec(const T *a)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = a[i];
       }
@@ -125,7 +125,7 @@ namespace dym
     vec<D, T> operator-() const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = -data[i];
       }
@@ -135,7 +135,7 @@ namespace dym
     vec<D, T> operator~() const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = ~data[i];
       }
@@ -144,7 +144,7 @@ namespace dym
     //! Vector assignment
     vec<D, T> &operator=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] = v.data[i];
       }
@@ -155,7 +155,7 @@ namespace dym
     vec<D, T> operator*(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] * v.data[i];
       }
@@ -165,7 +165,7 @@ namespace dym
     vec<D, T> operator/(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] / v.data[i];
       }
@@ -175,7 +175,7 @@ namespace dym
     vec<D, T> operator+(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] + v.data[i];
       }
@@ -185,7 +185,7 @@ namespace dym
     vec<D, T> operator-(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] - v.data[i];
       }
@@ -195,7 +195,7 @@ namespace dym
     vec<D, T> operator|(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] | v.data[i];
       }
@@ -205,7 +205,7 @@ namespace dym
     vec<D, T> operator&(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] & v.data[i];
       }
@@ -215,7 +215,7 @@ namespace dym
     vec<D, T> operator^(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] ^ v.data[i];
       }
@@ -225,7 +225,7 @@ namespace dym
     vec<D, T> operator%(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] % v.data[i];
       }
@@ -235,7 +235,7 @@ namespace dym
     vec<D, T> operator<<(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] << v.data[i];
       }
@@ -245,7 +245,7 @@ namespace dym
     vec<D, T> operator>>(const vec<D, T> &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] >> v.data[i];
       }
@@ -256,7 +256,7 @@ namespace dym
     vec<D, T> operator*(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] * v;
       }
@@ -266,7 +266,7 @@ namespace dym
     vec<D, T> operator/(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] / v;
       }
@@ -276,7 +276,7 @@ namespace dym
     vec<D, T> operator+(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] + v;
       }
@@ -286,7 +286,7 @@ namespace dym
     vec<D, T> operator-(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] - v;
       }
@@ -296,7 +296,7 @@ namespace dym
     vec<D, T> operator|(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] | v;
       }
@@ -306,7 +306,7 @@ namespace dym
     vec<D, T> operator&(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] & v;
       }
@@ -316,7 +316,7 @@ namespace dym
     vec<D, T> operator^(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] ^ v;
       }
@@ -326,7 +326,7 @@ namespace dym
     vec<D, T> operator%(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] % v;
       }
@@ -336,7 +336,7 @@ namespace dym
     vec<D, T> operator<<(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] << v;
       }
@@ -346,7 +346,7 @@ namespace dym
     vec<D, T> operator>>(const T &v) const
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res.data[i] = data[i] >> v;
       }
@@ -356,7 +356,7 @@ namespace dym
     //! Component-wise vector reference multiplication
     vec<D, T> &operator*=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] *= v.data[i];
       }
@@ -365,7 +365,7 @@ namespace dym
     //! Component-wise vector reference division
     vec<D, T> &operator/=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] /= v.data[i];
       }
@@ -374,7 +374,7 @@ namespace dym
     //! Component-wise vector reference addition
     vec<D, T> &operator+=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] += v.data[i];
       }
@@ -383,7 +383,7 @@ namespace dym
     //! Component-wise vector reference subtraction
     vec<D, T> &operator-=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] -= v.data[i];
       }
@@ -392,7 +392,7 @@ namespace dym
     //! Component-wise vector reference OR
     vec<D, T> &operator|=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] |= v.data[i];
       }
@@ -401,7 +401,7 @@ namespace dym
     //! Component-wise vector reference AND
     vec<D, T> &operator&=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] &= v.data[i];
       }
@@ -410,7 +410,7 @@ namespace dym
     //! Component-wise vector reference XOR
     vec<D, T> &operator^=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] ^= v.data[i];
       }
@@ -419,7 +419,7 @@ namespace dym
     //! Component-wise vector reference modulus
     vec<D, T> &operator%=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] %= v.data[i];
       }
@@ -428,7 +428,7 @@ namespace dym
     //! Component-wise vector reference shift left
     vec<D, T> &operator<<=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] <<= v.data[i];
       }
@@ -437,7 +437,7 @@ namespace dym
     //! Component-wise vector reference shift right
     vec<D, T> &operator>>=(const vec<D, T> &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] >>= v.data[i];
       }
@@ -447,7 +447,7 @@ namespace dym
     //! Component-wise scalar reference multiplication
     vec<D, T> &operator*=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] *= v;
       }
@@ -456,7 +456,7 @@ namespace dym
     //! Component-wise scalar reference division
     vec<D, T> &operator/=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] /= v;
       }
@@ -465,7 +465,7 @@ namespace dym
     //! Component-wise scalar reference addition
     vec<D, T> &operator+=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] += v;
       }
@@ -474,7 +474,7 @@ namespace dym
     //! Component-wise scalar reference subtraction
     vec<D, T> &operator-=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] -= v;
       }
@@ -483,7 +483,7 @@ namespace dym
     //! Component-wise scalar reference OR
     vec<D, T> &operator|=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] |= v;
       }
@@ -492,7 +492,7 @@ namespace dym
     //! Component-wise scalar reference AND
     vec<D, T> &operator&=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] &= v;
       }
@@ -501,7 +501,7 @@ namespace dym
     //! Component-wise scalar reference XOR
     vec<D, T> &operator^=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] ^= v;
       }
@@ -510,7 +510,7 @@ namespace dym
     //! Component-wise scalar reference modulus
     vec<D, T> &operator%=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] %= v;
       }
@@ -519,7 +519,7 @@ namespace dym
     //! Component-wise scalar reference shift left
     vec<D, T> &operator<<=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] <<= v;
       }
@@ -528,7 +528,7 @@ namespace dym
     //! Component-wise scalar reference shift right
     vec<D, T> &operator>>=(const T &v)
     {
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         data[i] >>= v;
       }
@@ -539,7 +539,7 @@ namespace dym
     bool operator==(const vec<D, T> &v) const
     {
       bool r = true;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         r &= data[i] == v.data[i];
       }
@@ -549,7 +549,7 @@ namespace dym
     bool operator!=(const vec<D, T> &v) const
     {
       bool r = true;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         r |= data[i] != v.data[i];
       }
@@ -560,7 +560,7 @@ namespace dym
     static constexpr vec<D, T> zero()
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res[i] = static_cast<T>(0);
       }
@@ -571,7 +571,7 @@ namespace dym
     static constexpr vec<D, T> one()
     {
       vec<D, T> res;
-      for (size_t i = 0; i < D; ++i)
+      for (dim_t i = 0; i < D; ++i)
       {
         res[i] = static_cast<T>(1);
       }
@@ -584,11 +584,11 @@ namespace dym
   //! MISC. OPERATORS //
   //////////////////////
 
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static std::ostream &operator<<(std::ostream &os, const vec<D, T> &v)
   {
     os << "| ";
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       os << v.data[i] << ' ';
     }
@@ -597,11 +597,11 @@ namespace dym
   }
 
   //! Scalar-Vector multiplication
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> operator*(const T &l, const vec<D, T> &r)
   {
     vec<D, T> res;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res.data[i] = l * r[i];
     }
@@ -613,11 +613,11 @@ namespace dym
   /////////////////////
 
   //! Calculates the dot or scalar product of two vectors
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static T dot(const vec<D, T> &l, const vec<D, T> &r)
   {
     T res = 0;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res += l[i] * r[i];
     }
@@ -625,7 +625,7 @@ namespace dym
   }
 
   //! Calculates the angle between two vectors
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static ang<T> angle(const vec<D, T> &l, const vec<D, T> &r)
   {
     T dp = dot(l, r) / (magnitude(l) * magnitude(r));
@@ -633,7 +633,7 @@ namespace dym
   }
 
   //! Rotates the source vector around the ais vector by the specified angle
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> rotatearound(const vec<D, T> &src, const vec<D, T> &axs, const ang<T> &dlt)
   {
     T ct = cos(dlt.radians());
@@ -642,7 +642,7 @@ namespace dym
   }
 
   //! Projects a vector onto another vector
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> project(const vec<D, T> &l, const vec<D, T> &r)
   {
     vec<D, T> normal = normalize(r);
@@ -650,14 +650,14 @@ namespace dym
   }
 
   //! Calculates the cross product of two vectors
-  template <typename T = float>
+  template <class T = float>
   static T cross(const vec<2, T> &l, const vec<2, T> &r)
   {
     return (l.data[0] * r.data[1]) - (l.data[0] * r.data[1]);
   }
 
   //! Calculates the cross product of two vectors
-  template <typename T = float>
+  template <class T = float>
   static vec<3, T> cross(const vec<3, T> &l, const vec<3, T> &r)
   {
     vec<3, T> res;
@@ -668,7 +668,7 @@ namespace dym
   }
 
   //! Calculates the cross product of two vectors
-  template <typename T = float>
+  template <class T = float>
   static vec<4, T> cross(const vec<4, T> &l, const vec<4, T> &r)
   {
     vec<4, T> res;
@@ -680,11 +680,11 @@ namespace dym
   }
 
   //! Returns length squared of vector
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static T lengthsq(const vec<D, T> &v)
   {
     T res = 0;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res += sq(v.data[i]);
     }
@@ -692,11 +692,11 @@ namespace dym
   }
 
   //! Returns length of vector, or sqrt(lengthsq)
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static T length(const vec<D, T> &v)
   {
     T res = 0;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res += sq(v.data[i]);
     }
@@ -704,25 +704,25 @@ namespace dym
   }
 
   //! Returns magnitude of vector, or length
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static T magnitude(const vec<D, T> &v)
   {
     return length(v);
   }
 
   //! Normalizes vector so it is a unit vector
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> normalize(const vec<D, T> &v)
   {
     return v / length(v);
   }
 
   //! Returns a component-wise minimum of two vectors
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> min(const vec<D, T> &l, const vec<D, T> &r)
   {
     vec<D, T> res;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res.data[i] = (l[i] < r[i]) ? l[i] : r[i];
     }
@@ -730,11 +730,11 @@ namespace dym
   }
 
   //! Returns a component-wise maximum of a vector and a scalar
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> min(const vec<D, T> &l, const T &r)
   {
     vec<D, T> res;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res.data[i] = (l[i] < r) ? l[i] : r;
     }
@@ -742,11 +742,11 @@ namespace dym
   }
 
   //! Returns a component-wise minimum of two vectors
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> max(const vec<D, T> &l, const vec<D, T> &r)
   {
     vec<D, T> res;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res.data[i] = (l[i] > r[i]) ? l[i] : r[i];
     }
@@ -754,11 +754,11 @@ namespace dym
   }
 
   //! Returns a component-wise maximum of a vector and a scalar
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> max(const vec<D, T> &l, const T &r)
   {
     vec<D, T> res;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res.data[i] = (l[i] > r) ? l[i] : r;
     }
@@ -766,49 +766,49 @@ namespace dym
   }
 
   //! Clamps the value of a vector between a min and max vector
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> clamp(const vec<D, T> &v, const vec<D, T> &minV, const vec<D, T> &maxV)
   {
     return min(max(v, minV), maxV);
   }
 
   //! Clamps the value of a vector between a min and max scalar
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> clamp(const vec<D, T> &v, const T &minV, const T &maxV)
   {
     return min(max(v, minV), maxV);
   }
 
   //! Computes the distance between two vectors
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static T distance(const vec<D, T> &l, const vec<D, T> &r)
   {
     return length(l - r);
   }
 
   //! Computes the distance squared between two vectors
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static T distancesq(const vec<D, T> &l, const vec<D, T> &r)
   {
     return lengthsq(l - r);
   }
 
   //! Faces a normal forward according to the dot product of nRef and i
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> faceforward(const vec<D, T> &n, const vec<D, T> &i, const vec<D, T> &nRef)
   {
     return (dot(nRef, i) < 0) ? n : -n;
   }
 
   //! Computes the reflection of vector v acording to the plane of normal vector 'n'
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> reflect(const vec<D, T> &v, const vec<D, T> &n)
   {
     return v - 2.0f * dot(n, v) * n;
   }
 
   //! GLSL refraction function
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> refract(const vec<D, T> &v, const vec<D, T> &n, float r)
   {
     float dir = static_cast<T>(1.0) - r * r * (static_cast<T>(1.0) - dot(n, v) * dot(n, v));
@@ -818,11 +818,11 @@ namespace dym
   }
 
   //! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D + 1, T> affine(const vec<D, T> &v)
   {
     vec<D + 1, T> res;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       res[i] = v[i];
     }
@@ -831,25 +831,25 @@ namespace dym
   }
 
   //! Point vector constructor (xyz,1)
-  template <typename T = float>
+  template <class T = float>
   static vec<4, T> point(const vec<3, T> &xyz)
   {
     return vec<4, T>(xyz.data[0], xyz.data[1], xyz.data[2], static_cast<T>(1));
   }
 
   //! Point vector constructor (x,y,z,1)
-  template <typename T = float>
+  template <class T = float>
   static vec<4, T> point(const T &x, const T &y, const T &z)
   {
     return vec<4, T>(x, y, z, static_cast<T>(1));
   }
 
   //! Returns whether vector is NaN
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static bool isnan(const vec<D, T> &v)
   {
     bool r = true;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       r &= std::isnan(v[i]);
     }
@@ -857,11 +857,11 @@ namespace dym
   }
 
   //! Returns whether vector is inf
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static bool isinf(const vec<D, T> &v)
   {
     bool r = true;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       r &= std::isinf(v[i]);
     }
@@ -869,11 +869,11 @@ namespace dym
   }
 
   //! Relative equality (for floating-point vectors)
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static bool req(const vec<D, T> &a, const vec<D, T> &b, const T& tol = small_v<T>)
   {
     bool r = true;
-    for (size_t i = 0; i < D; ++i)
+    for (dim_t i = 0; i < D; ++i)
     {
       r &= req(a[i], b[i], tol);
     }
@@ -881,7 +881,7 @@ namespace dym
   }
 
   //! Component-wise saturation (clamp01)
-  template <int D, typename T = float>
+  template <dim_t D, class T = float>
   static vec<D, T> saturate(const vec<D, T> &v)
   {
     return max(vec<D, T>::zero(), min(v, vec<D, T>::one()));

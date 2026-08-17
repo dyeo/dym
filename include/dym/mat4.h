@@ -16,7 +16,7 @@ namespace dym
 { ////
 
   //! A column-major matrix spanning r rows and c columns
-  template <typename T>
+  template <class T>
   struct mat<4, 4, T>
   {
     ///////////////////
@@ -78,7 +78,7 @@ namespace dym
     }
 
     //! Explicit type-conversion copy constructor
-    template <typename U>
+    template <class U>
     explicit constexpr mat(const mat<4, 4, U> &v)
         : arr{static_cast<T>(v.arr[0]), static_cast<T>(v.arr[1]), static_cast<T>(v.arr[2]), static_cast<T>(v.arr[3]), static_cast<T>(v.arr[4]), static_cast<T>(v.arr[5]), static_cast<T>(v.arr[6]), static_cast<T>(v.arr[7]), static_cast<T>(v.arr[8]), static_cast<T>(v.arr[9]), static_cast<T>(v.arr[10]), static_cast<T>(v.arr[11]), static_cast<T>(v.arr[12]), static_cast<T>(v.arr[13]), static_cast<T>(v.arr[14]), static_cast<T>(v.arr[15])}
     {
@@ -106,7 +106,7 @@ namespace dym
     }
 
     //! Explicit type-conversionm value constructor
-    template <typename U>
+    template <class U>
     explicit constexpr mat(const U &s0, const U &s1, const U &s2, const U &s3,
                            const U &s4, const U &s5, const U &s6, const U &s7,
                            const U &s8, const U &s9, const U &s10, const U &s11,
@@ -136,13 +136,13 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <int cm, int rm>
+    template <dim_t cm, dim_t rm>
     constexpr mat(const mat<cm, rm, T> &m)
     {
       DYM_STATIC_ASSERT((rm < rows()) && (cm < cols()));
-      for (size_t i = 0; i < cm; ++i)
+      for (dim_t i = 0; i < cm; ++i)
       {
-        for (size_t j = 0; j < rm; ++j)
+        for (dim_t j = 0; j < rm; ++j)
         {
           data[i][j] = m.data[i][j];
         }
@@ -923,7 +923,7 @@ namespace dym
 
   }; //! struct mat
 
-  template <typename T>
+  template <class T>
   static mat<4, 4, T> operator*(const mat<4, 4, T> &m, const mat<4, 4, T> &n)
   {
     return mat<4, 4, T>(m.arr[0] * n.arr[0] + m.arr[4] * n.arr[1] + m.arr[8] * n.arr[2] + m.arr[12] * n.arr[3],
@@ -945,20 +945,20 @@ namespace dym
   }
 
   //! Matrix determinant
-  template <typename T>
+  template <class T>
   static T det(const mat<4, 4, T> &m)
   {
     return (m.arr[0] * m.arr[5] * m.arr[10] * m.arr[15]) - (m.arr[0] * m.arr[5] * m.arr[11] * m.arr[14]) - (m.arr[0] * m.arr[6] * m.arr[9] * m.arr[15]) + (m.arr[0] * m.arr[6] * m.arr[11] * m.arr[13]) + (m.arr[0] * m.arr[7] * m.arr[9] * m.arr[14]) - (m.arr[0] * m.arr[7] * m.arr[10] * m.arr[13]) - (m.arr[1] * m.arr[4] * m.arr[10] * m.arr[15]) + (m.arr[1] * m.arr[4] * m.arr[11] * m.arr[14]) + (m.arr[1] * m.arr[6] * m.arr[8] * m.arr[15]) - (m.arr[1] * m.arr[6] * m.arr[11] * m.arr[12]) - (m.arr[1] * m.arr[7] * m.arr[8] * m.arr[14]) + (m.arr[1] * m.arr[7] * m.arr[10] * m.arr[12]) + (m.arr[2] * m.arr[4] * m.arr[9] * m.arr[15]) - (m.arr[2] * m.arr[4] * m.arr[11] * m.arr[13]) - (m.arr[2] * m.arr[5] * m.arr[8] * m.arr[15]) + (m.arr[2] * m.arr[5] * m.arr[11] * m.arr[12]) + (m.arr[2] * m.arr[7] * m.arr[8] * m.arr[13]) - (m.arr[2] * m.arr[7] * m.arr[9] * m.arr[12]) - (m.arr[3] * m.arr[4] * m.arr[9] * m.arr[14]) + (m.arr[3] * m.arr[4] * m.arr[10] * m.arr[13]) + (m.arr[3] * m.arr[5] * m.arr[8] * m.arr[14]) - (m.arr[3] * m.arr[5] * m.arr[10] * m.arr[12]) - (m.arr[3] * m.arr[6] * m.arr[8] * m.arr[13]) + (m.arr[3] * m.arr[6] * m.arr[9] * m.arr[12]);
   }
 
   //! Inverts the matrix, such that m * inverse(m) = the identity
-  template <typename T>
+  template <class T>
   static mat<4, 4, T> inverse(const mat<4, 4, T> &m)
   {
     return adjoint(m) / det(m);
   }
 
-  template <typename T>
+  template <class T>
   static mat<4, 4, T> fastinverse(const mat<4, 4, T> &m)
   {
     mat3 rotation = m;
