@@ -75,7 +75,7 @@ namespace dym
     //! Angle division
     ang<T> operator/(const T &s) const
     {
-      return ang<T>(_rads - s);
+      return ang<T>(_rads / s);
     }
 
     //! Angle reference addition

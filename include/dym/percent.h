@@ -75,7 +75,7 @@ namespace dym
     //! Percent division
     perc<T> operator/(const T &s)
     {
-      return perc<T>(_val - s);
+      return perc<T>(_val / s);
     }
 
     //! Percent reference addition
