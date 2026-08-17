@@ -122,7 +122,7 @@ namespace dym
   template <class T = long double>
   static T lerp(const T &src, const T &dst, const long double delta)
   {
-    return (src * (1.0 - delta)) + (dst * delta);
+    return (src * (1.0l - delta)) + (dst * delta);
   }
 
   template <class T = double>
