@@ -583,31 +583,31 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = (l[i] < r[i]) ? l[i] : r[i];
+      res.data[i] = min((l[i], r[i]));
     }
     return res;
   }
 
-  //! Returns a component-wise maximum of a vector and a scalar
+  //! Returns a component-wise minimum of a vector and a scalar
   template <dim_t D, class T = float>
   static constexpr vec<D, T> min(const vec<D, T> &l, const T &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = (l[i] < r) ? l[i] : r;
+      res.data[i] = min((l[i], r));
     }
     return res;
   }
 
-  //! Returns a component-wise minimum of two vectors
+  //! Returns a component-wise maximum of two vectors
   template <dim_t D, class T = float>
   static constexpr vec<D, T> max(const vec<D, T> &l, const vec<D, T> &r)
   {
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = (l[i] > r[i]) ? l[i] : r[i];
+      res.data[i] = max(l[i], r[i]);
     }
     return res;
   }
@@ -619,7 +619,7 @@ namespace dym
     vec<D, T> res;
     for (dim_t i = 0; i < D; ++i)
     {
-      res.data[i] = (l[i] > r) ? l[i] : r;
+      res.data[i] = max(l[i], r);
     }
     return res;
   }

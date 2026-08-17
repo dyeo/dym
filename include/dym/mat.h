@@ -34,7 +34,7 @@ namespace dym
     using type = T;
     static constexpr dim_t cols = C;
     static constexpr dim_t rows = R;
-    static constexpr dim_t dim = (C < R ? C : R);
+    static constexpr dim_t dim = min(C, R);
     static constexpr dim_t size = C * R;
 
     ///////////////////
@@ -370,7 +370,7 @@ namespace dym
     static constexpr mat<C, R, T> identity()
     {
       mat<C, R, T> res{T{0}};
-      for (dim_t i = 0; i < (R < C ? R : C); ++i)
+      for (dim_t i = 0; i < dim; ++i)
       {
         res.data[i][i] = T{1};
       }
@@ -681,7 +681,7 @@ namespace dym
   static constexpr T trace(const mat<C, R, T> &m)
   {
     T res = 0;
-    for (dim_t i = 0; i < (C < R ? C : R); ++i)
+    for (dim_t i = 0; i < min(C, R); ++i)
     {
       res += m.data[i][i];
     }

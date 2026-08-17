@@ -968,14 +968,14 @@ namespace dym
     return vec<4, T>{min(l.x, r.x), min(l.y, r.y), min(l.z, r.z), min(l.w, r.w)};
   }
 
-  //! Returns a component-wise maximum of a vector and a scalar
+  //! Returns a component-wise minimum of a vector and a scalar
   template <class T = float>
   static constexpr vec<4, T> min(const vec<4, T> &l, const T &r)
   {
     return vec<4, T>{min(l.x, r), min(l.y, r), min(l.z, r), min(l.w, r)};
   }
 
-  //! Returns a component-wise minimum of two vectors
+  //! Returns a component-wise maximum of two vectors
   template <class T = float>
   static constexpr vec<4, T> max(const vec<4, T> &l, const vec<4, T> &r)
   {
