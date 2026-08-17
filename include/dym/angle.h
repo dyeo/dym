@@ -162,7 +162,13 @@ namespace dym
   template <class T = float>
   static std::ostream &operator<<(std::ostream &os, const ang<T> &a)
   {
-    os << a.degrees() << "deg";
+    os << a.degrees()
+#if defined(UNICODE) || defined(_UNICODE)
+       << L"°"
+#else
+       << "deg"
+#endif
+      ;
     return os;
   }
 
