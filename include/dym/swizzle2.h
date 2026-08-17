@@ -22,605 +22,605 @@ namespace dym
 
     T &operator[](const size_t i)
     {
-      return static_cast<T *const>(this)[i];
+      return raw_data()[i];
     }
 
     const T &operator[](const size_t i) const
     {
-      return static_cast<T *const>(this)[i];
+      return raw_data()[i];
     }
 
     vec<2, T> operator-() const
     {
-      return vec<2, T>(-(static_cast<const T *>(this))[I0], -(static_cast<const T *>(this))[I1]);
+      return vec<2, T>(-(raw_data())[I0], -(raw_data())[I1]);
     }
     vec<2, T> operator~() const
     {
-      return vec<2, T>(~(static_cast<const T *>(this))[I0], ~(static_cast<const T *>(this))[I1]);
+      return vec<2, T>(~(raw_data())[I0], ~(raw_data())[I1]);
     }
 
     writable_type &operator=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] = va;
-      static_cast<T *>(this)[I1] = vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] = va;
+      raw_data()[I1] = vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] = va2;
-      static_cast<T *>(this)[I1] = vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] = va2;
+      raw_data()[I1] = vb2;
       return *this;
     }
 
     writable_type &operator=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] = s.x;
-      static_cast<T *>(this)[I1] = s.y;
+      raw_data()[I0] = s.x;
+      raw_data()[I1] = s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] = s;
-      static_cast<const T *>(&s)[I1] = s;
+      raw_data()[I0] = s;
+      raw_data()[I1] = s;
       return *this;
     }
 
     vec<2, T> operator*(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] * static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] * static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] * s[I0], raw_data()[I1] * s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator*(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] * static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] * static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] * s[J0], raw_data()[I1] * s[J1]);
     }
 
     vec<2, T> operator*(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] * v, static_cast<const T *>(this)[I1] * v);
+      return vec<2, T>(raw_data()[I0] * v, raw_data()[I1] * v);
     }
 
     friend vec<2, T> operator*(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l * static_cast<const T *>(r)[I0], l * static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l * r[I0], l * r[I1]);
     }
 
     vec<2, T> operator/(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] / static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] / static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] / s[I0], raw_data()[I1] / s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator/(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] / static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] / static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] / s[J0], raw_data()[I1] / s[J1]);
     }
 
     vec<2, T> operator/(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] / v, static_cast<const T *>(this)[I1] / v);
+      return vec<2, T>(raw_data()[I0] / v, raw_data()[I1] / v);
     }
 
     friend vec<2, T> operator/(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l / static_cast<const T *>(r)[I0], l / static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l / r[I0], l / r[I1]);
     }
 
     vec<2, T> operator+(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] + static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] + static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] + s[I0], raw_data()[I1] + s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator+(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] + static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] + static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] + s[J0], raw_data()[I1] + s[J1]);
     }
 
     vec<2, T> operator+(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] + v, static_cast<const T *>(this)[I1] + v);
+      return vec<2, T>(raw_data()[I0] + v, raw_data()[I1] + v);
     }
 
     friend vec<2, T> operator+(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l + static_cast<const T *>(r)[I0], l + static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l + r[I0], l + r[I1]);
     }
 
     vec<2, T> operator-(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] - static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] - static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] - s[I0], raw_data()[I1] - s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator-(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] - static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] - static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] - s[J0], raw_data()[I1] - s[J1]);
     }
 
     vec<2, T> operator-(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] - v, static_cast<const T *>(this)[I1] - v);
+      return vec<2, T>(raw_data()[I0] - v, raw_data()[I1] - v);
     }
 
     friend vec<2, T> operator-(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l - static_cast<const T *>(r)[I0], l - static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l - r[I0], l - r[I1]);
     }
 
     vec<2, T> operator|(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] | static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] | static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] | s[I0], raw_data()[I1] | s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator|(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] | static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] | static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] | s[J0], raw_data()[I1] | s[J1]);
     }
 
     vec<2, T> operator|(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] | v, static_cast<const T *>(this)[I1] | v);
+      return vec<2, T>(raw_data()[I0] | v, raw_data()[I1] | v);
     }
 
     friend vec<2, T> operator|(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l | static_cast<const T *>(r)[I0], l | static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l | r[I0], l | r[I1]);
     }
 
     vec<2, T> operator&(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] & static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] & static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] & s[I0], raw_data()[I1] & s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator&(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] & static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] & static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] & s[J0], raw_data()[I1] & s[J1]);
     }
 
     vec<2, T> operator&(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] & v, static_cast<const T *>(this)[I1] & v);
+      return vec<2, T>(raw_data()[I0] & v, raw_data()[I1] & v);
     }
 
     friend vec<2, T> operator&(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l & static_cast<const T *>(r)[I0], l & static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l & r[I0], l & r[I1]);
     }
 
     vec<2, T> operator^(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] ^ static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] ^ static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] ^ s[I0], raw_data()[I1] ^ s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator^(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] ^ static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] ^ static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] ^ s[J0], raw_data()[I1] ^ s[J1]);
     }
 
     vec<2, T> operator^(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] ^ v, static_cast<const T *>(this)[I1] ^ v);
+      return vec<2, T>(raw_data()[I0] ^ v, raw_data()[I1] ^ v);
     }
 
     friend vec<2, T> operator^(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l ^ static_cast<const T *>(r)[I0], l ^ static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l ^ r[I0], l ^ r[I1]);
     }
 
     vec<2, T> operator%(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] % static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] % static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] % s[I0], raw_data()[I1] % s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator%(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] % static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] % static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] % s[J0], raw_data()[I1] % s[J1]);
     }
 
     vec<2, T> operator%(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] % v, static_cast<const T *>(this)[I1] % v);
+      return vec<2, T>(raw_data()[I0] % v, raw_data()[I1] % v);
     }
 
     friend vec<2, T> operator%(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l % static_cast<const T *>(r)[I0], l % static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l % r[I0], l % r[I1]);
     }
 
     vec<2, T> operator<<(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] << static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] << static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] << s[I0], raw_data()[I1] << s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator<<(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] << static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] << static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] << s[J0], raw_data()[I1] << s[J1]);
     }
 
     vec<2, T> operator<<(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] << v, static_cast<const T *>(this)[I1] << v);
+      return vec<2, T>(raw_data()[I0] << v, raw_data()[I1] << v);
     }
 
     friend vec<2, T> operator<<(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l << static_cast<const T *>(r)[I0], l << static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l << r[I0], l << r[I1]);
     }
 
     vec<2, T> operator>>(const swizzle2<I0, I1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] >> static_cast<const T *>(&s)[I0], static_cast<const T *>(this)[I1] >> static_cast<const T *>(&s)[I1]);
+      return vec<2, T>(raw_data()[I0] >> s[I0], raw_data()[I1] >> s[I1]);
     }
 
     template <int J0, int J1>
     vec<2, T> operator>>(const swizzle2<J0, J1, T> &s) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] >> static_cast<const T *>(&s)[J0], static_cast<const T *>(this)[I1] >> static_cast<const T *>(&s)[J1]);
+      return vec<2, T>(raw_data()[I0] >> s[J0], raw_data()[I1] >> s[J1]);
     }
 
     vec<2, T> operator>>(const T &v) const
     {
-      return vec<2, T>(static_cast<const T *>(this)[I0] >> v, static_cast<const T *>(this)[I1] >> v);
+      return vec<2, T>(raw_data()[I0] >> v, raw_data()[I1] >> v);
     }
 
     friend vec<2, T> operator>>(const T &l, const swizzle2<I0, I1, T> &r)
     {
-      return vec<2, T>(l >> static_cast<const T *>(r)[I0], l >> static_cast<const T *>(r)[I1]);
+      return vec<2, T>(l >> r[I0], l >> r[I1]);
     }
 
     writable_type &operator*=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] *= va;
-      static_cast<T *>(this)[I1] *= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] *= va;
+      raw_data()[I1] *= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator*=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] *= va2;
-      static_cast<T *>(this)[I1] *= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] *= va2;
+      raw_data()[I1] *= vb2;
       return *this;
     }
 
     writable_type &operator*=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] *= s.x;
-      static_cast<T *>(this)[I1] *= s.y;
+      raw_data()[I0] *= s.x;
+      raw_data()[I1] *= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator*=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] *= s;
-      static_cast<const T *>(&s)[I1] *= s;
+      raw_data()[I0] *= s;
+      raw_data()[I1] *= s;
       return *this;
     }
 
     writable_type &operator/=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] /= va;
-      static_cast<T *>(this)[I1] /= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] /= va;
+      raw_data()[I1] /= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator/=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] /= va2;
-      static_cast<T *>(this)[I1] /= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] /= va2;
+      raw_data()[I1] /= vb2;
       return *this;
     }
 
     writable_type &operator/=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] /= s.x;
-      static_cast<T *>(this)[I1] /= s.y;
+      raw_data()[I0] /= s.x;
+      raw_data()[I1] /= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator/=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] /= s;
-      static_cast<const T *>(&s)[I1] /= s;
+      raw_data()[I0] /= s;
+      raw_data()[I1] /= s;
       return *this;
     }
 
     writable_type &operator+=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] += va;
-      static_cast<T *>(this)[I1] += vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] += va;
+      raw_data()[I1] += vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator+=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] += va2;
-      static_cast<T *>(this)[I1] += vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] += va2;
+      raw_data()[I1] += vb2;
       return *this;
     }
 
     writable_type &operator+=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] += s.x;
-      static_cast<T *>(this)[I1] += s.y;
+      raw_data()[I0] += s.x;
+      raw_data()[I1] += s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator+=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] += s;
-      static_cast<const T *>(&s)[I1] += s;
+      raw_data()[I0] += s;
+      raw_data()[I1] += s;
       return *this;
     }
 
     writable_type &operator-=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] -= va;
-      static_cast<T *>(this)[I1] -= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] -= va;
+      raw_data()[I1] -= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator-=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] -= va2;
-      static_cast<T *>(this)[I1] -= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] -= va2;
+      raw_data()[I1] -= vb2;
       return *this;
     }
 
     writable_type &operator-=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] -= s.x;
-      static_cast<T *>(this)[I1] -= s.y;
+      raw_data()[I0] -= s.x;
+      raw_data()[I1] -= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator-=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] -= s;
-      static_cast<const T *>(&s)[I1] -= s;
+      raw_data()[I0] -= s;
+      raw_data()[I1] -= s;
       return *this;
     }
 
     writable_type &operator|=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] |= va;
-      static_cast<T *>(this)[I1] |= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] |= va;
+      raw_data()[I1] |= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator|=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] |= va2;
-      static_cast<T *>(this)[I1] |= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] |= va2;
+      raw_data()[I1] |= vb2;
       return *this;
     }
 
     writable_type &operator|=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] |= s.x;
-      static_cast<T *>(this)[I1] |= s.y;
+      raw_data()[I0] |= s.x;
+      raw_data()[I1] |= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator|=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] |= s;
-      static_cast<const T *>(&s)[I1] |= s;
+      raw_data()[I0] |= s;
+      raw_data()[I1] |= s;
       return *this;
     }
 
     writable_type &operator&=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] &= va;
-      static_cast<T *>(this)[I1] &= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] &= va;
+      raw_data()[I1] &= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator&=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] &= va2;
-      static_cast<T *>(this)[I1] &= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] &= va2;
+      raw_data()[I1] &= vb2;
       return *this;
     }
 
     writable_type &operator&=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] &= s.x;
-      static_cast<T *>(this)[I1] &= s.y;
+      raw_data()[I0] &= s.x;
+      raw_data()[I1] &= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator&=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] &= s;
-      static_cast<const T *>(&s)[I1] &= s;
+      raw_data()[I0] &= s;
+      raw_data()[I1] &= s;
       return *this;
     }
 
     writable_type &operator^=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] ^= va;
-      static_cast<T *>(this)[I1] ^= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] ^= va;
+      raw_data()[I1] ^= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator^=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] ^= va2;
-      static_cast<T *>(this)[I1] ^= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] ^= va2;
+      raw_data()[I1] ^= vb2;
       return *this;
     }
 
     writable_type &operator^=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] ^= s.x;
-      static_cast<T *>(this)[I1] ^= s.y;
+      raw_data()[I0] ^= s.x;
+      raw_data()[I1] ^= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator^=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] ^= s;
-      static_cast<const T *>(&s)[I1] ^= s;
+      raw_data()[I0] ^= s;
+      raw_data()[I1] ^= s;
       return *this;
     }
 
     writable_type &operator%=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] %= va;
-      static_cast<T *>(this)[I1] %= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] %= va;
+      raw_data()[I1] %= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator%=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] %= va2;
-      static_cast<T *>(this)[I1] %= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] %= va2;
+      raw_data()[I1] %= vb2;
       return *this;
     }
 
     writable_type &operator%=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] %= s.x;
-      static_cast<T *>(this)[I1] %= s.y;
+      raw_data()[I0] %= s.x;
+      raw_data()[I1] %= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator%=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] %= s;
-      static_cast<const T *>(&s)[I1] %= s;
+      raw_data()[I0] %= s;
+      raw_data()[I1] %= s;
       return *this;
     }
 
     writable_type &operator<<=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] <<= va;
-      static_cast<T *>(this)[I1] <<= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] <<= va;
+      raw_data()[I1] <<= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator<<=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] <<= va2;
-      static_cast<T *>(this)[I1] <<= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] <<= va2;
+      raw_data()[I1] <<= vb2;
       return *this;
     }
 
     writable_type &operator<<=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] <<= s.x;
-      static_cast<T *>(this)[I1] <<= s.y;
+      raw_data()[I0] <<= s.x;
+      raw_data()[I1] <<= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator<<=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] <<= s;
-      static_cast<const T *>(&s)[I1] <<= s;
+      raw_data()[I0] <<= s;
+      raw_data()[I1] <<= s;
       return *this;
     }
 
     writable_type &operator>>=(const swizzle2<I0, I1, T> &s)
     {
-      const T va = static_cast<const T *>(&s)[I0];
-      const T vb = static_cast<const T *>(&s)[I1];
-      static_cast<T *>(this)[I0] >>= va;
-      static_cast<T *>(this)[I1] >>= vb;
+      const T va = s[I0];
+      const T vb = s[I1];
+      raw_data()[I0] >>= va;
+      raw_data()[I1] >>= vb;
       return *this;
     }
 
     template <int J0, int J1>
     writable_type &operator>>=(const swizzle2<J0, J1, T> &s)
     {
-      const T va2 = static_cast<const T *>(&s)[J0];
-      const T vb2 = static_cast<const T *>(&s)[J1];
-      static_cast<T *>(this)[I0] >>= va2;
-      static_cast<T *>(this)[I1] >>= vb2;
+      const T va2 = s[J0];
+      const T vb2 = s[J1];
+      raw_data()[I0] >>= va2;
+      raw_data()[I1] >>= vb2;
       return *this;
     }
 
     writable_type &operator>>=(const vec<2, T> &s)
     {
-      static_cast<T *>(this)[I0] >>= s.x;
-      static_cast<T *>(this)[I1] >>= s.y;
+      raw_data()[I0] >>= s.x;
+      raw_data()[I1] >>= s.y;
       return *this;
     }
 
-    template <int J0, int J1>
     writable_type &operator>>=(const T &s)
     {
-      static_cast<const T *>(&s)[I0] >>= s;
-      static_cast<const T *>(&s)[I1] >>= s;
+      raw_data()[I0] >>= s;
+      raw_data()[I1] >>= s;
       return *this;
+    }
+
+  private:
+    T *raw_data()
+    {
+      return reinterpret_cast<T *>(this);
+    }
+
+    const T *raw_data() const
+    {
+      return reinterpret_cast<const T *>(this);
     }
 
   }; //! class swizzle2
