@@ -766,9 +766,9 @@ namespace dym
 
   //! Relative equality (for floating-point vectors)
   template <typename T = float>
-  static bool req(const vec<3, T> &l, const vec<3, T> &r, T rng = 1e-8)
+  static bool req(const vec<3, T> &l, const vec<3, T> &r, const T &tol = small_v<T>)
   {
-    return req(l.x, r.x, rng) && req(l.y, r.y, rng) && req(l.z, r.z, rng);
+    return req(l.x, r.x, tol) && req(l.y, r.y, tol) && req(l.z, r.z, tol);
   }
 
 } ////

@@ -35,9 +35,9 @@ namespace dym
 { ////
 
   template <typename T>
-  static bool req(const T &l, const T &r, const T &rng = small_v<T>)
+  static bool req(const T &l, const T &r, const T &tol = small_v<T>)
   {
-    return std::abs(l - r) <= rng;
+    return std::abs(l - r) <= tol;
   }
 
   template <typename T>
