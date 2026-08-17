@@ -11,7 +11,6 @@
 //
 
 #include "mat.h"
-#include <initializer_list>
 #include <cstddef>
 
 //
@@ -58,13 +57,6 @@ namespace dym
 
     ~mat() = default;
 
-    //! Initializer list constructor
-    //! Columns span left-to-right in initialization, and rows span top-to-bottom
-    //! This is because matrices are stored column-major
-    constexpr mat(std::initializer_list<T> l)
-        : arr{*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3), *(l.begin() + 4), *(l.begin() + 5), *(l.begin() + 6), *(l.begin() + 7), *(l.begin() + 8)}
-    {
-    }
 
     //! Copy constructor
     constexpr mat(const mat<3, 3, T> &v)
@@ -554,31 +546,31 @@ namespace dym
     //! Returns an identity matrix
     static constexpr mat<3, 3, T> identity()
     {
-      return mat<3, 3, T>(1, 0, 0, 0, 1, 0, 0, 0, 1);
+      return mat<3, 3, T>{T{1}, T{0}, T{0}, T{0}, T{1}, T{0}, T{0}, T{0}, T{1}};
     }
 
     //! Creates a row-order matrix using individual elements
-    static mat<3, 3, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8)
+    static constexpr mat<3, 3, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8)
     {
-      return mat<3, 3, T>(s0, s3, s6,
+      return mat<3, 3, T>{s0, s3, s6,
                           s1, s4, s7,
-                          s2, s5, s8);
+                          s2, s5, s8};
     }
 
     //! Creates a 3x3 matrix using 3 row vectors
-    static mat<3, 3, T> fromrows(vec<3, T> r0, vec<3, T> r1, vec<3, T> r2)
+    static constexpr mat<3, 3, T> fromrows(vec<3, T> r0, vec<3, T> r1, vec<3, T> r2)
     {
-      return mat<3, 3, T>(r0.x, r1.x, r2.x,
+      return mat<3, 3, T>{r0.x, r1.x, r2.x,
                           r0.y, r1.y, r2.y,
-                          r0.z, r1.z, r2.z);
+                          r0.z, r1.z, r2.z};
     }
 
     //! Creates a 3x3 matrix using 3 column vectors
-    static mat<3, 3, T> fromcols(vec<3, T> c0, vec<3, T> c1, vec<3, T> c2)
+    static constexpr mat<3, 3, T> fromcols(vec<3, T> c0, vec<3, T> c1, vec<3, T> c2)
     {
-      return mat<3, 3, T>(c0.x, c0.y, c0.z,
+      return mat<3, 3, T>{c0.x, c0.y, c0.z,
                           c1.x, c1.y, c1.z,
-                          c2.x, c2.y, c2.z);
+                          c2.x, c2.y, c2.z};
     }
 
     //! Rotate an axis about a given angle
@@ -587,9 +579,9 @@ namespace dym
       T c = cos(an.radians());
       T s = sin(an.radians());
       T t = 1 - c;
-      return mat<3, 3, T>((t * ax.x * ax.x) + c, (t * ax.x * ax.y) + ax.z * s, (t * ax.x * ax.z) - ax.y * s,
+      return mat<3, 3, T>{(t * ax.x * ax.x) + c, (t * ax.x * ax.y) + ax.z * s, (t * ax.x * ax.z) - ax.y * s,
                           (t * ax.x * ax.y) - ax.z * s, (t * ax.y * ax.y) + c, (t * ax.y * ax.z) + ax.x * s,
-                          (t * ax.x * ax.z) + ax.y * s, (t * ax.y * ax.z) - ax.x * s, (t * ax.z * ax.z) + c);
+                          (t * ax.x * ax.z) + ax.y * s, (t * ax.y * ax.z) - ax.x * s, (t * ax.z * ax.z) + c};
     }
 
     //! Rotate axis x about a given angle
@@ -597,9 +589,9 @@ namespace dym
     {
       T c = cos(x.radians());
       T s = sin(x.radians());
-      return mat<3, 3, T>(1, 0, 0,
-                          0, c, s,
-                          0, -s, c);
+      return mat<3, 3, T>{T{1}, T{0}, T{0},
+                          T{0}, c, s,
+                          T{0}, -s, c};
     }
 
     //! Rotate axis y about a given angle
@@ -607,9 +599,9 @@ namespace dym
     {
       T c = cos(x.radians());
       T s = sin(x.radians());
-      return mat<3, 3, T>(c, 0, -s,
-                          0, 1, 0,
-                          s, 0, c);
+      return mat<3, 3, T>{c, T{0}, -s,
+                          T{0}, T{1}, T{0},
+                          s, T{0}, c};
     }
 
     //! Rotate axis z about a given angle
@@ -617,29 +609,29 @@ namespace dym
     {
       T c = cos(x.radians());
       T s = sin(x.radians());
-      return mat<3, 3, T>(c, s, 0,
-                          -s, c, 0,
-                          0, 0, 1);
+      return mat<3, 3, T>{c, s, T{0},
+                          -s, c, T{0},
+                          T{0}, T{0}, T{1}};
     }
 
-    static mat<3, 3, T> scale(const T &s)
+    static constexpr mat<3, 3, T> scale(const T &s)
     {
-      return mat<3, 3, T>(s, 0, 0, 0, s, 0, 0, 0, s);
+      return mat<3, 3, T>{s, T{0}, T{0}, T{0}, s, T{0}, T{0}, T{0}, s};
     }
 
-    static mat<3, 3, T> scale(const T &x, const T &y, const T &z)
+    static constexpr mat<3, 3, T> scale(const T &x, const T &y, const T &z)
     {
-      return mat<3, 3, T>(x, 0, 0, 0, y, 0, 0, 0, z);
+      return mat<3, 3, T>{x, T{0}, T{0}, T{0}, y, T{0}, T{0}, T{0}, z};
     }
 
-    static mat<3, 3, T> scale(const vec<3, T> &v)
+    static constexpr mat<3, 3, T> scale(const vec<3, T> &v)
     {
-      return mat<3, 3, T>(v.x, 0, 0, 0, v.y, 0, 0, 0, v.z);
+      return mat<3, 3, T>{v.x, T{0}, T{0}, T{0}, v.y, T{0}, T{0}, T{0}, v.z};
     }
 
-    static mat<3, 3, T> translate(const T &x, const T &y)
+    static constexpr mat<3, 3, T> translate(const T &x, const T &y)
     {
-      return mat<3, 3, T>(1, 0, 0, 0, 1, 0, x, y, 1);
+      return mat<3, 3, T>{T{1}, T{0}, T{0}, T{0}, T{1}, T{0}, x, y, T{1}};
     }
 
     static mat<3, 3, T> translate(const vec<3, T> &v)
@@ -647,11 +639,13 @@ namespace dym
       return translate(v.x, v.y, v.z);
     }
 
-    static mat<4, 4, T> translate_affine(const T &x, const T &y, const T &z)
+    static constexpr mat<4, 4, T> translate_affine(const T &x, const T &y, const T &z)
     {
-      mat<4, 4, T> res = mat<4, 4, T>::identity();
-      res[3] = vec<4, T>(x, y, z, 1);
-      return res;
+      return mat<4, 4, T>{
+          T{1}, T{0}, T{0}, T{0},
+          T{0}, T{1}, T{0}, T{0},
+          T{0}, T{0}, T{1}, T{0},
+          x, y, z, T{1}};
     }
 
     static mat<4, 4, T> translate_affine(const vec<3, T> &v)
@@ -662,9 +656,9 @@ namespace dym
   }; //! struct mat
 
   template <class T>
-  static mat<3, 3, T> operator*(const mat<3, 3, T> &m, const mat<3, 3, T> &n)
+  static constexpr mat<3, 3, T> operator*(const mat<3, 3, T> &m, const mat<3, 3, T> &n)
   {
-    return mat<3, 3, T>(m.arr[0] * n.arr[0] + m.arr[3] * n.arr[1] + m.arr[6] * n.arr[2],
+    return mat<3, 3, T>{m.arr[0] * n.arr[0] + m.arr[3] * n.arr[1] + m.arr[6] * n.arr[2],
                         m.arr[1] * n.arr[0] + m.arr[4] * n.arr[1] + m.arr[7] * n.arr[2],
                         m.arr[2] * n.arr[0] + m.arr[5] * n.arr[1] + m.arr[8] * n.arr[2],
                         m.arr[0] * n.arr[3] + m.arr[3] * n.arr[4] + m.arr[6] * n.arr[5],
@@ -672,12 +666,12 @@ namespace dym
                         m.arr[2] * n.arr[3] + m.arr[5] * n.arr[4] + m.arr[8] * n.arr[5],
                         m.arr[0] * n.arr[6] + m.arr[3] * n.arr[7] + m.arr[6] * n.arr[8],
                         m.arr[1] * n.arr[6] + m.arr[4] * n.arr[7] + m.arr[7] * n.arr[8],
-                        m.arr[2] * n.arr[6] + m.arr[5] * n.arr[7] + m.arr[8] * n.arr[8]);
+                        m.arr[2] * n.arr[6] + m.arr[5] * n.arr[7] + m.arr[8] * n.arr[8]};
   }
 
   //! Matrix determinant
   template <class T>
-  static T det(const mat<3, 3, T> &m)
+  static constexpr T det(const mat<3, 3, T> &m)
   {
     return (m.arr[0] * m.arr[4] * m.arr[8]) - (m.arr[0] * m.arr[5] * m.arr[7]) - (m.arr[1] * m.arr[3] * m.arr[8]) + (m.arr[1] * m.arr[5] * m.arr[6]) + (m.arr[2] * m.arr[3] * m.arr[7]) - (m.arr[2] * m.arr[4] * m.arr[6]);
   }

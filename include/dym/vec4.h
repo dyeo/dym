@@ -16,7 +16,6 @@
 #include "swizzle2.h"
 #include "swizzle3.h"
 #include "swizzle4.h"
-#include <initializer_list>
 #include <cstddef>
 #endif
 
@@ -482,11 +481,6 @@ namespace dym
     {
     }
 
-    //! Initializer list constructor
-    constexpr vec(std::initializer_list<T> l)
-        : x(*(l.begin())), y(*(l.begin() + 1)), z(*(l.begin() + 2)), w(*(l.begin() + 3))
-    {
-    }
 
     //! Copy constructor for differently-sized vector
     template <dim_t d2>
@@ -850,61 +844,61 @@ namespace dym
     //! NaN vector (NaN, NaN, NaN, NaN)
     static constexpr vec<4, T> nan()
     {
-      return vec<4, T>(NAN, NAN, NAN, NAN);
+      return vec<4, T>{static_cast<T>(NAN), static_cast<T>(NAN), static_cast<T>(NAN), static_cast<T>(NAN)};
     }
 
     //! Infinity vector (inf, inf, inf, inf)
     static constexpr vec<4, T> inf()
     {
-      return vec<4, T>(INFINITY, INFINITY, INFINITY, INFINITY);
+      return vec<4, T>{static_cast<T>(INFINITY), static_cast<T>(INFINITY), static_cast<T>(INFINITY), static_cast<T>(INFINITY)};
     }
 
     //! Zero vector (0,0,0,0)
     static constexpr vec<4, T> zero()
     {
-      return vec<4, T>(0, 0, 0, 0);
+      return vec<4, T>{T{0}, T{0}, T{0}, T{0}};
     }
 
     //! One vector (1,1,1,1)
     static constexpr vec<4, T> one()
     {
-      return vec<4, T>(1, 1, 1, 1);
+      return vec<4, T>{T{1}, T{1}, T{1}, T{1}};
     }
 
     //! Up vector (0,1,0,0)
     static constexpr vec<4, T> up()
     {
-      return vec<4, T>(0, 1, 0, 0);
+      return vec<4, T>{T{0}, T{1}, T{0}, T{0}};
     }
 
     //! Down vector (0,-1,0,0)
     static constexpr vec<4, T> down()
     {
-      return vec<4, T>(0, -1, 0, 0);
+      return vec<4, T>{T{0}, static_cast<T>(-1), T{0}, T{0}};
     }
 
     //! Right vector (1,0,0,0)
     static constexpr vec<4, T> right()
     {
-      return vec<4, T>(1, 0, 0, 0);
+      return vec<4, T>{T{1}, T{0}, T{0}, T{0}};
     }
 
     //! Left vector (-1,0,0,0)
     static constexpr vec<4, T> left()
     {
-      return vec<4, T>(-1, 0, 0, 0);
+      return vec<4, T>{static_cast<T>(-1), T{0}, T{0}, T{0}};
     }
 
     //! Forward vector (0,0,1,0)
     static constexpr vec<4, T> forward()
     {
-      return vec<4, T>(0, 0, 1, 0);
+      return vec<4, T>{T{0}, T{0}, T{1}, T{0}};
     }
 
     //! Back vector (0,0,-1,0)
     static constexpr vec<4, T> back()
     {
-      return vec<4, T>(0, 0, -1, 0);
+      return vec<4, T>{T{0}, T{0}, static_cast<T>(-1), T{0}};
     }
 
   }; //! struct vec4
@@ -937,9 +931,9 @@ namespace dym
 
   //! Scalar-Vector multiplication
   template <class T = float>
-  static vec<4, T> operator*(const T &l, const vec<4, T> &r)
+  static constexpr vec<4, T> operator*(const T &l, const vec<4, T> &r)
   {
-    return vec<4, T>(l * r.x, l * r.y, l * r.z, l * r.w);
+    return vec<4, T>{l * r.x, l * r.y, l * r.z, l * r.w};
   }
 
   /////////////////////
@@ -948,14 +942,14 @@ namespace dym
 
   //! Calculates the dot or scalar product of two vectors
   template <class T = float>
-  static T dot(const vec<4, T> &l, const vec<4, T> &r)
+  static constexpr T dot(const vec<4, T> &l, const vec<4, T> &r)
   {
     return (l.x * r.x) + (l.y * r.y) + (l.z * r.z) + (l.w * r.w);
   }
 
   //! Returns length squared of vector
   template <class T = float>
-  static T lengthsq(const vec<4, T> &v)
+  static constexpr T lengthsq(const vec<4, T> &v)
   {
     return sq(v.x) + sq(v.y) + sq(v.z) + sq(v.w);
   }
@@ -969,37 +963,37 @@ namespace dym
 
   //! Returns a component-wise minimum of two vectors
   template <class T = float>
-  static vec<4, T> min(const vec<4, T> &l, const vec<4, T> &r)
+  static constexpr vec<4, T> min(const vec<4, T> &l, const vec<4, T> &r)
   {
-    return vec<4, T>(min(l.x, r.x), min(l.y, r.y), min(l.z, r.z), min(l.w, r.w));
+    return vec<4, T>{min(l.x, r.x), min(l.y, r.y), min(l.z, r.z), min(l.w, r.w)};
   }
 
   //! Returns a component-wise maximum of a vector and a scalar
   template <class T = float>
-  static vec<4, T> min(const vec<4, T> &l, const T &r)
+  static constexpr vec<4, T> min(const vec<4, T> &l, const T &r)
   {
-    return vec<4, T>(min(l.x, r), min(l.y, r), min(l.z, r), min(l.w, r));
+    return vec<4, T>{min(l.x, r), min(l.y, r), min(l.z, r), min(l.w, r)};
   }
 
   //! Returns a component-wise minimum of two vectors
   template <class T = float>
-  static vec<4, T> max(const vec<4, T> &l, const vec<4, T> &r)
+  static constexpr vec<4, T> max(const vec<4, T> &l, const vec<4, T> &r)
   {
-    return vec<4, T>(max(l.x, r.x), max(l.y, r.y), max(l.z, r.z), max(l.w, r.w));
+    return vec<4, T>{max(l.x, r.x), max(l.y, r.y), max(l.z, r.z), max(l.w, r.w)};
   }
 
   //! Returns a component-wise maximum of a vector and a scalar
   template <class T = float>
-  static vec<4, T> max(const vec<4, T> &l, const T &r)
+  static constexpr vec<4, T> max(const vec<4, T> &l, const T &r)
   {
-    return vec<4, T>(max(l.x, r), max(l.y, r), max(l.z, r), max(l.w, r));
+    return vec<4, T>{max(l.x, r), max(l.y, r), max(l.z, r), max(l.w, r)};
   }
 
   //! Generates a vector one-dimension larger than the input vector, with the added dimension set to 1. useful for affine transfomrations
   template <class T = float>
-  static vec<5, T> affine(const vec<4, T> &v)
+  static constexpr vec<5, T> affine(const vec<4, T> &v)
   {
-    return vec<5, T>(v.x, v.y, v.z, v.w, T{1});
+    return vec<5, T>{v.x, v.y, v.z, v.w, T{1}};
   }
 
   //! Returns whether vector is NaN

@@ -12,7 +12,6 @@
 
 #include "mat.h"
 #include "mat3.h"
-#include <initializer_list>
 
 //
 
@@ -54,13 +53,6 @@ namespace dym
 
     ~mat() = default;
 
-    //! Initializer list constructor
-    //! Columns span left-to-right in initialization, and rows span top-to-bottom
-    //! This is because matrices are stored column-major
-    constexpr mat(std::initializer_list<T> l)
-        : arr{*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3), *(l.begin() + 4), *(l.begin() + 5), *(l.begin() + 6), *(l.begin() + 7), *(l.begin() + 8), *(l.begin() + 9), *(l.begin() + 10), *(l.begin() + 11), *(l.begin() + 12), *(l.begin() + 13), *(l.begin() + 14), *(l.begin() + 15)}
-    {
-    }
 
     //! Copy constructor
     constexpr mat(const mat<4, 4, T> &v)
@@ -724,37 +716,38 @@ namespace dym
     //! returns an identity matrix
     static constexpr mat<4, 4, T> identity()
     {
-      return mat<4, 4, T>(1, 0, 0, 0,
-                          0, 1, 0, 0,
-                          0, 0, 1, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{
+          T{1}, T{0}, T{0}, T{0},
+          T{0}, T{1}, T{0}, T{0},
+          T{0}, T{0}, T{1}, T{0},
+          T{0}, T{0}, T{0}, T{1}};
     }
 
     //! Creates a row-order matrix using individual elements
-    static mat<4, 4, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8, const T &s9, const T &s10, const T &s11, const T &s12, const T &s13, const T &s14, const T &s15)
+    static constexpr mat<4, 4, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3, const T &s4, const T &s5, const T &s6, const T &s7, const T &s8, const T &s9, const T &s10, const T &s11, const T &s12, const T &s13, const T &s14, const T &s15)
     {
-      return mat<4, 4, T>(s0, s4, s8, s12,
+      return mat<4, 4, T>{s0, s4, s8, s12,
                           s1, s5, s9, s13,
                           s2, s6, s10, s14,
-                          s3, s7, s11, s15);
+                          s3, s7, s11, s15};
     }
 
     //! Creates a 4x4 matrix using 4 row vectors
-    static mat<4, 4, T> fromrows(vec<4, T> r0, vec<4, T> r1, vec<4, T> r2, vec<4, T> r3)
+    static constexpr mat<4, 4, T> fromrows(vec<4, T> r0, vec<4, T> r1, vec<4, T> r2, vec<4, T> r3)
     {
-      return mat<4, 4, T>(r0.x, r1.x, r2.x, r3.x,
+      return mat<4, 4, T>{r0.x, r1.x, r2.x, r3.x,
                           r0.y, r1.y, r2.y, r3.y,
                           r0.z, r1.z, r2.z, r3.z,
-                          r0.w, r1.w, r2.w, r3.w);
+                          r0.w, r1.w, r2.w, r3.w};
     }
 
     //! Creates a 4x4 matrix using 4 column vectors
-    static mat<4, 4, T> fromcols(vec<4, T> c0, vec<4, T> c1, vec<4, T> c2, vec<4, T> c3)
+    static constexpr mat<4, 4, T> fromcols(vec<4, T> c0, vec<4, T> c1, vec<4, T> c2, vec<4, T> c3)
     {
-      return mat<4, 4, T>(c0.x, c0.y, c0.z, c0.w,
+      return mat<4, 4, T>{c0.x, c0.y, c0.z, c0.w,
                           c1.x, c1.y, c1.z, c1.w,
                           c2.x, c2.y, c2.z, c2.w,
-                          c3.x, c3.y, c3.z, c3.w);
+                          c3.x, c3.y, c3.z, c3.w};
     }
 
     static mat<4, 4, T> rotate(const ang<T> &an, const vec<3, T> &ax)
@@ -762,90 +755,90 @@ namespace dym
       const T c = cos(an.radians());
       const T s = sin(an.radians());
       const T t = 1 - c;
-      return mat<4, 4, T>((t * ax.x * ax.x) + c, (t * ax.x * ax.y) + ax.z * s, (t * ax.x * ax.z) - ax.y * s, 0,
-                          (t * ax.x * ax.y) - ax.z * s, (t * ax.y * ax.y) + c, (t * ax.y * ax.z) + ax.x * s, 0,
-                          (t * ax.x * ax.z) + ax.y * s, (t * ax.y * ax.z) - ax.x * s, (t * ax.z * ax.z) + c, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{(t * ax.x * ax.x) + c, (t * ax.x * ax.y) + ax.z * s, (t * ax.x * ax.z) - ax.y * s, T{0},
+                          (t * ax.x * ax.y) - ax.z * s, (t * ax.y * ax.y) + c, (t * ax.y * ax.z) + ax.x * s, T{0},
+                          (t * ax.x * ax.z) + ax.y * s, (t * ax.y * ax.z) - ax.x * s, (t * ax.z * ax.z) + c, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
     static mat<4, 4, T> rotatex(const ang<T> &x)
     {
       const T c = cos(x.radians());
       const T s = sin(x.radians());
-      return mat<4, 4, T>(1, 0, 0, 0,
-                          0, c, s, 0,
-                          0, -s, c, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{T{1}, T{0}, T{0}, T{0},
+                          T{0}, c, s, T{0},
+                          T{0}, -s, c, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
     static mat<4, 4, T> rotatey(const ang<T> &x)
     {
       const T c = cos(x.radians());
       const T s = sin(x.radians());
-      return mat<4, 4, T>(c, 0, -s, 0,
-                          0, 1, 0, 0,
-                          s, 0, c, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{c, T{0}, -s, T{0},
+                          T{0}, T{1}, T{0}, T{0},
+                          s, T{0}, c, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
     static mat<4, 4, T> rotatez(const ang<T> &x)
     {
       const T c = cos(x.radians());
       const T s = sin(x.radians());
-      return mat<4, 4, T>(c, s, 0, 0,
-                          -s, c, 0, 0,
-                          0, 0, 1, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{c, s, T{0}, T{0},
+                          -s, c, T{0}, T{0},
+                          T{0}, T{0}, T{1}, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
-    static mat<4, 4, T> scale(const T &s)
+    static constexpr mat<4, 4, T> scale(const T &s)
     {
-      return mat<4, 4, T>(s, 0, 0, 0,
-                          0, s, 0, 0,
-                          0, 0, s, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{s, T{0}, T{0}, T{0},
+                          T{0}, s, T{0}, T{0},
+                          T{0}, T{0}, s, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
-    static mat<4, 4, T> scale(const T &x, const T &y, const T &z)
+    static constexpr mat<4, 4, T> scale(const T &x, const T &y, const T &z)
     {
-      return mat<4, 4, T>(x, 0, 0, 0,
-                          0, y, 0, 0,
-                          0, 0, z, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{x, T{0}, T{0}, T{0},
+                          T{0}, y, T{0}, T{0},
+                          T{0}, T{0}, z, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
-    static mat<4, 4, T> scale(const vec<3, T> &v)
+    static constexpr mat<4, 4, T> scale(const vec<3, T> &v)
     {
-      return mat<4, 4, T>(v.x, 0, 0, 0,
-                          0, v.y, 0, 0,
-                          0, 0, v.z, 0,
-                          0, 0, 0, 1);
+      return mat<4, 4, T>{v.x, T{0}, T{0}, T{0},
+                          T{0}, v.y, T{0}, T{0},
+                          T{0}, T{0}, v.z, T{0},
+                          T{0}, T{0}, T{0}, T{1}};
     }
 
-    static mat<4, 4, T> translate(const T &x, const T &y, const T &z)
+    static constexpr mat<4, 4, T> translate(const T &x, const T &y, const T &z)
     {
-      return mat<4, 4, T>(1, 0, 0, 0,
-                          0, 1, 0, 0,
-                          0, 0, 1, 0,
-                          x, y, z, 1);
+      return mat<4, 4, T>{T{1}, T{0}, T{0}, T{0},
+                          T{0}, T{1}, T{0}, T{0},
+                          T{0}, T{0}, T{1}, T{0},
+                          x, y, z, T{1}};
     }
 
-    static mat<4, 4, T> translate(const vec<3, T> &v)
+    static constexpr mat<4, 4, T> translate(const vec<3, T> &v)
     {
       return translate(v.x, v.y, v.z);
     }
 
     //! generates a generic frustum transformation
-    static mat<4, 4, T> frustum(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
+    static constexpr mat<4, 4, T> frustum(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
     {
       const T n2 = 2 * near;
       const T rml = right - left;
       const T tmb = top - bottom;
       const T nmf = near - far;
-      return mat<4, 4, T>(n2 / rml, 0.f, 0.f, 0.f,
-                          0.f, n2 / tmb, 0.f, 0.f,
-                          (right + left) / rml, (top + bottom) / tmb, (near + far) / nmf, -1.f,
-                          0.f, 0.f, (n2 * far) / nmf, 0.f);
+      return mat<4, 4, T>{n2 / rml, T{0}, T{0}, T{0},
+                          T{0}, n2 / tmb, T{0}, T{0},
+                          (right + left) / rml, (top + bottom) / tmb, (near + far) / nmf, static_cast<T>(-1),
+                          T{0}, T{0}, (n2 * far) / nmf, T{0}};
     }
 
     //! generates a 3d-perspective frustum transformation
@@ -856,20 +849,20 @@ namespace dym
       const T nmf = near - far;
       const T B = (near + far) / nmf;
       const T C = (static_cast<T>(2.0) * near * far) / nmf;
-      return mat<4, 4, T>(
-          xs, 0, 0, 0,
-          0, ys, 0, 0,
-          0, 0, B, -1,
-          0, 0, C, 0);
+      return mat<4, 4, T>{
+          xs, T{0}, T{0}, T{0},
+          T{0}, ys, T{0}, T{0},
+          T{0}, T{0}, B, static_cast<T>(-1),
+          T{0}, T{0}, C, T{0}};
     }
 
     //! generates a 3d-orthographic (flat) frustum transformation
-    static mat<4, 4, T> ortho(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
+    static constexpr mat<4, 4, T> ortho(const T &left, const T &right, const T &bottom, const T &top, const T &near, const T &far)
     {
-      return mat<4, 4, T>(static_cast<T>(2.0) / (right - left), 0, 0, 0,
-                          0, static_cast<T>(2.0) / (top - bottom), 0, 0,
-                          0, 0, static_cast<T>(2.0) / (near - far), 0,
-                          (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), 1);
+      return mat<4, 4, T>{static_cast<T>(2.0) / (right - left), T{0}, T{0}, T{0},
+                          T{0}, static_cast<T>(2.0) / (top - bottom), T{0}, T{0},
+                          T{0}, T{0}, static_cast<T>(2.0) / (near - far), T{0},
+                          (left + right) / (left - right), (bottom + top) / (bottom - top), (near + far) / (far - near), T{1}};
     }
 
     //! generates a catmull-rom identity transformation
@@ -895,29 +888,29 @@ namespace dym
     //! converts clipspace matrix to screenspace matrix
     static constexpr mat<4, 4, T> cliptoscreen()
     {
-      return mat<4, 4, T>(
-          0.5f, 0.0f, 0.0f, 0.0f,
-          0.0f, 0.5f, 0.0f, 0.0f,
-          0.0f, 0.0f, 0.5f, 0.0f,
-          0.5f, 0.5f, 0.5f, 1.0f);
+      return mat<4, 4, T>{
+          static_cast<T>(0.5f), T{0}, T{0}, T{0},
+          T{0}, static_cast<T>(0.5f), T{0}, T{0},
+          T{0}, T{0}, static_cast<T>(0.5f), T{0},
+          static_cast<T>(0.5f), static_cast<T>(0.5f), static_cast<T>(0.5f), T{1}};
     }
 
     //! converts screenspace to clipspace
     static constexpr mat<4, 4, T> screentoclip()
     {
-      return mat<4, 4, T>(
-          2.0f, 0.0f, 0.0f, 0.0f,
-          0.0f, 2.0f, 0.0f, 0.0f,
-          0.0f, 0.0f, 2.0f, 0.0f,
-          -1.0f, -1.0f, -1.0f, 1.0f);
+      return mat<4, 4, T>{
+          static_cast<T>(2.0f), T{0}, T{0}, T{0},
+          T{0}, static_cast<T>(2.0f), T{0}, T{0},
+          T{0}, T{0}, static_cast<T>(2.0f), T{0},
+          static_cast<T>(-1.0f), static_cast<T>(-1.0f), static_cast<T>(-1.0f), T{1}};
     }
 
   }; //! struct mat
 
   template <class T>
-  static mat<4, 4, T> operator*(const mat<4, 4, T> &m, const mat<4, 4, T> &n)
+  static constexpr mat<4, 4, T> operator*(const mat<4, 4, T> &m, const mat<4, 4, T> &n)
   {
-    return mat<4, 4, T>(m.arr[0] * n.arr[0] + m.arr[4] * n.arr[1] + m.arr[8] * n.arr[2] + m.arr[12] * n.arr[3],
+    return mat<4, 4, T>{m.arr[0] * n.arr[0] + m.arr[4] * n.arr[1] + m.arr[8] * n.arr[2] + m.arr[12] * n.arr[3],
                         m.arr[1] * n.arr[0] + m.arr[5] * n.arr[1] + m.arr[9] * n.arr[2] + m.arr[13] * n.arr[3],
                         m.arr[2] * n.arr[0] + m.arr[6] * n.arr[1] + m.arr[10] * n.arr[2] + m.arr[14] * n.arr[3],
                         m.arr[3] * n.arr[0] + m.arr[7] * n.arr[1] + m.arr[11] * n.arr[2] + m.arr[15] * n.arr[3],
@@ -932,12 +925,12 @@ namespace dym
                         m.arr[0] * n.arr[12] + m.arr[4] * n.arr[13] + m.arr[8] * n.arr[14] + m.arr[12] * n.arr[15],
                         m.arr[1] * n.arr[12] + m.arr[5] * n.arr[13] + m.arr[9] * n.arr[14] + m.arr[13] * n.arr[15],
                         m.arr[2] * n.arr[12] + m.arr[6] * n.arr[13] + m.arr[10] * n.arr[14] + m.arr[14] * n.arr[15],
-                        m.arr[3] * n.arr[12] + m.arr[7] * n.arr[13] + m.arr[11] * n.arr[14] + m.arr[15] * n.arr[15]);
+                        m.arr[3] * n.arr[12] + m.arr[7] * n.arr[13] + m.arr[11] * n.arr[14] + m.arr[15] * n.arr[15]};
   }
 
   //! Matrix determinant
   template <class T>
-  static T det(const mat<4, 4, T> &m)
+  static constexpr T det(const mat<4, 4, T> &m)
   {
     return (m.arr[0] * m.arr[5] * m.arr[10] * m.arr[15]) - (m.arr[0] * m.arr[5] * m.arr[11] * m.arr[14]) - (m.arr[0] * m.arr[6] * m.arr[9] * m.arr[15]) + (m.arr[0] * m.arr[6] * m.arr[11] * m.arr[13]) + (m.arr[0] * m.arr[7] * m.arr[9] * m.arr[14]) - (m.arr[0] * m.arr[7] * m.arr[10] * m.arr[13]) - (m.arr[1] * m.arr[4] * m.arr[10] * m.arr[15]) + (m.arr[1] * m.arr[4] * m.arr[11] * m.arr[14]) + (m.arr[1] * m.arr[6] * m.arr[8] * m.arr[15]) - (m.arr[1] * m.arr[6] * m.arr[11] * m.arr[12]) - (m.arr[1] * m.arr[7] * m.arr[8] * m.arr[14]) + (m.arr[1] * m.arr[7] * m.arr[10] * m.arr[12]) + (m.arr[2] * m.arr[4] * m.arr[9] * m.arr[15]) - (m.arr[2] * m.arr[4] * m.arr[11] * m.arr[13]) - (m.arr[2] * m.arr[5] * m.arr[8] * m.arr[15]) + (m.arr[2] * m.arr[5] * m.arr[11] * m.arr[12]) + (m.arr[2] * m.arr[7] * m.arr[8] * m.arr[13]) - (m.arr[2] * m.arr[7] * m.arr[9] * m.arr[12]) - (m.arr[3] * m.arr[4] * m.arr[9] * m.arr[14]) + (m.arr[3] * m.arr[4] * m.arr[10] * m.arr[13]) + (m.arr[3] * m.arr[5] * m.arr[8] * m.arr[14]) - (m.arr[3] * m.arr[5] * m.arr[10] * m.arr[12]) - (m.arr[3] * m.arr[6] * m.arr[8] * m.arr[13]) + (m.arr[3] * m.arr[6] * m.arr[9] * m.arr[12]);
   }
@@ -956,7 +949,7 @@ namespace dym
     vec3 translation(m.translation());
     rotation = transpose(rotation);
     translation = -rotation * translation;
-    return mat<4, 4, T>(rotation, translation);
+    return mat<4, 4, T>{rotation, translation};
   }
 
   ///////////////////////

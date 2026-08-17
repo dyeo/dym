@@ -14,7 +14,7 @@
 #include "angle.h"
 #include <cmath>
 #include <ostream>
-#include <initializer_list>
+#include <concepts>
 
 //
 
@@ -51,13 +51,12 @@ namespace dym
 
     ~vec() = default;
 
-    //! Initializer list constructor
-    constexpr vec(std::initializer_list<T> list)
+    //! Component constructor
+    template <class... U>
+      requires (sizeof...(U) == size && (std::convertible_to<U, T> && ...))
+    constexpr vec(const U &...values)
+      : data{static_cast<T>(values)...}
     {
-      for (dim_t i = 0; i < size; ++i)
-      {
-        data[i] = *(list.begin() + i);
-      }
     }
 
     //! Copy constructor
@@ -376,23 +375,13 @@ namespace dym
     //! Zero vector
     static constexpr vec<D, T> zero()
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < size; ++i)
-      {
-        res[i] = T{0};
-      }
-      return res;
+      return vec<D, T>{T{0}};
     }
 
     //! Unit vector
     static constexpr vec<D, T> one()
     {
-      vec<D, T> res;
-      for (dim_t i = 0; i < size; ++i)
-      {
-        res[i] = T{1};
-      }
-      return res;
+      return vec<D, T>{T{1}};
     }
 
 
@@ -532,23 +521,21 @@ namespace dym
   template <class T = float>
   static constexpr vec<3, T> cross(const vec<3, T> &l, const vec<3, T> &r)
   {
-    vec<3, T> res;
-    res.data[0] = (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]);
-    res.data[1] = (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]);
-    res.data[2] = (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]);
-    return res;
+    return vec<3, T>{
+        (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]),
+        (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]),
+        (l.data[0] * r.data[1]) - (l.data[1] * r.data[0])};
   }
 
   //! Calculates the cross product of two vectors
   template <class T = float>
   static constexpr vec<4, T> cross(const vec<4, T> &l, const vec<4, T> &r)
   {
-    vec<4, T> res;
-    res.data[0] = (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]);
-    res.data[1] = (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]);
-    res.data[2] = (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]);
-    res.data[3] = T{0};
-    return res;
+    return vec<4, T>{
+        (l.data[1] * r.data[2]) - (l.data[2] * r.data[1]),
+        (l.data[2] * r.data[0]) - (l.data[0] * r.data[2]),
+        (l.data[0] * r.data[1]) - (l.data[1] * r.data[0]),
+        T{0}};
   }
 
   //! Returns length squared of vector
@@ -674,7 +661,7 @@ namespace dym
 
   //! Computes the reflection of vector v acording to the plane of normal vector 'n'
   template <dim_t D, class T = float>
-  static vec<D, T> reflect(const vec<D, T> &v, const vec<D, T> &n)
+  static constexpr vec<D, T> reflect(const vec<D, T> &v, const vec<D, T> &n)
   {
     return v - 2.0f * dot(n, v) * n;
   }
@@ -685,7 +672,7 @@ namespace dym
   {
     float dir = static_cast<T>(1.0) - r * r * (static_cast<T>(1.0) - dot(n, v) * dot(n, v));
     if (dir < static_cast<T>(0.0))
-      return vec<D, T>(static_cast<T>(0.0)); //! total internal reflection
+      return vec<D, T>{static_cast<T>(0.0)}; //! total internal reflection
     return r * v - (r * dot(n, v) + sqrt(dir)) * n;
   }
 
@@ -706,14 +693,14 @@ namespace dym
   template <class T = float>
   static constexpr vec<4, T> point(const vec<3, T> &xyz)
   {
-    return vec<4, T>(xyz.data[0], xyz.data[1], xyz.data[2], T{1});
+    return vec<4, T>{xyz.data[0], xyz.data[1], xyz.data[2], T{1}};
   }
 
   //! Point vector constructor (x,y,z,1)
   template <class T = float>
   static constexpr vec<4, T> point(const T &x, const T &y, const T &z)
   {
-    return vec<4, T>(x, y, z, T{1});
+    return vec<4, T>{x, y, z, T{1}};
   }
 
   //! Returns whether vector is NaN

@@ -20,7 +20,7 @@
 
 #include <cmath>
 #include <ostream>
-#include <initializer_list>
+#include <concepts>
 
 //
 
@@ -69,15 +69,14 @@ namespace dym
 
     ~mat() = default;
 
-    //! Initializer list constructor
+    //! Component constructor
     //! Columns span left-to-right in initialization, and rows span top-to-bottom
     //! This is because matrices are stored column-major
-    constexpr mat(std::initializer_list<T> list)
+    template <class... U>
+      requires (sizeof...(U) == size && (std::convertible_to<U, T> && ...))
+    constexpr mat(const U &...values)
+      : arr{static_cast<T>(values)...}
     {
-      for (dim_t i = 0; i < size; ++i)
-      {
-        arr[i] = *(list.begin() + i);
-      }
     }
 
     //! Copy constructor
@@ -370,7 +369,7 @@ namespace dym
     //! Matrix identity
     static constexpr mat<C, R, T> identity()
     {
-      mat<C, R, T> res(T{0});
+      mat<C, R, T> res{T{0}};
       for (dim_t i = 0; i < (R < C ? R : C); ++i)
       {
         res.data[i][i] = T{1};
@@ -381,27 +380,17 @@ namespace dym
     //! Zero matrix
     static constexpr mat<C, R, T> zero()
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < size; ++i)
-      {
-        res[i] = T{0};
-      }
-      return res;
+      return mat<C, R, T>{T{0}};
     }
 
     //! Unit matrix
     static constexpr mat<C, R, T> one()
     {
-      mat<C, R, T> res;
-      for (dim_t i = 0; i < size; ++i)
-      {
-        res[i] = T{1};
-      }
-      return res;
+      return mat<C, R, T>{T{1}};
     }
 
-  private:
 
+  private:
     template <class F>
     constexpr mat<C, R, T> unary_transform(F operation) const
     {
@@ -560,7 +549,7 @@ namespace dym
   static constexpr mat<C2, R1, T> operator*(const mat<C1, R1, T> &m, const mat<C2, R2, T> &n)
   {
     static_assert(C1 == R2, "Number of columns in m must equal number of rows in n");
-    mat<C2, R1, T> res(T{0});
+    mat<C2, R1, T> res{T{0}};
     for (dim_t i = 0; i < R1; ++i)
     {
       for (dim_t j = 0; j < C2; ++j)
@@ -580,7 +569,7 @@ namespace dym
   template <dim_t C, dim_t R, class T>
   static constexpr mat<C, R, T> &operator*=(mat<C, R, T> &m, const mat<C, R, T> &n)
   {
-    mat<C, R, T> res(T{0});
+    mat<C, R, T> res{T{0}};
     for (dim_t i = 0; i < R; ++i)
     {
       for (dim_t j = 0; j < C; ++j)
@@ -602,7 +591,7 @@ namespace dym
   template <dim_t C, dim_t R, class T>
   static constexpr vec<R, T> operator*(const mat<C, R, T> &m, const vec<R, T> &v)
   {
-    vec<R, T> res(T{0});
+    vec<R, T> res{T{0}};
     for (dim_t i = 0; i < R; ++i)
     {
       for (dim_t j = 0; j < C; ++j)
@@ -617,7 +606,7 @@ namespace dym
   template <dim_t C, dim_t R, class T>
   static constexpr vec<C, T> operator*(const vec<C, T> &v, const mat<C, R, T> &m)
   {
-    vec<C, T> res(T{0});
+    vec<C, T> res{T{0}};
     for (dim_t i = 0; i < C; ++i)
     {
       for (dim_t j = 0; j < R; ++j)
@@ -632,7 +621,7 @@ namespace dym
   template <dim_t C, dim_t R, class T>
   static constexpr vec<C, T> &operator*=(vec<C, T> &v, const mat<C, R, T> &m)
   {
-    vec<C, T> res(T{0});
+    vec<C, T> res{T{0}};
     for (dim_t i = 0; i < C; ++i)
     {
       for (dim_t j = 0; j < R; ++j)
@@ -661,7 +650,7 @@ namespace dym
 
   //! Matrix-scalar multiplication (odd-typed)
   template <dim_t C, dim_t R, class T, class U>
-  static mat<C, R, T> operator*(const U &v, const mat<C, R, T> &m)
+  static constexpr mat<C, R, T> operator*(const U &v, const mat<C, R, T> &m)
   {
     mat<C, R, T> res;
     for (dim_t i = 0; i < C * R; ++i)
@@ -703,7 +692,7 @@ namespace dym
   template <dim_t C, dim_t R, class T>
   static constexpr mat<C - 1, R - 1, T> minor(const mat<C, R, T> &m, int rx, int cx)
   {
-    mat<C - 1, R - 1, T> res(T{0});
+    mat<C - 1, R - 1, T> res{T{0}};
 
     int mini = 0;
     int minj = 0;
@@ -823,7 +812,7 @@ namespace dym
   template <dim_t R, dim_t C, class T>
   static constexpr mat<R, C, T> transpose(const mat<C, R, T> &m)
   {
-    mat<R, C, T> res(T{0});
+    mat<R, C, T> res{T{0}};
     for (dim_t i = 0; i < C; ++i)
     {
       for (dim_t j = 0; j < R; ++j)
@@ -838,7 +827,7 @@ namespace dym
   template <dim_t R, dim_t C, class T>
   static constexpr mat<C + 1, R + 1, T> affine(const mat<C, R, T> &m)
   {
-    mat<C + 1, R + 1, T> res = m;
+    mat<C + 1, R + 1, T> res{m};
     res[C][R] = T{1};
     return res;
   }
@@ -846,7 +835,7 @@ namespace dym
   template <dim_t D, class T>
   static constexpr mat<D, D, T> cofactor(const mat<D, D, T> &m)
   {
-    mat<D, D, T> res(T{0});
+    mat<D, D, T> res{T{0}};
     for (dim_t j = 0; j < D; ++j)
     {
       for (dim_t i = 0; i < D; ++i)

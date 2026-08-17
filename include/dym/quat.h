@@ -13,9 +13,11 @@
 #include "util.h"
 #include "vec3.h"
 #include "mat3.h"
+
+//
+
 #include <cmath>
 #include <ostream>
-#include <initializer_list>
 #include <cstddef>
 
 //
@@ -100,12 +102,6 @@ namespace dym
     //! Array initializer
     constexpr explicit quat(const T *a)
         : w(a[0]), i(a[1]), j(a[2]), k(a[3])
-    {
-    }
-
-    //! Initializer list constructor
-    constexpr quat(std::initializer_list<T> l)
-        : w(*(l.begin())), i(*(l.begin() + 1)), j(*(l.begin() + 2)), k(*(l.begin() + 3))
     {
     }
 

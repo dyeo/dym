@@ -23,10 +23,6 @@
 
 //
 
-#define DYM_MIN_OF(a, b) (a < b ? a : b)
-
-//
-
 namespace dym
 { ////
 

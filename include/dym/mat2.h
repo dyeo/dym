@@ -12,7 +12,6 @@
 
 #include "mat.h"
 #include "angle.h"
-#include <initializer_list>
 #include <cstddef>
 
 //
@@ -59,13 +58,6 @@ namespace dym
 
     ~mat() = default;
 
-    //! Initializer list constructor
-    //! Columns span left-to-right in initialization, and rows span top-to-bottom
-    //! This is because matrices are stored column-major
-    constexpr mat(std::initializer_list<T> l)
-      : arr{*(l.begin()), *(l.begin() + 1), *(l.begin() + 2), *(l.begin() + 3)}
-    {
-    }
 
     //! Copy constructor
     constexpr mat(const mat<2, 2, T> &v)
@@ -459,28 +451,28 @@ namespace dym
     //! Generates a 2x2 identity matrix
     static constexpr mat<2, 2, T> identity()
     {
-      return mat<2, 2, T>(1, 0, 0, 1);
+      return mat<2, 2, T>{T{1}, T{0}, T{0}, T{1}};
     }
 
     //! Creates a row-order matrix using individual elements
-    static mat<2, 2, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3)
+    static constexpr mat<2, 2, T> roworder(const T &s0, const T &s1, const T &s2, const T &s3)
     {
-      return mat<2, 2, T>(s0, s2,
-                s1, s3);
+      return mat<2, 2, T>{s0, s2,
+                          s1, s3};
     }
 
     //! Creates a 2x2 matrix using 2 row vectors
-    static mat<2, 2, T> fromrows(vec<2, T> r0, vec<2, T> r1)
+    static constexpr mat<2, 2, T> fromrows(vec<2, T> r0, vec<2, T> r1)
     {
-      return mat<2, 2, T>(r0.x, r1.x,
-                r0.y, r1.y);
+      return mat<2, 2, T>{r0.x, r1.x,
+                          r0.y, r1.y};
     }
 
     //! Creates a 2x2 matrix using 2 column vectors
-    static mat<2, 2, T> fromcols(vec<2, T> c0, vec<2, T> c1)
+    static constexpr mat<2, 2, T> fromcols(vec<2, T> c0, vec<2, T> c1)
     {
-      return mat<2, 2, T>(c0.x, c0.y,
-                c1.x, c1.y);
+      return mat<2, 2, T>{c0.x, c0.y,
+                          c1.x, c1.y};
     }
 
     //! Generates a clockwise rotation matrix using an angle
@@ -488,7 +480,7 @@ namespace dym
     {
       const T ca = cos(a.radians());
       const T sa = sin(a.radians());
-      return mat<2, 2, T>(ca, sa, -sa, ca);
+      return mat<2, 2, T>{ca, sa, -sa, ca};
     }
 
     //! Generates a clockwise rotation matrix using an angle
@@ -502,37 +494,37 @@ namespace dym
     {
       float ca = cos(a.radians());
       float sa = sin(a.radians());
-      return mat<2, 2, T>(ca, -sa, sa, ca);
+      return mat<2, 2, T>{static_cast<T>(ca), static_cast<T>(-sa), static_cast<T>(sa), static_cast<T>(ca)};
     }
 
     //! Generates a scaling matrix using a single scaling value
-    static mat<2, 2, T> scale(const T &s)
+    static constexpr mat<2, 2, T> scale(const T &s)
     {
-      return mat<2, 2, T>(s, 0, 0, s);
+      return mat<2, 2, T>{s, T{0}, T{0}, s};
     }
 
     //! Generates a scaling matrix using an x and y scaling value
-    static mat<2, 2, T> scale(const T &x, const T &y)
+    static constexpr mat<2, 2, T> scale(const T &x, const T &y)
     {
-      return mat<2, 2, T>(x, 0, 0, y);
+      return mat<2, 2, T>{x, T{0}, T{0}, y};
     }
 
     //! Shears along the x axis
-    static mat<2, 2, T> shearx(const T &k)
+    static constexpr mat<2, 2, T> shearx(const T &k)
     {
-      return mat<2, 2, T>(1, 0, k, 1);
+      return mat<2, 2, T>{T{1}, T{0}, k, T{1}};
     }
 
     //! Shears along the y axis
-    static mat<2, 2, T> sheary(const T &k)
+    static constexpr mat<2, 2, T> sheary(const T &k)
     {
-      return mat<2, 2, T>(1, k, 0, 1);
+      return mat<2, 2, T>{T{1}, k, T{0}, T{1}};
     }
 
     static mat<3, 3, T> translate_affine(const T &x, const T &y)
     {
-      mat<3, 3, T> res = mat<3, 3, T>::identity();
-      res[2] = vec<3, T>(x, y, 1);
+      mat<3, 3, T> res{mat<3, 3, T>::identity()};
+      res[2] = vec<3, T>{x, y, T{1}};
     }
 
     static mat<3, 3, T> translate_affine(const vec<2, T> &t)
@@ -543,24 +535,24 @@ namespace dym
   }; //! struct mat
 
   template <class T>
-  static mat<2, 2, T> operator*(const mat<2, 2, T> &m, const mat<2, 2, T> &n)
+  static constexpr mat<2, 2, T> operator*(const mat<2, 2, T> &m, const mat<2, 2, T> &n)
   {
-    return mat<2, 2, T>(m.arr[0] * n.arr[0] + m.arr[2] * n.arr[1], m.arr[1] * n.arr[0] + m.arr[3] * n.arr[1],
-              m.arr[0] * n.arr[2] + m.arr[2] * n.arr[3], m.arr[1] * n.arr[2] + m.arr[3] * n.arr[3]);
+    return mat<2, 2, T>{m.arr[0] * n.arr[0] + m.arr[2] * n.arr[1], m.arr[1] * n.arr[0] + m.arr[3] * n.arr[1],
+                        m.arr[0] * n.arr[2] + m.arr[2] * n.arr[3], m.arr[1] * n.arr[2] + m.arr[3] * n.arr[3]};
   }
 
   //! Matrix determinant
   template <class T>
-  static T det(const mat<2, 2, T> &m)
+  static constexpr T det(const mat<2, 2, T> &m)
   {
     return (m.arr[0] * m.arr[3]) - (m.arr[1] * m.arr[2]);
   }
 
   //! Inverts the matrix, such that m * inverse(m) = the identity
   template <class T>
-  static mat<2, 2, T> inverse(const mat<2, 2, T> &m)
+  static constexpr mat<2, 2, T> inverse(const mat<2, 2, T> &m)
   {
-    return mat<2, 2, T>(m.arr[3], -m.arr[1], -m.arr[2], m.arr[0]) / det(m);
+    return mat<2, 2, T>{m.arr[3], -m.arr[1], -m.arr[2], m.arr[0]} / det(m);
   }
 
   ///////////////////////
