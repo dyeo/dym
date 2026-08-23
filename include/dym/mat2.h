@@ -140,17 +140,9 @@ namespace dym
     }
 
     //! Row function - returns row as vector of T
-    constexpr vec<2, T> row(const dim_t i)
-    {
-      vec<2, T> v{arr[i], arr[i + 2]};
-      return v;
-    }
-
-    //! Row function - returns row as vector of T
     constexpr const vec<2, T> row(const dim_t i) const
     {
-      vec<2, T> v{arr[i], arr[i + 2]};
-      return v;
+      return vec<2, T>{arr[i], arr[i + 2]};
     }
 
     //! Matrix index operator - returns column
