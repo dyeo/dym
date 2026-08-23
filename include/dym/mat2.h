@@ -128,13 +128,26 @@ namespace dym
     ///////////////////////
 
     //! Column function - returns column as vector of T
-    constexpr vec<2, T> col(const dim_t i)
+    constexpr vec<2, T> &col(const dim_t i)
+    {
+      return data[i];
+    }
+
+    //! Column function - returns column as vector of T
+    constexpr const vec<2, T> &col(const dim_t i) const
     {
       return data[i];
     }
 
     //! Row function - returns row as vector of T
     constexpr vec<2, T> row(const dim_t i)
+    {
+      vec<2, T> v{arr[i], arr[i + 2]};
+      return v;
+    }
+
+    //! Row function - returns row as vector of T
+    constexpr const vec<2, T> row(const dim_t i) const
     {
       vec<2, T> v{arr[i], arr[i + 2]};
       return v;
