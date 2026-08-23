@@ -149,7 +149,7 @@ namespace dym
     //! Row function - returns row as vector of T
     constexpr const vec<C, T> row(const dim_t i) const
     {
-      vec<C, T> v{static_cast<T>(0)};
+      vec<C, T> v{};
       for (dim_t i = 0; i < C; ++i)
       {
         v[i] = arr[i * C];
