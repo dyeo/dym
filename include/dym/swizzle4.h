@@ -23,12 +23,12 @@ namespace dym
     static constexpr bool is_writable = (I0 != I1 && I0 != I2 && I0 != I3 && I1 != I2 && I1 != I3 && I2 != I3);
     using writable_type = std::conditional_t<is_writable, swizzle4<I0, I1, I2, I3, T>, duplicate_components_swizzle>;
 
-    T &operator[](const std::size_t i)
+    T &operator[](const dim_t i)
     {
       return raw_data()[i];
     }
 
-    const T &operator[](const std::size_t i) const
+    const T &operator[](const dim_t i) const
     {
       return raw_data()[i];
     }

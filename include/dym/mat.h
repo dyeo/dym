@@ -135,25 +135,25 @@ namespace dym
     ///////////////////////
 
     //! Matrix index operator - returns column
-    constexpr vec<R, T> &operator[](const int i)
+    constexpr vec<R, T> &operator[](const dim_t i)
     {
       return data[i];
     }
 
     //! Matrix const index operator - returns column
-    constexpr const vec<R, T> &operator[](const int i) const
+    constexpr const vec<R, T> &operator[](const dim_t i) const
     {
       return data[i];
     }
 
     //! Matrix linear array index operator - returns element
-    constexpr T &operator()(const int i)
+    constexpr T &operator()(const dim_t i)
     {
       return arr[i];
     }
 
     //! Matrix linear array const index operator - returns element
-    constexpr const T &operator()(const int i) const
+    constexpr const T &operator()(const dim_t i) const
     {
       return arr[i];
     }

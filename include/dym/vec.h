@@ -112,13 +112,13 @@ namespace dym
     ///////////////////////
 
     //! Vector index operator
-    constexpr T &operator[](const int i)
+    constexpr T &operator[](const dim_t i)
     {
       return data[i];
     }
 
     //! Vector const index operator
-    constexpr const T &operator[](const int i) const
+    constexpr const T &operator[](const dim_t i) const
     {
       return data[i];
     }

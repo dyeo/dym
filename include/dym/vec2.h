@@ -159,7 +159,7 @@ namespace dym
     ///////////////////////
 
     //! Vector index operator
-    constexpr T &operator[](const std::size_t i)
+    constexpr T &operator[](const dim_t i)
     {
       if (std::is_constant_evaluated())
       {
@@ -170,7 +170,7 @@ namespace dym
     }
 
     //! Vector const index operator
-    constexpr const T &operator[](const std::size_t i) const
+    constexpr const T &operator[](const dim_t i) const
     {
       if (std::is_constant_evaluated())
       {

@@ -111,7 +111,7 @@ namespace dym
     ///////////////////////
 
     //! returns reference to an element of the given quat, in the order w,i,j,k
-    constexpr T &operator[](const std::size_t index)
+    constexpr T &operator[](const dim_t index)
     {
       if (std::is_constant_evaluated())
       {
@@ -123,7 +123,7 @@ namespace dym
       return data[index];
     }
 
-    constexpr const T &operator[](const std::size_t index) const
+    constexpr const T &operator[](const dim_t index) const
     {
       if (std::is_constant_evaluated())
       {

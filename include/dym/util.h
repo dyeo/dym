@@ -12,6 +12,7 @@
 
 #include "constants.h"
 
+#include <cstddef>
 #include <cmath>
 #include <cassert>
 #include <random>
@@ -27,7 +28,7 @@ namespace dym
 { ////
 
   //! Represents the dimensionality of vectors and matrices
-  using dim_t = int;
+  using dim_t = std::size_t;
 
   //! Relative equality for floats
   template <class T>

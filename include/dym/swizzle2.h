@@ -24,12 +24,12 @@ namespace dym
 
     using writable_type = std::conditional_t<is_writable, swizzle2<I0, I1, T>, duplicate_components_swizzle>;
 
-    T &operator[](const std::size_t i)
+    T &operator[](const dim_t i)
     {
       return raw_data()[i];
     }
 
-    const T &operator[](const std::size_t i) const
+    const T &operator[](const dim_t i) const
     {
       return raw_data()[i];
     }
