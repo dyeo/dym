@@ -137,15 +137,15 @@ namespace dym
     ///////////////////////
 
     //! Column function - returns column as vector of T
-    vec<4, T> col(const int i) const
+    constexpr vec<4, T> col(const dim_t i) const
     {
       return data[i];
     }
 
     //! Row function - returns row as vector of T
-    vec<4, T> row(const int i) const
+    constexpr vec<4, T> row(const dim_t i) const
     {
-      vec<4, T> v = vec4(arr[i], arr[i + 4], arr[i + 8], arr[i + 12]);
+      vec<4, T> v{arr[i], arr[i + 4], arr[i + 8], arr[i + 12]};
       return v;
     }
 

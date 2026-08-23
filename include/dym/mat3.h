@@ -128,15 +128,15 @@ namespace dym
     ///////////////////////
 
     //! Column function - returns column as vector of T
-    vec<3, T> col(const std::size_t i) const
+    constexpr vec<3, T> col(const dim_t i) const
     {
       return data[i];
     }
 
     //! Row function - returns row as vector of T
-    vec<3, T> row(const std::size_t i) const
+    constexpr vec<3, T> row(const dim_t i) const
     {
-      vec<3, T> v = vec<3, T>(arr[i], arr[i + 3], arr[i + 6]);
+      vec<3, T> v{arr[i], arr[i + 3], arr[i + 6]};
       return v;
     }
 

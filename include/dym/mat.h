@@ -134,6 +134,19 @@ namespace dym
     //! ACCESS OPERATORS //
     ///////////////////////
 
+    //! Column function - returns column as vector of T
+    constexpr vec<R, T> col(const dim_t i)
+    {
+      return data[i];
+    }
+
+    //! Row function - returns row as vector of T
+    constexpr vec<C, T> row(const dim_t i)
+    {
+      vec<C, T> v{arr[i], arr[i + C]};
+      return v;
+    }
+
     //! Matrix index operator - returns column
     constexpr vec<R, T> &operator[](const dim_t i)
     {
