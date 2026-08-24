@@ -776,7 +776,7 @@ namespace dym
     for (dim_t k = 0; k < D; ++k)
     {
       // Find pivot row in column k
-      int pivot = k;
+      dim_t pivot = k;
       T maxval = std::abs(u[k][k]);
 
       for (dim_t i = k + 1; i < D; ++i)
