@@ -72,8 +72,7 @@ namespace dym
     //! Component constructor
     //! Columns span left-to-right in initialization, and rows span top-to-bottom
     //! This is because matrices are stored column-major
-    template <class... U>
-      requires (sizeof...(U) == size && (std::convertible_to<U, T> && ...))
+    template <class... U, allow_t<sizeof...(U) == size && (std::convertible_to<U, T> && ...)> = 0>
     constexpr mat(const U &...values)
       : arr{static_cast<T>(values)...}
     {
@@ -89,10 +88,9 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <dim_t C1, dim_t R1>
+    template <dim_t C1, dim_t R1, allow_t<C1 < cols && R1 < rows> = 0>
     constexpr mat(const mat<C1, R1, T> &m)
     {
-      static_assert((C1 < cols) && (R1 < rows), "Minor matrix must be smaller than original matrix");
       for (dim_t i = 0; i < C; ++i)
       {
         for (dim_t j = 0; j < R; ++j)
@@ -568,10 +566,9 @@ namespace dym
   //! Accepts a R1 x C1 matrix and a R2 x C2 matrix where C1 and R2 are equal
   //! Returns a R1 x C2 matrix that is the product of the two original matrices
   //! Is not commutative
-  template <dim_t C1, dim_t R1, dim_t C2, dim_t R2, class T>
+  template <dim_t C1, dim_t R1, dim_t C2, dim_t R2, class T, allow_t<C1 == R2> = 0>
   static constexpr mat<C2, R1, T> operator*(const mat<C1, R1, T> &m, const mat<C2, R2, T> &n)
   {
-    static_assert(C1 == R2, "Number of columns in m must equal number of rows in n");
     mat<C2, R1, T> res{T{0}};
     for (dim_t i = 0; i < R1; ++i)
     {

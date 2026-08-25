@@ -119,10 +119,9 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <dim_t C1, dim_t R1>
+    template <dim_t C1, dim_t R1, allow_t<C1 < cols && R1 < rows> = 0>
     constexpr mat(const mat<C1, R1, T> &m)
     {
-      static_assert((C1 < cols) && (R1 < rows), "Minor matrix must be smaller than original matrix");
       for (dim_t i = 0; i < C1; ++i)
       {
         for (dim_t j = 0; j < R1; ++j)

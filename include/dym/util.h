@@ -26,7 +26,9 @@
 
 namespace dym
 { ////
-
+  template<bool B>
+  using allow_t = std::enable_if_t<B, int>;
+         
   //! Represents the dimensionality of vectors and matrices
   using dim_t = std::size_t;
 
@@ -125,18 +127,16 @@ namespace dym
   }
 
   //! Linear interpolation
-  template <class T, class D = float>
+  template <class T, class D = float, allow_t<std::is_floating_point_v<D>> = 0>
   static constexpr T lerp(const T& a, const T& b, D dv)
   {
-    static_assert(std::is_floating_point_v<D>, "dv must be a floating-point type");
     return (a * (D{1} - dv)) + (b * dv);
   }
   
   //! Inverse linear interpolation
-  template <class T, class D = float>
+  template <class T, class D = float, allow_t<std::is_floating_point_v<D>> = 0>
   static constexpr T invlerp(const T& a, const T& b, D dv)
   {
-    static_assert(std::is_floating_point_v<D>, "dv must be a floating-point type");
     return (dv - a) / (b - a);
   }
 

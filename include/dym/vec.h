@@ -52,8 +52,7 @@ namespace dym
     ~vec() = default;
 
     //! Component constructor
-    template <class... U>
-      requires (sizeof...(U) == size && (std::convertible_to<U, T> && ...))
+    template <class... U, allow_t<sizeof...(U) == size && (std::convertible_to<U, T> && ...)> = 0>
     constexpr vec(const U &...values)
       : data{static_cast<T>(values)...}
     {
@@ -69,10 +68,9 @@ namespace dym
     }
 
     //! Copy constructor for arbitrarily larger vector
-    template <dim_t D1>
+    template <dim_t D1, allow_t<D1 >= size> = 0>
     constexpr vec(const vec<D1, T> &v)
     {
-      static_assert(D1 >= size, "Input vector must be larger than constructed vector");
       for (dim_t i = 0; i < size; ++i)
       {
         data[i] = v.data[i];
