@@ -119,7 +119,7 @@ namespace dym
     }
 
     //! Minor matrix constructor
-    template <dim_t C1, dim_t R1, allow_t<C1 < cols && R1 < rows> = 0>
+    template <dim_t C1, dim_t R1, allow_t<(C1 < cols && R1 < rows)> = 0>
     constexpr mat(const mat<C1, R1, T> &m)
     {
       for (dim_t i = 0; i < C1; ++i)
