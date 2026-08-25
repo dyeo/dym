@@ -93,11 +93,11 @@ namespace dym
     constexpr mat(const mat<C1, R1, T> &m)
     {
       static_assert((C1 < cols) && (R1 < rows), "Minor matrix must be smaller than original matrix");
-      for (dim_t i = 0; i < C1; ++i)
+      for (dim_t i = 0; i < C; ++i)
       {
-        for (dim_t j = 0; j < R1; ++j)
+        for (dim_t j = 0; j < R; ++j)
         {
-          data[i][j] = m.data[i][j];
+          data[i][j] = (i < C1 && j < R1) ? m.data[i][j] : T{0};
         }
       }
     }
